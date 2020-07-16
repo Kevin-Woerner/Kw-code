@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-16 kdw  erf_[_]4 work
 # 2020-07-15 kdw  erf__[34] work
 # 2020-07-10 kdw  polynomial refactor
 # 2020-07-01 kdw  tests modified
@@ -489,30 +490,30 @@ FUNC DBL erf__4(DBL xx):
    axx = ABS(xx);
    xxsq = xx * xx;
    twoxxsq = 2.0 * xxsq;
+   sum_curr = 0.0;
    IF axx < 4.4:
       factz = (2.0 * xx / SQRT(Kw.PI));
       factx = factz;
-      sum_curr = 0.0;
       # adjacent terms combined to avoid cancellation
       AWAIT Kw.iseq(sum_prev, sum_curr) COUNT nn FROM 3 BY 2:
          twonnpone = 2 * nn + 1;
          factx *= xxsq * xxsq / ((nn - 1) * nn);
-         sum_prev = sum_curr;
          term = (factx * (twonnpone * (nn - xxsq) + twoxxsq)
             / (4.0 * nn * nn - 1.0));
+         sum_prev = sum_curr;
          sum_curr += term;
       AWAIT_END
       sum_curr += (1.0 - xxsq / 3.0) * factz;
    ELSE:
       # this uses an asymptotic series for erf(x)
       factx = - EXP(-xxsq) / (xx * SQRT(Kw.PI));
-      sum_curr = 0.0;
       # adjacent terms combined to avoid cancellation
       kk = Kw.round(xxsq);
       FOR nn FROM 1 TO kk - 5 BY 2:
          factx *= nn * (nn + 1) / (twoxxsq * twoxxsq);
+         term = factx * (1.0 - (2.0 * nn + 1) / twoxxsq);
          sum_prev = sum_curr;
-         sum_curr += factx * (1.0 - (2.0 * nn + 1) / twoxxsq);
+         sum_curr += term;
          IF Kw.iseq(sum_prev, sum_curr):
             FOR_EXIT;
          IF_END
