@@ -1,0 +1,440 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-06-17 kdw  Modulo operator
+# 2020-05-18 kdw  while conditios redo
+# 2020-05-13 kdw  lang_.* vars
+# 2020-05-12 kdw  language syntax
+# 2020-04-20 kdw  language work
+# 2020-04-14 kdw  tests added
+# 2020-04-12 kdw  comment change
+# 2020-04-09 kdw  MO[D]E syntax change
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-03-06 kdw  L[A]NG.* names
+# 2020-03-03 kdw  language simplified; comments changed
+# 2020-03-02 kdw  s/_N[E]XT/_E[N]D/
+# 2020-01-21 kdw  minor cleanup
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-10-08 kdw  comment change
+# 2019-10-04 kdw  comment change
+# 2019-09-10 kdw  LAN[G]UAGE NOT to LAN[G]UAGE_N[O]T
+# 2019-08-26 kdw  PRI[N]TS to PR[I]NTSTR
+# 2019-08-24 kdw  BC: fixed
+# 2019-08-19 kdw  language work
+# 2019-08-11 kdw  language comments
+# 2019-08-06 kdw  rmed backshlashes, macro arg renam
+# 2019-07-31 kdw  bit to bitwise func nams
+# 2019-06-02 kdw  func desc added
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-08 kdw  rmed ampersand
+# 2018-06-09 kdw  mved tests
+# 2018-06-08 kdw  tests
+# 2018-05-18 kdw  LAN[G]UAGE syntax change
+# 2018-05-13 kdw  MO?DE.* syntax change
+# 2018-04-03 kdw  rm () from return
+# 2018-04-02 kdw  Pro?totype, et al.
+# 2018-04-01 kdw  LAN[G]UAGE_E[N]D
+# 2017-10-23 kdw  lang is any fix
+# 2017-10-21 kdw  macros start with "at"
+# 2017-10-20 kdw  LAN[G]UAGE syntax changed
+# 2017-06-29 kdw  comment changed
+# 2017-06-21 kdw  LAN[G].* AND MASTER.* change
+# 2017-05-03 kdw  PROT?OTYPE format changed
+# 2017-04-21 kdw  func to function
+# 2017-03-13 kdw  forgotten ";" in bitor, binand
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-07 kdw  INS?ERT etal
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-24 kdw  LAN[G]UAGE change
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-02-08 kdw  "??"PRO?TOT?YPE
+# 2017-02-07 kdw  comment change
+# 2017-01-19 kdw  var name change
+# 2017-01-06 kdw  "??"LAN[G]UAGE_I[F] deprecated
+# 2016-12-08 kdw  comment change
+# 2016-11-23 kdw  comment cleanup
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-15 kdw  B?ITS*/MO?D change
+# 2016-11-07 kdw  __LA?NG* syntax change
+# 2016-09-14 kdw  lang change
+# 2016-05-18 kdw  comment change
+# 2016-04-27 kdw  comment cleanup
+# 2015-12-30 kdw  _?_DEC?LARE_?_
+# 2015-12-21 kdw  _[_]E[L]SE[_]_
+# 2015-12-14 kdw  long lines
+# 2015-12-11 kdw  _[_]EN[D]IF_[_] obsoleted
+# 2015-12-07 kdw  bits_[sg]et
+# 2015-12-03 kdw  rmed arcane functions
+# 2015-12-02 kdw  shortened function names
+# 2015-11-18 kdw  shortened long comments
+# 2015-11-13 kdw  long lines changed
+# 2015-11-12 kdw  rmed spurious comments
+# 2015-10-01 kdw  is* functions
+# 2015-09-30 kdw  rmed "**"
+# 2015-09-25 kdw  B[I]T* format change
+# 2015-09-24 kdw  bit ops changed
+# 2015-09-22 kdw  _[_]* format changed
+# 2015-09-20 kdw  created
+
+LANGUAGE_NOT LANG_BC:   # define bitwise functions
+FUNC INT bitwisenot(INT xx):
+   # bitwise logical Not of XX
+   INT retvalu;
+
+   MODE_INTEGER:
+   retvalu = BITWISENOT(xx);
+   MODE_INTEGER_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bitwiseand(INT xx, INT yy):
+   # bitwise logical And of XX and YY
+   INT retvalu;
+
+   MODE_INTEGER:
+   retvalu = BITWISEAND(xx, yy);
+   MODE_INTEGER_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bitwiseor(INT xx, INT yy):
+   # bitwise logical Or of XX and YY
+   INT retvalu;
+
+   MODE_INTEGER:
+   retvalu = BITWISEOR(xx, yy);
+   MODE_INTEGER_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bitwisexor(INT xx, INT yy):
+   # bitwise logical Xor of XX and YY
+   INT retvalu;
+
+   MODE_INTEGER:
+   retvalu = BITWISEXOR(xx, yy);
+   MODE_INTEGER_END
+   RETURN retvalu;
+FUNC_END
+LANGUAGE_END           # define bitwise functions
+
+LANGUAGE LANG_BC:       # define bitwise functions
+FUNC INT bitwisenot(INT xx):
+   # bitwise logical Not of XX
+   INT retvalu;
+
+   MODE_INTEGER:
+   retvalu = -1 - xx;
+   MODE_INTEGER_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bitwiseand(INT xx, INT yy):
+   # bitwise logical And of XX and YY
+   # bitwiseand calls bitwiseor, and visa versa
+   INT retvalu;
+   INT nn;
+   INT tt;
+   INT aa;
+   INT bb;
+   INT qxx;
+   INT qyy;
+   MODE_INTEGER:
+
+   IF xx < 0 AND yy < 0:
+      retvalu = (-1 - bitwiseor(-1 - xx, -1 - yy));
+   ELSE:
+      nn = 0;
+      xx /= 1;
+      yy /= 1;
+      IF xx < 0:
+         xx = -1 - xx;
+         nn = 1;
+      IF_END
+      IF yy < 0:
+         tt = -1 - yy;
+         yy = xx;
+         xx = tt;
+         nn = 1;
+      IF_END
+      retvalu = 0;
+      tt = 1;
+      WHILE 0 < xx OR 0 < yy:
+         qxx = xx / 4;
+         qyy = yy / 4;
+         aa = xx - 4 * qxx;
+         IF 0 < nn:
+            aa = 3 - aa;
+         IF_END
+         bb = yy - 4 * qyy;
+         IF aa <> bb:
+            aa += bb - 3;
+            IF aa < 0:
+               aa = 0;
+            IF_END
+         IF_END
+         retvalu += tt * aa; # base 4 is faster
+         tt *= 4;
+         xx = qxx;
+         yy = qyy;
+      WHILE_END
+   IF_END
+   MODE_INTEGER_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bitwiseor(INT xx, INT yy):
+   # bitwise logical Or of XX and YY
+   INT retvalu;
+   INT tt;
+   INT aa;
+   INT bb;
+   INT cc;
+   INT qxx;
+   INT qyy;
+   MODE_INTEGER:
+
+   IF xx < 0 OR yy < 0:
+      retvalu = (-1 - bitwiseand(-1 - xx, -1 - yy));
+   ELSE:
+      xx /= 1;
+      yy /= 1;
+
+      retvalu = 0;
+      tt = 1;
+      WHILE 0 < xx OR 0 < yy:
+         qxx = xx / 4;
+         qyy = yy / 4;
+         aa = xx - 4 * qxx;
+         bb = yy - 4 * qyy;
+         IF aa <> bb:
+            aa += bb;
+            IF 3 < aa:
+               aa = 3;
+            IF_END
+         IF_END
+         retvalu += tt * aa; # base 4 is faster
+         tt *= 4;
+         xx = qxx;
+         yy = qyy;
+      WHILE_END
+   IF_END
+   MODE_INTEGER_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bitwisexor(INT xx, INT yy):
+   # bitwise logical Xor of XX and YY
+   INT retvalu;
+   INT nn;
+   INT tt;
+   INT aa;
+   INT bb;
+   INT cc;
+   INT qxx;
+   INT qyy;
+   MODE_INTEGER:
+
+   nn = 0;
+   xx /= 1;
+   yy /= 1;
+   IF xx < 0:
+      xx = -1 - xx;
+      nn = 1 - nn;
+   IF_END
+   IF yy < 0:
+      yy = -1 - yy;
+      nn = 1 - nn;
+   IF_END
+   retvalu = 0;
+   tt = 1;
+   WHILE 0 < xx OR 0 < yy:
+      qxx = xx / 4;
+      qyy = yy / 4;
+      aa = xx - 4 * qxx;
+      bb = yy - 4 * qyy;
+      cc = aa + bb;
+      IF Kw.iseven(cc):
+         cc = aa + 4 - bb;
+      IF_END   # base 4 is faster
+      retvalu += tt * (cc % 4);
+      tt *= 4;
+      xx = qxx;
+      yy = qyy;
+   WHILE_END
+   IF 0 < nn:
+      retvalu = -1 - retvalu;
+   IF_END
+   MODE_INTEGER_END
+   RETURN retvalu;
+FUNC_END
+LANGUAGE_END           # define bitwise functions
+
+FUNC INT bitshiftl(INT hexnumber
+   , INT shift_count):
+   # shift HEXNUMBER left by SHIFT_COUNT bits
+   INT retvalu;
+
+   IF shift_count < 0:
+      retvalu = BITSHIFTR(hexnumber, -shift_count);
+   ELSIF 0 < shift_count:
+      retvalu = BITSHIFTL(hexnumber, shift_count);
+   ELSE:
+      retvalu = hexnumber;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bitshiftr(INT hexnumber
+   , INT shift_count):
+   # shift HEXNUMBER right by SHIFT_COUNT bits
+   INT retvalu;
+
+   IF shift_count < 0:
+      retvalu = BITSHIFTL(hexnumber, -shift_count);
+   ELSIF 0 < shift_count:
+      retvalu = BITSHIFTR(hexnumber, shift_count);
+   ELSE:
+      retvalu = hexnumber;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bits_count(INT hexnumber):
+   # count the number of 1 bits in HEXNUMBER
+   INT bit_counter;
+   INT bitmask;
+
+   bitmask = 1;
+   bit_counter = 0;
+   WHILE bitmask <= hexnumber:
+      IF bitwiseand(bitmask, hexnumber) <> 0:
+         bit_counter += 1;
+      IF_END
+      bitmask = BITSHIFTL(bitmask, 1);
+   WHILE_END
+   RETURN bit_counter;
+FUNC_END
+#TEST:bits_count(107717)-8;
+
+FUNC INT bits_ls1b(INT orig):
+   # bitmask of the least-signifigant non-zero bit in ORIG
+   INT divisor;
+   INT retvalu;
+
+   IF orig == 0:
+      retvalu = 0;
+   ELSE:
+      divisor = 1;
+      WHILE 0 == BITWISEAND(divisor, orig):
+         divisor *= 2;
+      WHILE_END
+      retvalu = divisor;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:bits_ls1b(56)-8;
+
+FUNC INT bits_ms1b(INT orig):
+   # bitmask of the most-signifigant non-zero bit in ORIG
+   # ASSUMES A TWOS-COMPLEMENT MACHINE
+   INT divisor;
+   INT retvalu;
+
+   IF orig == 0:
+      retvalu = 0;
+   ELSE:
+      divisor = -2;
+      WHILE 0 <> BITWISEAND(divisor, orig):
+         divisor *= 2;
+      WHILE_END
+      retvalu = -divisor / 2;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bits_ls1bpos(INT orig):
+   # location of the least-signifigant non-zero bit in ORIG
+   #    == count of 0s on the right end of ORIG
+   INT divisor;
+   INT retvalu;
+   INT bit_count;
+
+   IF orig == 0:
+      retvalu = -1;
+   ELSE:
+      divisor = 1;
+      bit_count = 0;
+      WHILE 0 == BITWISEAND(divisor, orig):
+         divisor *= 2;
+         bit_count += 1;
+      WHILE_END
+      retvalu = bit_count;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:bits_ls1bpos(80)-4;
+
+FUNC INT bits_ms1bpos(INT orig):
+   # location of the most-signifigant non-zero bit in ORIG
+   #    == (count of binary digits in ORIG) - 1
+   # ASSUMES A TWOS-COMPLEMENT MACHINE
+   INT divisor;
+   INT retvalu;
+   INT bit_count;
+
+   IF orig == 0:
+      retvalu = 0;
+   ELSE:
+      divisor = -2;
+      bit_count = 0;
+      WHILE 0 <> BITWISEAND(divisor, orig):
+         divisor *= 2;
+         bit_count += 1;
+      WHILE_END
+      retvalu = bit_count;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT bits_assign(INT orig
+   , INT value_to_set
+   , INT which_mask):
+   # assign VALUE_TO_SET to bits WHICH_MASK in ORIG
+   INT divisor;
+   INT retvalu;
+   INT tempo;
+   INT tempv;
+
+   IF which_mask == 0:
+      retvalu = orig;
+   ELSE:
+      divisor = bits_ls1bpos(which_mask);
+      # first, clear target bits in ORIG:
+      tempo = BITWISEAND(orig, BITWISENOT(which_mask));
+      # second, set the appropriate bit s in TEMPV
+      tempv = BITSHIFTL(value_to_set, divisor);
+      retvalu = BITWISEOR(tempo, BITWISEAND(tempv, which_mask));
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+#TEST:bits_assign(170,5,112)-218;
+
+FUNC INT bits_get(INT vall, INT mask):
+   # value of VALL And MASK right justified
+   RETURN BITWISEAND(vall, mask) / bits_ls1b(mask);
+FUNC_END
+#TEST:bits_get(436940,992)-22;
+
+FUNC INT bits_set(INT vall, INT mask):
+   # value of VALL shifted left into MASK
+   RETURN BITWISEAND(vall * bits_ls1b(mask), mask);
+FUNC_END
+#TEST:bits_set(5,112)-80;

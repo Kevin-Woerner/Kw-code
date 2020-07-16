@@ -1,0 +1,370 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-07 kdw  attempt to extend agmean to < 0
+# 2020-07-06 kdw  p[m]ean works w/ pp == 0
+# 2020-07-04 kdw  ag[h]mean
+# 2020-04-26 kdw  block indentation
+# 2020-04-14 kdw  tests added
+# 2020-04-12 kdw  comment change
+# 2020-04-11 kdw  macro arg format
+# 2020-04-08 kdw  allow 0 in some means
+# 2020-03-03 kdw  comment changed:odd chars
+# 2020-03-02 kdw  s/_N[E]XT/_E[N]D/
+# 2020-02-28 kdw  poly eval work
+# 2020-02-26 kdw  arr[a]y and hor[n]er work
+# 2020-02-24 kdw  r[m]s comment
+# 2020-02-23 kdw  r[m]s func
+# 2020-02-08 kdw  refactor iterated means
+# 2020-02-03 kdw  .*_LOOP changed
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-11-17 kdw  include Macros file
+# 2019-10-04 kdw  comment change
+# 2019-10-02 kdw  macro arg format change
+# 2019-09-07 kdw  lo[g]1p to ln[1]p
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-18 kdw  L[O]G to L[N]
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-06 kdw  rmed backslashes, macro arg renam
+# 2019-07-16 kdw  comment change
+# 2019-07-02 kdw  macro renam
+# 2019-05-31 kdw  NR_DO to RAPHSON_LOOP; et al
+# 2019-05-29 kdw  comment changed
+# 2019-05-21 kdw  macro redef
+# 2019-05-16 kdw  loop limit def mved
+# 2019-05-01 kdw  consts explicit module name
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-18 kdw  macro syntax changed
+# 2019-03-11 kdw  comments to array dcls
+# 2019-03-09 kdw  .*mean() func renam
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-04 kdw  loop-limit work
+# 2019-01-03 kdw  Await counter changed
+# 2018-07-20 kdw  ag?m1i?nv work
+# 2018-07-13 kdw  float number reformt
+# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
+# 2018-05-16 kdw  AR?RAY syntax
+# 2018-04-03 kdw  rm () from return
+# 2018-03-26 kdw  macro redef
+# 2018-02-19 kdw  secant and macro refactor
+# 2018-02-16 kdw  await loops
+# 2017-11-26 kdw  FR[O]M and B[Y] keywords
+# 2017-11-24 kdw  AR[R]AY_E[N]D
+# 2017-10-21 kdw  macros start with "at""at"
+# 2017-10-20 kdw  SEC[A]NT syntax change
+# 2017-08-30 kdw  s/DBL_/DBL/;s/FLT_/FLT/
+# 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
+# 2017-04-21 kdw  func to function
+# 2017-03-12 kdw  shorten long comments
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-07 kdw  INS?ERT etal
+# 2017-03-06 kdw  sigils rmed
+# 2017-02-23 kdw  array var names
+# 2017-02-20 kdw  array var names
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-02-08 kdw  SE[C]ANT syntax
+# 2017-02-07 kdw  comment rearrangement; SE[C]ANT stuff
+# 2017-02-06 kdw  SE[C]ANT syntax
+# 2017-02-05 kdw  SE[C]ANT stuff
+# 2017-02-03 kdw  SE[C]ANT stuff
+# 2016-11-23 kdw  CN?ST to REA?DON?LY
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-14 kdw  seca?nt algorithm refactor
+# 2016-11-11 kdw  seca?nt algorithm refactor
+# 2016-11-08 kdw  AW?AIT.*COU?NT syntax
+# 2016-11-07 kdw  loops refactored
+# 2016-11-06 kdw  isz?ero to ise?qual
+# 2016-10-31 kdw  EX?ITL?OOP
+# 2016-10-27 kdw  whitespace issues
+# 2016-10-14 kdw  _p added to several vars
+# 2016-09-15 kdw  lang change
+# 2016-09-13 kdw  lang change
+# 2016-09-08 kdw  contraharmonic, heronian
+# 2015-12-31 kdw  bounded (possible) infinite loops
+# 2015-12-30 kdw  define ghm1 before use
+# 2015-12-14 kdw  minor refactor
+# 2015-12-10 kdw  agm loop refactor
+# 2015-12-09 kdw  infinite loop in agm sometimes
+# 2015-12-08 kdw  a[g]m
+# 2015-11-17 kdw  comment changed
+# 2015-11-12 kdw  minor refactor
+# 2015-10-11 kdw  seca?nt algorithm changed
+# 2015-10-10 kdw  created
+
+??INSERT_FILE "Macros.fwip"??
+
+FUNC DBL amean(DBL xa, DBL xb):
+   # The arithmetic mean
+   RETURN (xa + xb) / 2.0;
+FUNC_END
+
+FUNC DBL amean1(DBL xa):
+   # The arithmetic mean of 1.0 and XA
+   RETURN (xa + 1.0) / 2.0;
+FUNC_END
+
+FUNC DBL lmean(DBL xa, DBL xb):
+   # The logarithmic mean: (XA - XB) / log(XA / XB)
+   DBL retvalu;
+   DBL diffy;
+   IF xa <= 0 OR xb <= 0:
+      retvalu = 0;
+   ELSIF Kw.iseq(xa, xb):
+      retvalu = xa;
+   ELSE:
+      diffy = xa - xb;
+      IF 0.0001 < ABS(diffy):
+         retvalu = diffy / LN(xa / xb);
+      ELSE:
+         retvalu = diffy / Kw.ln1p(diffy / xb);
+      IF_END
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL lmean1(DBL xa):
+   # The logarithmic mean of 1 and XA
+   RETURN lmean(1.0, xa);
+FUNC_END
+
+FUNC DBL pmean(DBL pp, DBL xa, DBL xb):
+   # The power mean
+   # pmean(-1,...)  harmonic
+   # pmean(0,...)   geometric
+   #   actually limit as p to 0 of pmean(p,...)
+   # pmean(1,...)   arithmetic
+   # pmean(2,...)   quadratic
+   DBL retvalu;
+   IF xa <= 0 OR xb <= 0:
+      retvalu = 0;
+   ELSIF Kw.iseq(xa, xb):
+      retvalu = xa;
+   ELSIF Kw.iszero(pp):
+      retvalu = SQRT(xa * xb);
+   ELSE:
+      retvalu = POW((POW(xa, pp) + POW(xb, pp)) / 2.0, 1.0 / pp);
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+??MACRO MEAN_SIMPLE <NAME> ; <DESC> ; <FORMULA> ??
+   FUNC DBL <NAME>mean(DBL xa, DBL xb):
+      # The <DESC> mean
+      DBL retvalu;
+      IF xa < 0 OR xb < 0:
+         retvalu = 0;
+      ELSIF Kw.iseq(xa, xb):
+         retvalu = xa;
+      ELSE:
+         retvalu = <FORMULA>;
+      IF_END
+
+      RETURN retvalu;
+   FUNC_END
+   FUNC DBL <NAME>mean1(DBL xa):
+      # The <DESC> mean of 1.0 and XA
+      RETURN <NAME>mean(1.0, xa);
+   FUNC_END
+??MACRO_END
+
+# for x in (0,+INF): AH(1,x) == G(1,x)
+# for x in (1,+INF):
+# H < GH < HL < G=AH < GL < L,HQ < AG < AL < GQ < A,LQ < AQ < Q
+# for x in (0,1) or (1,+INF):
+# H < GH < HL < G=AH < GL < L,HQ < AG < AL < GQ < A,LQ < AQ < Q
+# lm1(x) < hqm1(x) in (0.07228214847860485, 13.83467455032826)
+# am1(x) < lqm1(x) in (0.07565734259951488, 13.21748776312862)
+??MEAN_SIMPLE g ; geometric ; SQRT(xa * xb) ??
+??MEAN_SIMPLE h ; harmonic  ; 2.0 * xa * xb / (xa + xb) ??
+??MEAN_SIMPLE q ; quadratic ; SQRT((xa * xa + xb * xb) / 2.0) ??
+??MEAN_SIMPLE heronian ; heronian
+      ; (xa + xb + SQRT(xa * xb)) / 3.0 ??
+
+??MACRO MEAN_ITERATE <NAME> ; <F1> ; <F2> ; <DESC> ??
+FUNC DBL <NAME>mean(DBL xa, DBL xb):
+   # The <DESC> mean
+   INT ii;
+   DBL retvalu;
+   DBL xtmp;
+   DBL pdifff;
+   DBL cdifff;
+   IF xa <= 0 OR xb <= 0:
+      retvalu = 0;
+   ELSIF Kw.iseq(xa, xb):
+      retvalu = xa;
+   ELSE:
+      cdifff = ABS(xa - xb);
+      AWAIT Kw.iswithin(xa, xb, 10 * DBLEPS)
+               OR pdifff < cdifff
+            COUNT ii FROM 0 TO ??LOOP_LIMIT??:
+         pdifff = cdifff;
+         xtmp = <F1>;
+         xa = <F2>;
+         xb = xtmp;
+         cdifff = xa - xb;
+      AWAIT_END
+      retvalu = xtmp;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+FUNC DBL <NAME>mean1(DBL xa):
+   # The <DESC> of 1.0 and XA
+   RETURN <NAME>mean(1.0, xa);
+FUNC_END
+??MACRO_END
+
+??MEAN_ITERATE ag ; SQRT(xa * xb) ; (xa + xb) / 2.0
+      ; arithmetic-geometric ??
+#TEST:agmean(1,2)-1.4567910310469068691864323832650819749738639;
+??MEAN_ITERATE ah ; 2.0 * xa * xb / (xa + xb) ; (xa + xb) / 2.0
+      ; arithmetic-harmonic ??
+??MEAN_ITERATE al ; lmean(xa, xb) ; (xa + xb) / 2.0
+      ; arithmetic-logarithmic ??
+??MEAN_ITERATE aq ; (xa + xb) / 2.0 ; qmean(xa, xb)
+      ; arithmetic-quadratic ??
+??MEAN_ITERATE gh ; 2.0 * xa * xb / (xa + xb) ; SQRT(xa * xb)
+      ; geometric-harmonic ??
+??MEAN_ITERATE gl ; SQRT(xa * xb) ; lmean(xa, xb)
+      ; geometric-logarithm ??
+??MEAN_ITERATE gq ; SQRT(xa * xb) ; qmean(xa,xb)
+      ; geometric-quadratic ??
+??MEAN_ITERATE hl ; 2.0 * xa * xb / (xa + xb) ; lmean(xa, xb)
+      ; harmonic-logarithmic ??
+??MEAN_ITERATE hq ; 2.0 * xa * xb / (xa + xb) ; qmean(xa, xb)
+      ; harmonic-quadratic ??
+??MEAN_ITERATE lq ; lmean(xa, xb) ; qmean(xa, xb)
+      ; logarithmic-quadratic ??
+
+FUNC DBL agmean__1(DBL xa, DBL xb):
+   # The arithmetic-geometric mean extended to negative numbers
+   INT ii;
+   DBL retvalu;
+   DBL xtmp;
+   DBL xsgn;
+
+   xsgn = 1;
+   AWAIT Kw.iswithin(xa, xb, 10 * DBLEPS)
+            COUNT ii FROM 0 TO ??LOOP_LIMIT??:
+      xtmp = xa;
+      xa = (xa + xb) / 2.0;
+      xb = SQRT(ABS(xtmp * xb)) * Kw.sign(xa);
+#      IF NOT Kw.isss(xa * xb, xa + xb):
+#         xsgn = -xsgn;
+#      IF_END
+   AWAIT_END
+   retvalu = xsgn * xtmp;
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL aghmean(DBL xa, DBL xb, DBL xc):
+   # The rithmetic-geometric-harmonic mean
+   INT ii;
+   DBL ta;
+   DBL tb;
+   DBL tc;
+   DBL retvalu;
+
+   IF xa <= 0 OR xb <= 0 OR xc <= 0:
+      retvalu = 0;
+   ELSIF Kw.iseq(xa, xb) AND Kw.iseq(xa, xc):
+      retvalu = xa;
+   ELSE:
+      AWAIT Kw.iswithin(xa, xc, 10 * DBLEPS)
+            COUNT ii FROM 0 TO ??LOOP_LIMIT??:
+         ta = xa;
+         tb = xb;
+         tc = xc;
+         xa = (ta + tb + tc) / 3.0;
+         xb = Kw.cuberoot(ta * tb * tc);
+         xc = 3.0 / (1.0 / ta + 1.0 / tb + 1.0 / tc);
+      AWAIT_END
+      retvalu = xb;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL rms(DBL xa, DBL xb):
+   # RMS value of XA and XB
+   # same as qmean
+   RETURN SQRT((xa * xa + xb * xb) / 2.0);
+FUNC_END
+
+FUNC DBL agmean1inv(DBL yy):
+   # The inverse arithmetic-geometric mean
+   ??SECANT_DECLARATIONS??
+   DBL x_init;
+   DBL dx;
+   DBL cc;
+
+   IF yy <= 0.0:
+      scvx_xx = 0.0;
+   ELSIF yy < 0.0022:
+      scvx_xx = 1.0 / Kw.DBLMAX;
+   ELSE:
+      # Get an approximation of agmean1inv(yy)
+      IF yy <= 0.5:
+         x_init = 4.0 * EXP(Kw.PI / (-2.0 * yy));
+      ELSIF yy < 2.1:
+         cc = yy - 1.0;
+         x_init = ((((((((
+               - 0.09765625) * cc
+               + 0.12890625) * cc
+               + 0.18750000) * cc
+               + 0.18750000) * cc
+               - 0.25000000) * cc
+               + 0.50000000) * cc
+               + 2.00000000) * cc
+               + 1.00000000);
+      ELSE:
+         cc = -(Kw.PI / 2.0);
+         x_init = yy * Kw.wm(cc / (4.0 * yy)) / cc;
+      IF_END
+
+      IF yy < 0.06:
+         dx = x_init * 0.1;
+      ELSE:
+         dx = x_init * 0.5;
+      IF_END
+      ??SECANT_LOOP x_init ; dx ; yy - agmean1(scvx_xx) ??
+   IF_END
+   RETURN scvx_xx;
+FUNC_END
+#TEST:agmean1inv(agmean1(2.7))-2.7;
+#TEST:agmean1(agmean1inv(2.2))-2.2;
+
+FUNC DBL ghmean1inv(DBL yy):
+   # The inverse geometric harmonic mean
+   ??SECANT_DECLARATIONS??
+   DBL x_init;
+
+   IF yy <= 0.0:
+      scvx_xx = 0.0;
+   ELSE:
+      x_init = EXP(Kw.PI * yy / 2.0 - 1.385) - 0.22;
+      ??SECANT_LOOP x_init ; 0.2 ; yy - ghmean1(scvx_xx) ??
+   IF_END
+   RETURN scvx_xx;
+FUNC_END
+
+FUNC DBL contraharmonic(INT nn, READONLY DBL val_arr_pc[]):
+   # The Contraharmonic mean
+   DBL denom;
+   DBL numer;
+   INT ii;
+
+   numer = 0.0;
+   denom = 0.0;
+   FOR ii FROM 0 TO nn - 1:
+      denom += val_arr_pc[ii] * val_arr_pc[ii];
+      numer += val_arr_pc[ii];
+   FOR_END
+
+   RETURN denom / numer;
+FUNC_END

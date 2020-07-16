@@ -1,0 +1,78 @@
+#    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-06-22 kdw  local-use mved before var decls
+# 2020-05-11 kdw  local-decl syntx change
+# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-12 kdw  comment change
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-05 kdw  minor tweak
+# 2020-03-02 kdw  s/_N[E]XT/_E[N]D/
+# 2020-02-03 kdw  single reeturn from each func
+# 2019-12-06 kdw  rmed print; streamlined
+# 2019-10-02 kdw  block comment
+# 2019-08-26 kdw  PRI[N]TS to PR[I]NTSTR
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-18 kdw  B[O]OL to B[O]L
+# 2019-05-24 kdw  local replaced private
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2018-12-17 kdw  created
+
+BLOCK:  # search
+   LOCAL_INT lv_search_target = 0;
+
+   FUNC INT search_check(INT gg):
+      LOCAL_USE lv_search_target;
+      INT retvalu;
+
+      IF gg < lv_search_target:
+         retvalu = -1;
+      ELSIF lv_search_target < gg:
+         retvalu = 1;
+      ELSE:
+         retvalu = 0;
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC INT search_search(INT gg):
+      LOCAL_USE lv_search_target;
+      INT curr;
+      INT delta;
+      INT result;
+
+      lv_search_target = gg;
+
+      curr = 1;
+      FOR delta FROM 0:
+         result = search_check(curr);
+         IF 0 <= result:
+            FOR_EXIT;
+         IF_END
+         curr += curr;
+      FOR_END
+
+      IF 4 <= curr:
+         delta = curr / 4;
+         # NOW curr and delta are powers of 2.
+         #    check(curr) is good; check(curr / 2) is bad
+         WHILE 1 <= delta:
+            IF 0 < result:       # CURR is too large
+               curr -= delta;
+            ELSIF result < 0:    # CURR is too small
+               curr += delta;
+            ELSE:                # CURR is just right
+               WHILE_EXIT;
+            IF_END
+            result = search_check(curr);
+            IF delta < 2:
+               IF 0 < result AND 1 < curr:
+                  curr -= 1;
+               IF_END
+               WHILE_EXIT;
+            IF_END
+
+            delta /= 2;
+         WHILE_END
+      IF_END
+      RETURN curr;
+   FUNC_END
+BLOCK_END  # search

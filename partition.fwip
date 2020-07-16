@@ -1,0 +1,179 @@
+#    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-06-22 kdw  local-use mved before var decls
+# 2020-06-03 kdw  writeonly keyword
+# 2020-05-11 kdw  local-decl syntx change
+# 2020-04-15 kdw  funcs ret doubles
+# 2020-04-14 kdw  tests
+# 2020-04-12 kdw  comment change
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-03 kdw  comment changed:odd chars
+# 2020-03-02 kdw  s/_N[E]XT/_E[N]D/; indent block
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name added to funcs
+# 2019-10-04 kdw  comment change
+# 2019-08-06 kdw  rmed backslashes, macro arg renam
+# 2019-05-28 kdw  comment changed
+# 2019-05-24 kdw  local replaced private
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2018-05-14 kdw  BLO?CK syntax change
+# 2018-04-26 kdw  comment change
+# 2018-04-24 kdw  func descriptions; BL?OCKs
+# 2018-04-03 kdw  rm () from return
+# 2018-04-02 kdw  Pro?totype, et al.
+# 2017-07-03 kdw  rmed useless comments
+# 2017-05-03 kdw  PROT?OTYPE format changed
+# 2017-04-30 kdw  func to function
+# 2017-04-11 kdw  created
+
+BLOCK: # partition function
+   LOCAL_DBL lv_partitionr_arr[0];
+   LOCAL_INT lv_partitionr_end = 0;
+
+   FUNC DBL partition(INT nn):
+      # number of partitions of NN
+      # E.g. partition(5) = 7 since 5 ==
+      #    1+1+1+1+1, 1+1+1+2, 1+1+3, 1+4,
+      #    1+2+2, 2+3, and 5
+      # PARTITION(nn) = 0
+      #      + PARTITION(NN -  1) + PARTITION(NN -  1 - 1)
+      #      - PARTITION(NN -  5) - PARTITION(NN -  5 - 2)
+      #      + PARTITION(NN - 12) + PARTITION(NN - 12 - 3)
+      #      - PARTITION(NN - 22) - PARTITION(NN - 22 - 4)
+      #      + PARTITION(NN - 35) + PARTITION(NN - 35 - 5)
+      #      - PARTITION(NN - 51) - PARTITION(NN - 51 - 6) ...
+      # where 1,5,12,22,35 comes from (3*kk*kk-kk) / 2
+      #       1, 2, 5, 7, 12, 15, 22, 26, 35, 40, 51, 57
+      #        +1 +3 +2 +5  +3  +7  +4  +9  +5  +11 +6
+      LOCAL_USE lv_partitionr_arr[];
+      LOCAL_USE lv_partitionr_end;
+      DBL retvalu;
+      INT jj;
+      INT mm;
+      INT kk;
+      DBL sum;
+      DBL ssign;
+
+      IF nn < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_partitionr_end <= 0:
+            lv_partitionr_end = 6;
+            REDIM lv_partitionr_arr[], lv_partitionr_end;
+            lv_partitionr_arr[0] = 1;
+            lv_partitionr_arr[1] = 1;
+            lv_partitionr_arr[2] = 2;
+            lv_partitionr_arr[3] = 3;
+            lv_partitionr_arr[4] = 5;
+            lv_partitionr_arr[5] = 7;
+         IF_END
+
+         IF lv_partitionr_end <= nn:
+            mm = lv_partitionr_end;
+            lv_partitionr_end = nn + 1;
+            REDIM lv_partitionr_arr[], lv_partitionr_end;
+            WHILE mm < lv_partitionr_end:
+               sum = 0;
+               ssign = 1;
+               kk = 1;
+               jj = mm - 1;
+               WHILE 0 <= jj:
+                  sum += ssign * lv_partitionr_arr[jj];
+                  jj -= kk;
+                  IF jj < 0:
+                     WHILE_EXIT;
+                  IF_END
+                  sum += ssign * lv_partitionr_arr[jj];
+                  ssign = -ssign;
+                  kk += 1;
+                  jj -= (2 * kk - 1);
+               WHILE_END
+               lv_partitionr_arr[mm] = sum;
+               mm += 1;
+            WHILE_END
+         IF_END
+         retvalu = lv_partitionr_arr[nn];
+      IF_END
+
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END # partition function
+#TEST:partition(30)-5604
+
+BLOCK: # partitionq function
+   LOCAL_DBL lv_partitionq_arr[0];
+   LOCAL_INT lv_partitionq_end = 0;
+
+   FUNC DBL partitionq(INT nn):
+      # number of partitions of NN into distinct parts
+      # == number of partitions of NN into odd parts
+      # E.G.: partitionq(8) = 6 since:
+      #    one can partition 8 into distinct parts 6 ways:
+      #       1+2+5, 1+3+4, 1+7, 2+6, 3+5, 8,
+      #    and one can partition 8 into odd parts 6 ways:
+      #       1+1+1+1+1+1+1+1, 1+1+1+1+1+3,
+      #       1+1+3+3, 1+1+1+5, 1+7, 3+5
+      LOCAL_USE lv_partitionq_arr[];
+      LOCAL_USE lv_partitionq_end;
+      DBL retvalu;
+      INT jj;
+      INT mm;
+      INT kk;
+      DBL sum;
+      DBL ssign;
+      INT ee;
+
+      IF nn < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_partitionq_end <= 0:
+            lv_partitionq_end = 6;
+            REDIM lv_partitionq_arr[], lv_partitionq_end;
+            lv_partitionq_arr[0] = 1;
+            lv_partitionq_arr[1] = 1;
+            lv_partitionq_arr[2] = 1;
+            lv_partitionq_arr[3] = 2;
+            lv_partitionq_arr[4] = 2;
+            lv_partitionq_arr[5] = 3;
+         IF_END
+
+         IF lv_partitionq_end <= nn:
+            mm = lv_partitionq_end;
+            lv_partitionq_end = nn + 1;
+            REDIM lv_partitionq_arr[], lv_partitionq_end;
+            WHILE mm < lv_partitionq_end:
+               sum = 0;
+               ssign = 1;
+               kk = 1;
+               jj = mm - 1;
+               WHILE 0 <= jj:
+                  sum += ssign * lv_partitionq_arr[jj];
+                  jj -= kk;
+                  IF jj < 0:
+                     WHILE_EXIT;
+                  IF_END
+                  sum += ssign * lv_partitionq_arr[jj];
+                  ssign = -ssign;
+                  kk += 1;
+                  jj -= (2 * kk - 1);
+               WHILE_END
+               ee = Kw.round(SQRT(1.0 + 12.0 * mm) / 6.0);
+               IF mm == (3 * ee * ee - ee)
+                        OR mm == (3 * ee * ee + ee):
+                  IF Kw.isodd(ee):
+                     sum -= 1;
+                  ELSE:
+                     sum += 1;
+                  IF_END
+               IF_END
+               lv_partitionq_arr[mm] = sum;
+               mm += 1;
+            WHILE_END
+         IF_END
+         retvalu = lv_partitionq_arr[nn];
+      IF_END
+
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END # partitionq function
+#TEST:partitionq(30)-296

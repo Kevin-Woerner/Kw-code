@@ -1,0 +1,8 @@
+#    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-04-08 kdw  preprocess sigil change
+# 2019-02-28 kdw  simplified
+# 2018-12-18 kdw  created
+
+IMPORT "Kw";
+
+??INSERT_FILE "const-elements.fwip"??

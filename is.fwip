@@ -1,0 +1,299 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-06-18 kdw  Modulo operator II
+# 2020-06-17 kdw  Modulo operator
+# 2020-05-29 kdw  keyword trial
+# 2020-05-18 kdw  reorg
+# 2020-05-13 kdw  comment trivially changed
+# 2020-05-07 kdw  boolean vars work
+# 2020-05-06 kdw  rmed boolean vars
+# 2020-04-28 kdw  tweaks here and there
+# 2020-04-26 kdw  tweak
+# 2020-04-13 kdw  numeric inequality work
+# 2020-04-11 kdw  macro arg format
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-04-01 kdw  failed experiment
+# 2020-03-25 kdw  ifz[e]ro func
+# 2020-03-17 kdw  isl[e]apyear renam
+# 2020-03-05 kdw  s/TRU[E]VAL/TR[U]E/;s/FALS[E]VAL/FA[L]SE/;
+# 2020-03-03 kdw  comment change
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-11-20 kdw  is-func macro
+# 2019-09-11 kdw  is--leapyear rework
+# 2019-08-18 kdw  B[O]OL to B[O]L
+# 2019-08-11 kdw  comment cleanup
+# 2019-06-26 kdw  isss rework
+# 2019-06-04 kdw  isfl[o]orsame func
+# 2019-06-02 kdw  func desc added
+# 2019-05-29 kdw  comment changed
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-01 kdw  consts explicit module name
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-06 kdw  is.* funcs changed
+# 2019-01-31 kdw  var renm
+# 2018-11-30 kdw  comment cleanup
+# 2018-07-13 kdw  float number reformt
+# 2018-05-18 kdw  LAN[G]UAGE syntax change
+# 2018-04-03 kdw  rm () from return
+# 2018-04-02 kdw  Pro?totype, et al.
+# 2018-04-01 kdw  LAN[G]UAGE_E[N]D
+# 2018-02-16 kdw  iseq, isgt, islt, itss functions
+# 2017-11-14 kdw  use fm[o]du instead of fm[o]d
+# 2017-10-23 kdw  lang is any fix
+# 2017-10-21 kdw  macros start with "at"
+# 2017-10-20 kdw  LAN[G]UAGE syntax changed
+# 2017-09-25 kdw  is?_lea?pyear rework
+# 2017-08-30 kdw  s/DBL_/DBL/;s/FLT_/FLT/
+# 2017-06-21 kdw  LAN[G].* AND MASTER.* change
+# 2017-06-08 kdw  mved magic stuff out
+# 2017-05-03 kdw  PROT?OTYPE format changed
+# 2017-04-21 kdw  func to function; var renam
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-07 kdw  INS?ERT etal
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  space after RET?URN
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-24 kdw  LAN[G]UAGE change
+# 2017-02-14 kdw  cnv_dbl2* renam
+# 2017-02-12 kdw  FWIP language change
+# 2017-02-08 kdw  "?[?]"PROT?OTYPE
+# 2017-02-06 kdw  comment change
+# 2017-01-06 kdw  ?[?]LAN[G]UAGE_[I]F deprecated
+# 2017-01-03 kdw  boolean  consts changed
+# 2016-12-31 kdw  var renam
+# 2016-12-28 kdw  issamesign refactor5D
+# 2016-12-20 kdw  indent ?[?] lines
+# 2016-12-03 kdw  comment change
+# 2016-12-02 kdw  debugging BC (dbl_epsi == 0)
+# 2016-11-23 kdw  comment change
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-18 kdw  refactor
+# 2016-11-16 kdw  ma?gic stuff
+# 2016-11-15 kdw  M?OD/B?IT* syntax change
+# 2016-11-14 kdw  LA[N]G stuff
+# 2016-11-07 kdw  i[s]equal refactor
+# 2016-11-06 kdw  i[s]equal refactor
+# 2016-11-04 kdw  i[s]zero refactor
+# 2016-10-28 kdw  comment reorder
+# 2016-09-14 kdw  lang change
+# 2016-07-22 kdw  debugging stuff
+# 2016-07-08 kdw  variable rename
+# 2016-07-01 kdw  issignsame
+# 2016-06-30 kdw  isw?ithin
+# 2016-05-26 kdw  variable rename (greg*year to gregyear)
+# 2016-04-27 kdw  comment change
+# 2016-04-11 kdw  variable rename (yea?r to gregorianyear)
+# 2016-02-23 kdw  refactor of i?salm?ostequal
+# 2015-12-30 kdw  _?_DEC?LARE_?_
+# 2015-12-11 kdw  _[_]EN[D]IF_[_] obsoleted
+# 2015-12-10 kdw  isfltequal, isdblequal refactor
+# 2015-12-09 kdw  isd[b]lequal refactor
+# 2015-12-07 kdw  is[m]ultl
+# 2015-11-26 kdw  long lines
+# 2015-11-15 kdw  m[a]gic stuff
+# 2015-10-14 kdw  isl[e]apyear
+# 2015-10-10 kdw  created
+
+??MACRO IS_FUNC <BOL_TEST> ??
+   RETURN <BOL_TEST>;
+??MACRO_END
+
+FUNC BOL iszero(DBL xx):
+   # XX == 0.0
+   ??IS_FUNC  0.0 <= xx AND xx <= 0.0 ??
+FUNC_END
+
+FUNC BOL iseven(DBL xx):
+   # floor of XX is even
+   ??IS_FUNC Kw.fmodu(xx, 2.0) < 1.0 ??
+FUNC_END
+
+FUNC BOL isodd(DBL xx):
+   # floor of XX is odd
+   ??IS_FUNC 1.0 <= Kw.fmodu(xx, 2.0) ??
+FUNC_END
+
+FUNC BOL ismult(DBL xx, DBL mult):
+   # floor of XX mod MULT < 1.0
+   ??IS_FUNC Kw.fmodu(xx, mult) < 1.0 ??
+FUNC_END
+
+FUNC BOL ismultl(INT xx, INT mult):
+   # XX == 0 mod MULT
+   BOL retvalu_bol;
+
+   MODE_INTEGER:
+   IF xx % mult == 0:
+      retvalu_bol = TRUE;
+   ELSE:
+      retvalu_bol = FALSE;
+   IF_END
+   MODE_INTEGER_END
+   RETURN retvalu_bol;
+FUNC_END
+#TEST:ismultl(21,7)-isodd(7);
+#TEST:ismultl(22,7)-iseven(7);
+
+FUNC BOL isgt(DBL xx, DBL yy):
+   # YY < XX
+   ??IS_FUNC yy < xx ??
+FUNC_END
+
+FUNC BOL islt(DBL xx, DBL yy):
+   # XX < YY
+   ??IS_FUNC xx < yy ??
+FUNC_END
+
+FUNC BOL isge(DBL xx, DBL yy):
+   # YY < XX
+   ??IS_FUNC yy <= xx ??
+FUNC_END
+
+FUNC BOL isle(DBL xx, DBL yy):
+   # XX < YY
+   ??IS_FUNC xx <= yy ??
+FUNC_END
+
+FUNC BOL ispos(DBL xx):
+   # 0 < XX
+   ??IS_FUNC 0.0 < xx ??
+FUNC_END
+
+FUNC BOL isneg(DBL xx):
+   # XX < 0
+   ??IS_FUNC xx < 0.0 ??
+FUNC_END
+
+FUNC BOL iseq(DBL xx, DBL yy):
+   # IF XX == 0 THEN  ABS(YY) <= Kw.DBLEPS;
+   # ELSE YY == XX * (1 + EE) where ABS(EE) <= Kw.DBLEPS
+   BOL retvalu_bol;
+   DBL epsx;
+   DBL diffxy;
+
+   retvalu_bol = FALSE;
+   IF Kw.iszero(xx):
+      IF ABS(yy) <= Kw.DBLEPS:
+         retvalu_bol = TRUE;
+      IF_END
+   ELSE:
+      epsx = 2.0 * xx * Kw.DBLEPS;
+      diffxy = xx - yy;
+      IF epsx < 0.0:
+         epsx = -epsx;
+      IF_END
+      IF -epsx <= diffxy AND diffxy <= epsx:
+         retvalu_bol = TRUE;
+      IF_END
+   IF_END
+   RETURN retvalu_bol;
+FUNC_END
+
+FUNC BOL isint(DBL xx):
+   # XX is an integer
+   ??IS_FUNC Kw.iseq(xx, FLOOR(xx)) ??
+FUNC_END
+
+FUNC BOL isnegint(DBL xx):
+   # XX is a negative integer
+   ??IS_FUNC xx < 0.0 AND Kw.iseq(xx, FLOOR(xx)) ??
+FUNC_END
+
+FUNC BOL isposint(DBL xx):
+   # XX is a positive integer
+   ??IS_FUNC 0.0 < xx AND Kw.iseq(xx, FLOOR(xx)) ??
+FUNC_END
+
+FUNC DBL ifzero(DBL cond, DBL tru_val, DBL fal_val):
+   # If COND is zero return TRU_VAL, else FAL_VAL
+   DBL retvalu;
+   IF cond < 0.0 OR 0.0 < cond:
+      retvalu = fal_val;
+   ELSE:
+      retvalu = tru_val;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC BOL isalmostequal(DBL xx, DBL yy, DBL epsratio):
+   # Is ratio of XX and YY within EPSRATIO of 1.0?
+   # TRUE if abs(XX - YY) < abs(XX * EPSRATIO)
+   ??IS_FUNC ABS(xx - yy) <= ABS(epsratio * xx) ??
+FUNC_END
+
+FUNC BOL iswithin(DBL xx, DBL yy, DBL delta):
+   # Is ABS(YY - XX) <= DELTA
+   # Is distance of XX and YY less than DELTA?
+   ??IS_FUNC xx - delta <= yy AND yy <= xx + delta ??
+FUNC_END
+
+FUNC BOL isbetweenx(DBL xx, DBL min_xx, DBL max_xx):
+   # Is MIN_XX < XX < MAX_XX?
+   # is between exclusive of endpoints
+   ??IS_FUNC min_xx < xx AND xx < max_xx ??
+FUNC_END
+
+FUNC BOL isbetween(DBL xx, DBL min_xx, DBL max_xx):
+   # Is MIN_XX <= XX <= MAX_XX?
+   # is between inclusive of endpoints
+   ??IS_FUNC min_xx <= xx AND xx <= max_xx ??
+FUNC_END
+
+FUNC BOL isleapyear(INT gregyear):
+   # Gregorian year GREGYEAR is a leap year
+   BOL retvalu_bol;
+   INT rema;
+
+   retvalu_bol = FALSE;
+   IF (gregyear % 4) == 0:
+      rema = (gregyear % 400);
+      IF rema <> 100 AND rema <> 200 AND rema <> 300:
+         retvalu_bol = TRUE;
+      IF_END
+   IF_END
+
+   RETURN retvalu_bol;
+FUNC_END
+
+FUNC BOL isss(DBL xx, DBL yy):
+   # Do XX and YY have same sign, or both equal 0?
+   BOL retvalu_bol;
+
+   IF 0.0 < xx:
+      IF 0.0 < yy:
+         retvalu_bol = TRUE; # both positive
+      ELSE:
+         retvalu_bol = FALSE; # XX positive, YY not
+      IF_END
+   ELSIF xx < 0.0:
+      IF yy < 0.0:
+         retvalu_bol = TRUE; # both negative
+      ELSE:
+         retvalu_bol = FALSE;# XX negative, YY not
+      IF_END
+   ELSE: # xx == 0.0
+      IF 0.0 < yy OR yy < 0.0:
+         retvalu_bol = FALSE; # XX zero, YY not
+      ELSE:
+         retvalu_bol = TRUE; # both zero
+      IF_END
+   IF_END
+
+   RETURN retvalu_bol;
+FUNC_END
+
+FUNC BOL issignsame(DBL xx, DBL yy):
+   # Do XX and YY have same sign?
+   RETURN Kw.isss(xx, yy);
+FUNC_END
+
+FUNC BOL isfloorsame(DBL xx, DBL yy, DBL multy):
+   # Is floor(XX*MULTY) == floor(YY*MULTY)?
+   RETURN Kw.iseq(FLOOR(xx * multy), FLOOR(yy * multy));
+FUNC_END
+
+#TEST:iseven(4) - isgt(5,2);
+#TEST:ismult(49,7) - ispos(4);
+#TEST:isodd(4) - isneg(55);

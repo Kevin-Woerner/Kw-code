@@ -1,0 +1,82 @@
+#    Copyright (C) 2019-2020 by Kevin D. Woerner
+# 2020-06-03 kdw  writeonly keyword
+# 2020-05-12 kdw  nul rets changed
+# 2020-03-02 kdw  s/_N[E]XT/_E[N]D/
+# 2020-02-24 kdw  function comments
+# 2020-02-07 kdw  funcs renamd; ep[d]f2cdf
+# 2020-01-26 kdw  var renam
+# 2019-09-17 kdw  rmed c[n]v_db[l]2i32
+# 2019-08-13 kdw  function pdf created
+# 2019-08-12 kdw  created
+
+FUNC DBL epdf(DBL minvalx, DBL maxvalx
+      , INT nn, READONLY DBL data_arr_pc[]
+      , INT mm, WRITEONLY DBL ret_pdf_arr_p[]):
+   # compute the Empirical PDF of DATA_ARR_PC[] over the
+   # interval MINVALX to MAXVALX in MM steps
+   # I.E. let LEN = (MAXVALX - MINVALX) / MM
+   #    RET_PDF_ARR_P[0] = (# of DATA_ARR_PC[] < MINVALX) / nn
+   # IF 0 < II < MM:
+   #    RET_PDF_ARR_P[II] = (# of DATA_ARR_PC[] in the interval
+   #         [MINVALX + (II - 1) * LEN, MINVALX + II * LEN)) / NN
+   # ELSIF II == 0
+   #    RET_PDF_ARR_P[0] = (# of DATA_ARR_PC[] < MINVAL) / NN
+   # returns (# of DATA_ARR_PC[] >= MAXVALX) / NN
+   INT ii;
+   INT indi;
+   DBL gap_size;
+   DBL retvalu;
+   DBL inc;
+
+   FOR ii FROM 0 TO mm - 1:
+      ret_pdf_arr_p[ii] = 0;
+   FOR_END
+
+   inc = 1.0 / nn;
+   gap_size = (maxvalx - minvalx) / (mm - 1);
+   retvalu = 0;
+   FOR ii FROM 0 TO nn - 1:
+      IF data_arr_pc[ii] < minvalx:
+         ret_pdf_arr_p[0] += inc;
+      ELSIF data_arr_pc[ii] < maxvalx:
+         indi = CEIL((data_arr_pc[ii] - minvalx) / gap_size);
+         ret_pdf_arr_p[indi] += inc;
+      ELSE:
+         retvalu += inc;
+      IF_END
+   FOR_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ecdf(DBL minvalx, DBL maxvalx
+      , INT nn, READONLY DBL data_arr_pc[]
+      , INT mm, WRITEABLE DBL ret_cdf_arr_p[]):
+   # compute the Empirical CDF of DATA_ARR_PC[] over the
+   # interval MINVALX to MAXVALX in MM steps
+   # Let LEN = (MAXVALX - MINVALX) / MM
+   #    RET_CDF_ARR_P[II] = (# of DATA_ARR_PC[]
+   #         < MINVALX + II * LEN)) / NN
+   INT ii;
+
+   CALL epdf(minvalx, maxvalx, nn, data_arr_pc[]
+         , mm, ret_cdf_arr_p[]);
+   FOR ii FROM 1 TO mm - 1:
+      ret_cdf_arr_p[ii] += ret_cdf_arr_p[ii - 1];
+   FOR_END
+   RETURN ret_cdf_arr_p[mm - 1];
+FUNC_END
+
+FUNC DBL epdf2cdf(INT nn, READONLY DBL pdf_arr_pc[]
+      , WRITEONLY DBL ret_cdf_arr_p[]):
+   # convert an Empirical PDF into a CDF
+   INT ii;
+   DBL sumcurr;
+
+   sumcurr = 0.0;
+   FOR ii FROM 0 TO nn - 1:
+      sumcurr += pdf_arr_pc[ii];
+      ret_cdf_arr_p[ii] = sumcurr;
+   FOR_END
+   RETURN ret_cdf_arr_p[nn - 1];
+FUNC_END

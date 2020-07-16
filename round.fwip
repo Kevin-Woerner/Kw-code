@@ -1,0 +1,294 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-04-17 kdw  comment change
+# 2020-04-12 kdw  comment change
+# 2020-02-03 kdw  .*_LOOP changed
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-09-17 kdw  rmed c[n]v_db[l]2i32
+# 2019-09-12 kdw  mved mod.* funcs to number
+# 2019-08-18 kdw  L[O]G changed to L[N]
+# 2019-08-11 kdw  comment change
+# 2019-06-27 kdw  mod.* rework
+# 2019-06-26 kdw  roundy rework
+# 2019-05-29 kdw  comment changed
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-03-19 kdw  re[t]_val changed to re[t]valu
+# 2019-03-08 kdw  is[e]qual changed to is[e]q, et al.
+# 2019-03-06 kdw  is.* funcs changed
+# 2018-07-17 kdw  private lf_.* funcs
+# 2018-07-13 kdw  float number reformt
+# 2018-04-27 kdw  func descriptions
+# 2018-04-03 kdw  rm () from return
+# 2017-11-22 kdw  var renam
+# 2017-11-14 kdw  mvd fm[o]du to Kw
+# 2017-09-22 kdw  moved finite-step funcitons to Kw.fwip
+# 2017-09-05 kdw  fmod2 now uses fmodu
+# 2017-08-31 kdw  REQ[U]IRES rmed
+# 2017-04-21 kdw  func changed to function
+# 2017-03-24 kdw  comment tweak
+# 2017-03-17 kdw  space after comma
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-14 kdw  cnv_dbl2* renam
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2016-11-21 kdw  DE?F changed to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-04 kdw  debugging
+# 2016-10-30 kdw  fmul
+# 2016-10-28 kdw  comment reorder
+# 2016-09-13 kdw  lang change
+# 2016-09-14 kdw  added () to return statements
+# 2016-09-13 kdw  lang change
+# 2016-07-22 kdw  rmed frac2, et al.
+# 2016-07-15 kdw  failed experiment
+# 2016-05-18 kdw  comment change
+# 2015-12-03 kdw  long lines
+# 2015-11-27 kdw  long lines
+# 2015-11-24 kdw  rt[o]125 refactor
+# 2015-11-17 kdw  ro[u]nd2
+# 2015-11-12 kdw  rmed spurious comments
+# 2015-10-10 kdw  created
+
+FUNC DBL rtoz(DBL xx):
+   # round towards zero
+   DBL retvalu;
+
+   IF xx < 0.0:
+      retvalu = CEIL(xx);
+   ELSE:
+      retvalu = FLOOR(xx);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL rtoi(DBL xx):
+   # round away from zero
+   DBL retvalu;
+
+   IF 0.0 <= xx:
+      retvalu = CEIL(xx);
+   ELSE:
+      retvalu = FLOOR(xx);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL bankers(DBL xx):
+   # round using bankers rounding
+   DBL retvalu;
+
+   retvalu = FLOOR(xx + 0.5);
+   IF Kw.isint(xx + 0.5) AND Kw.isodd(retvalu):
+      retvalu -= 1.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL round(DBL xx):
+   # round to nearest integer (X.5 rounds up)
+   DBL retvalu;
+
+   retvalu = FLOOR(xx + 0.5);
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT iround(DBL xx):
+   # round to nearest integer (X.5 rounds up)
+   INT retvalu;
+
+   retvalu = FLOOR(xx + 0.5);
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL round2(DBL xx, DBL yy):
+   # round to the nearest multiple of YY
+   DBL retvalu;
+
+   IF Kw.iszero(yy):
+      retvalu = xx;
+   ELSE:
+      retvalu = Kw.round(xx / yy) * yy;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL roundy(DBL xx, DBL yy, DBL shf):
+   # (round to the nearest multiple of YY) minus SHF
+   DBL retvalu;
+
+   IF yy < 0.0 OR 0.0 < yy:
+      retvalu = (Kw.round((xx - shf) / yy) * yy + shf);
+   ELSE:
+      retvalu = xx;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL rtomsd(DBL fs, INT msds):
+   # round to the most signifigant MSDS digits
+   #   rtomsd(1.2345678, 6) == 1.23457
+   DBL retvalu;
+   DBL signs;
+   INT logi;
+
+   IF Kw.iszero(fs):
+      retvalu = 0.0;
+   ELSE:
+      IF fs < 0.0:
+         signs = -1.0;
+         fs = -fs;
+      ELSE:
+         signs = 1.0;
+      IF_END
+
+      logi = FLOOR(Kw.log10(fs) - msds + 1.0);
+
+      retvalu = signs * Kw.round2(fs, POW(10.0, logi));
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL rto125(DBL fs):
+   # round the given number to the nearest 1-2-5:
+   # [1.0, SQRT(2))       = [1.000, 1.414) to 1.0
+   # [SQRT(2), SQRT(10))  = [1.414, 3.162) to 2.0
+   # [SQRT(10), SQRT(50)) = [3.162, 7.071) to 5.0
+   # [SQRT(50), 10)       = [7.071, 10.00) to 10.0
+   DBL signs;
+   DBL tmpf;
+   DBL valu;
+   DBL pow_ten;
+   DBL retvalu;
+
+   IF Kw.iszero(fs):
+      retvalu = 0.0;
+   ELSE:
+      IF fs < 0.0:
+         signs = -1.0;
+         fs = -fs;
+      ELSE:
+         signs = 1.0;
+      IF_END
+
+      pow_ten = POW(10.0, FLOOR(Kw.log10(fs)));
+      # POW_TEN is the largest power of 10 <= FS
+      tmpf = fs / pow_ten;  # TMPF is in  [1.0, 10)
+      IF tmpf < SQRT(2.0):
+         valu = 1.0;
+      ELSIF tmpf < SQRT(10.0):
+         valu = 2.0;
+      ELSIF tmpf < SQRT(50.0):
+         valu = 5.0;
+      ELSE:
+         valu = 10.0;
+      IF_END
+      retvalu = signs * pow_ten * valu;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL floor2(DBL xx, DBL yy):
+   # floor2(XX,YY)=maximum ZZ ST: ZZ=NN*YY<=XX for integer NN
+   # the greatest multiple of YY <= XX
+   DBL retvalu;
+
+   IF Kw.iszero(yy):
+      retvalu = 0.0;
+   ELSE:
+      retvalu = FLOOR(xx / ABS(yy)) * ABS(yy);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ceil2(DBL xx, DBL yy):
+   # ceil2(XX,YY)=minimum ZZ ST: X<=ZZ=NN*YY for integer NN
+   DBL retvalu;
+
+   IF Kw.iszero(yy):
+      retvalu = 0.0;
+   ELSE:
+      retvalu = CEIL(xx / ABS(yy)) * ABS(yy);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL fmod2(DBL xx, DBL minn, DBL maxx):
+   # fmod2(XX,MINX,MAXX)=ZZ in [MINN, MAXX)
+   #   ST: XX=NN*(MAXX-MINX)+ZZ for integer NN
+   DBL retvalu;
+
+   IF Kw.iseq(maxx, minn):
+      retvalu = 0.0;
+   ELSE:
+      retvalu = Kw.fmodu(xx - minn, maxx - minn) + minn;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL frac(DBL xx):
+   # frac(XX) = ZZ in [0, 1) ST: XX=NN+ZZ for integer NN
+   # frac(XX) = XX - FLOOR(XX)
+   RETURN xx - FLOOR(xx);
+FUNC_END
+
+FUNC DBL trunc(DBL xx):
+   # trunc(XX) = frac(XX) if 0 <= XX
+   # trunc(XX) = -frac(-XX) if XX < 0
+   DBL retvalu;
+
+   IF 0.0 <= xx:
+      retvalu = xx - FLOOR(xx);
+   ELSE:
+      retvalu = xx - CEIL(xx);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL fmul(DBL xx, DBL pp):
+   # fmul(XX,PP)=ZZ in [1, PP) ST: XX=PP**NN*ZZ for integer NN
+   DBL lpp;
+
+   lpp = LN(pp);
+   RETURN EXP(lpp * Kw.frac(LN(xx) / lpp));
+FUNC_END
+
+FUNC DBL dist(DBL xx, DBL mm):
+   # the distance of XX from the nearest multiple of MM:
+   # dist(XX,MM)=ZZ in [0, ABS(MM)/2] ST:
+   #   ABS(XX-NN*MM)=ZZ for integer NN
+   DBL retvalu;
+   DBL axx;
+   DBL amm;
+
+   axx = ABS(xx);
+   amm = ABS(mm);
+   retvalu = Kw.fmod(axx, amm);
+
+   IF amm < 2.0 * retvalu:
+      retvalu = amm - retvalu;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ddist(DBL xx, DBL mm):
+   # ddist(XX,MM)=ZZ in (-ABS(MM/2), ABS(MM)]
+   #    ST: XX=NN*MM+ZZ for integer NN
+   DBL retvalu;
+   DBL rema;
+   DBL amm;
+
+   IF Kw.iszero(mm):
+      retvalu = 0.0;
+   ELSE:
+      amm = ABS(mm);
+      rema = xx - FLOOR(xx / amm) * amm;
+      IF amm < 2.0 * rema:
+         rema -= amm;
+      IF_END
+      retvalu = rema;
+   IF_END
+   RETURN retvalu;
+FUNC_END

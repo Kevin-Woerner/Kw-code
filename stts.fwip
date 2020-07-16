@@ -1,0 +1,652 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-06-25 kdw  var renam
+# 2020-06-22 kdw  local-use mved before var decls
+# 2020-05-30 kdw  CONST syntax change
+# 2020-05-18 kdw  boolean funcs have "is" in their name
+# 2020-05-13 kdw  .*_LA[S]T changed to .*_COU[N]T
+# 2020-05-12 kdw  nul rets changed
+# 2020-05-11 kdw  REPL[A]CE replaced with LO[C]AL_CO[N]ST
+# 2020-05-08 kdw  lf[_]stt[s]_init func
+# 2020-05-06 kdw  rmed boolean vars
+# 2020-05-05 kdw  magic check func changed
+# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-23 kdw  const format change
+# 2020-04-12 kdw  comment change
+# 2020-04-11 kdw  macro arg format
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-03-23 kdw  all array var names m/_a[r]r/
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-06 kdw  RE[P]LACE / IN[D]EX changes
+# 2020-03-05 kdw  s/TRU[E]VAL/TR[U]E/;s/FALS[E]VAL/FA[L]SE/
+# 2020-03-03 kdw  comment changed:odd chars
+# 2020-03-01 kdw  die output changed
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-11-27 kdw  rework
+# 2019-11-23 kdw  tracking down warning of undef vals
+# 2019-11-08 kdw  st[t]s_upda[t]ex
+# 2019-10-04 kdw  comment change
+# 2019-10-02 kdw  macro arg format change
+# 2019-09-11 kdw  macro arg name change
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-18 kdw  B[O]OL to B[O]L
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-07 kdw  die message chaned
+# 2019-08-06 kdw  rmed backslashes, macro arg renam
+# 2019-06-07 kdw  die string typo
+# 2019-06-04 kdw  func comments
+# 2019-05-29 kdw  comment changed
+# 2019-05-24 kdw  local replaced private
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-18 kdw  macro syntax changed
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-05 kdw  comment on st[d]ev
+# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-19 kdw  macro syntax
+# 2018-07-17 kdw  private lf_.* funcs
+# 2018-07-14 kdw  float num format
+# 2018-06-19 kdw  die keyword
+# 2018-05-15 kdw  DIE.* change
+# 2018-05-14 kdw  BLO?CK syntax change
+# 2018-04-03 kdw  rmed "pass"
+# 2018-04-02 kdw  mai[g]icnot, ma[g]icset
+# 2018-03-26 kdw  macro redef
+# 2018-03-20 kdw  replaced index w/ "at"replace
+# 2018-03-16 kdw  format of constant and index change
+# 2018-02-19 kdw  secant and macro refactor
+# 2018-02-17 kdw  expandnow changed
+# 2018-02-16 kdw  lv_.* to lf_.* in function name
+# 2018-02-14 kdw  expand preprocess directive
+# 2017-11-26 kdw  FR[O]M and B[Y] keywords
+# 2017-11-22 kdw  var renam
+# 2017-10-21 kdw  macros start with "at"
+# 2017-10-20 kdw  REP[L]ACE syntax changed
+# 2017-09-17 kdw  function had name of /lv_.*/
+# 2017-08-31 kdw  REQ[U]IRES rmed
+# 2017-07-23 kdw  rmed unneeded parens#
+# 2017-06-23 kdw  REPL?ACE redo
+# 2017-06-12 kdw  rmd some explicit refers to LC_STTS_*
+# 2017-06-08 kdw  sttsm2, stts_reset, corrstderr
+# 2017-06-01 kdw  func to function
+# 2017-04-20 kdw  func to function
+# 2017-03-27 kdw  rm useless ";"
+# 2017-03-12 kdw  shorten long comments
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-02-20 kdw  var renam
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-01-03 kdw  bool const renam
+# 2016-12-23 kdw  die format change
+# 2016-11-23 kdw  comment cleanup
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-19 kdw  minor tweak
+# 2016-11-16 kdw  ma?gic stuff
+# 2016-11-09 kdw  string cleanup
+# 2016-09-14 kdw  added () to return statements
+# 2016-09-13 kdw  lang change
+# 2016-05-26 kdw  long lines
+# 2016-05-24 kdw  long lines
+# 2016-05-18 kdw  comment change
+# 2016-04-27 kdw  forced double division in places
+# 2016-03-10 kdw  comment tweak
+# 2016-02-29 kdw  comment tweak
+# 2016-01-22 kdw  tweak
+# 2015-12-30 kdw  co?rr_get_.* to co?rr_.*
+# 2015-12-28 kdw  st[t]s_get_.* to st[t]s_.*
+# 2015-12-26 kdw  requires stuff
+# 2015-12-14 kdw  minor refactor
+# 2015-12-02 kdw  *_ave[r]age deleted (use *_me[a]n)
+# 2015-11-26 kdw  long lines
+# 2015-11-23 kdw  st[t]s_c[o]rr_* to co[r]r_* renamed
+# 2015-11-18 kdw  st[t]s_corr_g[e]t_ha[n]dle
+# 2015-11-17 kdw  block comments
+# 2015-11-15 kdw  ma[g]ic stuff
+# 2015-11-13 kdw  function name shortened
+# 2015-11-12 kdw  comment shortened
+# 2015-10-13 kdw  _[_]DEFI[N]E_[_]
+# 2015-10-05 kdw  magic stuff
+# 2015-10-01 kdw  float equality checks to is.*;magic
+# 2015-09-30 kdw  rmed unused variables
+# 2015-09-29 kdw  layout tweak
+# 2015-09-25 kdw  B[I]T*, M[O]D format change
+# 2015-09-22 kdw  _[_]* format changed
+# 2015-09-20 kdw  created
+
+BLOCK: # Statistics block
+   LOCAL_CONST LC_STTS_NUM 0;
+   LOCAL_CONST LC_STTS_MEAN 1;
+   LOCAL_CONST LC_STTS_MSQ 2;
+   LOCAL_CONST LC_STTS_MAX 3;
+   LOCAL_CONST LC_STTS_MIN 4;
+   LOCAL_CONST LC_STTS_MAGIC 5;
+   LOCAL_CONST LC_STTS_COUNT 6;
+   LOCAL_CONST LC_STTS_MAX_KEY 100;
+   LOCAL_DBL lv_sttx_arr[LC_STTS_MAX_KEY][LC_STTS_COUNT];
+
+   LOCAL_FUNC BOL lf_stts_is_inited(INT ix_hndl):
+      LOCAL_USE lv_sttx_arr[];
+      INT vll;
+      INT ii;
+      INT jj;
+      BOL retvalu_bol;
+
+      vll = lv_sttx_arr[0][LC_STTS_MAGIC];
+      IF vll <> Kw.magicset() AND vll <> Kw.magicnot():
+         FOR ii FROM 0 TO LC_STTS_MAX_KEY - 1:
+            FOR jj FROM 0 TO LC_STTS_MAGIC - 1:
+               lv_sttx_arr[ii][jj] = 0;
+            FOR_END
+            lv_sttx_arr[0][LC_STTS_MAGIC] = Kw.magicnot();
+         FOR_END
+      IF_END
+
+      IF LC_STTS_MAX_KEY <= ix_hndl:
+         retvalu_bol = FALSE;
+      ELSE:
+         vll = lv_sttx_arr[ix_hndl][LC_STTS_MAGIC];
+         retvalu_bol = Kw.ismagic(vll);
+      IF_END
+      RETURN retvalu_bol;
+   FUNC_END
+
+   LOCAL_FUNC INT lf_stts_find_empty(NUL):
+      INT ix_hndl;
+
+      ix_hndl = 0;
+      WHILE lf_stts_is_inited(ix_hndl):
+         ix_hndl += 1;
+      WHILE_END
+
+      IF LC_STTS_MAX_KEY <= ix_hndl:
+         DIE "STTS-Bad-handle";
+      IF_END
+      RETURN ix_hndl;
+   FUNC_END
+
+   FUNC INT stts_init(INT ix_hndl, DBL n_count
+      , DBL meanx, DBL var
+      , DBL minim, DBL maxim):
+      # init STTS LC_HNDL w/ given parameters; return handle
+      LOCAL_USE lv_sttx_arr[];
+
+      lv_sttx_arr[ix_hndl][LC_STTS_NUM] = n_count;
+      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = meanx;
+      lv_sttx_arr[ix_hndl][LC_STTS_MSQ] = var * (n_count - 1.0);
+      lv_sttx_arr[ix_hndl][LC_STTS_MIN] = minim;
+      lv_sttx_arr[ix_hndl][LC_STTS_MAX] = maxim;
+      lv_sttx_arr[ix_hndl][LC_STTS_MAGIC] = Kw.magicset();
+
+      RETURN ix_hndl;
+   FUNC_END
+
+   FUNC INT stts_initx(INT ix_hndl, DBL num_count
+      , DBL meanx, DBL msq
+      , DBL minim, DBL maxim):
+      # init STTS LC_HNDL w/ given parameters; return handle
+      LOCAL_USE lv_sttx_arr[];
+
+      lv_sttx_arr[ix_hndl][LC_STTS_NUM] = num_count;
+      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = meanx;
+      lv_sttx_arr[ix_hndl][LC_STTS_MSQ] = msq;
+      lv_sttx_arr[ix_hndl][LC_STTS_MIN] = minim;
+      lv_sttx_arr[ix_hndl][LC_STTS_MAX] = maxim;
+      lv_sttx_arr[ix_hndl][LC_STTS_MAGIC] = Kw.magicset();
+
+      RETURN ix_hndl;
+   FUNC_END
+
+   FUNC INT stts_reset(INT ix_hndl):
+      RETURN stts_init(ix_hndl, 0.0, 0.0, 0.0, 1.0, 0.0);
+   FUNC_END
+
+   FUNC INT stts_new(NUL):
+      # init new STTS w/ default parameters; return handle
+      INT ix_hndl;
+
+      ix_hndl = lf_stts_find_empty();
+      RETURN stts_reset(ix_hndl);
+   FUNC_END
+
+   FUNC INT stts_delete(INT ix_hndl):
+      # delete STTS w/ given handle
+      LOCAL_USE lv_sttx_arr[];
+
+      lv_sttx_arr[ix_hndl][LC_STTS_MAGIC] = Kw.magicnot();
+      RETURN ix_hndl;
+   FUNC_END
+
+   ??MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> ??
+   FUNC DBL <STFUNC>(INT ix_hndl):
+      # <STDESC> of LC_HNDLth stts calc
+      LOCAL_USE lv_sttx_arr[];
+
+      RETURN lv_sttx_arr[ix_hndl][<STIND>];
+   FUNC_END
+   ??MACRO_END
+
+   ??STTSFUNC sttscount ; LC_STTS_NUM   ; count ??
+   ??STTSFUNC sttsmean  ; LC_STTS_MEAN  ; mean ??
+   ??STTSFUNC sttsmsq   ; LC_STTS_MSQ   ; msq ??
+   ??STTSFUNC sttsmax   ; LC_STTS_MAX   ; max ??
+   ??STTSFUNC sttsmin   ; LC_STTS_MIN   ; min ??
+   ??STTSFUNC sttsmagic ; LC_STTS_MAGIC ; magic ??
+
+   FUNC DBL sttssum(INT ix_hndl):
+      # sum of data points in STTS w/ given handle
+      RETURN sttsmean(ix_hndl) * sttscount(ix_hndl);
+   FUNC_END
+
+   FUNC DBL sttsvar(INT ix_hndl):
+      # variance of data points in STTS w/ given handle
+      DBL retvalu;
+
+      IF ABS(sttscount(ix_hndl)) <= 1.0:
+         retvalu = 0.0;
+      ELSE:
+         retvalu = (sttsmsq(ix_hndl)
+            / (ABS(sttscount(ix_hndl) - 1.0)));
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL sttsstdev(INT ix_hndl):
+      # Unbiased Standard deviation w/ given handle
+      DBL retvalu;
+
+      IF sttscount(ix_hndl) <= 1.0:
+         retvalu = 0.0;
+      ELSE:
+         retvalu = (SQRT(sttsmsq(ix_hndl)
+            / (sttscount(ix_hndl) - 1.0)));
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL sttsstdevmean(INT ix_hndl):
+      # Unbiased Standard deviation of the mean w/ given handle
+      DBL retvalu;
+
+      IF sttscount(ix_hndl) <= 1.0 OR sttsmsq(ix_hndl) <= 0.0:
+         retvalu = 0.0;
+      ELSE:
+         retvalu = (SQRT(sttsmsq(ix_hndl))
+            / (sttscount(ix_hndl) - 1.0));
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL sttsspread(INT ix_hndl):
+      # spread of data points in STTS w/ given handle
+      RETURN sttsmax(ix_hndl) - sttsmin(ix_hndl);
+   FUNC_END
+
+   FUNC DBL stts_update(INT ix_hndl, DBL new_data):
+      # add NEW_DATA to STTS w/ handle LC_HNDL
+      # return difference between NEW_DATA and OLD mean
+      LOCAL_USE lv_sttx_arr[];
+      DBL delta;
+      DBL numy;
+
+      IF NOT lf_stts_is_inited(ix_hndl):
+         DIE "STTS-Bad-handle";
+      IF_END
+      delta = new_data - lv_sttx_arr[ix_hndl][LC_STTS_MEAN];
+
+      # update these AFTER doing the previous calculation
+      lv_sttx_arr[ix_hndl][LC_STTS_NUM] += 1.0;
+      numy = lv_sttx_arr[ix_hndl][LC_STTS_NUM];
+      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] += (delta / numy);
+      lv_sttx_arr[ix_hndl][LC_STTS_MSQ] += (delta
+            * (new_data - lv_sttx_arr[ix_hndl][LC_STTS_MEAN]));
+
+      # update max / mins
+      IF (numy < 2.0 OR sttsspread(ix_hndl) < 0.0):
+         lv_sttx_arr[ix_hndl][LC_STTS_MIN] = new_data;
+         lv_sttx_arr[ix_hndl][LC_STTS_MAX] = new_data;
+      ELSE:
+         IF new_data < lv_sttx_arr[ix_hndl][LC_STTS_MIN]:
+            lv_sttx_arr[ix_hndl][LC_STTS_MIN] = new_data;
+         IF_END
+         IF lv_sttx_arr[ix_hndl][LC_STTS_MAX] < new_data:
+            lv_sttx_arr[ix_hndl][LC_STTS_MAX] = new_data;
+         IF_END
+      IF_END
+
+      RETURN delta;
+   FUNC_END
+
+   FUNC DBL stts_downdate(INT ix_hndl
+         , DBL old_data):
+      DBL delt;
+      DBL men;
+
+      IF NOT lf_stts_is_inited(ix_hndl):
+         DIE "STTS-Bad-handle";
+      IF_END
+      men = lv_sttx_arr[ix_hndl][LC_STTS_MEAN];
+      delt = old_data - men;
+      IF 0 < lv_sttx_arr[ix_hndl][LC_STTS_NUM]:
+         lv_sttx_arr[ix_hndl][LC_STTS_NUM] -= 1;
+         IF 0 < lv_sttx_arr[ix_hndl][LC_STTS_NUM]:
+            men -= delt / lv_sttx_arr[ix_hndl][LC_STTS_NUM];
+            lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = men;
+            lv_sttx_arr[ix_hndl][LC_STTS_MSQ] -=
+                  delt * (old_data - men);
+            IF lv_sttx_arr[ix_hndl][LC_STTS_MSQ] < 0.0:
+               lv_sttx_arr[ix_hndl][LC_STTS_MSQ] = 0.0;
+            IF_END
+         ELSE:
+            lv_sttx_arr[ix_hndl][LC_STTS_MSQ] = 0.0;
+            lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = 0.0;
+         IF_END
+      IF_END
+      RETURN delt;
+   FUNC_END
+
+   FUNC DBL stts_updatex(INT ix_hndl, INT nn
+            , READONLY DBL data_arr_pc[]):
+      # update STTS w/ handle LC_HNDL w/ data DATA_ARR_PC[]
+      INT ii;
+      DBL retvalu;
+
+      retvalu = 0.0;
+      FOR ii FROM 0 TO nn - 1:
+         retvalu += stts_update(ix_hndl, data_arr_pc[ii]);
+      FOR_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC INT stts_newx(INT nn
+            , READONLY DBL data_arr_pc[]):
+      # create a new STTS w/ data DATA_ARR_PC[]; return handle
+      INT ihndl;
+      INT ii;
+
+      ihndl = stts_new();
+
+      FOR ii FROM 0 TO nn - 1:
+         CALL stts_update(ihndl, data_arr_pc[ii]);
+      FOR_END
+
+      RETURN ihndl;
+   FUNC_END
+
+   FUNC INT stts_shift(INT ix_hndl, DBL data_shift):
+      # "shift" STTS w/ handle LC_HNDL by DATA_SHIFT
+      LOCAL_USE lv_sttx_arr[];
+
+      lv_sttx_arr[ix_hndl][LC_STTS_MAX] += data_shift;
+      lv_sttx_arr[ix_hndl][LC_STTS_MIN] += data_shift;
+      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] += data_shift;
+      RETURN ix_hndl;
+   FUNC_END
+
+   FUNC INT stts_scale(INT ix_hndl, DBL xfactor):
+      # "scale" STTS w/ handle LC_HNDL by XFACTOR
+      LOCAL_USE lv_sttx_arr[];
+      DBL newmax;
+      DBL newmin;
+
+      IF 0 < xfactor:
+         newmax = lv_sttx_arr[ix_hndl][LC_STTS_MAX] * xfactor;
+         newmin = lv_sttx_arr[ix_hndl][LC_STTS_MIN] * xfactor;
+      ELSE:
+         newmax = lv_sttx_arr[ix_hndl][LC_STTS_MIN] * xfactor;
+         newmin = lv_sttx_arr[ix_hndl][LC_STTS_MAX] * xfactor;
+      IF_END
+      lv_sttx_arr[ix_hndl][LC_STTS_MIN] = newmin;
+      lv_sttx_arr[ix_hndl][LC_STTS_MAX] = newmax;
+
+      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] *= xfactor;
+      lv_sttx_arr[ix_hndl][LC_STTS_MSQ] *= xfactor * xfactor;
+      RETURN ix_hndl;
+   FUNC_END
+
+   FUNC INT stts_copy(INT hto, INT hfrom):
+      # copy STTS w/ handle HFROM to STTS w/ handle HTO
+      LOCAL_USE lv_sttx_arr[];
+      INT ii;
+
+      FOR ii FROM 0 TO LC_STTS_COUNT - 1:
+         lv_sttx_arr[hto][ii] = lv_sttx_arr[hfrom][ii];
+      FOR_END
+
+      RETURN hto;
+   FUNC_END
+
+   # update info in setA with data points from setB
+   FUNC INT stts_update2(INT ix_hnda, INT ix_hndb):
+      # update STTS w/ handle LC_HNDA w/ STTS w/ handle LC_HNDB
+      DBL delta;
+      DBL ncount;
+      DBL nmean;
+      DBL nmsqr;
+      DBL bmin;
+      DBL bmax;
+      DBL amin;
+      DBL amax;
+
+      IF NOT lf_stts_is_inited(ix_hndb):
+         DIE "STTS-Bad-hndb";
+      IF_END
+
+      IF NOT Kw.iszero(sttscount(ix_hndb)):
+         IF NOT lf_stts_is_inited(ix_hnda):
+            DIE "STTS-Bad-hnda";
+         IF_END
+         IF Kw.iszero(sttscount(ix_hnda)):
+            CALL stts_copy(ix_hnda, ix_hndb);
+         ELSE:
+            delta = sttsmean(ix_hndb) - sttsmean(ix_hnda);
+
+            ncount = sttscount(ix_hndb) + sttscount(ix_hnda);
+
+            nmean = (sttsmean(ix_hnda)
+               + delta * (sttscount(ix_hndb) / ncount));
+
+            nmsqr = (sttsmsq(ix_hnda) + sttsmsq(ix_hndb)
+               + delta * delta
+                  * (sttscount(ix_hnda) * sttscount(ix_hndb))
+                     / ncount);
+
+            # update max / mins
+            amin = sttsmin(ix_hnda);
+            amax = sttsmax(ix_hnda);
+            bmin = sttsmin(ix_hndb);
+            bmax = sttsmax(ix_hndb);
+            IF amax < amin:
+               amin = bmin;
+               amax = bmax;
+            ELSE:
+               IF bmin < amin:
+                  amin = bmin;
+               IF_END
+
+               IF amax < bmax:
+                  amax = bmax;
+               IF_END
+            IF_END
+            CALL stts_init(ix_hnda, ncount, nmean
+                  , nmsqr / (ncount - 1.0), amin, amax);
+         IF_END
+      IF_END
+
+      RETURN ix_hnda;
+   FUNC_END
+
+   BLOCK: # Correlation Statistics block
+      LOCAL_CONST LC_STTSC_XX 0;
+      LOCAL_CONST LC_STTSC_YY 1;
+      LOCAL_CONST LC_STTSC_COVAR 2;
+      LOCAL_CONST LC_STTSC_MAGIC 3;
+      LOCAL_CONST LC_STTSC_COUNT 4;
+      LOCAL_DBL lv_corx_arr[LC_STTS_MAX_KEY][LC_STTSC_COUNT];
+
+      LOCAL_FUNC BOL lf_corr_is_init(INT ix_chnd):
+         LOCAL_USE lv_corx_arr[];
+         BOL retvalu_bol;
+         DBL vll;
+
+         IF LC_STTS_MAX_KEY <= ix_chnd:
+            retvalu_bol = FALSE;
+         ELSE:
+            vll = lv_corx_arr[ix_chnd][LC_STTSC_MAGIC];
+            retvalu_bol = Kw.ismagic(vll);
+         IF_END
+         RETURN retvalu_bol;
+      FUNC_END
+
+      LOCAL_FUNC INT lf_corr_find_empty(NUL):
+         INT ix_chnd;
+
+         ix_chnd = 0;
+         WHILE lf_corr_is_init(ix_chnd):
+            ix_chnd += 1;
+         WHILE_END
+
+         IF LC_STTS_MAX_KEY <= ix_chnd:
+            DIE "STTS-No-empty-handle";
+         IF_END
+         RETURN ix_chnd;
+      FUNC_END
+
+      FUNC INT corr_new(NUL):
+         # handle for a new correlation calc
+         LOCAL_USE lv_corx_arr[];
+         INT ix_chnd;
+
+         ix_chnd = lf_corr_find_empty();
+         lv_corx_arr[ix_chnd][LC_STTSC_XX] = stts_new();
+         lv_corx_arr[ix_chnd][LC_STTSC_YY] = stts_new();
+         lv_corx_arr[ix_chnd][LC_STTSC_COVAR] = 0.0;
+         lv_corx_arr[ix_chnd][LC_STTSC_MAGIC] = Kw.magicset();
+
+         RETURN ix_chnd;
+      FUNC_END
+
+      FUNC INT corr_delete(INT ix_chnd):
+         # delete data of LC_CHNDth correlation calc
+         LOCAL_USE lv_corx_arr[];
+
+         lv_corx_arr[ix_chnd][LC_STTSC_MAGIC] = Kw.magicnot();
+         CALL stts_delete(lv_corx_arr[ix_chnd][LC_STTSC_XX]);
+         CALL stts_delete(lv_corx_arr[ix_chnd][LC_STTSC_YY]);
+         RETURN ix_chnd;
+      FUNC_END
+
+      FUNC INT corr_handlex(INT ix_chnd):
+         LOCAL_USE lv_corx_arr[];
+
+         RETURN lv_corx_arr[ix_chnd][LC_STTSC_XX];
+      FUNC_END
+
+      FUNC INT corr_handley(INT ix_chnd):
+         LOCAL_USE lv_corx_arr[];
+
+         RETURN lv_corx_arr[ix_chnd][LC_STTSC_YY];
+      FUNC_END
+
+      FUNC DBL corr_update(INT ix_chnd, DBL xx, DBL yy):
+         # update LC_CHNDth corr calc with point (XX,YY)
+         LOCAL_USE lv_corx_arr[];
+         INT num;
+         DBL ddxx;
+         DBL ddyy;
+         INT yyhnd;
+         INT xxhnd;
+
+         yyhnd = lv_corx_arr[ix_chnd][LC_STTSC_YY];
+         xxhnd = lv_corx_arr[ix_chnd][LC_STTSC_XX];
+
+         num = sttscount(xxhnd);
+         ddxx = stts_update(xxhnd, xx);
+         ddyy = stts_update(yyhnd, yy);
+         lv_corx_arr[ix_chnd][LC_STTSC_COVAR] += (
+               ddxx * ddyy * num / (num + 1.0));
+         RETURN lv_corx_arr[ix_chnd][LC_STTSC_COVAR];
+      FUNC_END
+
+      FUNC DBL corrslope(INT ix_chnd):
+         # slope of least squares line of LC_CHNDth corr calc
+         LOCAL_USE lv_corx_arr[];
+         DBL den;
+         DBL retvalu;
+         INT xxhnd;
+
+         xxhnd = lv_corx_arr[ix_chnd][LC_STTSC_XX];
+
+         den = sttsmsq(xxhnd);
+         IF Kw.iszero(den):
+            retvalu = 0.0;
+         ELSE:
+            retvalu = lv_corx_arr[ix_chnd][LC_STTSC_COVAR] / den;
+         IF_END
+
+         RETURN retvalu;
+      FUNC_END
+
+      FUNC DBL corry0(INT ix_chnd):
+         # y-intercept of least squares line of LC_CHNDth corr
+         LOCAL_USE lv_corx_arr[];
+         DBL retvalu;
+         INT yyhnd;
+         INT xxhnd;
+
+         yyhnd = lv_corx_arr[ix_chnd][LC_STTSC_YY];
+         xxhnd = lv_corx_arr[ix_chnd][LC_STTSC_XX];
+
+         retvalu = (sttsmean(yyhnd)
+            - corrslope(ix_chnd) * sttsmean(xxhnd));
+
+         RETURN retvalu;
+      FUNC_END
+
+      FUNC DBL corrcorr(INT ix_chnd):
+         # Correlation Coefficient [-1,1] of LC_CHNDth corr calc
+         LOCAL_USE lv_corx_arr[];
+         DBL retvalu;
+         DBL xxmsq;
+         DBL yymsq;
+         DBL den;
+
+         xxmsq = sttsmsq(lv_corx_arr[ix_chnd][LC_STTSC_XX]);
+         yymsq = sttsmsq(lv_corx_arr[ix_chnd][LC_STTSC_YY]);
+         den = xxmsq * yymsq;
+         IF Kw.iszero(den):
+            retvalu = 0.0;
+         ELSE:
+            retvalu = (lv_corx_arr[ix_chnd][LC_STTSC_COVAR]
+                  / SQRT(den));
+         IF_END
+
+         RETURN retvalu;
+      FUNC_END
+
+      FUNC DBL corrstderr(INT ix_chnd):
+         # stderr of least squares line of LC_CHNDth corr calc
+         LOCAL_USE lv_corx_arr[];
+         INT yyhnd;
+         DBL diff;
+         DBL retvalu;
+
+         yyhnd = lv_corx_arr[ix_chnd][LC_STTSC_YY];
+
+         diff = sttsmsq(yyhnd) - (corrslope(ix_chnd)
+                  * lv_corx_arr[ix_chnd][LC_STTSC_COVAR]);
+         IF diff < 0:
+            retvalu = 0;
+         ELSE:
+            retvalu = SQRT(diff / (sttscount(yyhnd) - 2));
+         IF_END
+
+         RETURN retvalu;
+      FUNC_END
+   BLOCK_END # Correlation Statistics block
+BLOCK_END # Statistics block

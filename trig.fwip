@@ -1,0 +1,465 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-06-30 kdw  tests changed
+# 2020-06-12 kdw  uppercased tan function
+# 2020-06-03 kdw  writeonly keyword
+# 2020-05-30 kdw  CONST syntax change
+# 2020-05-14 kdw  block for sinc
+# 2020-04-14 kdw  tests added
+# 2020-04-12 kdw  comment change
+# 2020-04-11 kdw  macro arg format
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-03-03 kdw  comment changed:odd chars
+# 2020-03-02 kdw  s/_N[E]XT/_E[N]D/
+# 2020-02-25 kdw  comment cleanup
+# 2020-02-03 kdw  .*_LOOP changed
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-11-19 kdw  macro var name change
+# 2019-10-04 kdw  comment change
+# 2019-10-02 kdw  macro arg format change
+# 2019-09-11 kdw  macro arg name change
+# 2019-08-17 kdw  L[O]G to L[N]
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-06 kdw  rmed backslashes, macro arg renam
+# 2019-07-02 kdw  macro renam
+# 2019-06-04 kdw  angle conversion macros; func comments
+# 2019-06-02 kdw  NR_ to RAPHSON_
+# 2019-05-31 kdw  NR_DO to RAPHSON_LOOP; et al
+# 2019-05-30 kdw  s/(ar[c]deg)ree/arcdeg/
+# 2019-05-21 kdw  function keyword
+# 2019-05-08 kdw  comments
+# 2019-05-01 kdw  consts explicit module name
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-18 kdw  macro syntax changed
+# 2019-03-16 kdw  use to[p]yh1
+# 2019-03-08 kdw  rmed defines
+# 2019-03-06 kdw  is.* funcs changed
+# 2019-02-28 kdw  DEF?INE playing
+# 2019-02-19 kdw  se[c]inv fixed
+# 2019-02-12 kdw  deg[2]ra func rmed
+# 2019-02-08 kdw  comment
+# 2019-01-28 kdw  sinc work
+# 2019-01-13 kdw  var rena; reorg
+# 2018-12-08 kdw  comment change
+# 2018-12-03 kdw  sincinv function
+# 2018-11-28 kdw  sinc function
+# 2018-10-08 kdw  vbdotnet stuff
+# 2018-10-05 kdw  trig macros rework
+# 2018-04-27 kdw  func descriptions
+# 2018-04-10 kdw  macros changed
+# 2018-04-09 kdw  [tdr]2[rdt] func renam
+# 2018-04-03 kdw  rm () from return
+# 2018-03-26 kdw  macro redef
+# 2018-02-21 kdw  inv trig func renam: s/a(.*)/inv/
+# 2018-02-19 kdw  secant and macro refactor
+# 2018-02-17 kdw  expandnow changed
+# 2018-02-13 kdw  expand preprocess stuff
+# 2018-01-29 kdw  tur2deg,deg2tur functs
+# 2018-01-26 kdw  comments
+# 2017-10-25 kdw  d[m]s functions; suffixes some vars
+# 2017-08-29 kdw  experiment
+# 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
+# 2017-04-21 kdw  unneeded plus signs rmed
+# 2017-04-20 kdw  func to function
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-07 kdw  INS?ERT etal
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  space after RET?URN
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-01-08 kdw  include consts
+# 2016-12-25 kdw  "rev" to "t"
+# 2016-12-25 kdw  atan2h
+# 2016-11-24 kdw  spaces around operator
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-20 kdw  comment cleanup
+# 2016-11-19 kdw  "p" to "rev"
+# 2016-11-16 kdw  comments
+# 2016-11-15 kdw  *inv functions added
+# 2016-09-15 kdw  lang change
+# 2016-09-13 kdw  lang change
+# 2016-05-12 kdw  Co?pyri?ght comment changed
+# 2016-04-27 kdw  forced double division in places
+# 2016-01-15 kdw  tweak
+# 2015-12-03 kdw  renamed constants
+# 2015-12-02 kdw  renamed functions; requires line
+# 2015-11-24 kdw  ex[p]app[r]ox2 refactor
+# 2015-11-23 kdw  expa syntax error
+# 2015-11-22 kdw  expa
+# 2015-11-20 kdw  sina; SINa, COSa refactor
+# 2015-11-19 kdw  cosa
+# 2015-11-18 kdw  long lines changed
+# 2015-11-17 kdw  long lines changed
+# 2015-11-13 kdw  long lines addressed
+# 2015-10-22 kdw  a[t]an2.*
+# 2015-10-14 kdw  RA[D]IAN_PER_[R]EV, et al.
+# 2015-09-20 kdw  created
+
+??INSERT_FILE "Macros.fwip"??
+
+FUNC DBL sinc(DBL xx_rad):
+   # YY = SIN(XX) / XX
+DBL retvalu;
+   IF xx_rad < 0.0 OR 0.0 < xx_rad:
+      retvalu = SIN(xx_rad) / xx_rad;
+   ELSE:
+      retvalu = 1;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+# Used to calculate constants for subsequent function
+#FUNC DBL sinccc(NUL):
+#   ? ? RAPHSON_DECLARATIONS??
+#   ? ? RAPHSON_LOOP 4.48
+#         ; nrvx_xx * COS(nrvx_xx) - SIN(nrvx_xx)
+#         ; 2.0 * COS(nrvx_xx) - nrvx_xx * SIN(nrvx_xx) ??
+#   RETURN(nrvx_xx);
+#FUNC_END
+
+BLOCK: # sinc stuff
+   # X value where sinc(X) has its minimum
+   LOCAL_CONST LC_SINC_MIN_X
+      4.4934094579090641753079882808139693729311345; # 1
+   FUNC DBL sincinv(DBL yy):
+      # Solve SINC(XX) = YY for YY in the interval
+      #   (sinc(LC_SINC_MIN_X),1.0) -> (LC_SINC_MIN_X,0)
+      DBL min_yy;
+      DBL start_xx;
+      DBL aa;
+      DBL bb;
+
+      ??RAPHSON_DECLARATIONS??
+      min_yy = sinc(LC_SINC_MIN_X);
+      IF yy <= min_yy:
+         # XX such that d(SINC(XX)) / dXX == 0
+         #   i.e.  (XX * COS(XX) - SIN(XX)) / XX**2 == 0
+         nrvx_xx = LC_SINC_MIN_X;
+      ELSIF yy < 1.0:
+         # SINC(XX) = YY implies SIN(XX) - YY * XX = 0
+         aa = yy - min_yy;
+         bb = 1.0 - yy;
+         start_xx = (aa * SQRT(5.0 * bb)
+               + bb * (LC_SINC_MIN_X - SQRT(6 * aa)))
+            / (aa + bb);
+         ??RAPHSON_LOOP start_xx
+            ; SIN(nrvx_xx) - yy * nrvx_xx
+            ; COS(nrvx_xx) - yy ??
+      ELSE:  # 1.0 <= yy
+         nrvx_xx = 0.0;
+      IF_END
+      RETURN nrvx_xx;
+   FUNC_END
+BLOCK_END
+
+FUNC DBL sincc(DBL xx_rad):
+   # YY = SINC(XX) = SIN(XX) / XX via Taylor series
+   DBL trigsign;
+   DBL xr_rad;
+   DBL sum_curr;
+   DBL sum_prev;
+   DBL nxr_sqr;
+   INT ii;
+   DBL term;
+   DBL retvalu;
+
+   IF Kw.iszero(xx_rad):
+      retvalu = 1.0;
+   ELSE:
+      xr_rad = Kw.fmod(xx_rad, Kw.TAU);
+      # now 0 <= XR_RAD  < Kw.TAU
+      IF Kw.TAU / 2.0 < xr_rad:
+         xr_rad = Kw.TAU - xr_rad;
+         trigsign = -1.0;
+      ELSE:
+         trigsign = 1.0;
+      IF_END
+      IF Kw.TAU / 4.0 < xr_rad:
+         xr_rad = Kw.TAU / 2.0 - xr_rad;
+      IF_END
+      nxr_sqr = - xr_rad * xr_rad;
+      sum_curr = xr_rad;  # 1
+      term = xr_rad;
+      AWAIT Kw.iseq(sum_curr, sum_prev) COUNT ii FROM 2 BY 2:
+         term *= nxr_sqr / (ii * (ii - 1));
+         sum_prev = sum_curr;
+         sum_curr += term;
+      AWAIT_END
+
+      retvalu = trigsign * sum_curr * xr_rad / xx_rad;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL versin(DBL xx_rad):
+   # calculate YY = VERSIN(XX) = 1 - COS(X) via Taylor series
+   DBL trigsign;
+   DBL xr_rad;
+   DBL xr_sqr;
+   INT ii;
+   DBL sum_curr;
+   DBL term;
+   DBL sum_prev;
+
+   xr_rad = Kw.fmod(xx_rad, Kw.TAU);
+   # now 0 <= XR_RAD  < Kw.TAU
+   IF Kw.TAU / 2.0 < xr_rad:
+      # cos(x) = cos(Kw.TAU - x)
+      xr_rad = Kw.TAU - xr_rad;
+   IF_END
+   IF Kw.TAU / 4.0 < xr_rad:
+      # cos(x) = -cos(Kw.TAU / 2 - x)
+      xr_rad = Kw.TAU / 2.0 - xr_rad;
+      trigsign = -1.0;
+   ELSE:
+      trigsign = 1.0;
+   IF_END
+
+   xr_sqr = - xr_rad * xr_rad;
+   sum_curr = 1.0 / 2.0;
+   term = 1.0 / 2.0;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT ii FROM 4 BY 2:
+      term *= xr_sqr / (ii * (ii - 1));
+      sum_prev = sum_curr;
+      sum_curr += term;
+   AWAIT_END
+   sum_curr *= - xr_sqr;
+   IF trigsign < 0:
+      sum_curr = 2.0 - sum_curr;
+   IF_END
+   RETURN sum_curr;
+FUNC_END
+
+FUNC DBL haversin(DBL xx_rad):
+   # YY = VERSINE(XX) / 2 = (1 - COS(XX)) / 2
+   RETURN versin(xx_rad) / 2.0;
+FUNC_END
+
+??MACRO ANGCON1 <FROM_ANG> ; <FROM_SCL> ; <FROM_DSC>
+      ; <INTO_ANG> ; <INTO_SCL> ; <INTO_DSC> ??
+FUNC DBL <FROM_ANG>2<INTO_ANG>(DBL xx_<FROM_ANG>):
+   # convert <FROM_DSC>s to <INTO_DSC>s
+   RETURN xx_<FROM_ANG> * <FROM_SCL> / <INTO_SCL>;
+FUNC_END
+??MACRO_END
+
+??MACRO ANGCONVERT <FROM_ANG>; <FROM_SCL>; <FROM_DSC>;
+      <INTO_ANG>; <INTO_SCL>; <INTO_DSC> ??
+??ANGCON1 <FROM_ANG>; <FROM_SCL>; <FROM_DSC>;
+      <INTO_ANG>; <INTO_SCL>; <INTO_DSC> ??
+??ANGCON1 <INTO_ANG>; <INTO_SCL>; <INTO_DSC>;
+      <FROM_ANG>; <FROM_SCL>; <FROM_DSC> ??
+??MACRO_END
+
+#   Angle-conversion-functions ---- ----- ----- ----- ----- -----
+??ANGCONVERT tur; Kw.TURN  ; turn  ; deg; Kw.ARCDEG; degree ??
+??ANGCONVERT tur; Kw.TURN  ; turn  ; rad; Kw.RADIAN; radian ??
+??ANGCONVERT tur; Kw.TURN  ; turn  ; sec; Kw.ARCSEC; arcsec ??
+??ANGCONVERT rad; Kw.RADIAN; radian; deg; Kw.ARCDEG; degree ??
+??ANGCONVERT rad; Kw.RADIAN; radian; sec; Kw.ARCSEC; arcsec ??
+??ANGCONVERT deg; Kw.ARCDEG; degree; sec; Kw.ARCSEC; arcsec ??
+#TEST:deg2rad(rad2deg(183))==183;
+
+FUNC DBL rad2dms(DBL xx_rads):
+   # convert radians to deg.minut-sec
+   DBL dd_deg;
+   DBL mm_min;
+   DBL dg;
+
+   dg = rad2deg(xx_rads);
+   dd_deg = FLOOR(dg);
+   dg = (dg - dd_deg) * Kw.ARCDEG / Kw.ARCMIN;
+   mm_min = FLOOR(dg);
+   dg = (dg - mm_min) * Kw.ARCMIN / Kw.ARCSEC;
+   RETURN dd_deg + (mm_min + dg / 100.0) / 100.0;
+FUNC_END
+
+FUNC DBL rad2dms2(DBL xx_rads):
+   # convert radians to deg.minut-sec
+   DBL dg;
+   DBL dd_deg_arr[2];
+   DBL mm_min_arr[2];
+
+   dg = rad2deg(xx_rads);
+   dg = Kw.modf(dg, dd_deg_arr[]) * Kw.ARCDEG / Kw.ARCMIN;
+   dg = Kw.modf(dg, mm_min_arr[]) * Kw.ARCMIN / Kw.ARCSEC;
+
+   RETURN dd_deg_arr[0] + (mm_min_arr[0] + dg / 100.0) / 100.0;
+FUNC_END
+
+FUNC DBL dms2rad(DBL xx_dms):
+   # convert a number of the form DD.MMSS*... to radians
+   DBL dd_deg;
+   DBL mm_min;
+   DBL dg;
+
+   dd_deg = FLOOR(xx_dms);
+   dg = (xx_dms - dd_deg) * 100.0;
+   mm_min = FLOOR(dg);
+   dg = (dg - mm_min) * 100.0;
+   RETURN (dg * Kw.ARCSEC
+            + mm_min * Kw.ARCMIN
+            + dd_deg * Kw.ARCDEG)
+         / Kw.RADIAN;
+FUNC_END
+
+FUNC DBL deg2dms(DBL xx_deg):
+   # convert degrees to DD.MMSS+ format
+   RETURN rad2dms(deg2rad(xx_deg));
+FUNC_END
+
+FUNC DBL dms2deg(DBL xx_dms):
+   # convert DD.MMSS+ format to degrees
+   RETURN rad2deg(dms2rad(xx_dms));
+FUNC_END
+
+#   Other-Trig-functions ---- ----- ----- ----- ----- ----- -----
+FUNC DBL cot(DBL xx_rad):
+   # Cotangent Range (-Inf, Inf)
+   RETURN COS(xx_rad) / SIN(xx_rad);
+FUNC_END
+FUNC DBL sec(DBL xx_rad):
+   # Secant Range [1, Inf) or [-1, -Inf)
+   RETURN 1.0 / COS(xx_rad);
+FUNC_END
+FUNC DBL csc(DBL xx_rad):
+   # Cosecant Range [1, Inf) or [-1, -Inf)
+   RETURN 1.0 / SIN(xx_rad);
+FUNC_END
+
+#   Inverse-trig-functions -- ----- ----- ----- ----- ----- -----
+FUNC DBL sininv(DBL xx):
+   # inverse sine [-1, 1] to [-Kw.TAU/4, Kw.TAU/4]
+   RETURN ATAN2(xx, Kw.topyh1(xx));
+FUNC_END
+FUNC DBL cosinv(DBL xx):
+   # inverse cosine [-1, 1] to [Kw.TAU/2, 0]
+   RETURN ATAN2(Kw.topyh1(xx), xx);
+FUNC_END
+FUNC DBL taninv(DBL xx):
+   # inverse tangent (-Inf, Inf) to (-Kw.TAU/4, Kw.TAU/4)
+   RETURN ATAN2(xx, 1.0);
+FUNC_END
+FUNC DBL cotinv(DBL xx):
+   # inverse cotangent (-Inf, Inf) to (Kw.TAU/2, 0)
+   RETURN ATAN2(1.0, xx);
+FUNC_END
+FUNC DBL secinv(DBL xx):
+   # inverse secant [1, Inf) to [0, Kw.TAU/4)
+   #              AND (-Inf, -1] to (-Kw.TAU/4, 0]
+   RETURN ATAN2(SQRT(xx * xx - 1.0), Kw.sign(xx));
+FUNC_END
+FUNC DBL cscinv(DBL xx):
+   # inverse cosecant [1, Inf) to [Kw.TAU/4, 0)
+   #              AND (-Inf, -1] to (0, -Kw.TAU/4]
+   RETURN ATAN2(Kw.sign(xx), SQRT(xx * xx - 1.0));
+FUNC_END
+
+#   Hyperbolic-Trig-functions ----- ----- ----- ----- ----- -----
+FUNC DBL sinh(DBL xx):
+   # Hyperbolic Sine (-Inf, Inf) to (-Inf, Inf)
+   RETURN (EXP(xx) - EXP(-xx)) / 2.0;
+FUNC_END
+FUNC DBL cosh(DBL xx):
+   # Hyperbolic Cosine (-Inf, 0, Inf) to (Inf, 1, Inf)
+   RETURN (EXP(xx) + EXP(-xx)) / 2.0;
+FUNC_END
+FUNC DBL tanh(DBL xx):
+   # Hyperbolic Tangent (-Inf, Inf) to (-1, 1)
+   RETURN sinh(xx) / cosh(xx);
+FUNC_END
+FUNC DBL coth(DBL xx):
+   # Hyperbolic Cotangent
+   # (-Inf, 0) to (-1, -Inf); (0, Inf) to (Inf, 1);
+   RETURN cosh(xx) / sinh(xx);
+FUNC_END
+FUNC DBL sech(DBL xx):
+   # Hyperbolic Secant
+   # (-Inf, 0, Inf) to (0, 1, 0)
+   RETURN 1.0 / cosh(xx);
+FUNC_END
+FUNC DBL csch(DBL xx):
+   # Hyperbolic Cosecant
+   # (-Inf, 0) to (-0, -Inf); (0, Inf) to (Inf, 0);
+   RETURN 1.0 / sinh(xx);
+FUNC_END
+
+#   Inverse-hyperbolic-trig-functions --- ----- ----- ----- -----
+FUNC DBL sinhinv(DBL xx):
+   # Inverse Hyperbolic Sine (-Inf, Inf) to (-Inf, Inf)
+   RETURN LN(xx + SQRT(xx * xx + 1.0));
+FUNC_END
+#TEST:sinhinv(sinh(3.5))==3.5;
+FUNC DBL coshinv(DBL xx):
+   # Inverse Hyperbolic Cosine [1, Inf) to [0, Inf)
+   RETURN LN(xx + SQRT(xx * xx - 1.0));
+FUNC_END
+FUNC DBL tanhinv(DBL xx):
+   # Inverse Hyperbolic Tangent (-1, 1) to (-Inf, Inf)
+   RETURN LN((1.0 + xx) / (1.0 - xx)) / 2.0;
+FUNC_END
+FUNC DBL cothinv(DBL xx):
+   # Inverse Hyperbolic Cotangent
+   # (-Inf, -1) to (0, -Inf); (1, Inf) to (Inf, 0)
+   RETURN LN((xx + 1.0) / (xx - 1.0)) / 2.0;
+FUNC_END
+FUNC DBL sechinv(DBL xx):
+   # Inverse Hyperbolic Secant (0, 1] to (Inf, 0]
+   RETURN LN((1.0 + Kw.topyh1(xx)) / xx);
+FUNC_END
+FUNC DBL cschinv(DBL xx):
+   # Inverse Hyperbolic Cosecant [1, Inf) to (0, Inf)
+   RETURN LN((1.0 + SQRT(1.0 + xx * xx)) / xx);
+FUNC_END
+FUNC DBL atan2h(DBL xx, DBL yy):
+   # Inverse Hyperbolic Tangent
+   DBL retvalu;
+
+   IF ABS(yy) <= ABS(xx):
+      retvalu = 0.0;
+   ELSE:
+      retvalu = LN((yy + xx) / (yy - xx)) / 2.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL atan2u(DBL xx, DBL yy):
+   # inverse tangent in [0,Kw.TAU)
+   RETURN Kw.fmodu(ATAN2(xx, yy), Kw.tur2rad(1.0));
+FUNC_END
+
+??MACRO TRIG_DEF_FUNC <TRIGFUNC>; <SUFFIX>; <FBAS>
+      ; <FUNCDESC>; <FROM_NAME>; <FROM_DESC> ??
+FUNC DBL <TRIGFUNC><SUFFIX>(DBL xx):
+   # The <FUNCDESC> of the angle given in <FROM_DESC>
+   RETURN <FBAS>(<FROM_NAME>2rad(xx));
+FUNC_END
+FUNC DBL <TRIGFUNC><SUFFIX>inv(DBL xx):
+   # The inverse of <FUNCDESC> in <FROM_DESC>
+   RETURN rad2<FROM_NAME>(<TRIGFUNC>inv(xx));
+FUNC_END
+??MACRO_END
+
+??MACRO TRIG_DEF_ALL_FUNCS <FSUF>; <ANGA>; <ANGD> ??
+??TRIG_DEF_FUNC sin; <FSUF>; SIN; SINE     ; <ANGA>; <ANGD> ??
+??TRIG_DEF_FUNC cos; <FSUF>; COS; COSINE   ; <ANGA>; <ANGD> ??
+??TRIG_DEF_FUNC tan; <FSUF>; TAN; TANGENT  ; <ANGA>; <ANGD> ??
+??TRIG_DEF_FUNC cot; <FSUF>; cot; COTANGENT; <ANGA>; <ANGD> ??
+??TRIG_DEF_FUNC sec; <FSUF>; sec; SECANT   ; <ANGA>; <ANGD> ??
+??TRIG_DEF_FUNC csc; <FSUF>; csc; COSECANT ; <ANGA>; <ANGD> ??
+FUNC DBL atan2<FSUF>(DBL xx, DBL yy):
+   # The inverse Tangent of XX / YY in <ANGD>
+   RETURN rad2<ANGA>(ATAN2(xx, yy));
+FUNC_END
+??MACRO_END
+
+#   Trig-functions-in-degrees ----- ----- ----- ----- ----- -----
+??TRIG_DEF_ALL_FUNCS d; deg; Degrees ??
+#TEST:sindinv(sqrt(0.5))==45;
+#TEST:tand(tandinv(1.98))==1.98;
+#TEST:square(tand(30))==1/3.0;
+
+#   Trig-functions-in-turns   ----- ----- ----- ----- ----- -----
+??TRIG_DEF_ALL_FUNCS t; tur; Turns ??
+#TEST:square(cost(0.125))==0.5;

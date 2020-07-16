@@ -1,0 +1,157 @@
+#    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-04-12 kdw  comment change
+# 2020-03-01 kdw  reorg
+# 2020-02-26 kdw  comment change
+# 2020-02-03 kdw  single return statment
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-08-11 kdw  comment cleanup
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-11 kdw  comments to array dcls
+# 2018-10-08 kdw  vbdotnet stuff
+# 2018-07-20 kdw  array reformat ("+" added)
+# 2018-07-19 kdw  comments; array reformat
+# 2018-07-13 kdw  minor tweak
+# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
+# 2018-05-16 kdw  AR?RAY syntax
+# 2018-04-03 kdw  rm () from return
+# 2018-01-27 kdw  majopr refactor; poles=5
+# 2017-12-13 kdw  created
+
+FUNC DBL shc_shftpoles2steps(INT shft, INT poles):
+   DBL step_arr[20];
+   DBL retvalu;
+
+   IF poles <= 0:
+      retvalu = 0.0;
+   ELSIF shft < 0:
+      retvalu = 0.0;
+   ELSIF 16 < shft:
+      retvalu = 1000000000.0;
+   ELSIF poles == 1:
+      # step_arr(ii) is approximately 6.297 * 2 ** ii
+      ARRAY step_arr[]:   # 1 pole step array
+         +1.00000000E+0;
+         +8.75664018E+0;
+         +2.174418277E+1;
+         +4.709615109E+1;
+         +9.755325605E+1;
+         +1.983575685E+2;
+         +3.9991425188E+2;
+         +8.0300236937E+2;
+         +1.60916613901E+3;
+         +3.22148750069E+3;
+         +6.44612712926E+3;
+         +1.289540487229E+4;
+         +2.579395961911E+4;
+         +5.159106828928E+4;
+         +1.0318528839545E+5;
+         +2.0637372529029E+5;
+         +4.1275053067337E+5;
+      ARRAY_END
+      retvalu = step_arr[shft];
+   ELSIF poles == 2:
+      # step_arr(ii) is approximately 9.778 * 2 ** ii
+      ARRAY step_arr[]:   # 2 pole step array
+         +1.000000000E+0;
+         +1.372295755E+1;
+         +3.383938971E+1;
+         +7.318281398E+1;
+         +1.5153838699E+2;
+         +3.0810336456E+2;
+         +6.2116437416E+2;
+         +1.24725288016E+3;
+         +2.49941335432E+3;
+         +5.00372613671E+3;
+         +1.001234749878E+4;
+         +2.002958840334E+4;
+         +4.006406905172E+4;
+         +8.013303000155E+4;
+         +1.6027095510986E+5;
+         +3.2054680443102E+5;
+         +6.4109851712798E+5;
+      ARRAY_END
+      retvalu = step_arr[shft];
+   ELSIF poles == 3:
+      # step_arr(ii) is approximately 12.34255 * 2 ** ii
+      ARRAY step_arr[]:   # 3 pole step array
+         +1.000000000E+0;
+         +1.737173781E+1;
+         +4.273609545E+1;
+         +9.238532150E+1;
+         +1.9128399554E+2;
+         +3.8890510497E+2;
+         +7.8406421045E+2;
+         +1.57434201644E+3;
+         +3.15487771808E+3;
+         +6.31593923478E+3;
+         +1.263805730898E+4;
+         +2.528229097067E+4;
+         +5.057075779500E+4;
+         +1.0114768912723E+5;
+         +2.0230154729287E+5;
+         +4.0460928016924E+5;
+         +8.0922476138170E+5;
+      ARRAY_END
+      retvalu = step_arr[shft];
+   ELSIF poles == 4:
+      # step_arr(ii) is approximately 14.4655 * 2 ** ii
+      ARRAY step_arr[]:   # 4 pole step array
+         +1.00000000E+0;
+         +2.03878236E+1;
+         +5.009900279E+1;
+         +1.0828162825E+2;
+         +2.2418834788E+2;
+         +4.5579968748E+2;
+         +9.189270663E+2;
+         +1.84513549236E+3;
+         +3.69752950942E+3;
+         +7.40230620593E+3;
+         +1.48118537839E+4;
+         +2.963094667636E+4;
+         +5.926913086318E+4;
+         +1.1854549900613E+5;
+         +2.3709822433702E+5;
+         +4.7420371217077E+5;
+         +9.4841452431326E+5;
+      ARRAY_END
+      retvalu = step_arr[shft];
+   ELSIF poles == 5:
+      # step_arr(ii) is approximately 16.3168 * 2 ** ii
+      ARRAY step_arr[]:   # 5 pole step array
+         +1.000000000E+0;
+         +2.301559338E+1;
+         +5.651862690E+1;
+         +1.2214337218E+2;
+         +2.5288215751E+2;
+         +5.1413464355E+2;
+         +1.03653347249E+3;
+         +2.08127953713E+3;
+         +4.17074621528E+3;
+         +8.34966697295E+3;
+         +1.670750214140E+4;
+         +3.342316957219E+4;
+         +6.685449836446E+4;
+         +1.3371716646729E+5;
+         +2.6744248565129E+5;
+         +5.3489319815476E+5;
+         +1.06979462735136E+6;
+      ARRAY_END
+      retvalu = step_arr[shft];
+   ELSE:
+      retvalu = 0.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL shc_steps2shft(DBL steps):
+   RETURN Kw.lg(steps + 8.5) - 3.85514;
+FUNC_END
+
+FUNC DBL shc_steps2shftinv(DBL shft):
+   RETURN POW(2.0, (shft + 3.85514)) - 8.5;
+FUNC_END
+
+FUNC DBL shc_shft2steps(INT shft):
+   RETURN shc_shftpoles2steps(shft, 4);
+FUNC_END

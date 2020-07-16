@@ -1,0 +1,924 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-09 kdw  sqrttwo constant
+# 2020-06-30 kdw  black hole stuff
+# 2020-06-29 kdw  hal[a]qim def mved
+# 2020-06-23 kdw  .*si.* and .*ui.* prefxes
+# 2020-06-22 kdw  local-use mved befroe var decls
+# 2020-06-02 kdw  rmed several .*_err  consts
+# 2020-05-30 kdw  CONST syntax change
+# 2020-05-29 kdw  macro work
+# 2020-05-27 kdw  rmed "/" from some comments
+# 2020-05-14 kdw  lower case consts
+# 2020-05-13 kdw  lang_.* vars
+# 2020-05-12 kdw  language syntax
+# 2020-04-28 kdw  minor tweak
+# 2020-04-23 kdw  const format change
+# 2020-04-20 kdw  language work
+# 2020-04-11 kdw  macro arg format
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-03-23 kdw  electron mass a
+# 2020-03-21 kdw  DBL[M]AX redefd
+# 2020-03-06 kdw  L[A]NG.* names
+# 2020-03-03 kdw  comment change
+# 2020-02-28 kdw  const suffix rmed; wave stuff
+# 2020-02-26 kdw  s/INV/_REC/
+# 2020-02-25 kdw  comment cleanup
+# 2020-02-14 kdw  incomplete beta work
+# 2020-02-10 kdw  EM frequencies
+# 2019-12-17 kdw  failed experiment
+# 2019-12-13 kdw  stefan redefd to avoid underflow II
+# 2019-12-11 kdw  stefan redefd to avoid underflow
+# 2019-11-20 kdw  POW[2-5] macros
+# 2019-11-18 kdw  .*MASS and .*_MASS work
+# 2019-11-08 kdw  hal[a]qim
+# 2019-11-06 kdw  earth-solar day
+# 2019-10-24 kdw  information units
+# 2019-10-23 kdw  bekenstein
+# 2019-10-22 kdw  proton radius updated
+# 2019-10-11 kdw  more length and frequency constants
+# 2019-10-10 kdw  A2 units
+# 2019-10-08 kdw  comment change
+# 2019-10-07 kdw  DBL.* chage
+# 2019-10-04 kdw  comment change
+# 2019-10-02 kdw  macro arg format change
+# 2019-10-01 kdw  ry[d]berg.* work
+# 2019-09-28 kdw  work
+# 2019-09-26 kdw  const renam
+# 2019-09-25 kdw  TT.* changes
+# 2019-09-24 kdw  uamu
+# 2019-09-23 kdw  minor tweak
+# 2019-09-22 kdw  s/J[D]_AT_/JDSEC_AT_/g
+# 2019-09-21 kdw  several const renamd
+# 2019-09-19 kdw  battery update
+# 2019-09-18 kdw  molar mass constant
+# 2019-09-10 kdw  LAN[G]UAGE NOT to LAN[G]UAGE_N[O]T
+# 2019-09-09 kdw  comments on gravity[ab]
+# 2019-09-08 kdw  gravitational const update
+# 2019-09-05 kdw  comment text added to cntse macro
+# 2019-09-04 kdw  cnstn macro
+# 2019-09-03 kdw  dalton work
+# 2019-09-01 kdw  comment changes
+# 2019-08-30 kdw  he[i]ght/wid[t]h are VB6 reserved
+# 2019-08-29 kdw  dimension work
+# 2019-08-28 kdw  (hect)?are defined
+# 2019-08-22 kdw  " - " to " + - " to make units happy
+# 2019-08-17 kdw  L[O]G to L[N]
+# 2019-08-15 kdw  CON[S]TANT to CON[S]T keyword change
+# 2019-08-13 kdw  reorg f[o]urth macro
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-09 kdw  refactor
+# 2019-08-07 kdw  language comments
+# 2019-08-06 kdw  rmed backslashes
+# 2019-07-23 kdw  DBL.* redef
+# 2019-07-22 kdw  macro cleanup
+# 2019-07-09 kdw  comment
+# 2019-07-03 kdw  tweak
+# 2019-07-02 kdw  macro renam
+# 2019-07-01 kdw  more .*_ERR consts
+# 2019-06-12 kdw  tempc to tempf work; volume defs
+# 2019-06-10 kdw  reorg
+# 2019-06-04 kdw  rmed SR const
+# 2019-05-31 kdw  comment changed
+# 2019-05-29 kdw  comment changed
+# 2019-05-28 kdw  colors updated
+# 2019-05-24 kdw  hubble const update
+# 2019-05-22 kdw  rmed unneeded ()s
+# 2019-05-20 kdw  short abbrevs; Capitalization
+# 2019-05-15 kdw  tweaked
+# 2019-05-14 kdw  M_[EPN] rmed (C, VB have problems)
+# 2019-05-08 kdw  hydrogen line work II
+# 2019-05-07 kdw  particle mass work
+# 2019-05-06 kdw  hydrogen line work
+# 2019-05-04 kdw  planck.* error
+# 2019-05-03 kdw  error work; hydrogen line
+# 2019-05-01 kdw  reorg; point
+# 2019-04-26 kdw  added torr,bar,mmhg
+# 2019-04-25 kdw  error reorg
+# 2019-04-23 kdw  electron Mass redo
+# 2019-04-22 kdw  universe mass
+# 2019-04-18 kdw  gas density
+# 2019-04-16 kdw  BHRAD[I]US2DENSITY
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-18 kdw  macro syntax changed
+# 2019-03-15 kdw  reorg order of ops to avoid < 1E-50
+# 2019-03-08 kdw  rmed defines
+# 2019-03-05 kdw  mved unitgm
+# 2019-03-01 kdw  added "+" after "E"
+# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-04 kdw  kwt epoch changed
+# 2019-01-23 kdw  fourth macro; refactor
+# 2019-01-14 kdw  iso binary prefxes
+# 2018-12-23 kdw  charge is fundamental
+# 2018-12-21 kdw  alpha, et al. mass
+# 2018-12-07 kdw  explicit imported funcitons
+# 2018-11-30 kdw  rm PA[S]CAL def
+# 2018-11-07 kdw  cardinals
+# 2018-11-05 kdw  J[CDM].* consts
+# 2018-11-01 kdw  rearrange
+# 2018-10-08 kdw  vbdotnet stuff
+# 2018-10-03 kdw  rearrange
+# 2018-10-02 kdw  comment fix
+# 2018-09-15 kdw  minor moacro def change
+# 2018-07-21 kdw  reformat
+# 2018-07-13 kdw  float number reformt
+# 2018-07-10 kdw  added "+" to exponents
+# 2018-07-09 kdw  alpha redefd
+# 2018-06-27 kdw  const work
+# 2018-06-25 kdw  kcd constant
+# 2018-06-14 kdw  temps redo
+# 2018-06-13 kdw  reorg
+# 2018-05-18 kdw  LAN[G]UAGE syntax change
+# 2018-05-02 kdw  atomic masses changed
+# 2018-04-29 kdw  stefans constant
+# 2018-04-28 kdw  updated values
+# 2018-04-25 kdw  50 deci places on constants
+# 2018-04-24 kdw  feingenbaum, apery constants
+# 2018-04-23 kdw  mp?ss
+# 2018-04-15 kdw  k?wt work
+# 2018-04-14 kdw  epo?chx renamd to k?wt
+# 2018-04-10 kdw  ep?ochx-un?ix-diff
+# 2018-04-01 kdw  LAN[G]UAGE_E[N]D
+# 2018-03-26 kdw  jpkg = joule / kg = light**2
+# 2018-03-20 kdw  minor debugging
+# 2018-03-16 kdw  format of constant and index change
+# 2018-03-15 kdw  _it vs _th stuff
+# 2018-03-14 kdw  mved temp stuff; power/energy work
+# 2018-03-13 kdw  stefan boltzmann rework
+# 2018-03-12 kdw  made PP statements not need ":"
+# 2018-03-11 kdw  mved iso-prefxes, et al.
+# 2018-03-09 kdw  constify to constx
+# 2018-03-08 kdw  constify
+# 2018-03-06 kdw  rpm redefd
+# 2018-03-05 kdw  cube renam
+# 2018-02-22 kdw  epo?chx refactor
+# 2018-02-20 kdw  comments changed
+# 2018-02-19 kdw  secant and macro refactor
+# 2018-02-17 kdw  expandnow changed
+# 2018-02-15 kdw  descriptors commented out
+# 2018-02-14 kdw  minor refactor
+# 2018-02-10 kdw  refactor; redef of several
+# 2018-02-03 kdw  degree fahrenheit units stuff
+# 2018-02-01 kdw  degree fahrenheit stuff
+# 2018-01-30 kdw  reorg
+# 2018-01-29 kdw  julian consts renamd
+# 2018-01-28 kdw  time const name change
+# 2018-01-26 kdw  FL[I]CK added
+# 2018-01-22 kdw  parens; JDSEC_AT_.* redo
+# 2018-01-11 kdw  CODATA 2017
+# 2017-11-04 kdw  multiple =
+# 2017-11-03 kdw  reorg
+# 2017-10-26 kdw  reorg
+# 2017-10-24 kdw  number underscore
+# 2017-10-23 kdw  lang is any fix
+# 2017-10-22 kdw  more constants
+# 2017-10-21 kdw  macros start with "at""at"
+# 2017-10-20 kdw  COM[M]ENT/"at""at"[S]Q syntax change
+# 2017-10-16 kdw  stellar day
+# 2017-10-15 kdw  sun mass
+# 2017-10-13 kdw  nuclear mass ratios
+# 2017-10-07 kdw  0epochx redefd;
+# 2017-10-03 kdw  KM
+# 2017-10-02 kdw  several consts from const-astro
+# 2017-10-01 kdw  ATM
+# 2017-09-29 kdw  PARSEC, AU moved to here
+# 2017-09-28 kdw  co?nst-ast?ro.fw?ip
+# 2017-09-27 kdw  EA[R]THGR[A]VITY[AB]
+# 2017-09-26 kdw  VONKL?ITZING and JO?SEPHSON
+# 2017-09-25 kdw  EPO?CHX redefd
+# 2017-09-22 kdw  comment change
+# 2017-09-21 kdw  comment change
+# 2017-09-20 kdw  julian date work
+# 2017-09-17 kdw  more units work
+# 2017-09-16 kdw  other base units rmed
+# 2017-09-15 kdw  fail
+# 2017-09-14 kdw  other base units
+# 2017-09-12 kdw  rework of date constants
+# 2017-09-08 kdw  more UNITS support
+# 2017-09-07 kdw  more UNITS support
+# 2017-09-06 kdw  more UNITS support
+# 2017-09-06 kdw  UNITS support
+# 2017-08-31 kdw  ...LAN[G]UAGE
+# 2017-08-30 kdw  s/DBL_/DBL/;s/FLT_/FLT/
+# 2017-08-28 kdw  re-uppercased const nams
+# 2017-08-24 kdw  EP[O]CHX experiment
+# 2017-08-22 kdw  comment change
+# 2017-08-21 kdw  .*_P[E]R_.* rmed
+# 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
+# 2017-08-18 kdw  lower case consts
+# 2017-08-17 kdw  siderealday redef; G* consts
+# 2017-06-21 kdw  LANG_.* AND MASTER.* change
+# 2017-06-19 kdw  DBL* constsnt changed
+# 2017-04-21 kdw  comment change
+# 2017-04-13 kdw  rm unused consts
+# 2017-04-12 kdw  allow _ to start names
+# 2017-04-03 kdw  failed experiment
+# 2017-03-30 kdw  comments
+# 2017-03-28 kdw  comments on language
+# 2017-03-27 kdw  double max
+# 2017-03-21 kdw  long line error vs pytho
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-07 kdw  CO?NST?ANT format changed
+# 2017-03-06 kdw  sigils rmed, et al.
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-24 kdw  LAN[G]UAGE change
+# 2017-02-14 kdw  cnv_dbl2* renam
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-01-06 kdw  .*_SIGN[I]FIGANCE
+# 2017-01-06 kdw  ..LAN[G]UAGE_.* change
+# 2016-12-31 kdw  PLA[N]CKCHARGE, et al.
+# 2016-12-28 kdw  more *_MAX, *_MIN consts
+# 2016-12-26 kdw  earth[AB], et al.
+# 2016-12-25 kdw  REV to TURN
+# 2016-12-24 kdw  rmed grad support
+# 2016-12-20 kdw  indent preprocess stuff
+# 2016-12-18 kdw  lunar stuff
+# 2016-12-09 kdw  epx per sec changed
+# 2016-12-08 kdw  comment change
+# 2016-12-07 kdw  comment change
+# 2016-12-04 kdw  comment change
+# 2016-12-02 kdw  rmed unused defines
+# 2016-11-30 kdw  minus sign problems
+# 2016-11-25 kdw  renamd consts
+# 2016-11-24 kdw  LAN[G]UAGE_N[O]T to LAN[G]UAGE_IFN[O]T
+# 2016-11-23 kdw  CO?NST to CO?NST?ANT
+# 2016-11-22 kdw  high-precision eul?er experiment
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-19 kdw  angle stuff
+# 2016-11-14 kdw  LANG_ stuff
+# 2016-11-09 kdw  underscores added to names
+# 2016-11-03 kdw  julian stuff
+# 2016-11-02 kdw  comment reorg
+# 2016-10-28 kdw  comment reorder
+# 2016-10-27 kdw  comment typo
+# 2016-09-13 kdw  lang change
+# 2016-09-07 kdw  rmed unused code
+# 2016-09-01 kdw  LI?2; comment tweak
+# 2016-08-26 kdw  comments
+# 2016-08-23 kdw  one-letter vars
+# 2016-08-19 kdw  ARC*
+# 2016-08-17 kdw  PLAN[C]K*
+# 2016-08-16 kdw  comment
+# 2016-08-15 kdw  refactor
+# 2016-08-12 kdw  refactor temperature stuff
+# 2016-08-11 kdw  refactor temperature stuff
+# 2016-08-07 kdw  week stuff
+# 2016-08-05 kdw  VB6 VBDOTNET: "in" is a keyword
+# 2016-08-04 kdw  OUNCE, KILOGRAM, METER
+# 2016-08-02 kdw  SECOND, et al.; Julian stuff
+# 2016-07-28 kdw  DA?YE / Y?AR renamed
+# 2016-07-26 kdw  DA?Y_PER*
+# 2016-07-18 kdw  astronomical constants
+# 2016-07-14 kdw  more time constants
+# 2016-07-13 kdw  time and rev constants
+# 2016-05-26 kdw  rmed unused const
+# 2016-05-24 kdw  long lines
+# 2016-05-18 kdw  indent vs Pyt?hon problems
+# 2016-05-16 kdw  temperature consts changed
+# 2016-05-12 kdw  VIS?UALB?ASIC6 rename
+# 2016-03-12 kdw  BC: scale increased
+# 2016-02-29 kdw  comment tweak
+# 2015-12-30 kdw  OM?EGA definition problems
+# 2015-12-21 kdw  nested _?_I?F.*s
+# 2015-12-11 kdw  _[_]DE[F]INE_[_] refactor
+# 2015-12-11 kdw  _[_]EN[D]IF_[_] obsoleted
+# 2015-12-10 kdw  epsilons redefined
+# 2015-12-03 kdw  renamed constants
+# 2015-12-01 kdw  use only 25 decimal places
+# 2015-11-26 kdw  longl lines
+# 2015-11-16 kdw  tweak
+# 2015-11-13 kdw  e[u]ler change
+# 2015-11-12 kdw  tweak
+# 2015-10-14 kdw  DEGR[E]E_PER_[R]ADIAN
+# 2015-10-13 kdw  created
+
+??MACRO POW3 <AA> ??
+   ((<AA>) * (<AA>) * (<AA>))??MACRO_END
+??MACRO POW4 <AA> ??
+   ((<AA>) * (<AA>) * (<AA>) * (<AA>))??MACRO_END
+??MACRO POW5 <AA> ??
+   ((<AA>) * (<AA>) * (<AA>) * (<AA>) * (<AA>))??MACRO_END
+
+??MACRO CNSTE <NM>; <DF>; <ER>; <UT> ??CONST <NM> <DF>; #<UT>
+CONST <NM>_ERR <ER>; #1??MACRO_END
+
+??MACRO CNSTWVLENG <NM>; <WVL> ??
+CONST <NM>WAVELENGTH <WVL>; #L
+CONST <NM>Hz LIGHT / <NM>WAVELENGTH; #T-1
+CONST <NM>WAVENUMBER 1.0 / <NM>WAVELENGTH; #L-1
+CONST <NM>ENERGY PLANCK * <NM>Hz; #ML-2T-2??MACRO_END
+
+??MACRO CNSTWVFREQ <NM>; <FRQ> ??
+CONST <NM>Hz <FRQ>; #T-1
+CONST <NM>WAVELENGTH LIGHT / <NM>Hz; #L
+CONST <NM>WAVENUMBER 1.0 / <NM>WAVELENGTH; #L-1
+CONST <NM>ENERGY PLANCK * <NM>Hz; #ML-2T-2??MACRO_END
+
+??MACRO CNSTMAST <NM>; <AMASS>; <ERR> ??
+??CNSTE <NM>MASS; <AMASS>; <ERR>; M ??
+CONST <NM>_MASS <NM>MASS * AVOGADRO; #MN-1??MACRO_END
+
+??MACRO CNSTMASS <NM>; <AMASS>; <ERR> ??
+??CNSTMAST <NM>; <AMASS>; <ERR> ??
+CONST <NM>ENERGY <NM>MASS * LIGHT * LIGHT; #ML-2T-2
+CONST <NM>Hz <NM>ENERGY / PLANCK; #T-1
+CONST <NM>WAVELENGTH LIGHT / <NM>Hz; #L??MACRO_END
+
+# Base SI units
+CONST KILOGRAM 1.0;        #M
+CONST METER 1.0;        #L
+CONST SECOND 1.0;        #T
+CONST KELVIN 1.0;        #K
+CONST AMPERE 1.0;        #I
+CONST COULOMB AMPERE * SECOND; #TI
+#CONST COULOMB 1.0;        #C
+#CONST AMPERE COULOMB / SECOND; #CT-1
+CONST MOLE 1.0;        #N
+CONST CANDELA 1.0;        #J
+CONST BIT 1.0;        #B
+CONST RADIAN 1.0;        #A
+CONST STERADIAN RADIAN * RADIAN;        #A2
+
+CONST METRE METER;      #L
+
+CONST KG KILOGRAM;   #M
+#CONST M METER;     #L
+#CONST S SECOND;     #T
+#CONST C COULOMB;   #TI
+#CONST CD CANDELA;    #J # VB conflict with cd()
+CONST RAD RADIAN;     #A
+
+# All base SI units (KILOGRAM, METER, KELVIN, SECOND,
+#   AMPERE, MOLE, CANDELA, RADIAN)
+# should be defined by this point
+
+##    NUMBERS --- ----- ----- ----- ----- ----- ----- ----- -----
+LANGUAGE LANG_BC LANG_PERL LANG_PYTHON LANG_UNITS:     # formulas
+   CONST E EXP(1.0); #1
+   CONST TAU 8.0 * ATAN2(1.0, 1.0) / RAD; #1
+   CONST PHI 0.5 + SQRT(5.0) / 2.0; #1
+   CONST LNTWO LN(2.0); #1
+   CONST LNTEN LN(10.0); #1
+   CONST SQRTTWO SQRT(2.0); #1
+LANGUAGE_END                                           # formulas
+LANGUAGE_NOT LANG_BC LANG_PERL LANG_PYTHON LANG_UNITS: # formulas
+   CONST E
+         2.71828182845904523536028747135266249775724709369996;#1
+   CONST TAU
+         6.28318530717958647692528676655900576839433879875021;#1
+   CONST PHI
+         1.61803398874989484820458683436563811772030917980576;#1
+   CONST LNTWO
+         0.69314718055994530941723212145817656807550013436026;#1
+   CONST LNTEN
+         2.30258509299404568401799145468436420760110148862877;#1
+   CONST SQRTTWO
+         1.41421356237309504880168872420969807856967187537695;#1
+LANGUAGE_END                                           # formulas
+
+CONST EULER 0.57721566490153286060651209008240243104215934; #1
+CONST FEIGENBAUM 4.669201609102990671853203820466201617258; #1
+CONST APERY 1.20205690315959428539973816151144999076498629; #1
+CONST PI TAU / 2.0; #1
+
+# ISO prefixes
+CONST YOTTA 1.0E+24; #1
+CONST ZETTA 1.0E+21; #1
+CONST EXA   1.0E+18; #1
+CONST PETA  1.0E+15; #1
+CONST TERA  1.0E+12; #1
+CONST GIGA  1.0E+9;  #1
+CONST MEGA  1.0E+6;  #1
+CONST KILO  1.0E+3;  #1
+CONST HECTO 1.0E+2;  #1
+CONST DECA  1.0E+1;  #1
+CONST DECI  1.0E-1;  #1
+CONST CENTI 1.0E-2;  #1
+CONST MILLI 1.0E-3;  #1
+CONST MICRO 1.0E-6;  #1
+CONST NANO  1.0E-9;  #1
+CONST PICO  1.0E-12; #1
+CONST FEMTO 1.0E-15; #1
+CONST ATTO  1.0E-18; #1
+CONST ZEPTO 1.0E-21; #1
+CONST YOCTO 1.0E-24; #1
+CONST KIBI 1024.0;      #1
+CONST MEBI KIBI * KIBI; #1
+CONST GIBI MEBI * KIBI; #1
+CONST TEBI GIBI * KIBI; #1
+CONST PEBI TEBI * KIBI; #1
+CONST EXBI PEBI * KIBI; #1
+CONST ZEBI EXBI * KIBI; #1
+CONST YOBI ZEBI * KIBI; #1
+
+# following name conflicts with "sec" trig function
+# CONS TANT SEC         SECOND;               #T
+#   Standard-derived-units -- ----- ----- ----- ----- ----- -----
+CONST MPS     METER / SECOND;            #LT-1
+CONST MPSS    METER / (SECOND * SECOND); #LT-2
+CONST UNITGM  METER * MPS * MPS;         #L3T-2
+CONST NEWTON  KILOGRAM * MPSS;           #MLT-2
+CONST JOULE   NEWTON * METER;            #ML2T-2
+#CONST PASCAL NEWTON / (METER * METER);  #ML-1T-2
+CONST PA      NEWTON / (METER * METER);  #ML-1T-2
+CONST WATT    JOULE / SECOND;            #ML2T-3
+CONST HERTZ   1.0 / SECOND;              #T-1
+CONST AMP     AMPERE;                    #I
+#CONST        A AMPERE;                  #I
+CONST VOLT    WATT / AMPERE;             #ML2T-4I-1
+CONST OHM     VOLT / AMPERE;             #ML2T-2I-1
+CONST HENRY   OHM * SECOND;              #ML2T-2I-2
+CONST FARAD   COULOMB / VOLT;            #T4I2M-1L-2
+CONST SIEMENS 1.0 / OHM;                 #T3I2M-1L-2
+CONST WEBER   VOLT * SECOND;             #ML2T-2I-1
+CONST TESLA   WEBER / (METER * METER);   #MT-2I-1
+CONST LUMEN   CANDELA * STERADIAN;       #JA2
+CONST LUX     LUMEN / (METER * METER);   #JA2L-2
+
+#   SI-constants  2019-05-20 - ---- ----- ----- ----- ----- -----
+??CNSTE BOLTZMANN  ; 1.380649E-23 * JOULE / KELVIN
+      ; 0 ; ML2T-2K-1??
+??CNSTE ELECTRONCHARGE; 1.602176634E-19 * COULOMB; 0; TI??
+??CNSTE LIGHT      ; 2.99792458E+8 * METER / SECOND; 0; LT-1??
+??CNSTE AVOGADRO   ; 6.02214076E+23 / MOLE; 0; N-1??
+??CNSTE PLANCK     ; 6.62607015E-34 * JOULE * SECOND; 0; ML2T-1??
+??CNSTE KCD        ; 6.83E+2 * LUMEN / WATT; 0; JA2S3M-1L-2??
+??CNSTWVFREQ dvCs; 9.19263177E+9 / SECOND ??
+CONST dvCs_ERR 0; #1
+??CNSTE kB             ; BOLTZMANN ; BOLTZMANN_ERR ; ML2T-2K-1??
+??CNSTE ELEMENTARYCHARGE ; ELECTRONCHARGE ; ELECTRONCHARGE_ERR
+      ; TI??
+??CNSTE PLANCKBAR        ; PLANCK / TAU; PLANCK_ERR ; ML2T-1??
+??CNSTE h                ; PLANCK ; PLANCK_ERR ; ML2T-1??
+??CNSTE HBAR             ; PLANCKBAR ; PLANCKBAR_ERR ; ML2T-1??
+
+CONST BOLTZMANN_REC      1.0 / BOLTZMANN; #T2KM-1L-2
+CONST ELECTRONCHARGE_REC 1.0 / ELECTRONCHARGE; #T-1I-1
+CONST LIGHT_REC          1.0 / LIGHT; #TL-1
+CONST AVOGADRO_REC       1.0 / AVOGADRO; #N
+CONST dvCsHz_REC         1.0 / dvCsHz; #T
+CONST PLANCK_REC         1.0 / PLANCK; #TM-1L-2
+CONST h_REC              PLANCK_REC; #TM-1L-2
+CONST kB_REC             BOLTZMANN_REC; #T2KM-1L-2
+??CNSTWVFREQ KG ; KG * LIGHT * LIGHT / PLANCK ??
+
+#   Exact-constants --- ----- ----- ----- ----- ----- ----- -----
+??CNSTE GRAVITY    ; 9.80665 * MPSS; 0 ; LT-2??
+??CNSTE ATMOSPHERE ; 1.01325E+5 * PA; 0; ML-1T-2??
+??CNSTE AU         ; 1.495978707E+11 * METER; 0 ; L??
+
+#   EXACT-derived-constants -- ---- ----- ----- ----- ----- -----
+??CNSTE JOSEPHSON  ; 2.0 * ELECTRONCHARGE / PLANCK
+      ; 0 ; T2IM-1L-2??
+??CNSTE VONKLITZING; PLANCK / (ELECTRONCHARGE * ELECTRONCHARGE)
+      ; 0 ; ML2T-3I-2??
+??CNSTE FARADAY ; ELECTRONCHARGE * AVOGADRO; 0 ; TIN-1??
+??CNSTE GAS ;     BOLTZMANN * AVOGADRO; 0 ; ML2T-2K-1N-1??
+
+#   CODATA-2018 Measured-constants  ----- ----- ----- ----- -----
+??CNSTE GRAVITATION ; 6.67430E-11 * UNITGM / KILOGRAM
+      ; 2.2E-5 ; L3T-2M-1??
+??CNSTE RYDBERG ; 1.0973731568160E+7 * LIGHT / METER
+      ; 1.9E-12 ; T-1??
+??CNSTE G ; GRAVITATION ; GRAVITATION_ERR ; L3T-2M-1??
+??CNSTE ALPHA     ; 7.2973525664E-3 ; 2.3E-10 ; 1??
+??CNSTE ALPHA_REC ; 1.0 / ALPHA ; ALPHA_ERR ; 1??
+
+##    NUMBER LIMITS --- ----- ----- ----- ----- ----- ----- -----
+CONST FLTSIG 23; #1
+CONST FLTMAN 8; #1
+CONST FLTEPS 1.1920928955078125E-7; #1 # 2 ** -FLTSIG
+# 2 ** 2 ** (FLTMAN - 1) * (1 - FLTEPS / 2)
+CONST FLTMAX 3.402823466385288598E+38; #1
+
+CONST DBLMAXLN Kw.LNTWO * 1024;
+LANGUAGE LANG_BC:                      # different DBL resolution
+   CONST DBLSIG scale * Kw.LNTEN / Kw.LNTWO; #1
+   CONST DBLEPS EXP(Kw.LNTEN * (1.0 - scale)); #1
+   CONST DBLMAX EXP(DBLMAXLN) * (1.0 - DBLEPS); # BC #1
+LANGUAGE_END                           # different DBL resolution
+LANGUAGE_NOT LANG_BC: # DBLEPS/DBLMAX  # different DBL resolution
+   CONST DBLSIG 52; #1
+   CONST DBLMAN 11; #1
+   CONST DBLEPS 2.220446049250313E-16;    #1 # 2 ** -DBLSIG
+   # 2 ** 2 ** (DBLMAN - 1) * (1.0 - DBLEPS / 2)
+   CONST DBLMAX 1.79769313486227E+308; #1
+LANGUAGE_END                           # different DBL resolution
+
+CONST SI16MAX 32767;        #1
+CONST SI16MIN -32768;       #1
+CONST UI16MAX 65535;        #1
+CONST SI32MAX 2147483647;   #1
+CONST SI32MIN -2147483648;  #1
+CONST UI32MAX 4294967295;   #1
+CONST INTMAX SI32MAX;       #1
+
+CONST MONTHS_IN_YEAR 12;    #TT-1
+
+##    TIME  ----- ----- ----- ----- ----- ----- ----- ----- -----
+CONST MINUTE 60.0 * SECOND;               #T
+CONST HOUR 60.0 * MINUTE;                 #T
+CONST DAY 24.0 * HOUR;                    #T
+LANGUAGE_NOT LANG_VB6 LANG_VBDOTNET:      # DAY is a function
+CONST EARTHSOLARDAY DAY;                  #T
+LANGUAGE_END                              # DAY is a function
+CONST WEEK 7.0 * DAY;                     #T
+CONST FLICK SECOND / 705600000.0;         #T
+CONST JULIANDAY DAY;                      #T
+CONST JULIANYEAR 365.25 * JULIANDAY;      #T
+CONST JULIANCENTURY 100 * JULIANYEAR;     #T
+CONST JULIANMILLENNIUM 1000 * JULIANYEAR; #T
+CONST JDAY JULIANDAY;                     #T
+CONST JYEAR JULIANYEAR;                   #T
+CONST JCENTURY JULIANCENTURY;             #T
+CONST JMILLENNIUM JULIANMILLENNIUM;       #T
+CONST JD JULIANDAY;                       #T
+CONST JY JULIANYEAR;                      #T
+CONST JC JULIANCENTURY;                   #T
+CONST JM JULIANMILLENNIUM;                #T
+CONST JEWISH_FIRST_MONTH 7;               #1
+
+CONST GYEAR 365.2425 * DAY;               #T
+CONST GREGORIANYEAR GYEAR;                #T
+# following needs to be of form (P / 2**Q * SECOND)
+# where 1 <= P < 16777216 and 1 <= Q < 23
+CONST KWT 0.1875 * SECOND;       #T
+CONST UET SECOND;                #T
+CONST J2K DAY;                   #T
+CONST J2KDAY DAY;                   #T
+# 0000-01-00T00:00:00
+CONST JDSEC_AT_0GREGORIAN 1721058.5 * JDAY;       #T
+# 1960-11-02T03:52:12
+CONST JDSEC_AT_0KWT 2437240.66125 * JDAY;    #T
+# 2000-01-01T12:00:00
+CONST JDSEC_AT_0J2K 2451545.0 * JDAY;        #T
+# 1970-01-01T00:00:00
+CONST JDSEC_AT_0UET 2440587.5 * JDAY;        #T
+
+# (TAI)1970-01-01T00:00:00.000Z == (TT)1970-01-01T00:00:032.184Z
+# by definition
+CONST TT_AT_0TAI 32.184 * Kw.SECOND;         #T
+# as of 2018-01-01
+CONST TT_AT_0UT1 68.97 * Kw.SECOND; #T
+
+##    MASS  ----- ----- ----- ----- ----- ----- ----- ----- -----
+CONST GRAM 0.001 * KILOGRAM;        #M
+CONST POUND 0.45359237 * KILOGRAM;  #M
+CONST LB POUND;                     #M
+CONST OUNCE 0.0625 * POUND;         #M
+CONST TON 2000.0 * POUND;           #M
+CONST TONNE 1000.0 * KILOGRAM;      #M
+CONST GRAIN POUND / 7000;           #M
+CONST CARAT 0.2 * GRAM;             #M
+
+##    LENGTH ---- ----- ----- ----- ----- ----- ----- ----- -----
+CONST MM MILLI * METER;             #L
+CONST INCH 0.0254 * METER;          #L
+CONST FOOT 12.0 * INCH;             #L
+CONST FT FOOT;                      #L
+CONST YARD 3.0 * FOOT;              #L
+CONST MILE 5280.0 * FOOT;           #L
+CONST POINT INCH / 72.0;            #L
+
+##    ACCELERATION ---- ----- ----- ----- ----- ----- ----- -----
+CONST STANDARDGRAVITY GRAVITY;              #LT-2
+# See https://en.wikipedia.org/wiki/Theoretical_gravity
+#    and https://en.wikipedia.org/wiki/Clairauts_theorem
+CONST EARTHGRAVITYA 9.7803253359 * MPSS;  #LT-2
+CONST EARTHGRAVITYB 9.8321849378 * MPSS;  #LT-2
+
+##    GRAVITATIONAL --- ----- ----- ----- ----- ----- ----- -----
+# following is based on NASA
+CONST GRAVITATIONNASA
+         6.67259E-11 * UNITGM / KILOGRAM;  #L3T-2M-1
+# following is based on IERS
+CONST GRAVITATIONIERS
+         6.67428E-11 * UNITGM / KILOGRAM;  #L3T-2M-1
+
+##    FORCE ----- ----- ----- ----- ----- ----- ----- ----- -----
+CONST KGF KILOGRAM * GRAVITY;    #MLT-2
+CONST LBF POUND * GRAVITY;       #MLT-2
+
+##    PRESSURE -- ----- ----- ----- ----- ----- ----- ----- -----
+CONST ATM ATMOSPHERE;                        #ML-1T-2
+CONST STANDARDATMOSPHERE ATMOSPHERE;         #ML-1T-2
+CONST TORR ATMOSPHERE / 760;                 #ML-1T-2
+CONST BAR 1E+5 * PA;                         #ML-1T-2
+CONST MMHG 13595.1 * KILOGRAM * GRAVITY * MM
+      / ??POW3 METER??; #ML-1T-2
+CONST INHG MMHG * INCH / MM;                 #ML-1T-2
+CONST PSI POUND * GRAVITY / (INCH * INCH);   #ML-1T-2
+
+##    TEMPERATURE  ---- ----- ----- ----- ----- ----- ----- -----
+CONST DEGC KELVIN;                  #K
+CONST DEGF KELVIN / 1.8;            #K
+CONST DEGR DEGF;                    #K
+CONST K_AT_0TEMPC 273.15 * DEGC;    #K
+CONST K_AT_0TEMPF 459.67 * DEGF;    #K
+CONST K_AT_0TEMPR 0.0 * DEGR;       #K
+
+##    SPEED ----- ----- ----- ----- ----- ----- ----- ----- -----
+CONST MACH 331.46 * MPS;            #LT-1
+CONST MPH MILE / HOUR;              #LT-1
+
+##    AREA  ----- ----- ----- ----- ----- ----- ----- ----- -----
+CONST HECTARE 10000 * METER * METER; #L2
+CONST ARE 100 * METER * METER;       #L2
+CONST ACRE MILE * MILE / 640.0;      #L2
+CONST BARN 1E-28 * METER * METER;    #L2
+
+##    VOLUME ---- ----- ----- ----- ----- ----- ----- ----- -----
+CONST LITER METER * METER * METER / 1000.0; #L3
+CONST LITRE LITER;                          #L3
+CONST GALLON 231.0 * INCH * INCH * INCH;    #L3
+CONST QUART GALLON / 4.0;                   #L3
+CONST PINT QUART / 2.0;                     #L3
+CONST CUP PINT / 2.0;                       #L3
+CONST FLOZ CUP / 8.0;                       #L3
+CONST TBLSP FLOZ / 2.0;                     #L3
+CONST TSP TBLSP / 3.0;                      #L3
+CONST BARREL 42.0 * GALLON;                 #L3
+
+##    CHARGE ---- ----- ----- ----- ----- ----- ----- ----- -----
+CONST AH AMPERE * HOUR;   #TI
+
+##    ENERGY ---- ----- ----- ----- ----- ----- ----- ----- -----
+# Thermochemical Calorie
+CONST CALORIE 4.184 * JOULE;                        #ML2T-2
+# International Steam Table Calorie
+CONST CAL_IT 4.1868 * JOULE;                        #ML2T-2
+CONST CAL_TH CALORIE;                               #ML2T-2
+CONST CAL CALORIE;                                  #ML2T-2
+CONST BTU_TH CAL_TH * POUND * DEGF / (GRAM * DEGC); #ML2T-2
+CONST BTU_IT CAL_IT * POUND * DEGF / (GRAM * DEGC); #ML2T-2
+CONST BTU CALORIE * POUND * DEGF / (GRAM * DEGC);   #ML2T-2
+CONST HP 550.0 * FOOT * POUND * GRAVITY / SECOND;   #ML2T-2
+CONST HORSEPOWER HP;                                #ML2T-2
+CONST HPMETRIC 75 * KILOGRAM * GRAVITY * MPS;       #ML2T-2
+CONST ELECTRONVOLT ELECTRONCHARGE * VOLT;           #ML2T-2
+CONST ERG 1E-7 * JOULE;                             #ML2T-2
+CONST FOE 1E+44 * JOULE;                            #ML2T-2
+
+??MACRO CNSTBATT <NM> ; <CHARGE> ; <VOLTAGE>??
+CONST <NM>CHARGE <CHARGE>; #IT
+CONST <NM>VOLTAGE <VOLTAGE>; #ML2I-1T-3
+CONST <NM> <NM>CHARGE * <NM>VOLTAGE; #ML2T-2
+CONST <NM>ENERGY <NM>; #ML2T-2??MACRO_END
+??CNSTBATT AAABATTERY      ; 2.1   * AH ; 1.5 * VOLT??
+??CNSTBATT AABATTERY       ; 2.7   * AH ; 1.5 * VOLT??
+??CNSTBATT CBATTERY        ; 8.0   * AH ; 1.5 * VOLT??
+??CNSTBATT DBATTERY        ; 12    * AH ; 1.5 * VOLT??
+??CNSTBATT NINEVOLT        ; 0.565 * AH ; 9.0 * VOLT??
+??CNSTBATT NINEVOLTBATTERY ; NINEVOLTCHARGE ; NINEVOLTVOLTAGE??
+??CNSTBATT PHONEBATTERY    ; 3.0   * AH ; 3.8 * VOLT??
+??CNSTBATT CARBATTERY      ; 45.0  * AH ; 12.0 * VOLT??
+
+##    LIGHT  ---- ----- ----- ----- ----- ----- ----- ----- -----
+#CONST MICROWAVE 1.224E-1 * METER;         #L
+??CNSTWVFREQ MICROWAVE   ; 2.45E+9 / SECOND??
+??CNSTWVFREQ LF          ; 1.00E+5 / SECOND??
+??CNSTWVFREQ MF          ; 1.00E+6 / SECOND??
+??CNSTWVFREQ HF          ; 1.00E+7 / SECOND??
+??CNSTWVFREQ VHF         ; 1.00E+8 / SECOND??
+??CNSTWVFREQ UHF         ; 1.00E+9 / SECOND??
+??CNSTWVFREQ SHF         ; 1.00E+10 / SECOND??
+??CNSTWVFREQ EHF         ; 1.00E+11 / SECOND??
+??CNSTWVFREQ THF         ; 1.00E+12 / SECOND??
+??CNSTWVFREQ FIR         ; 1.00E+12 / SECOND??
+??CNSTWVFREQ MIR         ; 1.00E+13 / SECOND??
+??CNSTWVFREQ NIR         ; 1.00E+14 / SECOND??
+??CNSTWVLENG RED         ; 7.00E-7 * METER??
+??CNSTWVLENG ORANGE      ; 6.20E-7 * METER??
+??CNSTWVLENG YELLOW      ; 5.80E-7 * METER??
+??CNSTWVFREQ YELLOWGREEN ; 540E+12 / SECOND??
+??CNSTWVLENG GREEN       ; 5.30E-7 * METER??
+??CNSTWVLENG BLUE        ; 5.00E-7 * METER??
+??CNSTWVLENG VIOLET      ; 4.20E-7 * METER??
+??CNSTWVFREQ NUV         ; 1.00E+15 / SECOND??
+??CNSTWVFREQ EUV         ; 1.00E+16 / SECOND??
+??CNSTWVLENG UVA         ; 3.60E-7 * METER??
+??CNSTWVLENG UVB         ; 3.00E-7 * METER??
+??CNSTWVLENG UVC         ; 1.90E-7 * METER??
+??CNSTWVFREQ SX          ; 3.00E+17 / SECOND??
+??CNSTWVLENG SXX         ; 1.00E-9 *METER??
+??CNSTWVFREQ HX          ; 1.00E+19 / SECOND??
+??CNSTWVFREQ GAMMA       ; 1.00E+20 / SECOND??
+
+##    ANGLE ----- ----- ----- ----- ----- ----- ----- ----- -----
+CONST TURN TAU * RADIAN;          #A
+CONST ARCDEGREE TURN / 360.0;     #A
+CONST ARCMINUTE ARCDEGREE / 60.0; #A
+CONST ARCSECOND ARCMINUTE / 60.0; #A
+CONST GRAD TURN / 400.0;          #A
+CONST ARCDEG ARCDEGREE;           #A
+CONST ARCMIN ARCMINUTE;           #A
+CONST ARCSEC ARCSECOND;           #A
+CONST SQUAREDEGREE ARCDEGREE * ARCDEGREE;   #A2
+CONST SQDEG SQUAREDEGREE;            #A2
+CONST SPHERESURFACE 2 * Kw.TAU * STERADIAN;  #A2
+
+##    INFORMATION ----- ----- ----- ----- ----- ----- ----- -----
+CONST SHANNON BIT;                         #B
+CONST NAT     BIT / Kw.LNTWO;              #B
+CONST HARTLEY Kw.LNTEN / Kw.LNTWO * BIT;   #B
+CONST HART    HARTLEY;                     #B
+CONST DIT     HARTLEY;                     #B
+CONST BAN     HARTLEY;                     #B
+
+##    ANGULAR SPEED --- ----- ----- ----- ----- ----- ----- -----
+CONST RPM TURN / MINUTE; #AT-1
+CONST RPS TURN / SECOND; #AT-1
+
+##    NUCLEAR RELATED - ----- ----- ----- ----- ----- ----- -----
+??CNSTE FINESTRUCTURE     ; ALPHA     ; ALPHA_ERR ; 1??
+??CNSTE FINESTRUCTURE_REC ; ALPHA_REC ; ALPHA_ERR ; 1??
+??CNSTE MAGNETIC ; 2.0 * VONKLITZING * ALPHA / LIGHT
+      ; ALPHA_ERR ; ML/T2I2??
+??CNSTE MU0 ; MAGNETIC ; ALPHA_ERR ; ML/T2I2??
+# follows from LIGHT**2 * MAGNETIC * ELECTRIC 1.0
+??CNSTE ELECTRIC ; 1.0 / (LIGHT * LIGHT * MU0)
+      ; ALPHA_ERR ; ML/T2I2??
+??CNSTE EPSILON0 ; ELECTRIC           ; ALPHA_ERR ; ML/T2I2??
+??CNSTE COULOMBCONST ; 1.0 / (2.0 * TAU * ELECTRIC)
+      ; ALPHA_ERR ; ML3/T4I2??
+??CNSTE PROTONRADIUS ; 8.414E-16 * METER; 2.2E-3 ; L??
+
+??CNSTE MOLARMASS ; 0.99999999965 * GRAM / MOLE
+      ; 2.0E-10; M/N??
+??CNSTE MOLARMASSX ; (1.0 - 3.5E-10) * GRAM / MOLE
+      ; 2.0E-10; M/N??
+
+# defined to be exactly Mass(CARBON_12)/12
+??CNSTE DALTON ; MOLARMASS / AVOGADRO ; MOLARMASS_ERR ; M??
+??CNSTE AMU                    ; DALTON ; DALTON_ERR ; M??
+??CNSTE ATOMICMASSUNIT         ; DALTON ; DALTON_ERR ; M??
+??CNSTE UAMU                   ; DALTON ; DALTON_ERR ; M??
+
+??CNSTWVFREQ RYDBERG  ; RYDBERG ??
+
+??CNSTE ELECTRONMASSA ; 2.0 * RYDBERGHz * PLANCK
+   / (LIGHT * LIGHT * ALPHA * ALPHA); 2.0 * ALPHA_ERR ; M??
+
+??CNSTMASS ELECTRON    ; 5.48579909065E-4 * AMU; 2.9E-11??
+??CNSTMASS UPQUARK     ; 0.00216          * AMU; 0.2    ??
+??CNSTMASS DOWNQUARK   ; 0.00514          * AMU; 0.1    ??
+??CNSTMASS MUON        ; 0.1134289259     * AMU; 2.2E-8 ??
+??CNSTMASS PROTON      ; 1.007276466812   * AMU; 8.9E-11??
+??CNSTMASS NEUTRON     ; 1.00866491595    * AMU; 4.8E-10??
+??CNSTMASS TAU         ; 1.90754          * AMU; 6.8E-5 ??
+??CNSTMAST DEUTERON    ; 2.013553212745   * AMU; 2.0E-11??
+??CNSTMAST HELION      ; 3.0149322467175  * AMU; 3.2E-11??
+??CNSTMAST TRITON      ; 3.01550071621    * AMU; 4.0E-11??
+??CNSTMAST ALPHA       ; 4.001506179127   * AMU; 1.6E-11??
+
+??CNSTE HYDROGENRADIUS ; (HBAR
+   / (ELECTRONMASS * LIGHT * ALPHA)) ; ALPHA_ERR ; L??
+??CNSTE BOHRRADIUS ; HYDROGENRADIUS ; ALPHA_ERR ; L??
+
+??CNSTWVFREQ HI ;     1420405751.7667 * HERTZ ??
+??CNSTE HYDROGENLINE;    HIWAVELENGTH; 6.3E-13 ; L??
+??CNSTE HI;         LIGHT / HIHz; HYDROGENLINE_ERR ; L??
+
+##    PLANCK UNITS ---- ----- ----- ----- ----- ----- ----- -----
+# Planck units and constants
+# PLANCKCHARGE = ELECTRONCHARGE / SQRT(ALPHA)
+# PLANCKLENGTH = SQRT(HBAR * GRAVITATION / LIGHT**3)
+# PLANCKTIME   = SQRT(HBAR * GRAVITATION / LIGHT**5)
+# PLANCKMASS   = SQRT(HBAR * LIGHT / GRAVITATION)
+# PLANCKENERGY = SQRT(HBAR * LIGHT**5 / GRAVITATION)
+# PLANCKTEMP   = SQRT(HBAR * LIGHT**5 / GRAVITATION) / BOLTZMANN
+LANGUAGE LANG_VB6 LANG_VBDOTNET:          # VB: no sqrt in consts
+   CONST PLANCKMASS  2.176434366592856178609495E-8 * KILOGRAM; #M
+   CONST PLANCKCHARGE 1.87554603814952214E-18 * COULOMB; #TI
+LANGUAGE_END                              # VB: no sqrt in consts
+LANGUAGE_NOT LANG_VB6 LANG_VBDOTNET:     # not VB: sqrt in consts
+   CONST PLANCKMASS    SQRT(HBAR * LIGHT / GRAVITATION); #M
+   CONST PLANCKCHARGE  ELECTRONCHARGE / SQRT(ALPHA); #TI
+LANGUAGE_END                             # not VB: sqrt in consts
+
+CONST PLANCKENERGY  PLANCKMASS * LIGHT * LIGHT; #ML2/T2
+CONST PLANCKTEMP    PLANCKENERGY / BOLTZMANN; #K
+CONST PLANCKLENGTH  HBAR / PLANCKMASS / LIGHT; #L
+CONST PLANCKTIME    PLANCKLENGTH / LIGHT; #T
+
+??CNSTE STEFAN ; (TAU * TAU * LIGHT * BOLTZMANN)
+      * ??POW3 BOLTZMANN / (LIGHT * HBAR)?? / 240.0 ;
+      0 ; M/K4T3??
+
+##    SPORTS RELATED -- ----- ----- ----- ----- ----- ----- -----
+CONST PINGPONGBALLRADIUS 0.02 * METER;       #L
+CONST GOLFBALLRADIUS 0.02135 * METER;    #L
+CONST TENNISBALLRADIUS 0.03325 * METER;    #L
+CONST BASEBALLRADIUS 9.125 * INCH / TAU; #L
+CONST SOFTBALLRADIUS 12 * INCH / TAU;    #L
+CONST SOCCERBALLRADIUS 0.69 * METER / TAU; #L
+CONST BASKETBALLRADIUS 0.75 * METER / TAU; #L
+CONST PINGPONGBALLMASS 2.7 * GRAM;         #M
+CONST GOLFBALLMASS 45.93 * GRAM;       #M
+CONST TENNISBALLMASS 57.7 * GRAM;        #M
+CONST BASEBALLMASS 146.5 * GRAM;       #M
+CONST SOFTBALLMASS 187 * GRAM;         #M
+CONST BASKETBALLMASS 620 * GRAM;         #M
+CONST SOCCERBALLMASS 430 * GRAM;         #M
+CONST MARATHON 42195 * METER;      #L
+
+##    US COINS -- ----- ----- ----- ----- ----- ----- ----- -----
+CONST PENNYTHICKNESS 1.55E-3 * METER;          #L
+CONST NICKELTHICKNESS 1.95E-3 * METER;          #L
+CONST DIMETHICKNESS 1.35E-3 * METER;          #L
+CONST QUARTERTHICKNESS 1.75E-3 * METER;          #L
+CONST PENNYRADIUS 9.525E-3 * METER;         #L
+CONST NICKELRADIUS 1.061E-2 * METER;         #L
+CONST DIMERADIUS 8.955E-3 * METER;         #L
+CONST QUARTERRADIUS 1.213E-2 * METER;         #L
+CONST PENNYMASS 2.5 * GRAM;                #M
+CONST NICKELMASS 5.0 * GRAM;                #M
+CONST DIMEMASS 0.005 * POUND;             #M
+CONST QUARTERMASS 0.0125 * POUND;            #M
+
+##    ASTRONOMIC  ----- ----- ----- ----- ----- ----- ----- -----
+CONST MOONMONTH 29.530587981 * DAY;       #T
+CONST MILKYWAYAGE 8.3E+9 * JYEAR;           #T
+CONST UNIVERSEAGE 13.799E+9 * JYEAR;        #T
+CONST LIGHTYEAR LIGHT * JYEAR;            #L
+CONST ASTRONOMICALUNIT AU;                       #L
+CONST PARSEC 1296000.0 * AU / TAU;     #L
+CONST PROXIMACENTAURI 39.9E+15 * METER;         #L
+CONST MILKYWAYRADIUS 6.0E+4 * LIGHTYEAR;       #L
+CONST GALACTICCENTER 2.64E+4 * LIGHTYEAR;      #L
+CONST UNIVERSERADIUS UNIVERSEAGE * LIGHT;      #L
+CONST MILKYWAYMASS 1.4E+42 * KILOGRAM;       #M
+CONST UNIVERSEMASS 1.46E+53 * KILOGRAM;      #M
+CONST SOLARCONSTANT 1361.0 * WATT / (METER * METER);   #MT-3
+
+??CNSTE EINSTEIN ; 4 * TAU * GRAVITATION / ??POW4 LIGHT??
+      ; GRAVITATION_ERR ; T2M-1L-1??
+??CNSTE HUBBLE; 67.66E-3 * METER / (SECOND * PARSEC)
+      ; 6E-3 ; T-1??
+
+CONST BHMASSTEMP    (HBAR * ??POW3 LIGHT??
+      / (4.0 * TAU * GRAVITATION * BOLTZMANN)); #MK
+CONST BHMASS_RADIUS    0.5 * LIGHT * LIGHT / GRAVITATION; #ML-1
+CONST BHMASS3_LIFETIME    (PLANCK * ??POW4 LIGHT??)
+      / (2560 * TAU * TAU * GRAVITATION * GRAVITATION); #M3T-1
+CONST BHRADIUS2DENSITY  1.5 * BHMASS_RADIUS / TAU; #LM-1
+CONST BHENTROPY_AREA  (TAU * ??POW3 LIGHT?? * BOLTZMANN)
+      / (4 * PLANCK * GRAVITATION); #MK-1T-2
+
+CONST BEKENSTEININFORMATION
+      (TAU * TAU * NAT) / (PLANCK * LIGHT); #BM-1L-1
+CONST BEKENSTEINENTROPY
+      (TAU * TAU * BOLTZMANN) / (PLANCK * LIGHT); #K-1L-1
+
+##    GEOGRAPHIC  ----- ----- ----- ----- ----- ----- ----- -----
+CONST ELEVATIONMAX 8848.0 * METER;        #L
+CONST ELEVATIONMIN -10994.0 * METER;      #L
+
+##    GEOLOGIC -- ----- ----- ----- ----- ----- ----- ----- -----
+CONST KPGBOUNDARY 65.5E+6 * JYEAR;       #T
+CONST TRJBOUNDARY 199.6E+6 * JYEAR;      #T
+CONST MILKYWAYDAY 250.0E+6 * JYEAR;      #T
+CONST PTRBOUNDARY 251.4E+6 * JYEAR;      #T
+CONST NPBOUNDARY 542.0E+6 * JYEAR;      #T
+CONST LIFEAGE 3.85E+9 * JYEAR;       #T
+CONST GIANTIMPACT 4.533E+9 * JYEAR;      #T
+CONST EARTHAGE 4.56717E+9 * JYEAR;    #T
+
+##    RATIONAL NUMBERS  ----- ----- ----- ----- ----- ----- -----
+CONST PPQ 1E-15; #1
+CONST PPT 1E-12; #1
+CONST PPB 1E-9; #1
+CONST PPM 1E-6; #1
+
+##    DIMENSIONAL ----- ----- ----- ----- ----- ----- ----- -----
+CONST MASS KILOGRAM;                              #M
+CONST LENGTH METER;                               #L
+CONST DISTANCE LENGTH;                            #L
+CONST TEMPERATURE KELVIN;                         #K
+CONST TIME SECOND;                                #T
+CONST ANGLE RADIAN;                               #A
+CONST SOLID_ANGLE STERADIAN;                      #A2
+CONST SPEED LENGTH / TIME;                        #LT-1
+CONST ACCELERATION SPEED / TIME;                  #LT-2
+CONST FORCE MASS * ACCELERATION;                  #MLT-2
+CONST ENERGY FORCE * LENGTH;                      #ML2T-2
+CONST ACTION ENERGY * TIME;                       #ML2T-1
+CONST POWER ENERGY / TIME;                        #ML2T-3
+CONST AREA LENGTH * LENGTH;                       #L2
+CONST VOLUME LENGTH * LENGTH * LENGTH;            #L3
+CONST DENSITY MASS / VOLUME;                      #ML-3
+CONST SPECIFICHEAT ENERGY / (MASS * TEMPERATURE); #L2T-2K-1
+CONST PRESSURE FORCE / AREA;                      #ML-1T-2
+CONST VISCOSITY FORCE * TIME / AREA;              #ML-1T-1
+CONST FREQUENCY 1 / TIME;                         #T-1
+
+CONST CHARGE AMPERE * SECOND;                     #IT
+CONST CURRENT CHARGE / TIME;                      #I
+CONST VOLTAGE POWER / CURRENT;                    #ML2T-3I-1
+CONST RESISTANCE VOLTAGE / CURRENT;               #ML2T-3I-2
+CONST INDUCTANCE RESISTANCE * TIME;               #ML2T-2I-2
+CONST CAPACITANCE CHARGE / VOLTAGE;               #I2T4M-1L-2
+CONST CONDUCTANCE 1.0 / RESISTANCE;               #I2T3M-1L-2
+CONST MAGNETICFLUX VOLTAGE * TIME;                #ML2T-2I-1
+CONST MAGNETICINDUCTION MAGNETICFLUX / AREA;      #MT-2I-1

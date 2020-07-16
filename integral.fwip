@@ -1,0 +1,263 @@
+#    Copyright (C) 2020 by Kevin D. Woerner
+# 2020-07-07 kdw  tests changed II
+# 2020-06-30 kdw  tests changed
+# 2020-06-16 kdw  comments changed
+# 2020-06-09 kdw  car[l]son.* functions
+# 2020-06-08 kdw  created
+
+# functions defined by integrals
+
+FUNC DBL sinintegral(DBL xx):
+   #        xx  SIN(t)
+   # INTEGRATE  ------ dt
+   #         0    t
+   # via Taylor Series
+   DBL sum_curr;
+   DBL sum_prev;
+   DBL term;
+   DBL kk;
+   DBL xsq;
+
+   IF Kw.iszero(xx):
+      sum_curr = 0.0;
+   ELSE:
+      sum_curr = xx;
+      term = xx;
+      xsq = xx * xx;
+      AWAIT Kw.iseq(sum_curr, sum_prev) COUNT kk FROM 3 BY 2:
+         term *= -xsq / (kk * (kk - 1.0));
+         sum_prev = sum_curr;
+         sum_curr += term / kk;
+      AWAIT_END
+   IF_END
+   RETURN sum_curr;
+FUNC_END
+
+FUNC DBL cosintegral(DBL xx):
+   #        xx  -COS(t)
+   # INTEGRATE  ------- dt
+   #         0     t
+   # via Taylor Series
+   DBL sum_curr;
+   DBL sum_prev;
+   DBL term;
+   DBL kk;
+   DBL xsq;
+
+   IF Kw.iszero(xx):
+      sum_curr = -Kw.DBLMAX;
+   ELSE:
+      sum_curr = Kw.EULER + LN(ABS(xx));
+      term = 1.0;
+      xsq = xx * xx;
+      AWAIT Kw.iseq(sum_curr, sum_prev) COUNT kk FROM 2 BY 2:
+         term *= -xsq / (kk * (kk - 1.0));
+         sum_prev = sum_curr;
+         sum_curr += term / kk;
+      AWAIT_END
+   IF_END
+   RETURN sum_curr;
+FUNC_END
+#TEST:cosintegral(3.38418042255118642639785114640206045);
+
+FUNC DBL Ein(DBL xx):
+   #        xx  1 - EXP(-t)
+   # INTEGRATE  ----------- dt
+   #         0      t
+   # via Taylor Series
+   DBL sum_curr;
+   DBL sum_prev;
+   DBL term;
+   DBL kk;
+
+   sum_curr = 0;
+   term = -1;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT kk FROM 1:
+      term *= -xx / kk;
+      sum_prev = sum_curr;
+      sum_curr += term / kk;
+   AWAIT_END
+   RETURN sum_curr;
+FUNC_END
+
+FUNC DBL expintegrali(DBL xx):
+   # "Exponential" integral
+   #       INF  -EXP(-t)
+   # INTEGRATE  -------- dt
+   #       -xx     t
+   DBL retvalu;
+
+   retvalu = Kw.EULER + LN(ABS(xx)) - Kw.Ein(-xx);
+
+   RETURN retvalu;
+FUNC_END
+#TEST:expintegrali(0.37250741078136663446199186658012);
+
+FUNC DBL expintegraln(INT nn, DBL xx):
+   #       INF  EXP(-t * xx)
+   # INTEGRATE  ------------ dt
+   #         1      t**nn
+   RETURN POW(xx, nn - 1) * Kw.uigamma(1 - nn, xx);
+FUNC_END
+
+FUNC DBL expintegral1(DBL xx):
+   #       INF  EXP(-t)
+   # INTEGRATE  ------- dt
+   #        xx      t
+   DBL retvalu;
+
+   retvalu = -Kw.EULER - LN(ABS(xx)) + Kw.Ein(xx);
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL logintegral(DBL xx):
+   #        xx    1
+   # INTEGRATE  ----- dt
+   #         0  LN(t)
+   # via Taylor Series
+   DBL sum;
+   DBL lnx;
+   DBL yy;
+   INT nn;
+   DBL sum_prev;
+   DBL limit;
+   DBL retvalu;
+
+   IF xx <= 1.0:
+      retvalu = 0.0;
+   ELSE:
+      lnx = LN(xx);
+      sum = 0.0;
+      yy = 1.0;
+      limit = 1.6 * LN(xx) + 40;
+      AWAIT Kw.iseq(sum, sum_prev) COUNT nn FROM 1 TO limit:
+         yy *= lnx / nn;
+         sum_prev = sum;
+         sum += yy / nn;
+      AWAIT_END
+      retvalu = Kw.EULER + LN(lnx) + sum;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL carlsonRF(DBL xx, DBL yy, DBL zz):
+   #       INF          0.5
+   # INTEGRATE  ----------------------------- dt
+   #        0     ---------------------------
+   #             / (t + xx) (t + yy) (t + zz)
+   #            V
+   # via AGM method
+   DBL sqx;
+   DBL sqy;
+   DBL sqz;
+   DBL lmbd;
+
+   AWAIT Kw.iseq(xx, yy) AND Kw.iseq(yy, zz):
+      sqx = SQRT(xx);
+      sqy = SQRT(yy);
+      sqz = SQRT(zz);
+      lmbd = sqx * sqy + sqx * sqz + sqy * sqz;
+      xx = (xx + lmbd) / 4.0;
+      yy = (yy + lmbd) / 4.0;
+      zz = (zz + lmbd) / 4.0;
+   AWAIT_END
+
+   RETURN 1.0 / SQRT(xx);
+FUNC_END
+#TEST:carlsonRF(2,1,1)==coshinv(sqrt(2));
+#TEST:carlsonRF(3,3,3)==1.0/sqrt(3);
+#TEST:carlsonRF(2,4,4)==cosinv(sqrt(0.5))/sqrt(2);
+
+FUNC DBL carlsonRC(DBL xx, DBL yy):
+   #       INF        0.5
+   # INTEGRATE  ---------------------- dt
+   #         0             -----------
+   #            (t + YY)  / (t + XX)
+   #                     V
+   # via AGM method
+   # carlsonRC(xx,yy) == carlsonRF(xx, yy, yy);
+   DBL lmbd;
+
+   AWAIT Kw.iseq(xx, yy):
+      lmbd = 2 * SQRT(xx * yy) + yy;
+      xx = (xx + lmbd) / 4.0;
+      yy = (yy + lmbd) / 4.0;
+   AWAIT_END
+
+   RETURN 1.0 / SQRT(xx);
+FUNC_END
+
+FUNC DBL carlsonRJ(DBL xx, DBL yy, DBL zz, DBL pp):
+   #       INF                  1.5
+   # INTEGRATE  -------------------------------------- dt
+   #         0             ---------------------------
+   #            (t + pp)  / (t + xx) (t + yy) (t + zz)
+   #                     V
+   # via AGM method
+   DBL sqx;
+   DBL sqy;
+   DBL sqz;
+   DBL lmbd;
+   DBL pfour;
+   DBL alfa;
+   DBL beta;
+   DBL sigm;
+
+   pfour = 1.0;
+   sigm = 0.0;
+   AWAIT Kw.iseq(xx, yy) AND Kw.iseq(yy, zz) AND Kw.iseq(zz, pp):
+      sqx = SQRT(xx);
+      sqy = SQRT(yy);
+      sqz = SQRT(zz);
+      lmbd = sqx * sqy + sqx * sqz + sqy * sqz;
+      alfa = pp * (sqx + sqy + sqz) + sqx * sqy * sqz;
+      alfa *= alfa;
+      beta = pp * (pp + lmbd) * (pp + lmbd);
+      sigm += pfour * Kw.carlsonRC(alfa, beta);
+      pfour /= 4.0;
+      xx = (xx + lmbd) / 4.0;
+      yy = (yy + lmbd) / 4.0;
+      zz = (zz + lmbd) / 4.0;
+      pp = (pp + lmbd) / 4.0;
+   AWAIT_END
+
+   RETURN 3.0 * sigm;
+FUNC_END
+
+FUNC DBL carlsonRD(DBL xx, DBL yy, DBL zz):
+   #       INF           1.5
+   # INTEGRATE  -------------------------------------- dt
+   #         0             ---------------------------
+   #            (t + zz)  / (t + xx) (t + yy) (t + zz)
+   #                     V
+   # carlsonRD(xx,yy,zz) = carlsonRJ(xx,yy,zz,zz)
+   # via AGM method
+   DBL sqx;
+   DBL sqy;
+   DBL sqz;
+   DBL lmbd;
+   DBL pfour;
+   DBL alfa;
+   DBL beta;
+   DBL sigm;
+
+   pfour = 1.0;
+   sigm = 0.0;
+   AWAIT Kw.iseq(xx, yy) AND Kw.iseq(yy, zz):
+      sqx = SQRT(xx);
+      sqy = SQRT(yy);
+      sqz = SQRT(zz);
+      lmbd = sqx * sqy + sqx * sqz + sqy * sqz;
+      alfa = zz * (sqx + sqy + sqz) + sqx * sqy * sqz;
+      alfa *= alfa;
+      beta = zz * (zz + lmbd) * (zz + lmbd);
+      sigm += pfour * Kw.carlsonRC(alfa, beta);
+      pfour /= 4.0;
+      xx = (xx + lmbd) / 4.0;
+      yy = (yy + lmbd) / 4.0;
+      zz = (zz + lmbd) / 4.0;
+   AWAIT_END
+
+   RETURN 3.0 * sigm;
+FUNC_END

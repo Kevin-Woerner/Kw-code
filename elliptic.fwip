@@ -1,0 +1,1012 @@
+#    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-07-07 kdw  extend to m<0 and 1<m II
+# 2020-07-05 kdw  extend to m<0 and 1<m
+# 2020-07-03 kdw  cir[2]ell and ell[2]cir funcs
+# 2020-07-02 kdw  debugging
+# 2020-06-30 kdw  tests changed
+# 2020-06-26 kdw  more theta functions#
+# 2020-06-25 kdw  theta functions
+# 2020-06-23 kdw  comment correction
+# 2020-06-20 kdw  jacobi pq funcs renam
+# 2020-06-15 kdw  rework of jacobi funcs
+# 2020-06-12 kdw  more jacobi funcs
+# 2020-06-10 kdw  tests: more sig figs
+# 2020-06-09 kdw  elli[p]ticEi debugging
+# 2020-06-08 kdw  integral function stuff
+# 2020-06-06 kdw  comment change
+# 2020-05-20 kdw  module for pi made explicit
+# 2020-04-26 kdw  block indentation
+# 2020-04-12 kdw  comment change
+# 2020-04-02 kdw  re[t]urn rework
+# 2020-04-01 kdw  t[a]n to TA[N]
+# 2020-03-03 kdw  comment change
+# 2020-03-02 kdw  s/_N[E]XT/_[E]ND/
+# 2020-02-24 kdw  function comments
+# 2020-02-21 kdw  car[l]sonR[FCDJ] funcs
+# 2020-02-19 kdw  e[l]liptic[3P] funcs
+# 2020-02-18 kdw  e[l]liptic[1KF]i? funcs
+# 2019-12-27 kdw  explicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-10-04 kdw  comment change
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-06 kdw  rmed backslahses;macro arg renam
+# 2019-06-02 kdw  elliptic1 wtf?; no net change
+# 2019-05-29 kdw  comment changed
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-16 kdw  loop limit def mved
+# 2019-05-01 kdw  consts explicit module name
+# 2019-03-15 kdw  use to[p]yh1
+# 2019-03-09 kdw  .*mean() func renam
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-06 kdw  is.* funcs changed
+# 2019-03-04 kdw  loop-limit work
+# 2018-10-04 kdw  uppercased fwip trig funcs
+# 2018-07-14 kdw  float num format
+# 2018-04-03 kdw  rm () from return
+# 2018-01-08 kdw  AGM formulas
+# 2018-01-06 kdw  AGM formulas
+# 2018-01-04 kdw  created
+
+# A lot of the following code was snarfed from:
+# Cephes Math Library Release 2.8:  June, 2000
+# Copyright 1984, 1987, 1993, 2000 by Stephen L. Moshier
+
+FUNC DBL m2k(DBL mm):
+   RETURN SQRT(mm);
+FUNC_END
+
+FUNC DBL k2m(DBL kk):
+   RETURN kk * kk;
+FUNC_END
+
+FUNC DBL m2b(DBL mm):
+   RETURN 1.0 / SQRT(1 - mm);
+FUNC_END
+
+FUNC DBL b2m(DBL bb):
+   RETURN 1.0 - 1.0 / (bb * bb);
+FUNC_END
+
+FUNC DBL elliptic1(DBL mm):
+   # Complete Elliptic Integral of the 1th kind.
+   #      PI/2          1
+   # INTEGRATE  ------------------- dt
+   #         0    -----------------
+   #             / 1 - mm SIN(t)**2
+   #            V
+   RETURN Kw.PI / (2.0 * Kw.agmean(1.0, SQRT(1.0 - mm)));
+FUNC_END
+#TEST:elliptic1(0.01)==carlsonRF(0,0.99,1);
+#TEST:elliptic1(0.49)==1.8456939983747235175865286548842198353;
+
+FUNC DBL ellipticK(DBL kk):
+   # Complete Elliptic Integral of the 1th kind.
+   RETURN elliptic1(k2m(kk));
+FUNC_END
+
+FUNC DBL elliptic1__1(DBL mm):
+   # Complete Elliptic Integral of the 1th kind
+   #   == RF(0, 1-MM, 1)
+   RETURN Kw.carlsonRF(0.0, 1.0 - mm, 1.0);
+FUNC_END
+
+FUNC DBL elliptic1i(DBL mm, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 1th kind.
+   #       PHI           1
+   # INTEGRATE  ------------------- dt
+   #         0    -----------------
+   #             / 1 - mm SIN(t)**2
+   #            V
+   DBL aan;
+   DBL ggn;
+   DBL cc;
+   BOL skip_flag;
+   DBL temp;
+   DBL retvalu;
+   DBL tt;
+   DBL kresult;
+   DBL lcirc_rad;
+   DBL mc;
+   INT ii;
+   INT modd;
+   INT signof;
+   INT npihlfs;
+   DBL ee;
+
+   mc = 1.0 - mm;
+   IF Kw.iszero(mm):
+      retvalu = circ_rad;
+   ELSIF Kw.iszero(mc):
+      IF Kw.PI / 2 <= ABS(circ_rad):
+         retvalu = DBLMAX;
+      ELSE:
+         retvalu = LN(TAN((Kw.PI / 2 + circ_rad) / 2.0));
+      IF_END
+   ELSE:
+      npihlfs = FLOOR(circ_rad / (Kw.PI / 2));
+      IF Kw.isodd(npihlfs):
+         npihlfs += 1;
+      IF_END
+      # now npihlfs is even
+      lcirc_rad = circ_rad;
+      IF npihlfs == 0:
+         kresult = 0.0;
+      ELSE:
+         kresult = Kw.elliptic1(mm);
+         lcirc_rad -= npihlfs * Kw.PI / 2;
+      IF_END
+      IF lcirc_rad < 0.0:
+         lcirc_rad = -lcirc_rad;
+         signof = -1;
+      ELSE:
+         signof = 1;
+      IF_END
+      tt = TAN(lcirc_rad);
+      ggn = SQRT(mc);
+      skip_flag = FALSE;
+      IF 10.0 < ABS(tt):
+         ee = 1.0 / (ggn * tt);
+         IF ABS(ee) < 10.0:
+            IF npihlfs == 0:
+               kresult = Kw.elliptic1(mm);
+            IF_END
+            temp = kresult - Kw.elliptic1i(mm, ATAN2(ee, 1));
+            skip_flag = TRUE;
+         IF_END
+      IF_END
+      IF NOT skip_flag:
+         aan = 1.0;
+         ii = 1;
+         modd = 0;
+
+         AWAIT ABS(cc / aan) <= DBLEPS:
+            temp = ggn / aan;
+            lcirc_rad += ATAN2(tt * temp, 1) + modd * Kw.PI;
+            modd = FLOOR(lcirc_rad / Kw.PI + 0.5);
+            tt *= (1.0 + temp) / (1.0 - temp * tt * tt);
+            cc = (aan - ggn) / 2.0;
+            temp = SQRT(aan * ggn);
+            aan = (aan + ggn) / 2.0;
+            ggn = temp;
+            ii += ii;
+         AWAIT_END
+
+         temp = (ATAN2(tt, 1.0) + modd * Kw.PI) / (ii * aan);
+      IF_END
+      IF signof < 0:
+         temp = -temp;
+      IF_END
+      retvalu = temp + npihlfs * kresult;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:elliptic1i(0.81,1)==1.15966107073219896613246347782023808;
+
+FUNC DBL ellipticF(DBL kk, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 1th kind.
+   RETURN elliptic1i(k2m(kk), circ_rad);
+FUNC_END
+
+FUNC DBL elliptic1i__1(DBL mm, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 1th kind.
+   #   ==SIN(PHI) * RF(COS(PHI)**2, 1 - MM * SIN(PHI)**2, 1)
+   DBL sinphi;
+   INT npihlfs;
+   DBL lcirc_rad;
+   DBL kresult;
+
+   npihlfs = FLOOR(circ_rad / (Kw.PI / 2));
+   IF Kw.isodd(npihlfs):
+      npihlfs += 1;
+   IF_END
+   # now npihlfs is even
+   lcirc_rad = circ_rad;
+   IF npihlfs == 0:
+      kresult = 0.0;
+   ELSE:
+      kresult = Kw.elliptic1(mm) * npihlfs;
+      lcirc_rad -= npihlfs * Kw.PI / 2;
+   IF_END
+   sinphi = SIN(lcirc_rad);
+   RETURN sinphi * Kw.carlsonRF(Kw.square(COS(lcirc_rad))
+            , 1 - mm * Kw.square(sinphi), 1) + kresult;
+FUNC_END
+
+FUNC DBL elliptic2(DBL mm):
+   # Complete Elliptic Integral of the 2th kind.
+   #      PI/2    -----------------
+   # INTEGRATE   / 1 - mm SIN(t)**2 dt
+   #         0  V
+   DBL aan;
+   DBL ggn;
+   DBL tn;
+   DBL twon;
+   DBL sum;
+   DBL sum_prev;
+   INT ii;
+   DBL amm;
+   DBL retvalu;
+
+   amm = ABS(mm);
+   IF amm < 1.0:
+      twon = 0.5;
+      aan = 1.0;
+      ggn = SQRT(1 - mm);
+      sum = 1.0 - mm / 2.0;
+      AWAIT Kw.iseq(sum, sum_prev) COUNT ii FROM 0
+               TO ??LOOP_LIMIT??:
+         twon *= 2.0;
+         tn = aan;   # temporary variable
+         aan = (aan + ggn) / 2.0;
+         ggn = SQRT(tn * ggn);
+         sum_prev = sum;
+         sum -= twon * (aan * aan - ggn * ggn);
+      AWAIT_END
+      retvalu = Kw.PI * sum / (2.0 * aan);
+   ELSE:
+      retvalu = 1.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ellipticE(DBL kk):
+   # Complete Elliptic Integral of the 2th kind.
+   RETURN elliptic2(k2m(kk));
+FUNC_END
+
+FUNC DBL elliptic2__1(DBL mm):
+   # Complete Elliptic Integral of the 2th kind.
+   #   == RF(0, 1-MM, 1) - MM * RD(0, 1-MM, 1) / 3
+   RETURN Kw.carlsonRF(0, 1 - mm, 1)
+            - mm * Kw.carlsonRD(0, 1 - mm, 1) / 3.0;
+FUNC_END
+
+FUNC DBL elliptic2i(DBL mm, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 2th kind.
+   #       PHI    -----------------
+   # INTEGRATE   / 1 - mm SIN(t)**2 dt
+   #         0  V
+   DBL aan;
+   DBL ggn;
+   DBL cc;
+   DBL errsum;
+   DBL temp;
+   DBL tt;
+   DBL eliptwomm;
+   DBL mmc;
+   INT ii;
+   INT modd;
+   INT npihalfs;
+   INT signof;
+   DBL lcirc_rad;
+   DBL retvalu;
+
+   IF Kw.iszero(mm):
+      retvalu = circ_rad;
+   ELSE:
+      mmc = 1.0 - mm;
+      eliptwomm = elliptic2(mm);
+      npihalfs = FLOOR(circ_rad / (Kw.PI / 2));
+      IF Kw.isodd(npihalfs):
+         npihalfs += 1;
+      IF_END
+      lcirc_rad = circ_rad - npihalfs * Kw.PI / 2;
+      IF Kw.iszero(mmc):
+         retvalu = SIN(lcirc_rad) + npihalfs * eliptwomm;
+      ELSE:
+         IF lcirc_rad < 0.0:
+            lcirc_rad = -lcirc_rad;
+            signof = -1;
+         ELSE:
+            signof = 1;
+         IF_END
+         tt = TAN(lcirc_rad);
+         ggn = SQRT(mmc);
+         IF ABS(tt) < -1:
+            errsum = 1.0 / (ggn * tt);
+         ELSE:
+            errsum = 0.0;
+         IF_END
+         IF 0.0 < ABS(errsum) AND ABS(errsum) < 1000.0:
+            errsum = ATAN2(1.0, ggn * tt);
+            temp = eliptwomm - elliptic2i(mm, errsum)
+                  + mm * SIN(circ_rad) * SIN(errsum);
+         ELSE:
+            cc = SQRT(mm);
+            aan = 1.0;
+            ii = 1;
+            modd = 0;
+
+            WHILE DBLEPS < ABS(cc / aan):
+               temp = ggn / aan;
+               lcirc_rad += ATAN2(tt * temp, 1) + modd * Kw.PI;
+               modd = FLOOR(lcirc_rad / Kw.PI + 0.5);
+               tt *= (1.0 + temp) / (1.0 - temp * tt * tt);
+               cc = (aan - ggn) / 2.0;
+               temp = SQRT(aan * ggn);
+               aan = (aan + ggn) / 2.0;
+               ggn = temp;
+               ii += ii;
+               errsum += cc * SIN(lcirc_rad);
+            WHILE_END
+            temp = eliptwomm * (ATAN2(tt, 1) + modd * Kw.PI)
+                        / (ii * aan * elliptic1(mm))
+                  + errsum;
+         IF_END
+
+         IF signof < 0:
+            temp = -temp;
+         IF_END
+         retvalu = temp + npihalfs * eliptwomm;
+      IF_END
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:elliptic2i(0.8,0.7)==0.6561074299024282883936795755843049;
+
+FUNC DBL ellipticEi(DBL kk, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 2th kind.
+   RETURN elliptic2i(k2m(kk), circ_rad);
+FUNC_END
+
+FUNC DBL elliptic2i__1(DBL mm, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 2th kind.
+   #   == SIN(PHI) * RF(CPQ, 1 - MM * SPQ, 1)
+   #      - MM * SIN(PHI) * SPQ / 3 * RD(CPQ, 1 - MM * SPQ, 1)
+   # Where SPQ = SIN(PHI)**2, and CPQ = COS(PHI)**2
+   DBL sinphi;
+   DBL sinphisq;
+   DBL sinphicu;
+   DBL cosphisq;
+   DBL argb;
+   INT npihlfs;
+   DBL lcirc_rad;
+   DBL kresult;
+
+   npihlfs = FLOOR(circ_rad / (Kw.PI / 2));
+   IF Kw.isodd(npihlfs):
+      npihlfs += 1;
+   IF_END
+   # now npihlfs is even
+   lcirc_rad = circ_rad;
+   IF npihlfs == 0:
+      kresult = 0.0;
+   ELSE:
+      kresult = Kw.elliptic2(mm) * npihlfs;
+      lcirc_rad -= npihlfs * Kw.PI / 2;
+   IF_END
+
+   sinphi = SIN(lcirc_rad);
+   sinphisq = sinphi * sinphi;
+   sinphicu = sinphi * sinphisq;
+   cosphisq = Kw.square(COS(lcirc_rad));
+   argb = 1 - mm * sinphisq;
+
+   RETURN sinphi * carlsonRF(cosphisq, argb, 1)
+         - mm * sinphicu * carlsonRD(cosphisq, argb, 1) / 3.0
+         + kresult;
+FUNC_END
+#TEST:elliptic2i__1(0.8,0.7)==0.6561074299024282883936795755843;
+
+FUNC DBL elliptic3(DBL nn, DBL mm):
+   # Complete Elliptic Integral of the 3th kind.
+   #      PI/2                    1
+   # INTEGRATE  -------------------------------------- dt
+   #         0                       -----------------
+   #            (1 - nn SIN(t)**2)  / 1 - mm SIN(t)**2
+   #                               V
+   DBL aan;
+   DBL ggn;
+   DBL ppn;
+   DBL een;
+   DBL qqn;
+   DBL tpp;
+   DBL tag;
+   DBL tn;
+   DBL sum;
+   DBL sum_prev;
+   INT ii;
+   DBL amm;
+   DBL retvalu;
+
+   amm = ABS(mm);
+   IF amm < 1.0:
+      aan = 1.0;
+      ggn = SQRT(1.0 - mm);
+      IF 1.0 <= ABS(nn):
+         ppn = SQRT(1.0 - mm / nn);
+      ELSE:
+         ppn = SQRT(1.0 - nn);
+      IF_END
+      qqn = 1.0;
+      sum = qqn;
+      AWAIT Kw.iseq(sum, sum_prev) AND Kw.iseq(aan, ggn)
+               COUNT ii FROM 0 TO ??LOOP_LIMIT??:
+         tpp = ppn * ppn;
+         tag = aan * ggn;
+         een = (tpp - tag) / (tpp + tag);
+         ppn = (tpp + tag) / (2.0 * ppn);
+         qqn = qqn * een / 2.0;
+         aan = (aan + ggn) / 2.0;
+         ggn = SQRT(tag);
+         sum_prev = sum;
+         sum += qqn;
+      AWAIT_END
+      IF 1.0 <= ABS(nn):
+         tn = mm * sum / (mm - nn);
+      ELSE:
+         tn = 2.0 + sum * nn / (1.0 - nn);
+      IF_END
+      retvalu = Kw.PI * tn / (4.0 * aan);
+   ELSE:
+      retvalu = 1.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:elliptic3(0.5,.25)==2.41367150420119464066692352053928994;
+
+FUNC DBL ellipticP(DBL kk, DBL circ_rad):
+   # Complete Elliptic Integral of the 3th kind.
+   RETURN elliptic3(kk, circ_rad);
+FUNC_END
+#TEST:ellipticP(0.64,0.81)==4.212860995757084216614126072152338;
+
+FUNC DBL elliptic3i(DBL nn, DBL mm, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 3th kind.
+   #       PHI                      1
+   # INTEGRATE  -------------------------------------- dt
+   #         0                       -----------------
+   #            (1 - nn SIN(t)**2)  / 1 - mm SIN(t)**2
+   #                               V
+   DBL sp;
+   DBL cp;
+   DBL spq;
+   DBL cpq;
+   DBL spm;
+   DBL spn;
+
+   sp = SIN(circ_rad);
+   cp = COS(circ_rad);
+   spq = sp * sp;
+   cpq = cp * cp;
+   spm = 1 - mm * spq;
+   spn = 1 - nn * spq;
+
+   RETURN sp * (Kw.carlsonRF(cpq, spm, 1)
+         + spq * nn * Kw.carlsonRJ(cpq, spm, 1, spn) / 3);
+FUNC_END
+
+FUNC DBL ellipticPi(DBL nn, DBL kk, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 3th kind.
+   RETURN elliptic3i(nn, k2m(kk), circ_rad);
+FUNC_END
+
+FUNC DBL elliptic3__1(DBL nn, DBL mm):
+   # Complete Elliptic Integral of the 3th kind.
+   #   == carlsonRF(0, 1 - MM, 1)
+   #         + NN carlsonRJ(0, 1 - MM, 1, 1 - NN) / 3
+   RETURN Kw.carlsonRF(0, 1 - mm, 1)
+         + nn * Kw.carlsonRJ(0, 1 - mm, 1, 1 - nn) / 3.0;
+FUNC_END
+
+FUNC DBL elliptic3i__1(DBL nn, DBL mm, DBL circ_rad):
+   # Incomplete Elliptic Integral of the 3th kind.
+   #   == SIN(PHI) * RF(CPQ, 1 - MM * SPQ, 1)
+   #         - NN * SIN(PHI) * SPQ / 3
+   #               * RJ(CPQ, 1 - MM * SPQ, 1, 1 - NN * SPQ)
+   # Where SPQ = SIN(PHI)**2, and CPQ = COS(PHI)**2
+   DBL sinphi;
+   DBL sinphisq;
+   DBL sinphicu;
+   DBL cosphisq;
+   DBL argb;
+   INT npihlfs;
+   DBL lcirc_rad;
+   DBL kresult;
+
+   npihlfs = FLOOR(circ_rad / (Kw.PI / 2));
+   IF Kw.isodd(npihlfs):
+      npihlfs += 1;
+   IF_END
+   # now npihlfs is even
+   lcirc_rad = circ_rad;
+   IF npihlfs == 0:
+      kresult = 0.0;
+   ELSE:
+      kresult = Kw.elliptic3(nn, mm) * npihlfs;
+      lcirc_rad -= npihlfs * Kw.PI / 2;
+   IF_END
+
+   sinphi = SIN(lcirc_rad);
+   sinphisq = sinphi * sinphi;
+   sinphicu = sinphi * sinphisq;
+   cosphisq = Kw.square(COS(lcirc_rad));
+   argb = 1 - mm * sinphisq;
+
+   RETURN sinphi * carlsonRF(cosphisq, argb, 1)
+         + (nn / 3.0) * sinphicu
+               * carlsonRJ(cosphisq, argb, 1, 1 - nn * sinphisq)
+         + kresult;
+FUNC_END
+
+####### Jacobi functions
+FUNC DBL jacobiphi(DBL mm
+      , DBL elli_rad):
+   # convert ELLI_RAD into CIRC_RAD
+   DBL ai;
+   DBL bb;
+   DBL circ_rad;
+   DBL geo_mean;
+   DBL twon;
+   DBL aa_arr[20];
+   DBL cc_arr[20];
+   INT ii;
+
+   IF mm <= 0.0:
+      circ_rad = Kw.taninv(sn(mm, elli_rad) / cn(mm, elli_rad));
+   ELSIF mm < 1.0:
+      bb = SQRT(1.0 - mm);
+      aa_arr[0] = 1.0;
+      cc_arr[0] = SQRT(mm);
+      twon = 1.0;
+      ii = 0;
+      WHILE DBLEPS < ABS(cc_arr[ii] / aa_arr[ii]):
+         IF ARRAYLAST(aa_arr[]) - 1 < ii:
+            WHILE_EXIT;
+         IF_END
+         ai = aa_arr[ii];
+         ii += 1;
+         cc_arr[ii] = (ai - bb) / 2.0;
+         geo_mean = SQRT(ai * bb);
+         aa_arr[ii] = (ai + bb) / 2.0;
+         bb = geo_mean;
+         twon *= 2.0;
+      WHILE_END
+
+      circ_rad = twon * aa_arr[ii] * elli_rad;
+      WHILE 0 < ii:
+         bb = cc_arr[ii] * SIN(circ_rad) / aa_arr[ii];
+         circ_rad = (Kw.sininv(bb) + circ_rad) / 2.0;
+         ii -= 1;
+      WHILE_END
+   ELSE:
+      circ_rad = Kw.taninv(sn(mm, elli_rad) / cn(mm, elli_rad));
+   IF_END
+   RETURN circ_rad;
+FUNC_END
+
+FUNC DBL ell2cir(DBL mm, DBL elli_rad):
+   # convert an elliptical angle ELLI_RAD
+   # into a circular angle CIRC_RAD
+   # pseudo-period == (TAU/4)/elliptic1(mm)
+   # LSF Line: y = (TAU/4)/elliptic1(mm) * x
+   RETURN jacobiphi(mm, elli_rad);
+FUNC_END
+
+FUNC DBL cir2ell(DBL mm, DBL circ_rad):
+   # convert a circular angle CIRC_RAD
+   # into an elliptical angle ELLI_RAD
+   # pseudo-period == elliptic1(mm)/(TAU/4)
+   # LSF Line: y = elliptic1(mm)/(TAU/4) * x
+   RETURN elliptic1i(mm, circ_rad);
+FUNC_END
+
+FUNC DBL jacobicir(DBL mm):
+   # circumference of ellipse w/ minor axis == 1, m == MM
+   RETURN 4.0 * elliptic2(mm) / SQRT(1.0 - mm);
+FUNC_END
+
+FUNC DBL dn(DBL mm, DBL elli_rad):
+   DBL ai;
+   DBL csx;
+   DBL snx;
+   DBL kk;
+   DBL retvalu;
+
+   # Check for special cases
+   IF mm < 0.0:
+      retvalu = -dn(-mm, elli_rad) + 2.0;
+   ELSIF mm < 1E-9:
+      snx = SIN(elli_rad);
+      retvalu = 1.0 - mm * snx * snx / 2.0;
+   ELSIF mm < 1.0 - 1E-9:
+      snx = SIN(jacobiphi(mm, elli_rad));
+      retvalu = Kw.sqrtx(1.0 - mm * snx * snx);
+   ELSIF mm <= 1.0:
+      ai = (1.0 - mm) / 4.0;
+      csx = Kw.cosh(elli_rad);
+      snx = Kw.sinh(elli_rad);
+      retvalu = 1.0 / csx + ai * (csx * snx + elli_rad);
+   ELSE:
+      kk = m2k(mm);
+      retvalu = cn(1.0 / mm, elli_rad * kk);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL cn(DBL mm, DBL elli_rad):
+   # elliptic cosine
+   DBL ai;
+   DBL csx;
+   DBL snx;
+   DBL kk;
+   DBL retvalu;
+
+   # Check for special cases
+   IF mm < 0.0:
+      retvalu = - cn(-mm, elli_rad) + 2 * COS(elli_rad);
+   ELSIF mm < 1E-9:
+      snx = SIN(elli_rad);
+      csx = COS(elli_rad);
+      ai = mm * (elli_rad - snx * csx) / 4.0;
+      retvalu = csx + ai * snx;
+   ELSIF mm < 1.0 - 1E-9:
+      retvalu = COS(jacobiphi(mm, elli_rad));
+   ELSIF mm <= 1.0:
+      ai = (1.0 - mm) / 4.0;
+      csx = Kw.cosh(elli_rad);
+      snx = Kw.sinh(elli_rad);
+      retvalu = 1.0 / csx - ai * (csx * snx + elli_rad);
+   ELSE:
+      kk = m2k(mm);
+      retvalu = dn(1.0 / mm, elli_rad * kk);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL sn(DBL mm, DBL elli_rad):
+   # elliptic sine
+   DBL ai;
+   DBL csx;
+   DBL snx;
+   DBL kk;
+   DBL retvalu;
+
+   # Check for special cases
+   IF mm < 0.0:
+      retvalu = - sn(1.0 - mm, elli_rad)
+         + SIN(elli_rad) + Kw.tanh(elli_rad);
+   ELSIF mm < 1E-9:
+      snx = SIN(elli_rad);
+      csx = COS(elli_rad);
+      ai = mm * (elli_rad - snx * csx) / 4.0;
+      retvalu = snx - ai * csx;
+   ELSIF mm < 1.0 - 1E-9:
+      retvalu = SIN(jacobiphi(mm, elli_rad));
+   ELSIF mm <= 1.0:
+      ai = (1.0 - mm) / 4.0;
+      csx = Kw.cosh(elli_rad);
+      snx = Kw.sinh(elli_rad);
+      retvalu = (snx + snx * ai - ai * elli_rad / csx) / csx;
+   ELSE:
+      kk = m2k(mm);
+      retvalu = sn(1.0 / mm, elli_rad * kk) / kk;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL cd(DBL mm, DBL elli_rad):
+   RETURN cn(mm, elli_rad) / dn(mm, elli_rad);
+FUNC_END
+FUNC DBL sd(DBL mm, DBL elli_rad):
+   RETURN sn(mm, elli_rad) / dn(mm, elli_rad);
+FUNC_END
+FUNC DBL nd(DBL mm, DBL elli_rad):
+   RETURN 1.0 / dn(mm, elli_rad);
+FUNC_END
+
+FUNC DBL dc(DBL mm, DBL elli_rad):
+   RETURN dn(mm, elli_rad) / cn(mm, elli_rad);
+FUNC_END
+FUNC DBL nc(DBL mm, DBL elli_rad):
+   # elliptic cosecant
+   RETURN 1.0 / cn(mm, elli_rad);
+FUNC_END
+FUNC DBL sc(DBL mm, DBL elli_rad):
+   # elliptic tangent
+   RETURN sn(mm, elli_rad) / cn(mm, elli_rad);
+FUNC_END
+
+FUNC DBL ds(DBL mm, DBL elli_rad):
+   RETURN dn(mm, elli_rad) / sn(mm, elli_rad);
+FUNC_END
+FUNC DBL cs(DBL mm, DBL elli_rad):
+   # elliptic cotangent
+   RETURN cn(mm, elli_rad) / sn(mm, elli_rad);
+FUNC_END
+FUNC DBL ns(DBL mm, DBL elli_rad):
+   # elliptic cosecant
+   RETURN 1.0 / sn(mm, elli_rad);
+FUNC_END
+
+BLOCK: # Jacobi elliptic functions
+   LOCAL_FUNC INT lv_ellpj(DBL mm
+         , DBL elli_rad
+         , WRITEONLY DBL ret_arr_p[]):
+      # compute the Jacobian function sn, cn, dn and ph
+      # sn = RET_ARR_P[0]
+      # cn = RET_ARR_P[1]
+      # dn = RET_ARR_P[2]
+      # ph = RET_ARR_P[3]
+      DBL ai;
+      DBL csx;
+      DBL snx;
+      DBL circ_rad;
+      DBL twon;
+      DBL junk_arr[4];
+
+      # Check for special cases
+      IF mm < 0.0:
+         snx = -sn(1.0 - mm, elli_rad)
+               + SIN(elli_rad) + Kw.tanh(elli_rad);
+         csx = -cn(-mm, elli_rad) + 2 * COS(elli_rad);
+         ret_arr_p[0] = snx;
+         ret_arr_p[1] = csx;
+         ret_arr_p[2] = -dn(-mm, elli_rad) + 2.0;
+         ret_arr_p[3] = ATAN2(snx, csx);
+      ELSIF mm < 1E-9:
+         snx = SIN(elli_rad);
+         csx = COS(elli_rad);
+         ai = mm * (elli_rad - snx * csx) / 4.0;
+         ret_arr_p[0] = snx - ai * csx;
+         ret_arr_p[1] = csx + ai * snx;
+         ret_arr_p[2] = 1.0 - mm * snx * snx / 2.0;
+         ret_arr_p[3] = elli_rad - ai;
+      ELSIF mm < 1.0 - 1E-9:
+         circ_rad = Kw.jacobiphi(mm, elli_rad);
+
+         snx = SIN(circ_rad);
+         ret_arr_p[0] = snx;
+         ret_arr_p[1] = COS(circ_rad);
+         ret_arr_p[2] = Kw.sqrtx(1.0 - mm * snx * snx);
+         ret_arr_p[3] = circ_rad;
+      ELSIF mm <= 1.0:
+         ai = (1.0 - mm) / 4.0;
+         csx = Kw.cosh(elli_rad);
+         snx = Kw.tanh(elli_rad);
+         twon = csx * Kw.sinh(elli_rad);
+         ret_arr_p[0] = snx + ai * (twon - elli_rad)
+                  / (csx * csx);
+         ret_arr_p[3] = 2.0 * ATAN2(EXP(elli_rad), 1.0)
+               - Kw.PI / 2.0
+               + ai * (twon - elli_rad) / csx;
+         ai *= snx / csx;
+         ret_arr_p[1] = 1.0 / csx - ai * (twon - elli_rad);
+         ret_arr_p[2] = 1.0 / csx + ai * (twon + elli_rad);
+      ELSE:
+         ai = m2k(mm);
+         CALL lv_ellpj(1.0 / mm, elli_rad * ai, junk_arr[]);
+         ret_arr_p[0] = junk_arr[0] / ai;
+         ret_arr_p[1] = junk_arr[2];
+         ret_arr_p[2] = junk_arr[1];
+         ret_arr_p[3] = junk_arr[3];
+      IF_END
+      RETURN 0;
+   FUNC_END
+
+   FUNC DBL sn__1(DBL mm, DBL elli_rad):
+      DBL arr_arr[4];
+
+      CALL lv_ellpj(mm, elli_rad, arr_arr[]);
+      RETURN arr_arr[0];
+   FUNC_END
+
+   FUNC DBL cn__1(DBL mm, DBL elli_rad):
+      DBL arr_arr[4];
+
+      CALL lv_ellpj(mm, elli_rad, arr_arr[]);
+      RETURN arr_arr[1];
+   FUNC_END
+
+   FUNC DBL dn__1(DBL mm, DBL elli_rad):
+      DBL arr_arr[4];
+
+      CALL lv_ellpj(mm, elli_rad, arr_arr[]);
+      RETURN arr_arr[2];
+   FUNC_END
+BLOCK_END   # Jacobi elliptic functions
+
+FUNC DBL nom(DBL mm):
+   RETURN EXP(-PI *  Kw.elliptic1(1.0 - mm) / Kw.elliptic1(mm));
+FUNC_END
+
+FUNC DBL theta1(DBL mm, DBL zz):
+   # See https://dlmf.nist.gov/20.2#i
+   DBL sum_curr;
+   DBL sum_prev;
+   INT nn;
+   DBL sig;
+   DBL ang;
+   DBL ang_inc;
+   DBL qq;
+
+   sig = 1;
+   qq = nom(mm);
+   sum_curr = 0;
+   ang = zz;
+   ang_inc = 2 * zz;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
+      sum_prev = sum_curr;
+      sum_curr += sig * POW(qq, Kw.square(nn + 0.5)) * SIN(ang);
+      ang += ang_inc;
+      sig = -sig;
+   AWAIT_END
+   RETURN 2 * sum_curr;
+FUNC_END
+
+FUNC DBL theta2(DBL mm, DBL zz):
+   # See https://dlmf.nist.gov/20.2#i
+   DBL sum_curr;
+   DBL sum_prev;
+   INT nn;
+   DBL ang;
+   DBL ang_inc;
+   DBL qq;
+
+   qq = nom(mm);
+   sum_curr = 0;
+   ang = zz;
+   ang_inc = 2 * zz;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
+      sum_prev = sum_curr;
+      sum_curr += POW(qq, Kw.square(nn + 0.5)) * COS(ang);
+      ang += ang_inc;
+   AWAIT_END
+   RETURN 2 * sum_curr;
+FUNC_END
+
+FUNC DBL theta3(DBL mm, DBL zz):
+   # See https://dlmf.nist.gov/20.2#i
+   DBL sum_curr;
+   DBL sum_prev;
+   INT nn;
+   DBL ang;
+   DBL ang_inc;
+   DBL qq;
+
+   qq = nom(mm);
+   sum_curr = 0;
+   ang = 2 * zz;
+   ang_inc = ang;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 1:
+      sum_prev = sum_curr;
+      sum_curr += POW(qq, nn * nn) * COS(ang);
+      ang += ang_inc;
+   AWAIT_END
+   RETURN 1 + 2 * sum_curr;
+FUNC_END
+
+FUNC DBL theta4(DBL mm, DBL zz):
+   # See https://dlmf.nist.gov/20.2#i
+   DBL sum_curr;
+   DBL sum_prev;
+   INT nn;
+   DBL ang;
+   DBL ang_inc;
+   DBL qq;
+   DBL sig;
+
+   sig = 1;
+   qq = nom(mm);
+   sum_curr = 0;
+   ang = 2 * zz;
+   ang_inc = ang;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 1:
+      sum_prev = sum_curr;
+      sum_curr += sig * POW(qq, nn * nn) * COS(ang);
+      ang += ang_inc;
+      sig = -sig;
+   AWAIT_END
+   RETURN 1 + 2 * sum_curr;
+FUNC_END
+
+FUNC DBL nevillethetac(DBL mm, DBL zz):
+   DBL sum_curr;
+   DBL sum_prev;
+   INT nn;
+   DBL qq;
+   DBL km;
+   DBL cos_of;
+   DBL cos_inc;
+
+   km = Kw.elliptic1(mm);
+   qq = EXP(-PI * Kw.elliptic1(1.0 - mm) / km);
+   sum_curr = 0;
+   cos_inc = PI * zz / km;
+   cos_of = PI * zz / (2 * km);
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
+      sum_prev = sum_curr;
+      sum_curr += POW(qq, nn * nn + nn) * COS(cos_of);
+      cos_of += cos_inc;
+   AWAIT_END
+   RETURN sum_curr * SQRT(TAU * SQRT(qq / mm) / km);
+FUNC_END
+
+FUNC DBL nevillethetad(DBL mm, DBL zz):
+   DBL sum_curr;
+   DBL sum_prev;
+   INT nn;
+   DBL qq;
+   DBL km;
+   DBL cos_of;
+   DBL cos_inc;
+
+   km = Kw.elliptic1(mm);
+   qq = EXP(-PI * Kw.elliptic1(1.0 - mm) / km);
+   sum_curr = 0;
+   cos_inc = PI * zz / km;
+   cos_of = PI * zz / km;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 1:
+      sum_prev = sum_curr;
+      sum_curr += POW(qq, nn * nn) * COS(cos_of);
+      cos_of += cos_inc;
+   AWAIT_END
+   RETURN (1 + 2 * sum_curr) * SQRT(TAU / km) / 2.0;
+FUNC_END
+
+FUNC DBL nevillethetan(DBL mm, DBL zz):
+   DBL sum_curr;
+   DBL sum_prev;
+   INT nn;
+   DBL qq;
+   DBL km;
+   DBL sig;
+   DBL cos_of;
+   DBL cos_inc;
+
+   km = Kw.elliptic1(mm);
+   qq = EXP(-PI * Kw.elliptic1(1.0 - mm) / km);
+   sum_curr = 0;
+   sig = -1;
+   cos_inc = PI * zz / km;
+   cos_of = PI * zz / km;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 1:
+      sum_prev = sum_curr;
+      sum_curr += sig * POW(qq, nn * nn) * COS(cos_of);
+      cos_of += cos_inc;
+      sig = -sig;
+   AWAIT_END
+   RETURN (1 + 2 * sum_curr)
+         * SQRT(TAU / (km * SQRT(1.0 - mm))) / 2.0;
+FUNC_END
+
+FUNC DBL nevillethetas(DBL mm, DBL zz):
+   DBL sum_curr;
+   DBL sum_prev;
+   INT nn;
+   DBL qq;
+   DBL km;
+   DBL sig;
+   DBL cos_of;
+   DBL cos_inc;
+
+   km = Kw.elliptic1(mm);
+   qq = EXP(-PI * Kw.elliptic1(1.0 - mm) / km);
+   sum_curr = 0;
+   sig = 1;
+   cos_inc = PI * zz / km;
+   cos_of = PI * zz / (2 * km);
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
+      sum_prev = sum_curr;
+      sum_curr += sig * POW(qq, nn * nn + nn) * SIN(cos_of);
+      sig = -sig;
+      cos_of += cos_inc;
+   AWAIT_END
+   RETURN sum_curr * SQRT(TAU * SQRT(qq / (mm * (1 - mm))) / km);
+FUNC_END
+
+# In general:
+#   pq qr = pr
+#   sn(m,elli_rad) == SIN(jacobiphi(m,elli_rad))
+#   elliptic1i(m,jacobiphi(m,elli_rad)) == elli_rad
+#         in [0,elliptic1(m)]
+#   jacobiphi(m,elliptic1i(m,circ_rad)) == circ_rad in [0,PI/2]
+#   sn(m,elliptic1i(m,circ_rad)) == SIN(circ_rad)
+#   cn(m,elliptic1i(m,circ_rad)) == COS(circ_rad)
+#   sc(m,elliptic1i(m,circ_rad)) == TAN(circ_rad)
+#   dn(m,elliptic1i(m,circ_rad)) == SQRT(1 - m*SIN(circ_rad)**2)
+#   The quarter-period of pq(m,elli_rad) is ellipticK(m)
+#TEST:sn(0.87,elliptic1i(0.87,0.44))==sin(0.44);
+#TEST:cn(0.44,elliptic1i(0.44,0.87))==cos(0.87);
+#TEST:sn(0.34,1.2)==sin(jacobiphi(0.34,1.2));
+#TEST:sc(0.94,1.2)==tan(jacobiphi(0.94,1.2));

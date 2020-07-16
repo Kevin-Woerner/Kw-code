@@ -1,0 +1,1210 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-10 kdw  stirling tgamma work
+# 2020-06-17 kdw  Modulo operator
+# 2020-06-12 kdw  regularized ul-gamma function work
+# 2020-06-08 kdw  integral function stuff
+# 2020-06-06 kdw  comments added
+# 2020-05-29 kdw  swapped lgamma and lgamma__1
+# 2020-05-14 kdw  local funcs only in blocks
+# 2020-05-11 kdw  BL[O]CK work
+# 2020-04-26 kdw  block indentation
+# 2020-04-13 kdw  numeric inequality work
+# 2020-04-12 kdw  comment changed
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-03-30 kdw  s/_cdfinv/_quantile/g
+# 2020-03-29 kdw  regularize [lu]igamma
+# 2020-03-29 kdw  tga[m]ma__[45] funcs
+# 2020-03-26 kdw  hn__1; tests
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-03 kdw  comment changed:odd chars
+# 2020-03-02 kdw  s/_NE[X]T/_E[N]D/g
+# 2020-02-28 kdw  poly eval work
+# 2020-02-26 kdw  arr[a]y and hor[n]er work
+# 2020-02-16 kdw  array comments change
+# 2020-02-14 kdw  incomplete beta work
+# 2020-02-03 kdw  .*_LOOP changed
+# 2020-01-31 kdw  func renam
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-11-17 kdw  include Macros file
+# 2019-09-17 kdw  rmed c[n]v_db[l]2i32
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-22 kdw  comment changed
+# 2019-08-18 kdw  L[O]G to L[N]
+# 2019-08-17 kdw  L[O]G to LN
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-06 kdw  added "+" to array values
+# 2019-06-02 kdw  func desc added
+# 2019-05-31 kdw  NR_DO to RAPHSON_LOOP; et al
+# 2019-05-29 kdw  comment changed
+# 2019-05-24 kdw  local replaced private
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-16 kdw  loop limit def mved
+# 2019-05-01 kdw  consts explicit module name
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-18 kdw  macro syntax changed
+# 2019-03-11 kdw  comments to array dcls
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-04 kdw  loop-limit work
+# 2019-01-23 kdw  lgamma--1 array back to exact
+# 2019-01-13 kdw  var rena; reorg
+# 2019-01-03 kdw  Await counter changed
+# 2018-10-05 kdw  in digamm.*2 array size specd
+# 2018-10-04 kdw  uppercased fwip trig funcs
+# 2018-09-28 kdw  var renam
+# 2018-07-22 kdw  digamma redef; private .*_sub
+# 2018-07-18 kdw  digamma redef
+# 2018-07-18 kdw  gamma work
+# 2018-07-17 kdw  private lf_.* funcs
+# 2018-07-13 kdw  float number reformt
+# 2018-05-22 kdw  tgam?ma2 description
+# 2018-05-20 kdw  hnm()
+# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
+# 2018-05-16 kdw  AR?RAY syntax
+# 2018-04-03 kdw  rm () from return
+# 2018-03-26 kdw  macro redef
+# 2018-02-19 kdw  secant and macro refactor
+# 2018-02-17 kdw  bounded await loops
+# 2018-02-13 kdw  rmed T[A]N ref
+# 2018-02-01 kdw  no net change
+# 2018-01-26 kdw  comments
+# 2018-01-16 kdw  birthdayx, lpermx
+# 2018-01-03 kdw  combx, permx functions
+# 2017-11-26 kdw  FR[O]M and B[Y] keywords
+# 2017-11-22 kdw  var renam
+# 2017-11-21 kdw  FR[O]M
+# 2017-11-20 kdw  fixed tgamma
+# 2017-11-19 kdw  double factorial (tgamma2)
+# 2017-10-24 kdw  number underscore
+# 2017-10-21 kdw  macros start with "at""at"
+# 2017-10-20 kdw  var renam (no triple letters)
+# 2017-09-20 kdw  rmed useless trailing 0s
+# 2017-08-30 kdw  s/DBL_/DBL/;s/FLT_/FLT/
+# 2017-08-24 kdw  vars renamd
+# 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
+# 2017-05-23 kdw  uigamma_sub fixed
+# 2017-05-20 kdw  uigamma_sub functions
+# 2017-05-19 kdw  [lu]igamma_sub functions
+# 2017-05-18 kdw  lf_[lu]igamma_sub functions
+# 2017-05-17 kdw  uigamma fixed; ligamma
+# 2017-04-19 kdw  function hn
+# 2017-03-30 kdw  comment cleanup
+# 2017-03-21 kdw  lgammainv vs BC debugging
+# 2017-03-19 kdw  comments
+# 2017-03-12 kdw  shorten long comments
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-07 kdw  INS?ERT etal
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-20 kdw  array var names
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-02-09 kdw  lgammainv vs BC debugging
+# 2017-02-08 kdw  SE[C]ANT syntax; syntax error in betainc
+# 2017-02-07 kdw  comment rearrangement; SE[C]ANT stuff
+# 2017-02-06 kdw  SE[C]ANT syntax
+# 2017-02-05 kdw  SE[C]ANT stuff
+# 2017-02-03 kdw  bet?ai?nc error return value
+# 2017-02-01 kdw  bet?ai?nc work
+# 2017-01-31 kdw  bet?ai?nc
+# 2017-01-06 kdw  ?[?]USE.* to ?[?].*_MODE; ?[?]DIGR.*
+# 2016-12-25 kdw  rev to t
+# 2016-12-02 kdw  BC debugging (dbl_epi* == 0)
+# 2016-11-23 kdw  CN?ST to RE?ADO?NLY
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-18 kdw  tgamma refactor; _?_PO?D_?_
+# 2016-11-17 kdw  tgamma problem w/ args < 0.5
+# 2016-11-15 kdw  1 to 1.0 for python
+# 2016-11-14 kdw  seca?nt algorithm refactor
+# 2016-11-11 kdw  seca?nt algorithm refactor
+# 2016-11-08 kdw  bound loops
+# 2016-11-06 kdw  lnga?mma1
+# 2016-10-31 kdw  EX?ITL?OOP
+# 2016-10-28 kdw  comment reorg
+# 2016-09-15 kdw  lang change
+# 2016-09-13 kdw  lang change
+# 2016-05-18 kdw  comment change
+# 2016-01-11 kdw  corrected comment; rmed gam?maln
+# 2015-12-31 kdw  bounded (possible) infinite loops
+# 2015-12-30 kdw  i?sdb?leq?ual to i?seq?ual
+# 2015-12-28 kdw  .*2() functions exsized
+# 2015-12-16 kdw  long comments
+# 2015-12-14 kdw  bad sigils
+# 2015-12-11 kdw  s/LC_// from some consts
+# 2015-12-10 kdw  [] added to array
+# 2015-12-03 kdw  long lines
+# 2015-11-26 kdw  long lines
+# 2015-11-17 kdw  comment change
+# 2015-11-13 kdw  tg[a]mma tweak
+# 2015-11-12 kdw  rmed tga[m]ma2; et al.
+# 2015-10-19 kdw  ga[m]ma to tg[a]mma
+# 2015-10-13 kdw  function rename
+# 2015-10-12 kdw  gam?main?v improved ; lg?ammai?nv
+# 2015-10-11 kdw  seca?nt algorithm changed
+# 2015-10-10 kdw  fac(torial)?inv created
+# 2015-10-09 kdw  di[g]ammai[n]v created
+# 2015-10-01 kdw  float equality checks to is.*
+# 2015-09-30 kdw  work on in[v]ga[m]ma
+# 2015-09-29 kdw  work on in[v]ga[m]ma
+# 2015-09-27 kdw  debugging ; ga[m]mainv, digamma
+# 2015-09-20 kdw  created
+
+??INSERT_FILE "Macros.fwip"??
+
+FUNC DBL lgamma__1(DBL xx):
+   # compute LN(GAMMA(XX))
+   DBL aa_arr[15];
+   DBL sum;
+   INT ii;
+   DBL tt;
+   DBL retvalu;
+   DBL qq;
+
+   IF xx <= 0.0 AND Kw.isint(xx):
+      retvalu = LN(Kw.DBLMAX);
+   ELSE:
+      IF xx < 0:
+         qq = 1 - xx;
+      ELSE:
+         qq = xx;
+      IF_END
+
+      # values for g=607/128, 15 terms
+      ARRAY aa_arr[]:   # lgamma(0<qq) pseudo-continued-fraction
+         +5.7156235665862923517E+1;
+         -5.9597960355475491248E+1;
+         +1.4136097974741747174E+1;
+         -4.9191381609762019978E-1;
+         +3.3994649984811888699E-5;
+         +4.6523628927048575665E-5;
+         -9.8374475304879564677E-5;
+         +1.5808870322491248884E-4;
+         -2.1026444172410488319E-4;
+         +2.1743961811521264320E-4;
+         -1.6431810653676389022E-4;
+         +8.4418223983852743293E-5;
+         -2.6190838401581408670E-5;
+         +3.6899182659531622704E-6;
+      ARRAY_END
+
+      sum = 0.99999999999999709182;
+      FOR ii FROM 0 TO ARRAYLAST(aa_arr[]):
+         sum += aa_arr[ii] / (qq + ii);
+      FOR_END
+      tt = qq + 607.0 / 128.0 - 0.5;
+      qq = LN(Kw.TAU) / 2.0 + (qq - 0.5) * LN(tt) + LN(sum) - tt;
+
+      IF xx < 0:
+         retvalu = LN(Kw.PI / ABS(SIN(2.0 * Kw.TAU * xx))) - qq;
+      ELSE:
+         retvalu = qq;
+      IF_END
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL lgammainv(DBL yy):
+   # XX such that YY = log(GAMMA(XX))
+   ??SECANT_DECLARATIONS??
+   DBL yy_fixed;
+   DBL xx_init;
+
+   yy_fixed = yy / Kw.PI + LN(yy + 0.5);
+   xx_init = yy_fixed + Kw.PI - 0.5;
+   ??SECANT_LOOP xx_init ; 0.01 ; yy - lgamma(scvx_xx)??
+   RETURN scvx_xx;
+FUNC_END
+
+BLOCK:
+   LOCAL_FUNC DBL lf_lgamma_gt_zero(DBL xx):
+      # compute LN(TGAMMA(XX))
+      DBL retvalu;
+      DBL zz;
+      DBL pp;
+      DBL uu;
+      DBL denom;
+      DBL numer;
+
+      IF xx < 13.0:
+         zz = 1.0;
+         pp = 0.0;
+         uu = xx;
+         WHILE 3.0 <= uu:
+            pp -= 1.0;
+            uu = xx + pp;
+            zz *= uu;
+         WHILE_END
+         WHILE uu < 2.0:
+            zz /= uu;
+            pp += 1.0;
+            uu = xx + pp;
+         WHILE_END
+         IF zz < 0.0:
+            zz = - zz;
+         IF_END
+         IF Kw.iseq(uu, 2.0):
+            retvalu = LN(zz);
+         ELSE:
+            pp -= 2.0;
+            xx += pp;
+            numer = ((((((
+                  - 1.37825152569120859100E+3) * xx
+                  - 3.88016315134637840924E+4) * xx
+                  - 3.31612992738871184744E+5) * xx
+                  - 1.16237097492762307383E+6) * xx
+                  - 1.72173700820839662146E+6) * xx
+                  - 8.53555664245765465627E+5);
+
+            denom = (((((((
+                  +1.00000000000000000000E+0) * xx
+                  -3.51815701436523470549E+2) * xx
+                  -1.70642106651881159223E+4) * xx
+                  -2.20528590553854454839E+5) * xx
+                  -1.13933444367982507207E+6) * xx
+                  -2.53252307177582951285E+6) * xx
+                  -2.01889141433532773231E+6);
+
+            retvalu = LN(zz) + xx * numer / denom;
+         IF_END
+      ELSE:
+         uu = (xx - 0.5) * LN(xx) - xx + LN(SQRT(TAU));
+         IF 1E+8 < xx:
+            retvalu = uu;
+         ELSE:
+            pp = 1.0 / (xx * xx);
+            IF 1000 < xx: # lgamma(1E+3<xx<1E+8)
+               zz = (((
+                     + 7.9365079365079365079365E-4) * pp
+                     - 2.7777777777777777777778E-3) * pp
+                     + 8.3333333333333333333333E-2);
+            ELSE: # lgamma(13<xx<1E+3)
+               zz = (((((
+                     + 8.11614167470508450300E-4) * pp
+                     - 5.95061904284301438324E-4) * pp
+                     + 7.93650340457716943945E-4) * pp
+                     - 2.77777777300996872050E-3) * pp
+                     + 8.33333333333331927722E-2);
+            IF_END
+            retvalu = uu + zz / xx;
+         IF_END
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL lgamma(DBL zz):
+      # compute LN(TGAMMA(zz))
+      DBL retvalu;
+
+      IF zz <= 0.0:
+         IF Kw.isint(zz):
+            retvalu = LN(Kw.DBLMAX);
+         ELSE:
+            retvalu = (LN(Kw.PI / ABS(SIN(2.0 * Kw.TAU * zz)))
+               - lf_lgamma_gt_zero(1.0 - zz));
+         IF_END
+      ELSE:
+         retvalu = lf_lgamma_gt_zero(zz);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+
+BLOCK:
+   LOCAL_FUNC DBL lf_eval_cont(DBL xx, INT deg
+         , READONLY DBL coeff_arr_pc[]):
+      # evaluate XX+C0/(XX+C1/(XX+C2/...+CN/XX)..)
+      DBL sum;
+      INT ii;
+
+      sum = xx;
+      FOR ii FROM deg TO 0 BY -1:
+         sum = xx + coeff_arr_pc[ii] / sum;
+      FOR_END
+
+      RETURN sum;
+   FUNC_END
+
+   FUNC DBL lgamma__2(DBL zz):
+      # compute LN(TGAMMA(ZZ))
+      DBL retvalu;
+      DBL aa_arr[10];
+      DBL sum;
+
+      IF zz <= 0.0:
+         IF Kw.isint(zz):
+            retvalu = LN(Kw.DBLMAX);
+         ELSE:
+            retvalu = (LN(Kw.PI / ABS(SIN(2.0 * Kw.TAU * zz)))
+               - lgamma(1.0 - zz));
+         IF_END
+      ELSE:
+         # now 0 <= arg
+         ARRAY aa_arr[]:   # lgamma__2(0<zz) continued fraction
+            +1.0 / 12.0;
+            +1.0 / 30.0;
+            +53.0 / 210.0;
+            +195.0 / 371.0;
+            +229999.0 / 22737.0;
+            +29944523.0 / 19733142.0;
+            +109535241009.0 / 48264275462.0;
+            +29404527905795295658.0 / 9769214287853155785.0;
+            +455377030420113432210116914702.0
+                  / 113084128923675014537885725485.0;
+         ARRAY_END
+         sum = 0.0;
+
+         WHILE zz <= 6.0:   # bounded by 6
+            sum += LN(zz);
+            zz += 1.0;
+         WHILE_END
+
+         sum -= lf_eval_cont(zz, ARRAYLAST(aa_arr[]), aa_arr[]);
+         retvalu = (LN(Kw.TAU) / 2.0 + (zz - 0.5) * LN(zz)
+               - 2.0 * zz - sum);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+
+FUNC DBL lpermx(DBL nn, DBL rr):
+   # Real valued extension of LN(perm(NN,RR))
+   RETURN lgamma(nn + 1.0) - lgamma(nn - rr + 1.0);
+FUNC_END
+
+FUNC DBL permx(DBL nn, DBL rr):
+   # Real valued extension of perm
+   RETURN EXP(lpermx(nn, rr));
+FUNC_END
+
+FUNC DBL lcombx(DBL nn, DBL rr):
+   # Real valued extension of LN(comb(NN,RR))
+   RETURN lpermx(nn, rr) - lgamma(rr + 1.0);
+FUNC_END
+
+FUNC DBL combx(DBL nn, DBL rr):
+   # Real valued extension of comb
+   RETURN EXP(lcombx(nn, rr));
+FUNC_END
+
+FUNC DBL birthdayx(DBL nn, DBL rr):
+   # probability that RR things randomly placed in
+   # NN boxes with no box having >1 object
+   RETURN EXP(lpermx(nn, rr) - LN(nn) * rr);
+FUNC_END
+
+FUNC DBL tgamma__1(DBL xx):
+   # compute GAMMA(XX)
+   DBL zz;
+   DBL rslt;
+   DBL denom;
+   DBL numer;
+
+   IF Kw.isposint(1 - xx):
+      rslt = Kw.DBLMAX;
+   ELSE:
+      zz = 1.0;
+      WHILE 3.0 <= xx:
+         xx -= 1;
+         zz *= xx;
+      WHILE_END
+      WHILE xx < 2.0:
+         IF ABS(xx) < 1E-9:
+            WHILE_EXIT;
+         IF_END
+         zz /= xx;
+         xx += 1.0;
+      WHILE_END
+      # Now 2 <= x < 3
+      IF Kw.iseq(xx, 0.0):
+         rslt = Kw.DBLMAX;
+      ELSIF xx < 2.0:
+         rslt = zz / ((1 + Kw.EULER * xx) * xx);
+      ELSIF Kw.iseq(xx, 2.0):
+         rslt = zz;
+      ELSE:
+         xx -= 2.0;
+         # 0 < xx < 1
+         numer = (((((((
+               + 1.60119522476751861407E-04) * xx
+               + 1.19135147006586384913E-03) * xx
+               + 1.04213797561761569935E-02) * xx
+               + 4.76367800457137231464E-02) * xx
+               + 2.07448227648435975150E-01) * xx
+               + 4.94214826801497100753E-01) * xx
+               + 9.99999999999999996796E-01);
+
+         denom = ((((((((
+               - 2.31581873324120129819E-05) * xx
+               + 5.39605580493303397842E-04) * xx
+               - 4.45641913851797240494E-03) * xx
+               + 1.18139785222060435552E-02) * xx
+               + 3.58236398605498653373E-02) * xx
+               - 2.34591795718243348568E-01) * xx
+               + 7.14304917030273074085E-02) * xx
+               + 1.00000000000000000320E+00);
+
+         rslt = zz * numer / denom;
+      IF_END
+   IF_END
+   RETURN rslt;
+FUNC_END
+
+FUNC DBL tgamma(DBL xx):
+   # value of gamma function via lgamma == EXP(LGAMMA(XX))
+   #       INF
+   # INTEGRATE  t**(xx - 1) EXP(-t) dt
+   #         0
+   DBL retvalu;
+   DBL tmp;
+
+   IF xx < 0.0:
+      IF Kw.isint(xx):
+         retvalu = Kw.DBLMAX;
+      ELSE:
+         tmp = EXP(lgamma(1.0 - xx));
+         retvalu = Kw.PI / (SIN(Kw.PI * xx) * tmp);
+      IF_END
+   ELSE:
+      retvalu = EXP(lgamma(xx));
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL tgammainv(DBL yy):
+   # XX such that GAMMA(XX) == YY
+   ??SECANT_DECLARATIONS??
+   DBL kk;
+   DBL cc;
+   DBL pp;
+   DBL xx_init;
+
+   kk = 1.46163214496836234126265954; # zero of digamma
+   cc = SQRT(Kw.TAU) / Kw.E - tgamma(kk); # 0.0365338144849
+   pp = LN((yy + cc) / SQRT(Kw.TAU));
+   xx_init = pp / wp(pp / Kw.E) + 0.5;
+   ??SECANT_LOOP xx_init ; 0.01 ; yy - tgamma(scvx_xx) ??
+   RETURN scvx_xx;
+FUNC_END
+
+BLOCK:
+   LOCAL_FUNC DBL lf_gamma_shift(DBL xx, DBL yy):
+      # use this property of gamma function
+      # to calculate values outside of [1,2)
+      #    tgamma_2(x + 1) = x * tgamma_2(x);
+      DBL prod;
+
+      IF Kw.isposint(1 - yy):
+         prod = Kw.DBLMAX;
+      ELSE:
+         prod = 1.0;
+         WHILE yy < xx - 0.0001:   # bounded by xx - 1
+            prod *= yy;
+            yy += 1.0;
+         WHILE_END
+         WHILE xx + 0.0001 < yy:   # bounded by 1 - xx
+            yy -= 1.0;
+            prod /= yy;
+         WHILE_END
+         # Now xx - 0.1 <= yy <= xx + 0.1
+      IF_END
+      RETURN prod;
+   FUNC_END
+
+   LOCAL_FUNC DBL lf_tgamma_gt_half(DBL xx):
+      # compute GAMMA(XX) for 0.5 < XX
+      # https://rosettacode.org/wiki/Gamma_function
+      INT ii;
+      DBL sum;
+      DBL yy;
+      DBL pp_arr[11];
+
+      yy = xx - FLOOR(xx) + 1.0;
+      # now 1 <= yy < 2
+
+      ARRAY pp_arr[]:   # tgamma(1<=xx<2)
+         +5.716400188274341379136E+3;
+         -1.481530426768413909044E+4;
+         +1.429149277657478554025E+4;
+         -6.348160217641458813289E+3;
+         +1.301608286058321874105E+3;
+         -1.081767053514369634679E+2;
+         +2.605696505611755827729E+0;
+         -7.423452510201416151527E-3;
+         +5.384136432509564062961E-8;
+         -4.023533141268236372067E-9;
+      ARRAY_END
+
+      sum = 1.000000000000000174663;
+      FOR ii FROM 0 TO ARRAYLAST(pp_arr[]):
+         sum += pp_arr[ii] / (yy + ii);
+      FOR_END
+      # very good approximation in [1,2]
+      RETURN (SQRT(Kw.TAU) * sum
+               * EXP(LN(yy + 8.5) * (yy - 0.5) - yy - 8.5)
+               * lf_gamma_shift(xx, yy));
+   FUNC_END
+
+   FUNC DBL tgamma__2(DBL xx):
+      # compute GAMMA(XX)
+      INT ii;
+      DBL sum;
+      DBL pp_arr[10];
+      DBL yy;
+      DBL rslt;
+
+      IF Kw.isposint(1 - xx):
+         rslt = Kw.DBLMAX;
+      ELSE:
+         yy = xx - FLOOR(xx) + 2.0;
+         # now 2 <= yy < 3
+
+         ARRAY pp_arr[]: # tgamma(2<=yy<3)
+            +7.61800917294715E+1;
+            -8.65053203294168E+1;
+            +2.40140982408309E+1;
+            -1.23173957245015E+0;
+            +1.20865097386618E-3;
+            -5.395239384953E-6;
+         ARRAY_END
+         sum = 1.00000000019001E+0;
+         FOR ii FROM 0 TO ARRAYLAST(pp_arr[]):
+            sum += pp_arr[ii] / (yy + ii);
+         FOR_END
+         # very good approximation in [1,2]
+         rslt = (SQRT(Kw.TAU) * sum
+               * EXP(LN(yy + 4.5) * (yy - 0.5) - yy - 4.5)
+               * lf_gamma_shift(xx, yy));
+      IF_END
+      RETURN rslt;
+   FUNC_END
+
+   FUNC DBL tgamma__3(DBL xx):
+      # value of gamma function
+      DBL retvalu;
+
+      IF Kw.isposint(1 - xx):
+         retvalu = Kw.DBLMAX;
+      ELSIF xx < 0.5:
+         retvalu = (Kw.PI / SIN(Kw.PI * xx)
+               / lf_tgamma_gt_half(1.0 - xx));
+      ELSE:
+         retvalu = lf_tgamma_gt_half(xx);
+      IF_END
+
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+
+FUNC DBL tgamma__stirling(DBL xx):
+   # Stirlings approximation
+   DBL yy;
+   DBL ryy;
+   DBL sc;
+   DBL ply;
+
+   sc = 1.0;
+   WHILE xx < 10.0:
+      sc /= xx;
+      xx += 1;
+   WHILE_END
+   yy = xx - 1.0;
+   ryy = 1.0 / yy;
+   ply = (((((((
+            - 5246819.0 / 75246796800.0) * ryy
+            + 163879.0 / 209018880.0) * ryy
+            - 571.0 / 2488320.0) * ryy
+            - 139.0 / 51840) * ryy
+            + 1.0 / 288.0) * ryy
+            + 1.0 / 12.0) * ryy
+            + 1.0);
+   RETURN sc * POW(yy / Kw.E, yy) * SQRT(Kw.TAU * yy) * ply;
+FUNC_END
+
+FUNC DBL tgammadouble(DBL xx):
+   # double factorial extended to reals
+   DBL xxh;
+
+   xxh = (xx - 1.0) / 2.0;
+   RETURN POW(2.0, xxh)
+         * POW(2.0 / Kw.PI, (1.0 - COS(Kw.TAU * xxh)) / 4.0)
+         * tgamma(xxh + 1.0);
+FUNC_END
+
+BLOCK:
+   LOCAL_FUNC DBL lf_ligamma_xxleaa(DBL aa, DBL xx):
+      # Lower Incomplete Gamma function
+      # useful if XX <= MAX(1.1, AA)
+      # ONLY CALL THIS WITH 0.0 < XX
+      INT kk;
+      DBL rr;
+      DBL sum_curr;
+      DBL sum_prev;
+
+      sum_curr = EXP(aa * LN(xx) - xx) / aa;
+      rr = sum_curr;
+      FOR kk FROM 1 TO 5 * ??LOOP_LIMIT??:
+         rr *= xx / (aa + kk);
+         sum_prev = sum_curr;
+         sum_curr += rr;
+         IF Kw.iseq(sum_prev, sum_curr):
+            FOR_EXIT;
+         IF_END
+      FOR_END
+
+      RETURN sum_curr;
+   FUNC_END
+
+   LOCAL_FUNC DBL lf_uigamma_aalexx(DBL aa, DBL xx):
+      # Upper Incomplete Gamma function
+      # useful if MAX(1.1, AA) <= XX
+      # ONLY CALL THIS WITH 0.75 < XX
+      INT jj;
+      DBL pp;
+      INT ipp;
+      DBL sum_curr;
+      DBL tt;
+
+      sum_curr = 0.0;
+      pp = 47.0 / SQRT(xx - 0.75);
+      ipp = FLOOR(pp);
+      FOR jj FROM ipp TO 1 BY -1:
+         tt = xx + sum_curr;
+         sum_curr = (jj - aa) * tt / (tt + jj);
+      FOR_END
+      RETURN EXP(aa * LN(xx) - xx) / (xx + sum_curr);
+   FUNC_END
+
+   FUNC DBL ligamma(DBL aa, DBL xx):
+      # ligamma(AA,XX) = lower incomplete gamma function
+      #        xx
+      # INTEGRATE  t**(aa - 1) EXP(-t) dt
+      #         0
+      DBL retvalu;
+
+      IF xx <= 0.0:
+         retvalu = 0.0;
+      ELSIF aa <= 0.0:
+         retvalu = DBLMAX;
+      ELSIF xx <= 1.1 OR xx <= aa:
+         retvalu = lf_ligamma_xxleaa(aa, xx);
+      ELSE:  # 0 < XX <= 1.1 AND AA < XX
+         retvalu = tgamma(aa) - lf_uigamma_aalexx(aa, xx);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL uigamma(DBL aa, DBL xx):
+      # uigamma(AA,XX) = upper incomplete gamma
+      #       INF
+      # INTEGRATE  t**(aa - 1) EXP(-t) dt
+      #        xx
+      DBL retvalu;
+
+      IF aa <= 0.0:
+         retvalu = DBLMAX;
+      ELSIF xx <= 0.0:
+         retvalu = tgamma(aa);
+      ELSIF xx <= 1.1 OR xx <= aa:
+         retvalu = tgamma(aa) - lf_ligamma_xxleaa(aa, xx);
+      ELSE:  # 0 < XX <= 1.1 AND AA < XX
+         retvalu = lf_uigamma_aalexx(aa, xx);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+
+FUNC DBL rligamma(DBL aa, DBL xx):
+   # rligamma(AA,XX) = regularized lower incomplete gamma
+   #    == ligamma(AA,XX) / tgamma(AA)
+   DBL retvalu;
+
+   IF xx <= 0.0:
+      retvalu = 0.0;
+   ELSIF aa <= 0.0:
+      retvalu = DBLMAX;
+   ELSE:
+      retvalu = ligamma(aa, xx) / tgamma(aa);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ruigamma(DBL aa, DBL xx):
+   # ruigamma(AA,XX) = regularized upper incomplete gamma
+   #    == uigamma(AA,XX) / tgamma(AA)
+   DBL retvalu;
+
+   IF aa <= 0.0:
+      retvalu = DBLMAX;
+   ELSIF xx <= 0.0:
+      retvalu = 1;
+   ELSE:
+      retvalu = uigamma(aa, xx) / tgamma(aa);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL uigamma__1(DBL aa, DBL xx):
+   DBL ans;
+   DBL ax;
+   DBL cc;
+   DBL yc;
+   DBL rr;
+   DBL tt;
+   DBL yy;
+   DBL zz;
+   DBL pk;
+   DBL pkma;
+   DBL pkmb;
+   DBL qk;
+   DBL qkma;
+   DBL qkmb;
+   DBL retvalu;
+
+   IF xx <= 0.0 OR aa <= 0.0:
+      retvalu = 1.0;
+   ELSE:
+      ax = aa * LN(xx) - xx - lgamma(aa);
+      IF ax < -DBLMAXLN:
+         retvalu = 0.0;
+      ELSE:
+         ax = EXP(ax);
+         IF xx < 1.0 OR xx < aa:
+            # power series
+            rr = aa;
+            cc = 1.0;
+            ans = 1.0;
+            AWAIT cc / ans < DBLEPS:
+               rr += 1;
+               cc *= xx / rr;
+               ans += cc;
+            AWAIT_END
+            retvalu = 1.0 - ans * ax / aa;
+         ELSE:
+            # continued fraction
+            yy = 1.0 - aa;
+            zz = xx + yy + 1.0;
+            cc = 0.0;
+            pkmb = 1.0;
+            qkmb = xx;
+            pkma = xx + 1.0;
+            qkma = zz * xx;
+            ans = pkma / qkma;
+
+            AWAIT tt <= DBLEPS:
+               cc += 1.0;
+               yy += 1.0;
+               zz += 2.0;
+               yc = yy * cc;
+               pk = pkma * zz - pkmb * yc;
+               qk = qkma * zz - qkmb * yc;
+               IF NOT Kw.iszero(qk):
+                  rr = pk/qk;
+                  tt = ABS((ans - rr) / rr);
+                  ans = rr;
+               ELSE:
+                  tt = 1.0;
+               IF_END
+               pkmb = pkma;
+               pkma = pk;
+               qkmb = qkma;
+               qkma = qk;
+               IF 1 / DBLEPS < ABS(pk):
+                  pkmb *= DBLEPS;
+                  pkma *= DBLEPS;
+                  qkmb *= DBLEPS;
+                  qkma *= DBLEPS;
+               IF_END
+            AWAIT_END
+            retvalu = ans * ax;
+         IF_END
+      IF_END
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL uigammainv(DBL aa, DBL yy):
+   DBL dd;
+   DBL tt;
+   DBL xx;
+   ??SECANT_DECLARATIONS??
+
+   dd = 1.0 / (9.0 * aa);
+   tt = 1 - dd - gau_quantile(yy) * SQRT(dd);
+   xx = aa * POW(tt, 3);
+   ??SECANT_LOOP xx ; 0.1 ; yy - uigamma(aa, scvx_xx) ??
+   RETURN scvx_xx;
+FUNC_END
+
+FUNC DBL ligammainv(DBL aa, DBL yy):
+   RETURN uigammainv(aa, 1 - yy);
+FUNC_END
+
+FUNC DBL lbeta(DBL aa, DBL bb):
+   # LBETA(XX) = LGAMMA(AA) + LGAMMA(BB) - LGAMMA(AA + BB)
+   RETURN lgamma(aa) + lgamma(bb) - lgamma(aa + bb);
+FUNC_END
+
+FUNC DBL beta(DBL aa, DBL bb):
+   # BETA(XX) = GAMMA(AA) * GAMMA(BB) / GAMMA(AA + BB)
+   #         1
+   # INTEGRATE  t**(aa - 1) (1 - t)**(bb - 1) dt
+   #         0
+   DBL retvalu;
+   DBL lbe;
+
+   lbe = lbeta(aa, bb);
+   IF DBLMAXLN < lbe:
+      retvalu = DBLMAX;
+   ELSIF -DBLMAXLN < lbe:
+      retvalu = EXP(lbe);
+   ELSE:
+      retvalu = -DBLMAX;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL betainc(DBL aa, DBL bb, DBL xx):
+   # Incomplete Beta Function
+   #        xx
+   # INTEGRATE  t**(aa - 1) (1 - t)**(bb - 1) dt
+   #         0
+   DBL sum_curr;
+   DBL sum_prev;
+   DBL psq;
+   DBL compx;
+   DBL new_xx;
+   DBL pp;
+   DBL qq;
+   DBL term;
+   DBL ai;
+   DBL rx;
+   DBL temp;
+   DBL log_beta;
+   DBL retvalu;
+   INT indx;
+   INT ns;
+
+   # Parameters:
+   #    argument XX in (0,1)
+   #    parameters AA, BB in (0,+Inf)
+   IF aa <= 0.0 OR bb <= 0.0 OR 1.0 <= xx:
+      retvalu = 1.0;
+   ELSIF xx <= 0.0:
+      retvalu = 0.0;
+   ELSE:
+      # Reference: KL Majumder, GP Bhattacharjee:
+      #    Algorithm AS 63: "The incomplete Beta Integral",
+      #    "Applied Statistics", Volume 22, Number 3, 1973
+      #    pages 409-411.
+      #  Change tail if necessary and determine S.
+      psq = aa + bb;
+
+      IF aa < psq * xx:
+         new_xx = 1.0 - xx;
+         compx = xx;
+         pp = bb;
+         qq = aa;
+         indx = 0;
+      ELSE:
+         new_xx = xx;
+         compx = 1.0 - xx;
+         pp = aa;
+         qq = bb;
+         indx = 1;
+      IF_END
+
+      term = 1.0;
+      sum_curr = 1.0;
+      ai = 1.0;
+      ns = FLOOR(qq + compx * psq);
+      rx = new_xx / compx;
+      #  Soper reduction.
+      temp = qq - ai;
+      IF ns == 0:
+         rx = new_xx;
+      IF_END
+
+      AWAIT Kw.iseq(sum_curr, sum_prev):
+         term *= temp * rx / (pp + ai);
+
+         ai += 1.0;
+         ns -= 1;
+
+         IF 0 <= ns:
+            temp = qq - ai;
+            IF ns == 0:
+               rx = new_xx;
+            IF_END
+         ELSE:
+            temp = psq;
+            psq += 1.0;
+         IF_END
+         sum_prev = sum_curr;
+         sum_curr += term;
+      AWAIT_END
+
+      log_beta = lgamma(aa) + lgamma(bb) - lgamma(aa + bb);
+
+      retvalu = sum_curr * EXP(pp * LN(new_xx)
+         + (qq - 1.0) * LN(compx) - log_beta) / pp;
+
+      IF indx == 0:
+         retvalu = 1.0 - retvalu;
+      IF_END
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL betainc__1(DBL aa, DBL bb, DBL xx):
+   # Incomplete Beta Function
+   DBL retvalu;
+   DBL lbeta_ab;
+   DBL front;
+   DBL ff;
+   DBL cc;
+   DBL dd;
+   INT ii;
+   INT jj;
+   INT mm;
+   DBL numerator;
+   DBL cd;
+
+   IF xx <= 0.0:
+      retvalu = 0.0;
+   ELSIF 1.0 <= xx:
+      retvalu = 1.0;
+   ELSIF (aa + 1.0) / (aa + bb + 2.0) < xx:
+      # Use BETAINC(AA, BB, XX) == BETAINC(BB, AA, 1 - XX)
+      retvalu = (1.0 - betainc__1(bb, aa, 1.0 - xx));
+   ELSE:
+      lbeta_ab = lbeta(aa, bb);
+      front = EXP(LN(xx) * aa + LN(1.0 - xx) * bb - lbeta_ab)
+               / aa;
+      ff = 1.0;
+      cc = 1.0;
+      dd = 0.0;
+      jj = 0;
+      AWAIT ABS(1.0 - cd) < DBLEPS COUNT ii FROM 0 TO 200:
+         IF ii == 0:
+            numerator = 1.0;
+         ELSIF jj == 0: # Even
+            mm = ii / 2;
+            numerator = (mm * (bb - mm) * xx)
+                  / ((aa + 2.0 * mm - 1.0) * (aa + 2.0 * mm));
+         ELSE: # Odd
+            mm = (ii - 1) / 2;
+            numerator = -((aa + mm) * (aa + bb + mm) * xx)
+                  / ((aa + 2.0 * mm) * (aa + 2.0 * mm + 1));
+         IF_END
+
+         # Do 1 iteration of Lentz algorithm.
+         dd = 1.0 + numerator * dd;
+         IF ABS(dd) < DBLEPS * DBLEPS:
+            dd = DBLEPS * DBLEPS;
+         IF_END
+         dd = 1.0 / dd;
+         cc = 1.0 + numerator / cc;
+         IF ABS(cc) < DBLEPS * DBLEPS:
+            cc = DBLEPS * DBLEPS;
+         IF_END
+
+         cd = cc * dd;
+         ff *= cd;
+         jj = 1 - ii;
+      AWAIT_END
+      retvalu = front * (ff - 1.0);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+BLOCK:
+   LOCAL_FUNC DBL lf_digamma_gt_zero(DBL xx):
+      # derivative of LN(TGAMMA(XX))
+      #   FOR ONLY POSITIVE ARGUMENTS XX
+      DBL rec_xx_sqr;
+      DBL shift;
+      DBL sxx;
+      INT ii;
+      DBL sumy;
+
+      shift = 0.0;
+      sxx = xx;
+      WHILE sxx < 8.0:   # bounded by 8
+         shift -= 1.0 / sxx;
+         sxx += 1.0;
+      WHILE_END
+
+      rec_xx_sqr = 1.0 / (sxx * sxx);
+      sumy = 0.0;
+      FOR ii FROM 14 TO 2 BY -2:
+         sumy *= rec_xx_sqr;
+         sumy += -bernoulli(ii) / ii;
+      FOR_END
+
+      RETURN (shift + LN(sxx) - 1.0 / (2.0 * sxx)
+            + rec_xx_sqr * sumy);
+   FUNC_END
+
+   FUNC DBL digamma(DBL xx):
+      # derivative of LN(GAMMA(XX))
+      #    digamma(xx) == dtgamma(xx) / tgamma(x)
+      #    digamma(xx + 1) == digamma(xx) + 1.0 / xx
+      #    digamma(nn) == hn(nn - 1) - Kw.EULER, nn posint
+      DBL sxx;
+      DBL retvalu;
+
+      IF xx <= 0.0:
+         IF Kw.isint(xx):
+            retvalu = Kw.DBLMAX;
+         ELSE:
+            sxx = 2.0 * xx;
+            retvalu = (lf_digamma_gt_zero(1.0 - xx)
+               - Kw.PI * COS(sxx) / SIN(sxx));
+         IF_END
+      ELSE:
+         retvalu = lf_digamma_gt_zero(xx);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+
+FUNC DBL digammainv(DBL yy):
+   # compute XX such that DIGAMMA(XX) == YY
+   ??SECANT_DECLARATIONS??
+   ??SECANT_LOOP EXP(yy) ; 0.1 ; yy - digamma(scvx_xx) ??
+   RETURN scvx_xx;
+FUNC_END
+
+BLOCK:
+   LOCAL_FUNC DBL lf_digamma_gt_zero__1(DBL xx):
+      DBL gg;
+      DBL aa_arr[10];
+      DBL sxx;
+      DBL term;
+      DBL lnarg;
+      DBL numer;
+      DBL denom;
+      INT ii;
+
+      gg = 9.6565781537733158945718737389;
+      ARRAY aa_arr[]: # digamma(xx < 0)
+         +1.144005294538510956673085217E+4;
+         -3.239880201523183350535979104E+4;
+         +3.505145235055716665660834611E+4;
+         -1.816413095412607026106469185E+4;
+         +4.632329905366668184091382704E+3;
+         -5.369767777033567805557478696E+2;
+         +2.287544733951810076451548089E+1;
+         -2.179257487388651155600822204E-1;
+         +1.083148362725893688606893534E-4;
+      ARRAY_END
+
+      numer = 0.0;
+      denom = 1.0;
+      FOR ii FROM ARRAYLAST(aa_arr[]) TO 0 BY -1:
+         sxx = xx + ii;
+         term = aa_arr[ii] / sxx;
+         denom += term;
+         numer += term / sxx;
+      FOR_END
+
+      lnarg = (gg + xx - 0.5);
+      RETURN LN(lnarg) - (gg / lnarg) - numer / denom;
+   FUNC_END
+
+   FUNC DBL digamma__1(DBL xx):
+      # derivative of LN(TGAMMA(XX))
+      DBL sxx;
+      DBL retvalu;
+
+      IF xx <= 0.0:
+         IF Kw.isint(xx):
+            retvalu = Kw.DBLMAX;
+         ELSE:
+            sxx = 2.0 * xx ;
+            retvalu = (lf_digamma_gt_zero__1(1.0 - xx)
+                  - Kw.PI * COS(sxx) / SIN(sxx));
+         IF_END
+      ELSE:
+         retvalu = lf_digamma_gt_zero__1(xx);
+      IF_END
+
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+
+FUNC DBL factorialinv(DBL yy):
+   # inverse of factorial function
+   RETURN tgammainv(yy) - 1.0;
+FUNC_END
+
+FUNC DBL facinv(DBL yy):
+   # inverse of factorial function
+   RETURN tgammainv(yy) - 1.0;
+FUNC_END
+
+FUNC DBL hn(DBL xx):
+   # sum of 1 / NN over positive integers <= XX
+   DBL sum;
+   DBL kk;
+   DBL fxx;
+
+   IF 0.0 < xx:
+      fxx = FLOOR(xx);
+      sum = 0.0;
+      FOR kk FROM fxx TO 1 BY -1:
+         sum += 1.0 / kk;
+      FOR_END
+   ELSE:
+      sum = 0.0;
+   IF_END
+   RETURN sum;
+FUNC_END
+
+FUNC DBL hn__1(DBL xx):
+   # use asymptotic series approximation of hn(XX)
+   DBL yy;
+   DBL retvalu;
+
+   IF 0.0 < xx:
+      yy = 1.0 / (xx * xx);
+      retvalu = ((((((
+            - 5.0 / (66.0 * 10.0)) * yy
+            + 1.0 / (30.0 * 8.0)) * yy
+            - 1.0 / (42.0 * 6.0)) * yy
+            + 1.0 / (30.0 * 4.0)) * yy
+            - 1.0 / (6.0 * 2.0)) * yy
+            + Kw.EULER) + LN(xx) + 0.5 / xx;
+   ELSE:
+      retvalu = 0.0;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL hnm(DBL xx, DBL mm):
+   # sum of 1 / NN**MM over positive integers <= XX
+   DBL sum;
+   DBL kk;
+   DBL fxx;
+
+   fxx = FLOOR(xx);
+   sum = 0.0;
+   FOR kk FROM fxx TO 1 BY -1:
+      sum += 1.0 / POW(kk, mm);
+   FOR_END
+
+   RETURN sum;
+FUNC_END
+
+#TEST:tgammainv(tgamma(5.3))-5.3;
+#TEST:1 - ruigamma(5.3,4)  - rligamma(5.3,4);
+#TEST:1 - ruigamma(E,PI)   - rligamma(E,PI);
+#TEST:1 - ruigamma(TAU,40) - rligamma(TAU,40);
+#TEST:tgamma(1.5)  -sqrt(PI)/2;
+#TEST:tgamma(PI)-2.28803779534003241795958890906023392288968815;
+#TEST:hn(4.5) - 25.0 / 12.0;

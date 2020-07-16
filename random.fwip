@@ -1,0 +1,384 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-06-22 kdw  local-use mved befroe var decls
+# 2020-06-17 kdw  mode integer added to several funcs
+# 2020-05-30 kdw  CONST syntax change
+# 2020-05-14 kdw  local funcs only in blocks
+# 2020-05-13 kdw  .*_LA[S]T changed to .*_COU[N]T
+# 2020-05-12 kdw  nul rets changed
+# 2020-05-11 kdw  REPL[A]CE replaced with LO[C]AL_CO[N]ST
+# 2020-05-05 kdw  magic check func changed
+# 2020-04-28 kdw  tweaks here and there
+# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-23 kdw  const format change
+# 2020-04-14 kdw  minor tweak to init array
+# 2020-04-12 kdw  comment change
+# 2020-04-09 kdw  MO[D]E syntax change
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-03-11 kdw  comment change
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-06 kdw  RE[P]LACE / IN[D]EX changes
+# 2020-03-03 kdw  comment changed:odd chars
+# 2020-03-02 kdw  s/_N[E]XT/_[E]ND/
+# 2019-12-27 kdw  explicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-10-04 kdw  comment change
+# 2019-09-17 kdw  rmed c[n]v_db[l]2i32
+# 2019-09-05 kdw  refactor
+# 2019-08-25 kdw  loop rework
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-06 kdw  rmed backslashes, macro arg renam
+# 2019-08-01 kdw  rand-cycle refactor
+# 2019-07-31 kdw  bit to bitwise func nams
+# 2019-07-03 kdw  var renam: "s/ind/_ind/;s/__ind/_ind/"
+# 2019-05-29 kdw  comment changed
+# 2019-05-24 kdw  local replaced private
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-17 kdw  explicit module for intmax
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2018-07-17 kdw  private lf_.* funcs
+# 2018-06-19 kdw  die keyword
+# 2018-05-15 kdw  DIE.* change
+# 2018-05-14 kdw  BLOCK syntax
+# 2018-05-13 kdw  MO?DE.* syntax change
+# 2018-04-03 kdw  rm () from return
+# 2018-04-02 kdw  Pro?totype, et al.
+# 2018-03-20 kdw  replaced index w/ "at"replace
+# 2018-03-16 kdw  format of constant and index change
+# 2018-02-14 kdw  IN[D]EX stuff
+# 2017-11-26 kdw  FR[O]M and B[Y] keywords
+# 2017-11-21 kdw  FR[O]M
+# 2017-10-21 kdw  macros start with "at"
+# 2017-10-20 kdw  RE[P]LACE syntax changed
+# 2017-08-30 kdw  INT_* to INT* consts; Req?uires rmed
+# 2017-08-24 kdw  var renam
+# 2017-06-23 kdw  REPL?ACE redo
+# 2017-06-08 kdw  magic constants now hidden
+# 2017-04-30 kdw  func to function
+# 2017-04-04 kdw  comments deleted
+# 2017-03-12 kdw  shorten long comments
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-02-21 kdw  var renam
+# 2017-02-20 kdw  array var names
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-01-06 kdw  ?[?]USE.* to ?[?].*_MODE; ?[?]DIGR.*
+# 2016-12-28 kdw  comment change
+# 2016-12-07 kdw  comment change
+# 2016-11-24 kdw  while loops changed to await loops
+# 2016-11-23 kdw  CN?ST to REA?DON?LY
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-16 kdw  r?and_ini?t_arrays; comments
+# 2016-11-15 kdw  M?OD/B?IT* syntax change
+# 2016-10-30 kdw  reorg
+# 2016-10-29 kdw  reorg
+# 2016-10-28 kdw  comment reorg; moved several func
+# 2016-10-14 kdw  _p added to several vars
+# 2016-09-19 kdw  magic vars declred as doubles
+# 2016-09-18 kdw  debugging; yfs number change
+# 2016-09-13 kdw  lang change
+# 2016-09-14 kdw  lang change
+# 2016-08-16 kdw  randint refactor; comments
+# 2016-07-02 kdw  randgam refactor
+# 2016-05-23 kdw  long lines
+# 2016-05-18 kdw  comment change
+# 2016-04-27 kdw  PYTHON: randpoi (int vs dbl div)
+# 2016-01-22 kdw  long lines
+# 2016-01-18 kdw  long lines
+# 2015-12-30 kdw  ra?nd_se?ed to ra?nd_in?it, et al.
+# 2015-12-25 kdw  default seed is time
+# 2015-12-21 kdw  define local functions before use
+# 2015-12-14 kdw  minor refactor ; rmed sigils
+# 2015-12-11 kdw  s/LC_// from some consts
+# 2015-12-03 kdw  long lines
+# 2015-12-02 kdw  rearranged
+# 2015-11-26 kdw  long lines
+# 2015-11-19 kdw  long lines
+# 2015-11-17 kdw  F[O]R format changed
+# 2015-11-17 kdw  block comments
+# 2015-11-15 kdw  m[a]gic stuff
+# 2015-11-13 kdw  comment shortened
+# 2015-11-12 kdw  comment shortened
+# 2015-10-27 kdw  variable rename
+# 2015-10-13 kdw  _[_]DEFI[N]E_[_]
+# 2015-10-08 kdw  refactor KNUTH stuff
+# 2015-10-07 kdw  l[f]_ra[n]_init_.*_array has 2 args
+# 2015-10-05 kdw  var rename; ra?nd_se?ed returns arg
+# 2015-10-01 kdw  float equality checks to is.*;magic
+# 2015-09-30 kdw  rmed unused variables
+# 2015-09-25 kdw  reworked for VB anmd BC
+# 2015-09-24 kdw  bit ops changed
+# 2015-09-22 kdw  _[_]* format changed
+# 2015-09-20 kdw  created
+
+BLOCK: # Random numbers
+   LOCAL_CONST LC_KNUTH_MAX 1073741823; # 2**30-1 MUST BE ODD
+   LOCAL_CONST LC_KNUTH_QUALITY_COUNT 1009;
+   LOCAL_CONST LC_KNUTH_KK_COUNT 100;
+   LOCAL_CONST LC_KNUTH_LL 37;
+   LOCAL_CONST LC_KNUTH_TT 70;
+   # array size must be greater than LC_KNUTH_QUALITY_COUNT
+   #  AND greater than 2 * LC_KNUTH_KK_COUNT - 1
+   LOCAL_CONST LC_KNUTH_ARRAY_COUNT 1100;
+
+   LOCAL_INT lv_ranz_ind = -3;
+   LOCAL_DBL lv_ranz_magic = 0.0;
+   LOCAL_INT lv_ranz_arr[LC_KNUTH_QUALITY_COUNT];
+   LOCAL_INT lv_ran_a_arr[LC_KNUTH_ARRAY_COUNT];
+   # generator state
+   LOCAL_INT lv_ran_x_arr[LC_KNUTH_KK_COUNT];
+
+   # cannabalized from D. E. Knuth: "The Art of
+   # Computer Programming" Vol 2, Ed 3, pg 186
+   ## Random Number Generation
+   LOCAL_FUNC INT lf_ran_cycle(INT nn):
+      LOCAL_USE lv_ran_x_arr[];
+      LOCAL_USE lv_ran_a_arr[];
+      INT aa;
+      INT bb;
+      INT cc;
+      INT mody;
+
+      MODE_INTEGER:
+      # must have LC_KNUTH_KK_COUNT < nn
+      aa = 0;
+      WHILE aa < LC_KNUTH_KK_COUNT:
+         lv_ran_a_arr[aa] = lv_ran_x_arr[aa];
+         aa += 1;   # [0..KK)
+      WHILE_END
+
+      bb = 0;
+      cc = (LC_KNUTH_KK_COUNT - LC_KNUTH_LL);
+      # Before each loop:
+      #   aa - bb == LC_KNUTH_KK_COUNT mod nn
+      #   aa - cc == LC_KNUTH_LL       mod nn
+
+      WHILE aa < nn:
+         mody = lv_ran_a_arr[bb] - lv_ran_a_arr[cc];
+         lv_ran_a_arr[aa] = BITWISEAND(LC_KNUTH_MAX, mody);
+         aa += 1;   # [KK   ..nn)
+         bb += 1;   # [0    ..nn-KK)
+         cc += 1;   # [KK-LL..nn-LL)
+      WHILE_END
+
+      aa = 0;
+      WHILE aa < LC_KNUTH_LL:
+         mody = lv_ran_a_arr[bb] - lv_ran_a_arr[cc];
+         lv_ran_x_arr[aa] = BITWISEAND(LC_KNUTH_MAX, mody);
+         aa += 1;   # [0    ..LL)
+         bb += 1;   # [nn-KK..nn-KK+LL)
+         cc += 1;   # [nn-LL..nn)
+      WHILE_END
+
+      cc = 0;
+      WHILE aa < LC_KNUTH_KK_COUNT:
+         mody = lv_ran_a_arr[bb] - lv_ran_x_arr[cc];
+         lv_ran_x_arr[aa] = BITWISEAND(LC_KNUTH_MAX, mody);
+         aa += 1;   # [LL      ..KK)
+         bb += 1;   # [nn-KK+LL..nn)
+         cc += 1;   # [0       ..KK-LL)
+      WHILE_END
+
+      MODE_INTEGER_END
+      RETURN bb;
+   FUNC_END
+
+   LOCAL_FUNC INT lf_fill_ranz(NUL):
+      LOCAL_USE lv_ranz_magic;
+      LOCAL_USE lv_ranz_ind;
+      LOCAL_USE lv_ranz_arr[];
+      LOCAL_USE lv_ran_a_arr[];
+      INT jj;
+
+      CALL lf_ran_cycle(LC_KNUTH_QUALITY_COUNT);
+
+      FOR jj FROM 0 TO LC_KNUTH_QUALITY_COUNT - 1:
+         lv_ranz_arr[jj] = lv_ran_a_arr[jj];
+      FOR_END
+      lv_ranz_arr[LC_KNUTH_KK_COUNT] = -1;
+      lv_ranz_ind = 0;
+      lv_ranz_magic = Kw.magicset();
+      RETURN lv_ranz_arr[0];
+   FUNC_END
+
+   LOCAL_FUNC INT lf_next_ranz(NUL):
+      LOCAL_USE lv_ranz_magic;
+      LOCAL_USE lv_ranz_ind;
+      LOCAL_USE lv_ranz_arr[];
+
+      # if not initialized: initialize;
+      # else if buffer empty: create more
+      IF NOT Kw.ismagic(lv_ranz_magic):
+         CALL rand_init(Kw.timee());
+      ELSIF lv_ranz_arr[lv_ranz_ind] < 0:
+         CALL lf_fill_ranz();
+      IF_END
+
+      lv_ranz_ind += 1;
+
+      RETURN lv_ranz_arr[lv_ranz_ind - 1];
+   FUNC_END
+
+   FUNC DBL rand_init_array(INT seed_size
+         , READONLY INT seed_arr_pc[]):
+      # Initialize Random Number generator
+      # with an array of SEED_SIZE longs
+      # (at most LC_KNUTH_KK_COUNT are used)
+      LOCAL_USE lv_ran_x_arr[];
+      INT tt;
+      INT jj;
+      INT kk;
+      INT dd;
+      INT rnd_arr[2 * LC_KNUTH_KK_COUNT];
+      INT rndss;
+      INT rndx;
+      INT rndff;
+      INT seed_ind;
+      INT bitmask;
+
+      MODE_INTEGER:
+      rndss = BITWISEAND((seed_arr_pc[0] + 2)
+            , (LC_KNUTH_MAX - 1));
+      # rndss is now even
+      FOR jj FROM 0 TO LC_KNUTH_KK_COUNT - 1:
+         rnd_arr[jj] = rndss;
+         rndss = BITSHIFTL(rndss, 1);
+         IF LC_KNUTH_MAX < rndss:
+            rndss -= (LC_KNUTH_MAX - 1);
+         IF_END
+         # rndss is still even
+      FOR_END
+
+      rndff = 0;
+      seed_ind = 0;
+      bitmask = 0;
+      FOR jj FROM 0 TO LC_KNUTH_KK_COUNT - 1:
+         IF bitmask <= 1:
+            seed_ind += 1;
+            IF seed_size <= seed_ind:
+               FOR_EXIT;
+            IF_END
+            rndff = seed_arr_pc[seed_ind];
+            bitmask = BITSHIFTL(1, 30);
+         IF_END
+         IF BITWISEAND(rndff, bitmask) <> 0:
+            # bitmask, rnd_arr[ii] are even, hence so is xor
+            rnd_arr[jj] = BITWISEXOR(bitmask, rnd_arr[jj]);
+         IF_END
+         bitmask = BITSHIFTR(bitmask, 1);
+      FOR_END
+
+      # Back to Knuths code
+      # All numbers in rnd_arr[] are even
+      rnd_arr[1] += 1;
+      # All numbers rnd_arr[] are even EXCEPT rnd_arr[1]
+      rndss = BITWISEAND(seed_arr_pc[0], LC_KNUTH_MAX);
+      tt = LC_KNUTH_TT - 1;
+
+      WHILE 0 < tt:
+         FOR jj FROM LC_KNUTH_KK_COUNT - 1 TO 1 BY -1:
+            rnd_arr[jj + jj] = rnd_arr[jj];
+            rnd_arr[jj + jj - 1] = 0;
+         FOR_END
+
+         jj = LC_KNUTH_KK_COUNT + LC_KNUTH_KK_COUNT - 2;
+         dd = LC_KNUTH_KK_COUNT + LC_KNUTH_LL - 2;
+         kk = LC_KNUTH_KK_COUNT - 2;
+         WHILE 0 <= kk:
+            rndx = rnd_arr[dd] - rnd_arr[jj];
+            rnd_arr[dd] = BITWISEAND(rndx, LC_KNUTH_MAX);
+            rndx = rnd_arr[kk] - rnd_arr[jj];
+            rnd_arr[kk] = BITWISEAND(rndx, LC_KNUTH_MAX);
+            dd -= 1;
+            kk -= 1;
+            jj -= 1;
+         WHILE_END
+
+         IF Kw.isodd(rndss):
+            FOR jj FROM LC_KNUTH_KK_COUNT TO 1 BY -1:
+               rnd_arr[jj] = rnd_arr[jj - 1];
+            FOR_END
+            rnd_arr[0] = rnd_arr[LC_KNUTH_KK_COUNT];
+            jj = rnd_arr[LC_KNUTH_LL] - rnd_arr[0];
+            rnd_arr[LC_KNUTH_LL] = BITWISEAND(LC_KNUTH_MAX, jj);
+            rndss = BITSHIFTR(rndss, 1);
+         ELSIF rndss == 0:
+            tt -= 1;
+         ELSE:
+            rndss = BITSHIFTR(rndss, 1);
+         IF_END
+      WHILE_END
+
+      kk = (LC_KNUTH_KK_COUNT - LC_KNUTH_LL);
+      jj = 0;
+      # Before each loop:
+      #   jj - kk = LC_KNUTH_LL mod LC_KNUTH_KK_COUNT
+
+      WHILE jj < LC_KNUTH_LL:
+         lv_ran_x_arr[kk] = rnd_arr[jj];
+         kk += 1;
+         jj += 1;
+      WHILE_END
+
+      # jj == LC_KNUTH_LL; kk == LC_KNUTH_KK_COUNT
+      kk = 0;
+      WHILE jj < LC_KNUTH_KK_COUNT:
+         lv_ran_x_arr[kk] = rnd_arr[jj];
+         kk += 1;
+         jj += 1;
+      WHILE_END
+
+      FOR jj FROM 0 TO 9:
+         CALL lf_ran_cycle(2 * LC_KNUTH_KK_COUNT - 1);
+      FOR_END
+
+      MODE_INTEGER_END
+      CALL lf_fill_ranz();
+      RETURN 0;
+   FUNC_END
+
+   FUNC DBL rand_init(DBL seed):
+      # Initialize Random Number generator
+      # with a single double SEED
+      INT sd_arr[2];
+
+      sd_arr[0] = FLOOR(seed);
+      sd_arr[1] = FLOOR(frac(seed) * Kw.INTMAX);
+
+      CALL rand_init_array(2, sd_arr[]);
+
+      RETURN seed;
+   FUNC_END
+
+   FUNC INT randl(INT nn):
+      # Return a uniformly distributed integer in [0,NN)
+      INT max_allowed;
+      INT rndm;
+      INT retvalu;
+
+      MODE_INTEGER:
+         max_allowed = LC_KNUTH_MAX - (LC_KNUTH_MAX % nn);
+         # Now MAX_ALLOWED is a multiple of NN
+         AWAIT rndm < max_allowed:
+            rndm = lf_next_ranz();
+         AWAIT_END
+         retvalu = rndm % nn;
+      MODE_INTEGER_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL randd(NUL):
+      # Return a uniformly distributed number in [0.0,1.0)
+      RETURN (lf_next_ranz()
+            + lf_next_ranz() / (LC_KNUTH_MAX + 1.0))
+         / (LC_KNUTH_MAX + 1.0);
+   FUNC_END
+
+BLOCK_END # Random numbers

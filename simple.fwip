@@ -1,0 +1,251 @@
+#    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-06-18 kdw  comment to ratio
+# 2020-06-16 kdw  D[I]V keyword deprecated
+# 2020-06-15 kdw  ra[t]io func added
+# 2020-05-30 kdw  horner added
+# 2020-05-28 kdw  debugging parsing routines
+# 2020-04-22 kdw  bison work
+# 2020-04-21 kdw  comments
+# 2020-04-14 kdw  tests added
+# 2020-04-12 kdw  comment change
+# 2020-03-03 kdw  comment change
+# 2019-10-29 kdw  [OE]GF comments
+# 2019-10-28 kdw  GF comments
+# 2019-07-08 kdw  sq[i]nv func
+# 2019-06-02 kdw  func desc added
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2018-09-28 kdw  st[e]p to st[a]ir renam
+# 2018-09-26 kdw  sq, cu funcs
+# 2018-09-18 kdw  clip2 error
+# 2018-09-17 kdw  func renam
+# 2018-07-30 kdw  cli[p]2_
+# 2018-07-13 kdw  float number reformt
+# 2018-06-19 kdw  created
+
+# OGF(f();x) = SUM f(n)*x**n FROM 0 TO Inf
+# EGF(f();x) = SUM f(n)*x**n/factorial(n) FROM 0 TO Inf
+# OGF(1;x) = 1 / (1 - x)
+
+FUNC DBL id(DBL xx):
+   # XX; just return XX
+   # OGF(id();x) = x / (1 - x)**2
+   RETURN xx;
+FUNC_END
+#TEST:id(id(1.456))-1.456;
+#TEST:id(-1.456)+1.456;
+
+## Arithmetic functions
+FUNC DBL reci(DBL xx):
+   # 1.0 / XX; reciprical
+   # OGF(reci();x) = -LN(1 - x)
+   RETURN 1.0 / xx;
+FUNC_END
+FUNC DBL neg(DBL xx):
+   # -XX; negation
+   RETURN -xx;
+FUNC_END
+FUNC DBL square(DBL xx):
+   # XX * XX; square
+   # OGF(square();x) = x * (x + 1) / (1 - x)**3
+   # EGF(square();x) = x * (x + 1) * EXP(x)
+   RETURN xx * xx;
+FUNC_END
+FUNC DBL sq(DBL xx):
+   # XX * XX; square
+   RETURN xx * xx;
+FUNC_END
+FUNC DBL sqinv(DBL xx):
+   # square root
+   RETURN SQRT(xx);
+FUNC_END
+FUNC DBL cube(DBL xx):
+   # XX * XX * XX; cube
+   # OGF(cube();x) = x * (1 + 4 * x + x * x) / (1 - x)**4
+   RETURN xx * xx * xx;
+FUNC_END
+FUNC DBL cu(DBL xx):
+   # XX * XX * XX; cube
+   RETURN xx * xx * xx;
+FUNC_END
+
+FUNC DBL sign(DBL xx):
+   # SIGN(XX) = -1  iff XX in (-INF,0)
+   #          = 0   iff XX == 0.0
+   #          = 1   iff XX in (0,INF)
+   DBL retvalu;
+
+   IF xx < 0.0:
+      retvalu = -1.0;
+   ELSIF 0.0 < xx:
+      retvalu = 1.0;
+   ELSE:
+      retvalu = 0.0;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL stair(DBL xx):
+   # STAIR(XX) = 0 iff XX in (-INF,0)
+   #          = 1 iff XX in [0,INF)
+   DBL retvalu;
+
+   IF xx < 0.0:
+      retvalu = 0.0;
+   ELSE:
+      retvalu = 1.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL heaviside(DBL xx):
+   # HEAVISIDE(XX) = 0   iff XX in (-INF,0)
+   #               = 0.5 iff XX == 0.0
+   #               = 1   iff XX in (0,INF)
+   DBL retvalu;
+
+   IF xx < 0.0:
+      retvalu = 0.0;
+   ELSIF 0.0 < xx:
+      retvalu = 1.0;
+   ELSE:
+      retvalu = 0.5;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL divi(DBL numer, DBL denom, DBL def_val):
+   # if DENOM == 0, DEF_VAL; else, NUMER/DENOM
+   DBL retvalu;
+
+   IF denom < 0.0 OR 0.0 < denom:
+      retvalu = numer / denom;
+   ELSE:
+      retvalu = def_val;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL clip(DBL xx):
+   # The value in [0, +INF) closest to XX
+   DBL retvalu;
+
+   IF xx < 0.0:
+      retvalu = 0.0;
+   ELSE:
+      retvalu = xx;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL clip2(DBL xx, DBL xlow, DBL xhigh):
+   # The value in [XLOW, XHIGH] closest to XX
+   # Undefined if XHIGH < XLOW
+   DBL retvalu;
+
+   IF xx <= xlow:
+      retvalu = xlow;
+   ELSIF xx <= xhigh:
+      retvalu = xx;
+   ELSE:
+      retvalu = xhigh;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL clip2x(DBL xx, DBL xa, DBL xb):
+   # if XA < XB then
+   #    the return value YY is the closest number to XX
+   #       in the interval [XA,XB]
+   # else
+   #    the return value YY is the closest number to XX
+   #       outside the interval (XB,XA)
+   DBL retvalu;
+
+   IF xb < xa:
+      IF xx <= xb OR xa <= xx:
+         retvalu = xx;
+      ELSIF 2.0 * xx < xa + xb:
+         retvalu = xb;
+      ELSE:
+         retvalu = xa;
+      IF_END
+   ELSE:
+      IF xx <= xa:
+         retvalu = xa;
+      ELSIF xx <= xb:
+         retvalu = xx;
+      ELSE:
+         retvalu = xb;
+      IF_END
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL sba(DBL xx):
+   # if XX in [-1, 1], XX; else, 1/XX
+   DBL retvalu;
+
+   IF -1.0 < xx AND xx < 1.0:
+      retvalu = xx;
+   ELSE:
+      retvalu = 1.0 / xx;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ratio(DBL aa, DBL bb):
+   # ratio of AA and BB in [-1,1]
+   DBL rati;
+
+   IF ABS(aa) < ABS(bb):
+      rati = aa / bb;
+   ELSE:
+      rati = bb / aa;
+   IF_END
+   RETURN rati;
+FUNC_END
+
+FUNC DBL horner(DBL xx, INT deg
+      , READONLY DBL coefh_arr_pc[]):
+   # evaluate a polynomial of degree DEG
+   # with coefficients COEFH_PC at XX
+   #   SUM[II FROM 0 TO DEG; XX**II * COEFH_ARR_PC[II]]
+   # THIS ACCESSES LOCATION COEFH_ARR_PC[DEG],
+   #   SO COEFH_ARR_PC[] MUST HAVE AT LEAST DEG + 1 VALUES IN IT
+   INT jj;
+   DBL sum_curr;
+
+   sum_curr = coefh_arr_pc[deg];
+   FOR jj FROM deg - 1 TO 0 BY -1:
+      sum_curr *= xx;
+      sum_curr += coefh_arr_pc[jj];
+   FOR_END
+   RETURN sum_curr;
+FUNC_END
+
+FUNC DBL chebeval(DBL xx, INT deg
+      , READONLY DBL cheb_arr_pc[]):
+   # Evaluate Chebyshev series sum
+   #   SUM[II FROM 0 TO DEG; Tn(II, XX) * CHEB_ARR_PC[II]]
+   # THIS ACCESSES LOCATION CHEB_ARR_PC[DEG],
+   #   SO CHEB_ARR_PC[] MUST HAVE AT LEAST DEG + 1 VALUES IN IT
+   DBL ba;
+   DBL bb;
+   DBL bc;
+   INT ii;
+
+   xx *= 2;
+   ba = cheb_arr_pc[deg];
+   bb = 0.0;
+   bc = 0.0;
+   FOR ii FROM deg - 1 TO 0 BY -1:
+      bc = bb;
+      bb = ba;
+      ba = xx * bb - bc + cheb_arr_pc[ii];
+   FOR_END
+   RETURN (ba - bc) / 2.0;
+FUNC_END

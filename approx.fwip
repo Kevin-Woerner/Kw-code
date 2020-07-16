@@ -1,0 +1,516 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-14 kdw  cos[m]1 func
+# 2020-07-12 kdw  sqrttwo const
+# 2020-07-10 kdw  funcs mved out
+# 2020-07-09 kdw  mode-extended rmd
+# 2020-07-08 kdw  mode-exteneded rm test
+# 2020-07-01 kdw  tests modified
+# 2020-06-30 kdw  tests changed
+# 2020-06-16 kdw  comment added
+# 2020-06-09 kdw  comment changed
+# 2020-06-08 kdw  integral function stuff
+# 2020-05-13 kdw  comment trivially changed
+# 2020-04-12 kdw  comment change
+# 2020-04-10 kdw  comment change
+# 2020-04-09 kdw  MO[D]E syntax change
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-03-29 kdw  ap[p]roxtga[m]ma.* mved to gamma
+# 2020-03-27 kdw  more tests added
+# 2020-03-25 kdw  tests added
+# 2020-03-05 kdw  appr[o]xexp.* refactor
+# 2020-03-01 kdw  rmed useless semicolons
+# 2020-02-28 kdw  poly eval work
+# 2020-02-26 kdw  comment change
+# 2020-02-24 kdw  function comments
+# 2020-02-03 kdw  .*_LOOP changed
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-11-17 kdw  include Macros file
+# 2019-10-23 kdw  lntwo const
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-22 kdw  comment changed
+# 2019-08-18 kdw  B[O]OL to B[O]L
+# 2019-08-17 kdw  L[O]G to L[N]
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-06 kdw  added "+" to array values
+# 2019-06-02 kdw  NR_ to RAPHSON_
+# 2019-05-31 kdw  NR_DO to RAPHSON_LOOP; et al
+# 2019-05-29 kdw  comment changed
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-01 kdw  consts explicit module name
+# 2019-04-22 kdw  F[U]NC keyword
+# 2019-03-28 kdw  tg[a]mma approximation
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-18 kdw  macro syntax changed
+# 2019-03-09 kdw  .*mean() func renam
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-06 kdw  is.* funcs changed
+# 2019-01-13 kdw  var rena; reorg
+# 2019-01-03 kdw  Await counter changed
+# 2018-12-10 kdw  approx-sqrt-2 func
+# 2018-10-27 kdw  secnt decl must be first decl
+# 2018-09-26 kdw  blank line; comment; var renam
+# 2018-09-25 kdw  a[p]prox[s]qrt_[_]1
+# 2018-07-24 kdw  func renam
+# 2018-07-23 kdw  func erf work
+# 2018-07-18 kdw  func renam
+# 2018-05-16 kdw  AR?RAY syntax
+# 2018-05-13 kdw  MO?DE.* syntax change
+# 2018-04-23 kdw  ap?proxn?thro?ot
+# 2018-04-03 kdw  rm () from return
+# 2018-04-02 kdw  Prototype, et al.
+# 2018-03-26 kdw  macro redef
+# 2018-03-12 kdw  made PP statements not need semicolon
+# 2018-01-08 kdw  appro[x]exp2
+# 2017-11-26 kdw  FR[O]M and B[Y] keywords
+# 2017-11-22 kdw  var renam
+# 2017-11-21 kdw  FR[O]M
+# 2017-10-21 kdw  macros start with "at""at"
+# 2017-10-20 kdw  COM[M]ENT syntax change
+# 2017-09-20 kdw  COM[M]ENT format change
+# 2017-09-06 kdw  UN[I]TS support
+# 2017-08-30 kdw  s/DBL_/DBL/;s/FLT_/FLT/
+# 2017-08-22 kdw  rmed REQ[U]IRES
+# 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
+# 2017-04-26 kdw  keyword COMMENT.*
+# 2017-04-21 kdw  var rename
+# 2017-04-20 kdw  func to function
+# 2017-03-17 kdw  space after comma
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-02-08 kdw  SE[C]ANT  syntax
+# 2017-02-07 kdw  comment rmed
+# 2017-02-06 kdw  COUNT syntax change
+# 2017-01-06 kdw  ?[?]USE.* to ?[?].*_MODE
+# 2016-12-02 kdw  rmed def?ine
+# 2016-11-23 kdw  no postfix increment
+# 2016-11-22 kdw  eu?ler, cd?fno?rmal added
+# 2016-11-22 kdw  squareroot improved
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-18 kdw  _?_P?OD_?_
+# 2016-11-16 kdw  ## comments
+# 2016-11-15 kdw  comments
+# 2016-11-14 kdw  LA[N]G stuff
+# 2016-11-11 kdw  seca?nt algorithm refactor
+# 2016-11-08 kdw  AW?AIT.*COU?NT syntax
+# 2016-11-07 kdw  LC_?EPI
+# 2016-11-06 kdw  isz?ero to iseq?ual
+# 2016-10-31 kdw  AW?AIT
+# 2016-09-15 kdw  lang change
+# 2016-09-13 kdw  lang change
+# 2016-05-24 kdw  long lines
+# 2016-04-27 kdw  _[_]USE* change
+# 2016-03-12 kdw  BC scale changed
+# 2016-01-11 kdw  l?og / ex?p work
+# 2015-12-29 kdw  tweak
+# 2015-12-25 kdw  er?fap?prox
+# 2015-12-21 kdw  ex[p]appro[x]2 deleted
+# 2015-12-14 kdw  long line
+# 2015-12-11 kdw  _[_]EN[D]IF_[_] obsoleted
+# 2015-12-10 kdw  improvements
+# 2015-12-09 kdw  sqrta[p]prox improvements
+# 2015-12-08 kdw  sqrta[p]prox
+# 2015-12-04 kdw  loga[p]prox
+# 2015-12-02 kdw  created
+
+??INSERT_FILE "Macros.fwip"??
+
+## Approximations of various functions calculated
+## only with elementary operations (+, -, *, /)
+
+FUNC DBL sqrt__1(DBL xx):
+   # calculate the YY=sqrt(XX) via
+   #     Newtons method on f(x) = x**2 - XX
+   #      x__n+1_ = x__n_ - f(x__n_) / df(x__n_)
+   # Step A) Find ZZ in [1,4), and integer NN such that
+   #           sqrt(XX) = 2**NN * sqrt(ZZ * 4**-NN)
+   # Step B) find YY_0 such that 0 about YY_0**2 - ZZ
+   # Step C) iterate Newtons method on F(YY) = YY ** 2 - ZZ
+   #            YY_n+1 = (YY_n + ZZ / YY_n) / 2.0
+   # Step D) return YY_n+1 * 2**NN about SQRT(XX)
+   DBL yy_curr;
+   DBL yy_prev;
+   DBL zz;
+   DBL power_of_two;
+
+   IF xx <= 0.0:
+      yy_curr = 0;
+   ELSE:
+      # Use SQRT(XX) = 2**n * SQRT(XX / 4**n)
+      # to reduce arg to [1.0, 4.0)
+      power_of_two = 1.0;
+      zz = xx;
+      WHILE 4.0 <= zz:
+         zz /= 4;
+         power_of_two *= 2.0;
+      WHILE_END
+      WHILE zz < 1.0:
+         zz *= 4;
+         power_of_two /= 2.0;
+      WHILE_END
+
+      # init guess via Least squares quadratic
+      # on data (x, sqrt(x)) with x = 1 to 4 step 0.01
+      yy_curr = (0.546382637992462
+            + zz * (0.502513025246083
+            + zz * (-0.0353026277858345)));
+      AWAIT Kw.iseq(yy_prev, yy_curr): # Newton loop
+         yy_prev = yy_curr;
+         yy_curr = (yy_curr + zz / yy_curr) / 2.0;
+      AWAIT_END
+
+      yy_curr *= power_of_two;
+   IF_END
+   RETURN yy_curr;
+FUNC_END
+
+FUNC DBL sqrt__2(DBL xx):
+   # calculate the YY=sqrt(XX) via explicitly
+   # inverting the function XX=YY**2
+   ??SECANT_DECLARATIONS??
+   DBL ini;
+
+   IF xx <= 0.0:
+      scvx_xx = 0.0;
+   ELSE:
+      IF 1 < xx:
+         ini = xx / 2.0;
+      ELSE:
+         ini = 2.0 * xx;
+      IF_END
+
+      ??SECANT_LOOP ini ; ini / 10.0 ; xx - scvx_xx * scvx_xx ??
+   IF_END
+   RETURN scvx_xx;
+FUNC_END
+
+FUNC DBL sqrt__3(DBL yy):
+   # calculate the XX=sqrt(YY) via
+   # finding the zero of F(XX) = XX * XX - YY
+   ??RAPHSON_DECLARATIONS??
+   DBL ini;
+
+   IF yy <= 0.0:
+      nrvx_xx = 0.0;
+   ELSE:
+      IF 1 < yy:
+         ini = yy / 2.0;
+      ELSE:
+         ini = 2.0 * yy;
+      IF_END
+
+      ??RAPHSON_LOOP ini
+            ; nrvx_xx * nrvx_xx - yy
+            ; 2 * nrvx_xx ??
+   IF_END
+   RETURN nrvx_xx;
+FUNC_END
+
+FUNC DBL nthroot__1(DBL xx, INT kk):
+   # calculate the YY=(XX)**(1/KK) via
+   #     Newtons method on f(x) = x**KK - XX
+   #      x__n+1_ = x__n_ - f(x__n_) / df(x__n_)
+   # Step A) find YY_0 such that 0 about YY_0**KK - XX
+   # Step B) iterate Newtons method on F(YY) = YY ** KK - XX
+   #      YY__n+1_ = (YY__n_ * (KK - 1)
+   #               + XX / YY__n_ ** (KK - 1)) / KK
+   # Step C) return YY_n+1
+   DBL yy_curr;
+   DBL yy_prev;
+   DBL pp;
+   INT ii;
+
+   IF xx <= 0.0:
+      yy_curr = 0;
+   ELSE:
+      yy_curr = xx / 2.0;
+      AWAIT Kw.iseq(yy_prev, yy_curr): # Newton loop
+         yy_prev = yy_curr;
+         pp = yy_curr;
+         FOR ii FROM 2 TO kk - 1:
+            pp *= yy_curr;
+         FOR_END
+         yy_curr = (yy_curr * (kk - 1) + xx / pp) / kk;
+      AWAIT_END
+   IF_END
+   RETURN yy_curr;
+FUNC_END
+
+BLOCK:
+   LOCAL_CONST LC_EPS Kw.DBLEPS / 16.0;
+
+   FUNC DBL cossin_ev(INT init_ii, DBL xx_rad, BOL addone_mult):
+      #         +INF   (-1)**N * XX_RAD**(2*N+INIT_II)
+      #          SUM ---------------------------------
+      # N=init_ii+1      factorial(2*N+INIT_II)
+      DBL val;
+      INT ii;
+      DBL trig_sum;
+      DBL xr_rad;
+      DBL xr_sqr;
+
+      IF Kw.iszero(xx_rad):
+         trig_sum = 0.0;
+      ELSE:
+         xr_rad = Kw.fmods(xx_rad, Kw.TAU);
+         xr_sqr = - xr_rad * xr_rad;
+         val = 1;
+         ii = init_ii;
+         WHILE LC_EPS < ABS(val):
+            ii += 2;
+            val *= xr_sqr / (ii * (ii - 1));
+         WHILE_END
+         # use Horners method
+         trig_sum = 1.0 / (ii * (ii + 1.0));
+         WHILE 1 < ii:
+            trig_sum += 1.0;
+            trig_sum *= xr_sqr / (ii * (ii - 1));
+            ii -= 2;
+         WHILE_END
+         IF addone_mult:
+            trig_sum += 1.0;
+            trig_sum *= xr_rad;
+         IF_END
+      IF_END
+      RETURN trig_sum;
+   FUNC_END
+
+   FUNC DBL cos__1(DBL xx_rad):
+      # calculate COS(XX) via Taylor series
+      RETURN cossin_ev(0, xx_rad, FALSE) + 1.0;
+   FUNC_END
+
+   FUNC DBL cosm1__1(DBL xx_rad):
+      # calculate COS(XX) via Taylor series
+      RETURN cossin_ev(0, xx_rad, FALSE);
+   FUNC_END
+
+   FUNC DBL sin__1(DBL xx_rad):
+      # calculate SIN(XX) via Taylor series
+      RETURN cossin_ev(1, xx_rad, TRUE);
+   FUNC_END
+
+   FUNC DBL sinc__1(DBL xx_rad):
+      # calculate SINC(XX) via Taylor series
+      DBL retvalu;
+
+      IF Kw.iszero(xx_rad):
+         retvalu = 1.0;
+      ELSE:
+         IF Kw.TAU / 2 < ABS(xx_rad):
+            retvalu = cossin_ev(1, xx_rad, TRUE);
+            retvalu /= xx_rad;
+         ELSE:
+            retvalu = cossin_ev(1, xx_rad, FALSE) + 1.0;
+         IF_END
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+
+FUNC DBL exp__1(DBL xx):
+   # calculate the YY=EXP(XX) via Taylor series
+   INT ii;
+   DBL val;
+   DBL axx;
+   DBL exp_sum;
+   DBL retvalu;
+   INT squarings;
+
+   # Calculate the absolute value of XX,
+   IF xx < 0:
+      axx = - xx;
+   ELSE:
+      axx = xx;
+   IF_END
+
+   # Now 0 <= XX; Use the fact that exp(2*x) = exp(x)**2
+   # to reduce AXX to < 1
+   squarings = 0;
+   WHILE 1.0 < axx:
+      axx /= 2.0;
+      squarings += 1;
+   WHILE_END
+   # figure out how many term of the Taylor series of exp(axx)
+   # we need to get the desired precision
+   val = 1.0;
+   ii = 1;
+   WHILE Kw.DBLEPS / 10.0 < val:
+      ii += 1;
+      val *= axx / ii;
+   WHILE_END
+   # use Horners method to evaluate the Taylor series at AXX
+   exp_sum = 1.0 / (ii + 1.0);
+   WHILE 0 < ii:
+      exp_sum = 1.0 + axx * (exp_sum / ii);
+      ii -= 1;
+   WHILE_END
+   # take care of negative arguments
+   IF xx < 0.0:
+      retvalu = 1.0 / exp_sum;
+   ELSE:
+      retvalu = exp_sum;
+   IF_END
+   # Use exp(2*x) = exp(x)**2 to calculate exp(XX)
+   WHILE 0 < squarings:
+      retvalu *= retvalu;
+      squarings -= 1;
+   WHILE_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL exp__2(DBL xx):
+   # calculate the YY=EXP(XX) via Taylor series
+   INT ii;
+   DBL axx;
+   DBL expmo_sum;
+   DBL retvalu;
+   INT squarings;
+   DBL val;
+
+   IF xx < 0:
+      axx = - xx;
+   ELSE:
+      axx = xx;
+   IF_END
+   squarings = 0;
+   WHILE 1 < axx:
+      axx /= 2.0;
+      squarings += 1;
+   WHILE_END
+   # Now 0 <= AXX < 1
+   # figure out how many term of the Taylor series of exp(axx)
+   # we need to get the desired precision
+   val = 1.0;
+   ii = 1;
+   WHILE Kw.DBLEPS / 4.0 < val:
+      ii += 1;
+      val *= axx / ii;
+   WHILE_END
+
+   expmo_sum = 0;
+   WHILE 0 < ii:
+      expmo_sum = axx * (expmo_sum + 1.0) / ii;
+      ii -= 1;
+   WHILE_END
+   FOR ii FROM 1 TO squarings:
+      expmo_sum *= (2.0 + expmo_sum);
+   FOR_END
+   IF xx < 0:
+      retvalu = 1.0 / (expmo_sum + 1.0);
+   ELSE:
+      retvalu = expmo_sum + 1.0;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ln__1(DBL xx):
+   # Wikipedia/Logarithm/Arithmetic-geometric mean
+   # approximation
+   DBL yy_curr;
+   INT logstep;
+   DBL retvalu;
+   DBL tmp;
+
+LANGUAGE LANG_BC: # extended resolution
+   scale *= 2;
+LANGUAGE_END # extended resolution
+
+   logstep = 0;
+   yy_curr = 8.0 / xx; # YY_CURR = 2**(3 - LOGSTEP) / XX
+   tmp = (Kw.DBLEPS);
+   WHILE tmp < yy_curr:
+      logstep -= 16;  # LOGSTEP -= LOGSTEPINC
+      yy_curr /= 65536.0;  # YY_CURR /= 2**(LOGSTEPINC)
+   WHILE_END
+
+   retvalu = (Kw.PI / Kw.agmean(2.0, yy_curr)
+            + logstep * Kw.LNTWO);
+
+LANGUAGE LANG_BC: # extended resolution
+   scale /= 2;
+LANGUAGE_END # extended resolution
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ln__2(DBL xx):
+   # Wikipedia/Logarithm
+   DBL yy_curr;
+   DBL ptwo;
+   DBL term;
+   DBL nn;
+   DBL sum_curr;
+   DBL sum_prev;
+   DBL mant;
+
+   yy_curr = xx;
+   ptwo = 0.0;
+   WHILE Kw.SQRTTWO < yy_curr:
+      ptwo += 1;
+      yy_curr /= 2.0;
+   WHILE_END
+   WHILE yy_curr < 1.0 / Kw.SQRTTWO:
+      ptwo -= 1;
+      yy_curr *= 2.0;
+   WHILE_END
+
+   # Now YY_CURR is in [1 / SQRTTWO,SQRTTWO],
+   #      and XX = YY_CURR * 2 ** PTWO
+   mant = (yy_curr - 1.0) / (yy_curr + 1.0);
+   sum_curr = 2.0 * mant;
+   term = sum_curr;
+   mant *= mant;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 3 BY 2:
+      term *= mant;
+      sum_prev = sum_curr;
+      sum_curr += term / nn;
+   AWAIT_END
+
+   RETURN ptwo * Kw.LNTWO + sum_curr;
+FUNC_END
+
+FUNC DBL euler__1(NUL):
+   # approximate the Euler constant
+   DBL twon;
+   DBL exptwon;
+   INT nn;
+   DBL term;
+   DBL subsum;
+   DBL sum_curr;
+   DBL sum_prev;
+   INT mm;
+
+   twon = 1.0;
+   exptwon = Kw.E;
+   AWAIT 0.1 < Kw.DBLEPS * exptwon COUNT nn FROM 0:
+      twon *= 2.0;
+      exptwon *= exptwon;
+   AWAIT_END
+   term = 1.0 / twon;
+   subsum = 0.0;
+   sum_curr = 0.0;
+   AWAIT Kw.iseq(sum_prev, sum_curr) COUNT mm FROM 1:
+      subsum += 1.0 / mm;
+      term *= twon / mm;
+      sum_prev = sum_curr;
+      sum_curr += term * subsum;
+   AWAIT_END
+   RETURN twon * sum_curr / exptwon - (nn + 1) * Kw.LNTWO;
+FUNC_END
+
+#TEST:ln__1(exp__1(8.6))==8.6;
+#TEST:exp__1(ln__1(8.6))==8.6;
+#TEST:cos__1(1)==0.54030230586813971740093660744297660373231;
+#TEST:sin__1(1)==0.84147098480789650665250232163029899962256;
+#TEST:exp__1(2)==7.38905609893065022723042746057500781318032;
+#TEST:euler__1()==0.5772156649015328606065120900824024310422;

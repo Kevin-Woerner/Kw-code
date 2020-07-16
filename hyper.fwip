@@ -1,0 +1,77 @@
+#    Copyright (C) 2016-2020 by Kevin D. Woerner
+# 2020-04-12 kdw  comment change
+# 2020-03-03 kdw  comment changed:odd chars
+# 2020-03-02 kdw  s/_N[E]XT/_E[N]D/
+# 2020-01-07 kdw  comment change; f11()
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-10-04 kdw  comment change
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-11 kdw  comment change
+# 2019-08-06 kdw  rmed backslashes, macro arg renam
+# 2019-05-29 kdw  comment changed
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-06 kdw  is.* funcs changed
+# 2019-01-13 kdw  comment changed; varname change
+# 2019-01-03 kdw  Await counter changed
+# 2018-12-29 kdw  comments
+# 2018-04-03 kdw  rm () from return
+# 2017-11-26 kdw  FR[O]M/B[Y] keywords; deprecate CO[U]NT
+# 2017-04-21 kdw  func to function
+# 2017-03-06 kdw  sigils rmed
+# 2017-02-27 kdw  refactor (single return)
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-12 kdw  FWIP language change
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-11 kdw  refactor
+# 2016-11-08 kdw  Await loop
+# 2016-11-02 kdw  backslash added to long line; arg check
+# 2016-11-01 kdw  created
+
+FUNC DBL f21(DBL aa, DBL bb, DBL cc, DBL zz):
+   # Hypergeometric series 2F1(AA, BB; CC; ZZ)
+   # LN(1+ZZ) == ZZ * F21(1, 1, 2, -ZZ)
+   # ZZ**(-AA) == F21(AA, 1, 1, 1 - ZZ)
+   # SININV(ZZ) == ZZ * F21(0.5, 0.5, 1.5, ZZ * ZZ)
+   DBL sum_curr;
+   DBL sum_prev;
+   DBL term;
+   DBL nn;
+
+   IF 1 <= ABS(zz):
+      sum_curr = 0.0;
+   ELSE:
+      sum_curr = 1.0;
+      term = 1.0;
+      AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
+         term *= ((aa + nn) * (bb + nn) * zz
+               / ((cc + nn) * (nn + 1)));
+         sum_prev = sum_curr;
+         sum_curr += term;
+      AWAIT_END
+   IF_END
+   RETURN sum_curr;
+FUNC_END
+
+FUNC DBL f11(DBL aa, DBL bb, DBL zz):
+   # Hypergeometric series 1F1(AA; BB; ZZ)
+   DBL sum_curr;
+   DBL sum_prev;
+   DBL term;
+   DBL nn;
+
+   IF 1 <= ABS(zz):
+      sum_curr = 0.0;
+   ELSE:
+      sum_curr = 1.0;
+      term = 1.0;
+      AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
+         term *= ((aa + nn) * zz
+               / ((bb + nn) * (nn + 1)));
+         sum_prev = sum_curr;
+         sum_curr += term;
+      AWAIT_END
+   IF_END
+   RETURN sum_curr;
+FUNC_END

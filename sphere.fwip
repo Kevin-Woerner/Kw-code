@@ -1,0 +1,377 @@
+#    Copyright (C) 2016-2020 by Kevin D. Woerner
+# 2020-06-03 kdw  writeonly keyword
+# 2020-05-11 kdw  local-func syntax changed
+# 2020-05-08 kdw  local function block
+# 2020-04-12 kdw  comment change
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-03 kdw  comment changed:odd chars
+# 2020-03-02 kdw  s/_N[E]XT/_E[N]D/
+# 2020-01-28 kdw  updated w/ new ellisp.* funcs
+# 2020-01-17 kdw  rmed useless funcs
+# 2020-01-16 kdw  ell.*_dist.* inf loop protection
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-10-04 kdw  comment change
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-06 kdw  rmed backslashes, macro arg renam
+# 2019-07-04 kdw  comment change
+# 2019-07-01 kdw  desc of el[l]ipsoid_get func
+# 2019-06-04 kdw  func comments added
+# 2019-05-29 kdw  comment changed
+# 2019-05-24 kdw  local replaced private
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-01 kdw  consts explicit module name
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-06 kdw  is.* funcs changed
+# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-01-13 kdw  var rena; reorg
+# 2018-12-29 kdw  backslash reposition
+# 2018-12-16 kdw  BC: func args starting with " -"
+# 2018-11-05 kdw  ellipsoid_get_.* rearrange
+# 2018-10-04 kdw  uppercased fwip trig funcs
+# 2018-07-13 kdw  minor tweak
+# 2018-05-14 kdw  var renam
+# 2018-04-03 kdw  rm () from return
+# 2018-03-27 kdw  continuation lines
+# 2018-03-20 kdw  replaced index w/ "at"replace
+# 2018-03-16 kdw  format of constant and index change
+# 2018-02-21 kdw  inv trig func renam: s/a(.*)/inv/
+# 2018-02-14 kdw  IN[D]EX stuff
+# 2017-11-22 kdw  var renam
+# 2017-10-21 kdw  macros start with "at"
+# 2017-10-20 kdw  RE[P]LACE syntax changed
+# 2017-09-13 kdw  destination function
+# 2017-09-12 kdw  heading function changed
+# 2017-08-22 kdw  rmed REQ[U]IRES
+# 2017-04-21 kdw  func to function
+# 2017-03-12 kdw  shorten long comments
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-01-04 kdw  rmed ref to at[a]n
+# 2016-12-31 kdw  var rename
+# 2016-12-27 kdw  ellipsoid_* functions
+# 2016-12-26 kdw  created
+
+FUNC DBL sphere_d(DBL lata_rad
+      , DBL lona_rad
+      , DBL latb_rad
+      , DBL lonb_rad):
+   # great circle distance on a sphere of radius 1
+   # from https://en.wikipedia.org/wiki/Great-circle_distance
+   DBL xc;
+   DBL xd;
+   DBL xe;
+   DBL c_lond;
+   DBL s_lond;
+   DBL c_lata;
+   DBL c_latb;
+   DBL s_lata;
+   DBL s_latb;
+   DBL retvalu;
+
+   c_lata = COS(lata_rad);
+   c_latb = COS(latb_rad);
+   s_lata = SIN(lata_rad);
+   s_latb = SIN(latb_rad);
+
+   s_lond = SIN(lonb_rad - lona_rad);
+   c_lond = COS(lonb_rad - lona_rad);
+
+   xc = c_lata * s_latb - s_lata * c_latb * c_lond;
+   xd = c_latb * s_lond;
+   xe = s_lata * s_latb + c_lata * c_latb * c_lond;
+
+   retvalu = ATAN2(Kw.hypot(xd, xc), xe);
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL great_circle_distance(DBL lata_rad
+   , DBL lona_rad
+   , DBL latb_rad
+   , DBL lonb_rad):
+   # great circle distance on the unit sphere
+   # between the two sets of latitude and longitude
+   RETURN sphere_d(lata_rad, lona_rad, latb_rad, lonb_rad);
+FUNC_END
+
+FUNC DBL sphere_distance(DBL lata_rad
+   , DBL lona_rad
+   , DBL latb_rad
+   , DBL lonb_rad
+   , WRITEONLY DBL ret_dirs_arr_p[]):
+   # distance on an sphere with radius 1,
+   # between the two given points
+   # RET_DIRS_ARR_P[0] = direction from A to B
+   # RET_DIRS_ARR_P[1] = direction from B to A
+   # See https://en.wikipedia.org/wiki/Vincentys_formulae
+   DBL xc;
+   DBL xd;
+   DBL xe;
+   DBL s_lond;
+   DBL c_lond;
+   DBL c_lata;
+   DBL c_latb;
+   DBL s_lata;
+   DBL s_latb;
+   DBL dist;
+
+   c_lata = COS(lata_rad);
+   c_latb = COS(latb_rad);
+   s_lata = SIN(lata_rad);
+   s_latb = SIN(latb_rad);
+
+   s_lond = SIN(lonb_rad - lona_rad);
+   c_lond = COS(lonb_rad - lona_rad);
+
+   # heading from pointA to pointB
+   xc = c_lata * s_latb - s_lata * c_latb * c_lond;
+   xd = c_latb * s_lond;
+   ret_dirs_arr_p[0] = ATAN2(xd, xc);
+
+   xe = s_lata * s_latb + c_lata * c_latb * c_lond;
+   dist = ATAN2(Kw.hypot(xd, xc), xe);
+
+   # heading from pointB to pointA
+   xc = c_latb * s_lata - s_latb * c_lata * c_lond;
+   xd = c_lata * s_lond;
+   ret_dirs_arr_p[1] = -ATAN2(xd, xc);
+
+   RETURN dist;
+FUNC_END
+
+BLOCK: # ellipsiod funcitons
+   LOCAL_FUNC DBL lf_ka(DBL usq):
+      DBL hyp;
+
+      hyp = SQRT(1.0 + usq);
+      RETURN (hyp - 1.0) / (hyp + 1.0);
+   FUNC_END
+
+   LOCAL_FUNC DBL lf_cap_a(DBL usq):
+      DBL ka;
+
+      ka = lf_ka(usq);
+      RETURN (1.0 + Kw.square(ka / 2.0)) / (1.0 - ka);
+   FUNC_END
+
+   LOCAL_FUNC DBL lf_cap_b(DBL usq):
+      DBL ka;
+
+      ka = lf_ka(usq);
+      RETURN ka * (1.0 - 3.0 * Kw.square(ka) / 8.0);
+   FUNC_END
+
+   FUNC DBL ellipsoid_distance(DBL flat
+      , DBL lata_rad
+      , DBL lona_rad
+      , DBL latb_rad
+      , DBL lonb_rad
+      , WRITEONLY DBL ret_dirs_arr_p[]):
+      # distance on an ellipsoid with radius 1,
+      # flattening FLAT between the two given points
+      # RET_DIRS_ARR_P[0] = direction from A to B
+      # RET_DIRS_ARR_P[1] = direction from B to A
+      # See https://en.wikipedia.org/wiki/Vincentys_formulae
+      DBL iflat;
+      DBL cap_ua;
+      DBL cap_ub;
+      DBL lon_diff;
+      DBL c_cap_ua;
+      DBL s_cap_ua;
+      DBL c_cap_ub;
+      DBL s_cap_ub;
+      DBL xx_curr;
+      DBL xx_prev;
+      DBL xc;
+      DBL xd;
+      DBL s_xx;
+      DBL c_xx;
+      DBL c_sig;
+      DBL s_sig;
+      DBL sig;
+      DBL s_alpha;
+      DBL c_alpha_sq;
+      DBL cbsigm;
+      DBL cap_c;
+      DBL usq;
+      DBL cap_a;
+      DBL cap_b;
+      DBL deltasig;
+      INT ii;
+      DBL dist;
+
+      iflat = 1.0 - flat;
+      cap_ua = ATAN2(iflat * SIN(lata_rad), COS(lata_rad));
+      cap_ub = ATAN2(iflat * SIN(latb_rad), COS(latb_rad));
+      lon_diff = lonb_rad - lona_rad;
+
+      xx_curr = lon_diff;
+
+      c_cap_ua = COS(cap_ua);
+      c_cap_ub = COS(cap_ub);
+      s_cap_ua = SIN(cap_ua);
+      s_cap_ub = SIN(cap_ub);
+
+      AWAIT ABS(xx_curr - xx_prev) < 1.0E-12 COUNT ii FROM 0:
+         s_xx = SIN(xx_curr);
+         c_xx = COS(xx_curr);
+         s_sig = Kw.hypot(c_cap_ub * s_xx
+            , c_cap_ua * s_cap_ub - s_cap_ua * c_cap_ub * c_xx);
+         c_sig = s_cap_ua * s_cap_ub
+               + c_cap_ua * c_cap_ub * c_xx;
+         sig = ATAN2(s_sig, c_sig);
+         s_alpha = c_cap_ua * c_cap_ub * s_xx / s_sig;
+         c_alpha_sq = 1.0 - Kw.square(s_alpha);
+         cbsigm = c_sig - Kw.divi(2.0 * s_cap_ua * s_cap_ub
+               , c_alpha_sq, 0);
+         cap_c = ((flat / 16.0) * c_alpha_sq
+            * (4.0 + flat * (4.0 - 3.0 * c_alpha_sq)));
+         xx_prev = xx_curr;
+         xx_curr = (lon_diff + (1.0 - cap_c) * flat * s_alpha
+            * (sig + cap_c * s_sig * (cbsigm
+               + cap_c * c_sig
+                     * (2.0 * Kw.square(cbsigm) - 1.0))));
+         IF 10 < ii AND Kw.iseq(ABS(xx_prev + xx_curr), TAU):
+            xx_curr = TAU / 2.0;
+            AWAIT_EXIT;
+         IF_END
+      AWAIT_END
+
+      usq = c_alpha_sq * (1.0 / Kw.square(iflat) - 1.0);
+
+      cap_a = iflat * lf_cap_a(usq);
+
+      cap_b = lf_cap_b(usq);
+
+      deltasig = cap_b * s_sig * (cbsigm
+         + 0.25 * cap_b * (c_sig
+                  * (-1.0 + 2.0 * Kw.square(cbsigm))
+            - (1.0 / 6.0) * cap_b * cbsigm
+               * (3.0 + 4.0 * Kw.square(s_sig))
+               * (-3.0 + 4.0 * Kw.square(cbsigm))));
+
+      dist = cap_a * (sig - deltasig);
+
+      # heading from point0 to point1
+      xc = c_cap_ua * s_cap_ub - s_cap_ua * c_cap_ub * c_xx;
+      xd = c_cap_ub * s_xx;
+      ret_dirs_arr_p[0] = ATAN2(xd, xc);
+
+      # heading from point1 to point0
+      xc = c_cap_ub * s_cap_ua - s_cap_ub * c_cap_ua * c_xx;
+      xd = c_cap_ua * s_xx;
+      ret_dirs_arr_p[1] = -ATAN2(xd, xc);
+
+      RETURN dist;
+   FUNC_END
+
+   FUNC DBL ellipsoid_destination(DBL flat
+      , DBL lata_rad
+      , DBL lona_rad
+      , DBL heading_rad
+      , DBL distance
+      , WRITEONLY DBL ret_loc_arr_p[]):
+      # calculate the endpoint (and bearing) of a geodesic
+      #    on an ellipsoid with radius 1, and flattening FLAT:
+      #    starting at (LAT_A, LON_A) w/ heading HEADING
+      #    and going distance DISTANCE
+      # See https://en.wikipedia.org/wiki/Vincentys_formulae
+      DBL iflat;
+      DBL cap_ua;
+      DBL c_cap_ua;
+      DBL s_cap_ua;
+      DBL sig_rad;
+      DBL sig_rad_prev;
+      DBL sig_rad_delta;
+      DBL c_sig;
+      DBL s_sig;
+      DBL aa;
+      DBL bb;
+      DBL sig_b_rad;
+      DBL s_alpha;
+      DBL c_alpha_sq;
+      DBL twosigm_rad;
+      DBL c_twosigm;
+      DBL c_twosigm_sq;
+      DBL cap_c;
+      DBL usq;
+      DBL cap_a;
+      DBL cap_b;
+      DBL cap_l;
+      DBL alpha_rad;
+      DBL c_heading;
+      DBL s_heading;
+      DBL lamda;
+      DBL xd;
+      DBL xc;
+
+      iflat = 1.0 - flat;
+      aa = 1.0;
+      bb = iflat * aa;
+      cap_ua = ATAN2(iflat * SIN(lata_rad), COS(lata_rad));
+
+      c_cap_ua = COS(cap_ua);
+      s_cap_ua = SIN(cap_ua);
+      c_heading = COS(heading_rad);
+      s_heading = SIN(heading_rad);
+      sig_b_rad = ATAN2(s_cap_ua, c_cap_ua * c_heading);
+
+      s_alpha = COS(cap_ua) * SIN(heading_rad);
+
+      c_alpha_sq = 1.0 - Kw.square(s_alpha);
+
+      usq = c_alpha_sq * (Kw.square(aa / bb) - 1.0);
+
+      cap_a = lf_cap_a(usq);
+
+      cap_b = lf_cap_b(usq);
+
+      sig_rad_delta = 0.0;
+      sig_rad = -10.0;
+      AWAIT Kw.iseq(sig_rad, sig_rad_prev):
+         sig_rad_prev = sig_rad;
+         sig_rad = distance / (bb * cap_a) + sig_rad_delta;
+         # the following vars are used later, so calc them here
+         s_sig = SIN(sig_rad);
+         c_sig = COS(sig_rad);
+         twosigm_rad = 2.0 * sig_b_rad + sig_rad;
+         c_twosigm = COS(twosigm_rad);
+         c_twosigm_sq = Kw.square(c_twosigm);
+         sig_rad_delta = cap_b * s_sig * (
+            c_twosigm + 0.25 * cap_b * (
+               c_sig * (2.0 * c_twosigm_sq - 1.0)
+                  - (cap_b / 6.0) * c_twosigm
+                     * (4.0 * Kw.square(s_sig) - 3.0)
+                     * (4.0 * c_twosigm_sq - 3.0)));
+      AWAIT_END
+
+      xd = s_cap_ua * c_sig + c_cap_ua * s_sig * c_heading;
+      xc = iflat * Kw.hypot(s_alpha
+            , s_cap_ua * s_sig - c_cap_ua * c_sig * c_heading);
+      ret_loc_arr_p[0] = ATAN2(xd, xc);
+
+      xd = s_sig * s_heading;
+      xc = c_cap_ua * c_sig - s_cap_ua * s_sig * c_heading;
+      lamda = ATAN2(xd, xc);
+      cap_c = ((flat / 16.0) * c_alpha_sq
+            * (4.0 + flat * (4.0 - 3.0 * c_alpha_sq)));
+
+      cap_l = lamda - (1.0 - cap_c) * flat * s_alpha
+            * (sig_rad + cap_c * s_sig * (c_twosigm
+               + cap_c * c_sig * (2.0 * c_twosigm_sq - 1.0)));
+
+      ret_loc_arr_p[1] = cap_l + lona_rad;
+
+      alpha_rad = Kw.fmodu(Kw.PI + ATAN2(s_alpha
+            , c_cap_ua * c_sig * c_heading
+                  - s_cap_ua * s_sig), Kw.TAU);
+
+      RETURN alpha_rad;
+   FUNC_END
+BLOCK_END   # ellipsiod funcitons

@@ -1,0 +1,1400 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-14 kdw  c[o]sm1 func
+# 2020-07-07 kdw  sq[r]tx func
+# 2020-07-02 kdw  pend[u]lum func
+# 2020-07-01 kdw  tests modified
+# 2020-06-30 kdw  tests changed
+# 2020-06-23 kdw  func ranam
+# 2020-06-18 kdw  Modulo operator II
+# 2020-06-17 kdw  Modulo operator
+# 2020-06-15 kdw  add prfx to con[t]fra.* funcs
+# 2020-06-08 kdw  integral file
+# 2020-06-03 kdw  writeonly keyword
+# 2020-05-30 kdw  CONST syntax change
+# 2020-05-20 kdw  rmed pr[i]nt_nu[m]2char2
+# 2020-05-14 kdw  block for cbrt
+# 2020-05-13 kdw  lang_.* vars
+# 2020-05-12 kdw  language syntax
+# 2020-05-11 kdw  REPL[A]CE replaced with LO[C]AL_CO[N]ST
+# 2020-05-08 kdw  blocks added
+# 2020-05-06 kdw  rmed boolean vars
+# 2020-05-05 kdw  magic check func changed
+# 2020-04-28 kdw  tweaks here and there
+# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-24 kdw  rem[q]uou func
+# 2020-04-23 kdw  const format change
+# 2020-04-19 kdw  pri[n]t_nu[m]2char rework
+# 2020-04-15 kdw  tests added
+# 2020-04-14 kdw  tests added
+# 2020-04-12 kdw  comment change
+# 2020-04-11 kdw  macro arg format
+# 2020-04-10 kdw  comment change
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-04-02 kdw  no m[o]d func
+# 2020-04-01 kdw  t[a]n to TA[N]
+# 2020-03-30 kdw  bla[c]kbo[d]y work
+# 2020-03-29 kdw  comment change
+# 2020-03-16 kdw  sigm[o]id3d?
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-08 kdw  PR[I]NTVAL change
+# 2020-03-06 kdw  L[A]NG.* names
+# 2020-03-03 kdw  comment change
+# 2020-03-01 kdw  .*_NE[X]T deprecated, et al.
+# 2020-02-26 kdw  comment change
+# 2020-02-21 kdw  ellipse file
+# 2020-02-14 kdw  incomplete beta work
+# 2020-02-03 kdw  .*_LOOP changed
+# 2020-01-24 kdw  func rearrangement
+# 2020-01-22 kdw  kevy func; num2char rework
+# 2020-01-21 kdw  num2char2 experiment
+# 2020-01-16 kdw  func fm[o]ds
+# 2020-01-08 kdw  rmed ran[d]cdf file
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-12-11 kdw  bas[e]_outf func
+# 2019-12-06 kdw  binary search in nu[m]2char
+# 2019-11-18 kdw  black-body work
+# 2019-11-17 kdw  blackbody stuff
+# 2019-10-23 kdw  temperature conversions
+# 2019-10-17 kdw  dont print nl in contfra
+# 2019-10-15 kdw  neg arg for contfrac
+# 2019-10-08 kdw  D[B]LS[I]G rmed
+# 2019-10-04 kdw  comment change
+# 2019-09-21 kdw  several const renamd
+# 2019-09-10 kdw  LAN[G]UAGE NOT to LAN[G]UAGE_N[O]T
+# 2019-09-07 kdw  log1m rmed
+# 2019-08-26 kdw  PRI[N]TS changed to PR[I]NTSTR
+# 2019-08-22 kdw  comment changed
+# 2019-08-18 kdw  B[O]OL changed to B[O]L
+# 2019-08-17 kdw  L[O]G changed to LN
+# 2019-08-12 kdw  insert file cdf
+# 2019-08-11 kdw  language comments
+# 2019-08-07 kdw  language comments
+# 2019-08-06 kdw  rmed backshlashes, macro arg renam
+# 2019-06-27 kdw  float equality work
+# 2019-06-26 kdw  pow work
+# 2019-06-12 kdw  tempf tofrom tempc work
+# 2019-06-07 kdw  die string change
+# 2019-06-02 kdw  NR_ changed to RAPHSON_
+# 2019-05-31 kdw  NR_DO changed to RAPHSON_LOOP; et al
+# 2019-05-29 kdw  comment changed
+# 2019-05-28 kdw  temp_[fc] vars
+# 2019-05-26 kdw  temp[fc] funcs
+# 2019-05-24 kdw  array var renam
+# 2019-05-20 kdw  explicit constants
+# 2019-05-08 kdw  func descripts
+# 2019-05-07 kdw  smooth func [0,1] changed to [-1,1]
+# 2019-05-01 kdw  consts explicit module name
+# 2019-04-22 kdw  F[U]NC keyword
+# 2019-04-16 kdw  THEN, loop_DO keywords experiment
+# 2019-03-19 kdw  re[t]_val changed to re[t]valu
+# 2019-03-18 kdw  macro syntax changed
+# 2019-03-09 kdw  .*mean() func renam
+# 2019-03-08 kdw  is[e]qual changed to is[e]q, et al.
+# 2019-03-04 kdw  loop-limit work
+# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-04 kdw  topy[h] abs changed to ABS
+# 2019-01-31 kdw  topy[h]; iime.hires
+# 2019-01-27 kdw  topy[h]1?
+# 2019-01-23 kdw  added call keyword to base-out
+# 2019-01-13 kdw  var rena; reorg
+# 2018-12-18 kdw  kwelements separated
+# 2018-12-17 kdw  base_.* funcs
+# 2018-12-12 kdw  macros.fwip
+# 2018-12-10 kdw  module specific refs
+# 2018-12-09 kdw  cbrt rework using NR
+# 2018-12-03 kdw  newton-raphson method
+# 2018-11-29 kdw  upper cased fwip defined funcs
+# 2018-11-28 kdw  funcs pow2, pow10, log2
+# 2018-11-26 kdw  PL_ prfxs
+# 2018-11-06 kdw  topyh differentiable
+# 2018-11-05 kdw  topyh
+# 2018-10-27 kdw  experiment with other Kw.*.fwip
+# 2018-10-08 kdw  vbdotnet stuff
+# 2018-10-05 kdw  pow rework
+# 2018-10-03 kdw  loop lim now replaced
+# 2018-09-27 kdw  SE[C]ANT comments
+# 2018-09-25 kdw  dot net work
+# 2018-09-08 kdw  SE[C]ANT_DO redef
+# 2018-07-23 kdw  private func renam
+# 2018-07-19 kdw  comments; array reformat
+# 2018-07-17 kdw  private lf_.* funcs
+# 2018-07-13 kdw  float number reformt
+# 2018-06-27 kdw  pow func redefd
+# 2018-06-19 kdw  mved several funcs to simple
+# 2018-06-14 kdw  temp conversion changed
+# 2018-06-09 kdw  mved tests
+# 2018-06-07 kdw  more tests
+# 2018-05-22 kdw  comment change
+# 2018-05-20 kdw  const work
+# 2018-05-18 kdw  LAN[G]UAGE syntax change
+# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
+# 2018-05-14 kdw  BLOCK syntax
+# 2018-05-13 kdw  MO?DE.* syntax change
+# 2018-04-24 kdw  comments
+# 2018-04-19 kdw  consts rework
+# 2018-04-03 kdw  rm () from return
+# 2018-04-02 kdw  Pro?totype, et al.
+# 2018-04-01 kdw  LAN[G]UAGE_E[N]D
+# 2018-03-26 kdw  macro redef
+# 2018-03-17 kdw  comment change
+# 2018-03-12 kdw  made PP statements not need semicolon
+# 2018-02-21 kdw  temperature conversion work
+# 2018-02-19 kdw  secant and macro refactor
+# 2018-02-16 kdw  iseq, isgt, islt funcs
+# 2018-02-10 kdw  c[o]nstants.f[w]ip
+# 2018-02-01 kdw  temperature stuff
+# 2018-01-29 kdw  julian consts renamd
+# 2018-01-04 kdw  added elliptic.fwip
+# 2017-12-13 kdw  added shc.fwip
+# 2017-11-27 kdw  converted an AW[A]IT loop to a F[O]R loop
+# 2017-11-26 kdw  FR[O]M/B[Y] keywords
+# 2017-11-24 kdw  FR[O]M
+# 2017-11-22 kdw  var renam
+# 2017-11-14 kdw  fm[o]du added
+# 2017-11-03 kdw  fixed f2c (upsidedown conversion factor)
+# 2017-10-28 kdw  horner rework
+# 2017-10-22 kdw  no net change
+# 2017-10-21 kdw  LAN[G]UAGE syntax changed
+# 2017-10-06 kdw  rm astro and earth stuff
+# 2017-10-02 kdw  astro work
+# 2017-09-29 kdw  added squareroot, cuberoot functions
+# 2017-09-28 kdw  co?nst-as?tro.f?wip
+# 2017-09-26 kdw  mved some func to earth
+# 2017-09-22 kdw  comment change
+# 2017-09-20 kdw  number format change
+# 2017-09-13 kdw  vincenty work
+# 2017-09-12 kdw  mved day2[h]ms to julian
+# 2017-09-06 kdw  UNITS support
+# 2017-08-31 kdw  ...LAN[G]UAGE
+# 2017-08-30 kdw  s/DBL_/DBL/;s/FLT_/FLT/
+# 2017-08-22 kdw  INS[E]RT_F[I]LE syntax changed
+# 2017-08-21 kdw  .*_P[E]R_.* rmed
+# 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
+# 2017-08-18 kdw  lower case constants
+# 2017-08-11 kdw  var renam
+# 2017-07-06 kdw  minor comment change
+# 2017-06-23 kdw  REPL?ACE redo
+# 2017-06-21 kdw  LANG_.* AND MASTER.* change
+# 2017-06-13 kdw  comment update
+# 2017-06-08 kdw  magic stuff
+# 2017-06-03 kdw  PRI?NT.* changed
+# 2017-06-01 kdw  line.fwip added and deleted
+# 2017-05-03 kdw  PROT?OTYPE format changed
+# 2017-05-02 kdw  var renam app changed to appr
+# 2017-04-20 kdw  func changed to function
+# 2017-04-18 kdw  bessel
+# 2017-04-11 kdw  partition
+# 2017-03-31 kdw  "NE" changed to "<>", etc
+# 2017-03-29 kdw  "<>" changed to "NE", etc
+# 2017-03-24 kdw  minor reorg
+# 2017-03-22 kdw  minor cleanup
+# 2017-03-19 kdw  minor tweak
+# 2017-03-17 kdw  space after comma
+# 2017-03-13 kdw  VB: pow function
+# 2017-03-12 kdw  shorten long comments
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-07 kdw  futile experiment
+# 2017-03-06 kdw  sigils rmed
+# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-02-23 kdw  var array nam change
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-02-08 kdw  ?[?]PRO?TOT?YPE
+# 2017-01-08 kdw  INSERT syntax change
+# 2017-01-06 kdw  ?[?]LAN[G]UAGE_[I]S.* stuff
+# 2017-01-05 kdw  log1[pm]
+# 2016-12-28 kdw  rearrangement
+# 2016-12-27 kdw  mved earth* to sphere*, et al.
+# 2016-12-26 kdw  mved *_distance funcs to new earth.fwip
+# 2016-12-20 kdw  failed experiment w/ powers
+# 2016-12-02 kdw  ?[?]INS?ERT changed
+# 2016-11-28 kdw  file suffix change
+# 2016-11-27 kdw  squ?are, c?ube
+# 2016-11-25 kdw  constant renam
+# 2016-11-24 kdw  LAN[G]UAGE_N[O]T to LAN[G]UAGE_IFN[O]T
+# 2016-11-23 kdw  CN?ST changed to REA?DON?LY
+# 2016-11-22 kdw  high-precision EU?LER calc experiment
+# 2016-11-21 kdw  DE?F changed to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-19 kdw  minor rearrangement
+# 2016-11-17 kdw  sinx rmed; cbrtx renamd
+# 2016-11-16 kdw  ma?gic stuff
+# 2016-11-15 kdw  MOD/BIT* syntax change
+# 2016-11-14 kdw  modu?lo
+# 2016-11-11 kdw  minor refactor
+# 2016-11-09 kdw  FO?RE?VER loop rmed
+# 2016-11-08 kdw  AW?AIT.*COU?NT syntax
+# 2016-11-07 kdw  __LANG_* syntax changed
+# 2016-11-06 kdw  isz?ero changed to ise?qual
+# 2016-11-01 kdw  hyper
+# 2016-10-30 kdw  comment in fmod
+# 2016-10-28 kdw  comment reorg
+# 2016-10-14 kdw  _p added to several vars
+# 2016-10-10 kdw  BC:moved var decls in un and tn
+# 2016-10-08 kdw  lowercased Tn for BC
+# 2016-10-07 kdw  Tn
+# 2016-09-28 kdw  change in v?kk?cp.?sh
+# 2016-09-19 kdw  not magic; _[_]IN?SERT[_]_
+# 2016-09-14 kdw  added () to return statements
+# 2016-09-14 kdw  lang change
+# 2016-09-13 kdw  lang change
+# 2016-09-08 kdw  return statement tweak
+# 2016-09-01 kdw  comment tweak
+# 2016-08-25 kdw  hypot prevent div by 0
+# 2016-07-22 kdw  fmod issues
+# 2016-07-19 kdw  tweak (float numbers)
+# 2016-05-25 kdw  debugging compiler
+# 2016-05-24 kdw  long lines
+# 2016-05-18 kdw  comment change
+# 2016-05-12 kdw  VIS?UALB?ASIC6 rename
+# 2016-05-04 kdw  deprecated P[R]INT
+# 2016-05-02 kdw  debugging on dar?win
+# 2016-04-27 kdw  comment tweak
+# 2016-03-12 kdw  cbrt debugging
+# 2016-02-29 kdw  comment tweak
+# 2016-01-22 kdw  long lines
+# 2016-01-05 kdw  minor comment change
+# 2015-12-31 kdw  bounded (possible) infinite loops
+# 2015-12-30 kdw  _?_DEC?LARE_?_
+# 2015-12-28 kdw  rearranged includes
+# 2015-12-28 kdw  _?_I?F_X_?_ changed to _?_IF_NONE_?_
+# 2015-12-21 kdw  nested _?_I?Fs
+# 2015-12-11 kdw  _?_END?IF_?_ renamed
+# 2015-12-10 kdw  i[s]zero stuff
+# 2015-12-09 kdw  debugging
+# 2015-12-04 kdw  end-cr
+# 2015-12-03 kdw  approximations
+# 2015-11-27 kdw  long lines
+# 2015-11-26 kdw  long lines
+# 2015-11-19 kdw  long lines
+# 2015-11-15 kdw  m[a]gic stuff
+# 2015-11-13 kdw  cb[r]t tweak; long lines changed
+# 2015-11-12 kdw  continued fraction expansion
+# 2015-11-05 kdw  par[a]bola.fwip rmed
+# 2015-11-02 kdw  compiler change
+# 2015-11-01 kdw  interp[o]lation
+# 2015-10-29 kdw  refactored c[b]rt
+# 2015-10-28 kdw  refactored c[b]rt
+# 2015-10-26 kdw  fm[o]d2
+# 2015-10-22 kdw  tweak
+# 2015-10-18 kdw  tweak
+# 2015-10-17 kdw  tweak
+# 2015-10-16 kdw  rmed su[n].fwip, add ju[l]ian.fwip
+# 2015-10-14 kdw  su[n].fwip
+# 2015-10-13 kdw  _[_]DEFI[N]E_[_]
+# 2015-10-10 kdw  is* functions moved
+# 2015-10-09 kdw  [agh]+m1? improvements
+# 2015-10-08 kdw  i[n]va[g]m1()
+# 2015-10-07 kdw  L[N]G_MA[X]IMUM
+# 2015-10-05 kdw  i[s]alm[o]stequal
+# 2015-10-03 kdw  ro[u]ndy uses rou[n]d
+# 2015-10-02 kdw  earranged order of functions
+# 2015-10-01 kdw  float equality checks to is.*
+# 2015-09-30 kdw  _[_]IF_[N]OT_.*
+# 2015-09-29 kdw  variables renamed; fixed c[b]rt
+# 2015-09-28 kdw  variable rename in par[a]bola_a[x]is
+# 2015-09-27 kdw  par[a]bola_a[x]is
+# 2015-09-27 kdw  infinite loop in c[b]rt function
+# 2015-09-26 kdw  debugging agm vs BCC
+# 2015-09-25 kdw  B[I]T* format change
+# 2015-09-24 kdw  bit ops changed
+# 2015-09-22 kdw  Units on constants
+# 2015-09-22 kdw  VB6 VBDOTNET: no m[o]d function
+# 2015-09-21 kdw  m[o]d function
+# 2015-09-20 kdw  moved several functions
+# 2015-09-19 kdw  redim redo
+# 2015-09-18 kdw  renamed various
+# 2015-09-17 kdw  at[o]thenmodp, co[n]tfrac
+# 2015-09-16 kdw  functions var[i]ance and ave[r]age
+# 2015-09-15 kdw  long lines changed
+# 2015-09-14 kdw  g[p]f
+# 2015-09-11 kdw  dont print newlines
+# 2015-09-10 kdw  e[r]f stuff
+# 2015-09-09 kdw  rmed empty lines
+# 2015-09-08 kdw  mv global vars to where theyre used
+# 2015-09-07 kdw  n[2]com[b]r
+# 2015-09-06 kdw  bino[m]ial
+# 2015-09-04 kdw  ber[n]oulli[nd], *_EP[S]ILON
+# 2015-09-03 kdw  array passing addressed
+# 2015-09-02 kdw  cli[p] refactor
+# 2015-09-01 kdw  s[t]ts_n[e]w* stuff
+# 2015-08-31 kdw  RE[D]IM stuff
+# 2015-08-30 kdw  BC long lines
+# 2015-08-29 kdw  more BC stuff
+# 2015-08-28 kdw  BC stuff
+# 2015-08-27 kdw  random number work
+# 2015-08-26 kdw  random number work
+# 2015-08-25 kdw  addeed GL[O]BAL designator for Python
+# 2015-08-24 kdw  fixed syntax for VB
+# 2015-08-23 kdw  rmed unneeded ()
+# 2015-08-22 kdw  bern[o]ulli refactor
+# 2015-08-21 kdw  kw[2].pl change (C stuff)
+# 2015-08-20 kdw  kw[2].pl change
+# 2015-08-19 kdw  stts_* stuff
+# 2015-08-18 kdw  redid some sta?t stuff
+# 2015-08-17 kdw  syntax error
+# 2015-08-16 kdw  added CO[N]STs, stts_*
+# 2015-08-15 kdw  tweak
+# 2015-08-14 kdw  rmed () in syntax of WHILE, FOR, IF
+# 2015-08-12 kdw  tweak
+# 2015-08-11 kdw  touched
+# 2015-08-10 kdw  comment changed
+# 2015-08-09 kdw  sigma*, et al.
+# 2015-08-08 kdw  cdf[k]s2; randtri, randnbd, randbin
+# 2015-08-07 kdw  longlines broken up
+# 2015-08-06 kdw  keyword BEG rmed
+# 2015-08-05 kdw  fa[c]torial, et al.
+# 2015-08-04 kdw  std[e]v2sp[r]ead ; rto[iz]
+# 2015-08-03 kdw  VB6 VBDOTNET debugging
+# 2015-08-02 kdw  python fixes; GL[O]BAL
+# 2015-08-01 kdw  python fixes; CONT[I]NUE
+# 2015-07-31 kdw  F[O]R loops
+# 2015-07-30 kdw  refactor
+# 2015-07-29 kdw  refactor / more functions
+# 2015-07-28 kdw  refactor / rename
+# 2015-07-27 kdw  typo
+# 2015-07-17 kdw  *normal stuff
+# 2015-07-16 kdw  e[r]f
+# 2015-07-15 kdw  W[0]
+# 2015-07-14 kdw  gamma
+# 2015-07-13 kdw  created
+
+MASTER; # insert master functions before other code
+#TEST:atan2(-1,1)==-PI/4;
+#TEST:atan2(-1,-1)==-3*PI/4;
+#TEST:atan2(1,-1)==3*PI/4;
+#TEST:atan2(0,-18)==PI;
+#TEST:atan2(0,18)-0;
+#TEST:atan2(-18,0)==-PI/2;
+#TEST:atan2(18,0)==PI/2;
+#TEST:cbrt(3)==1.44224957030740838232163831078010958839186925;
+#TEST:ln(3)==1.09861228866810969139524523692252570464749055782;
+#TEST:exp(2)==7.38905609893065022723042746057500781318031557055;
+#TEST:sin(1)==0.84147098480789650665250232163029899962256306080;
+#TEST:cos(1)==0.54030230586813971740093660744297660373231042062;
+#TEST:log(exp(4.7))==4.7;
+#TEST:cbrt(pow(2.73,3))==2.73;
+#TEST:pow(frac(sqrt(17))+floor(sqrt(17)),2)==17;
+
+# Start doing things, ..
+??INSERT_FILE "Macros.fwip"??
+
+??INSERT_FILE "constants.fwip"??
+#TEST:EULER==0.57721566490153286060651209008240243104215933594;
+??INSERT_FILE "simple.fwip"??
+
+## Exponential related functions
+FUNC DBL ln(DBL xx):
+   # logrithm, base E, of XX
+   RETURN LN(xx);
+FUNC_END
+FUNC DBL lg(DBL xx):
+   # log base 2 of XX
+   RETURN LN(xx) / LNTWO;
+FUNC_END
+FUNC DBL log10(DBL xx):
+   # log base 10 of XX
+   RETURN LN(xx) / LN(10.0);
+FUNC_END
+FUNC DBL l10(DBL xx):
+   # log base 10 of XX
+   RETURN LN(xx) / LN(10.0);
+FUNC_END
+#TEST:l10(100)==2;
+
+LANGUAGE_NOT LANG_C:              # C has log2
+   FUNC DBL log2(DBL xx):
+      # log base 2 of XX
+      RETURN LN(xx) / LNTWO;
+   FUNC_END
+LANGUAGE_END                     # C has log2
+
+LANGUAGE_NOT LANG_C LANG_PYTHON:       # C, PYTHON have fmod
+   FUNC DBL fmod(DBL xx, DBL yymodulus):
+      #    == XX - RTOZ(XX / YYMODULUS) * YYMODULUS
+      # return value has same sign as XX
+      DBL retvalu;
+      DBL qu;
+
+      IF yymodulus < 0.0 OR 0.0 < yymodulus:
+         qu = xx / yymodulus;
+         IF qu < 0.0:
+            retvalu = xx - CEIL(qu) * yymodulus;
+         ELSE:
+            retvalu = xx - FLOOR(qu) * yymodulus;
+         IF_END
+      ELSE:
+         retvalu = 0.0;
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+   FUNC DBL modf(DBL xx, WRITEONLY DBL ret_int_arr_p[]):
+      # Split xx into a integer part returned in RET_INT_ARR_P,
+      #   and an fractional part which is returned
+      DBL retvalu;
+      DBL int_part;
+
+      IF xx < 0.0:
+         int_part = CEIL(xx);
+      ELSIF 0.0 < xx:
+         int_part = FLOOR(xx);
+      ELSE:
+         int_part = 0;
+      IF_END
+      ret_int_arr_p[0] = xx - int_part;
+      RETURN retvalu;
+   FUNC_END
+LANGUAGE_END                         # C, PYTHON have fmod
+
+FUNC DBL fmody(DBL xx, DBL yymodulus):
+   #    == XX - FLOOR(XX / YYMODULUS) * YYMODULUS
+   # return value has same sign as YYMODULUS
+   DBL retvalu;
+
+   IF yymodulus < 0.0 OR 0.0 < yymodulus:
+      retvalu = xx - FLOOR(xx / yymodulus) * yymodulus;
+   ELSE:
+      retvalu = 0.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL fmodu(DBL xx, DBL yymodulus):
+   #   == XX - FLOOR(XX / ABS(YYMODULUS)) * ABS(YYMODULUS)
+   # return value always has a positive sign
+   # ZZ in [0, ABS(YYMODULUS)) such that
+   #    XX = NN * YYMODULUS + ZZ for some integer NN
+   DBL retvalu;
+
+   IF yymodulus < 0.0 OR 0.0 < yymodulus:
+      retvalu = fmod(xx, yymodulus);
+      IF retvalu < 0.0:
+         retvalu += ABS(yymodulus);
+      IF_END
+   ELSE:
+      retvalu = 0.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:fmodu(-5.7,-2)==0.3;
+#TEST:fmodu(5.7,-2)==1.7;
+
+FUNC DBL remquou(DBL xx
+      , DBL yymodulus
+      , WRITEONLY DBL ret_int_arr_p[]):
+   # return value is remainder of XX / YYMODULUS
+   # RET_INT_ARR_P[0] is always positive
+   DBL retvalu;
+   DBL qu;
+   DBL fl;
+
+   IF yymodulus < 0.0 OR 0.0 < yymodulus:
+      qu = xx / yymodulus;
+      fl = FLOOR(qu);
+      retvalu = qu - fl;
+   ELSE:
+      fl = 0.0;
+      retvalu = xx;
+   IF_END
+   ret_int_arr_p[0] = fl;
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL fmods(DBL xx, DBL yymodulus):
+   # ZZ in [-ABS(YYMODULUS)/2,ABS(YYMODULUS)/2) such that
+   #    XX = NN * YYMODULUS + ZZ for some integer NN
+   DBL retvalu;
+   DBL ayy;
+   DBL lim;
+
+   IF yymodulus < 0.0 OR 0.0 < yymodulus:
+      retvalu = fmod(xx, yymodulus);
+      ayy = ABS(yymodulus);
+      lim = ayy / 2;
+      IF retvalu < -lim:
+         retvalu += ayy;
+      ELSIF lim <= retvalu:
+         retvalu -= ayy;
+      IF_END
+   ELSE:
+      retvalu = 0.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+#TEST:pow(5,3)==125;
+#TEST:pow(5,-3)==0.008;
+
+FUNC DBL pow2(DBL expo):
+   # 2**EXPO
+   RETURN POW(2.0, expo);
+FUNC_END
+
+FUNC DBL pow10(DBL expo):
+   # 10**EXPO
+   RETURN POW(10.0, expo);
+FUNC_END
+
+FUNC DBL sigmoid(DBL xx):
+   # SIGMOID function (-inf, inf) to (0, 1)
+   RETURN 1.0 / (1.0 + EXP(-xx));
+FUNC_END
+
+FUNC DBL sigmoidinv(DBL xx):
+   # inverse SIGMOID function (0, 1) to (-inf, inf)
+   RETURN -LN(((1.0 / xx - 0.5) - 0.5));
+FUNC_END
+
+FUNC DBL sigmoid3(DBL aa
+      , DBL bb
+      , DBL xx):
+   # An infinitely differential function (-Inf,Inf) to (0,1)
+   # going thru points (0, AA) and (1,BB)
+   # sigmoid(xx) = sigmoid3(0.5, E / (E + 1), xx);
+   DBL retvalu;
+   DBL alfa;
+   DBL xzero;
+   DBL taa;
+
+   IF aa <= 0 OR 1.0 <= aa OR bb <= 0.0 OR 1.0 <= bb:
+      retvalu = 0.0;
+   ELSE:
+      taa = LN((1.0 - aa) / aa);
+      alfa = LN((1.0 - bb) / bb) - taa;
+      xzero = -taa / alfa;
+      retvalu = 1.0 / (1.0 + EXP(alfa * (xx - xzero)));
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL taninv3(DBL aa
+      , DBL bb
+      , DBL xx):
+   # a function in arctan family passing through points
+   #   (0,AA) and (1,BB)
+   DBL retvalu;
+   DBL alfa;
+   DBL taa;
+
+   IF aa <= 0 OR 1.0 <= aa OR bb <= 0.0 OR 1.0 <= bb:
+      retvalu = 0.0;
+   ELSE:
+      taa = TAN((aa - 0.5) * Kw.PI);
+      alfa = TAN((bb - 0.5) * Kw.PI) - taa;
+      retvalu = taninv(alfa * xx + taa) / Kw.PI + 0.5;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL sigmoid3d(DBL aa
+      , DBL bb
+      , DBL xx):
+   # derivative of sigmoid3()
+   DBL retvalu;
+   DBL alfa;
+   DBL xzero;
+   DBL taa;
+   DBL expa;
+
+   IF aa <= 0 OR 1.0 <= aa OR bb <= 0.0 OR 1.0 <= bb:
+      retvalu = 0.0;
+   ELSE:
+      taa = LN((1.0 - aa) / aa);
+      alfa = LN((1.0 - bb) / bb) - taa;
+      xzero = -taa / alfa;
+      expa = EXP(alfa * (xx - xzero));
+      retvalu = -alfa * expa / Kw.square(1 + expa);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL sqrtx(DBL xx):
+   # a real-valued extension of the square root functions
+   DBL retvalu;
+   IF xx < 0.0:
+      retvalu = -SQRT(-xx);
+   ELSE:
+      retvalu = SQRT(xx);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL smooth(DBL xx):
+   # An infinitely differential function [-1,1] to [0,1]
+   DBL retvalu;
+
+   IF xx <= -1.0:
+      retvalu = 0.0;
+   ELSIF 1.0 <= xx:
+      retvalu = 1.0;
+   ELSE:
+      retvalu = sigmoid(4.0 * xx / (1.0 - xx * xx));
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL hypot(DBL xx, DBL yy):
+   # length of hypotenuse of a right triangle
+   #      with legs XX and YY
+   # sqrt(XX*XX+YY*YY), avoiding round off error
+   DBL retvalu;
+   DBL axx;
+   DBL ayy;
+
+   axx = ABS(xx);
+   ayy = ABS(yy);
+   IF axx < ayy:
+      retvalu = ayy;
+      ayy = axx;
+      axx = retvalu;
+   IF_END
+   # Now 0 <= ayy <= axx
+   IF 0.0 < axx:
+      IF ayy < Kw.DBLEPS * axx:
+         retvalu = axx;
+      ELSE:
+         ayy /= axx;
+         retvalu = axx * SQRT(1.0 + ayy * ayy);
+      IF_END
+   ELSE:
+      retvalu = 0.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:hypot(3.0,4.0)==5.0;
+
+FUNC DBL hypot1(DBL xx):
+   # length of hypotenuse of a right triangle
+   #    with legs XX and 1.0
+   # sqrt(1 + XX*XX), avoiding round off error
+   RETURN hypot(1.0, xx);
+FUNC_END
+#TEST:square(hypot1(2))==5.0;
+
+FUNC DBL hypot1inv(DBL xx):
+   # length of aleg of a right triangle
+   # with hypotenuse 1.0 and other leg XX
+   # sqrt(XX * XX - 1); i.e. HYPOT1INV(HYPOT1(XX))==XX
+   RETURN SQRT(xx * xx - 1.0);
+FUNC_END
+#TEST:hypot1inv(sqrt(5))==2.0;
+
+FUNC DBL hypot3(DBL xx, DBL yy, DBL zz):
+   # distance from (XX,YY,ZZ) to (0,0,0)
+   RETURN SQRT(xx * xx + yy * yy + zz * zz);
+FUNC_END
+#TEST:hypot3(1,2,3)==sqrt(14);
+
+FUNC DBL topyh(DBL xx, DBL yy):
+   # length of a leg of a right triangle with
+   # hypotenuse XX and other leg YY
+   # sqrt(abs(XX*XX-YY*YY))
+   DBL retvalu;
+   DBL xsq;
+   DBL ysq;
+
+   xsq = xx * xx;
+   ysq = yy * yy;
+   IF ysq <= 0.0:
+      retvalu = xx;
+   ELSIF xsq <= 0:
+      retvalu = yy;
+   ELSIF xsq < ysq:
+      xsq /= ysq;
+      retvalu = -sign(xx) * SQRT(1.0 - xsq) * ABS(yy);
+   ELSE:
+      ysq /= xsq;
+      retvalu = SQRT(1.0 - ysq) * xx;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+#TEST:topyh(13,12)==5;
+
+FUNC DBL topyh1(DBL xx):
+   # length of leg of a right triangle with
+   # hypotenuse 1.0 and other leg XX
+   # topyh(1.0,XX) == SQRT(1 - XX * XX)
+   DBL retvalu;
+
+   IF xx < -1.0 OR 1.0 < xx:
+      retvalu = -SQRT(xx * xx - 1.0);
+   ELSE:
+      retvalu = SQRT(1.0 - xx * xx);
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+#TEST:topyh1(0.5)==sqrt(3)/2;
+
+FUNC INT cnv_dbl2si16(DBL xx):
+   # (safely) convert a DOUBLE to an 16-bit signed INTEGER
+   DBL retvalu;
+
+   IF xx <= Kw.SI16MIN:
+      retvalu = Kw.SI16MIN;
+   ELSIF xx <= Kw.SI16MAX:
+      retvalu = FLOORL(xx + 0.5);
+   ELSE:
+      retvalu = Kw.SI16MAX;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+??MACRO TEMP_CONVERSION <NM> ; <LC> ; <UC> ??
+FUNC DBL k2temp<LC>(DBL temp_k):
+   # Kelvin temperature to a <NM> temperature
+   RETURN (temp_k - Kw.K_AT_0TEMP<UC>) * Kw.KELVIN / Kw.DEG<UC>;
+FUNC_END
+FUNC DBL temp<LC>2k(DBL temp_<LC>):
+   # <NM> temperature to a Kelvin temperature
+   RETURN temp_<LC> * Kw.DEG<UC> / Kw.KELVIN + Kw.K_AT_0TEMP<UC>;
+FUNC_END
+FUNC DBL temp<LC>(DBL temp_<LC>):
+   # <NM> temperature to a Kelvin temperature
+   RETURN temp<LC>2k(temp_<LC>);
+FUNC_END
+??MACRO_END
+
+??TEMP_CONVERSION Celcius    ; c ; C ??
+??TEMP_CONVERSION Fahrenheit ; f ; F ??
+??TEMP_CONVERSION Rankine    ; r ; R ??
+
+FUNC DBL tempf2tempc(DBL temp_f):
+   # Fahrenheit temperature to a Celsius temperature
+   RETURN k2tempc(tempf2k(temp_f));
+FUNC_END
+
+FUNC DBL tempc2tempf(DBL temp_c):
+   # Celsius temperature to a Fahrenheit temperature
+   RETURN k2tempf(tempc2k(temp_c));
+FUNC_END
+#TEST:tempf2k(212)==373.15;
+#TEST:tempf2tempc(185)==85;
+#TEST:tempc2tempf(37)==98.6;
+#TEST:tempf2tempc(tempc2tempf(3.2))==3.2;
+
+??INSERT_FILE "is.fwip"??
+
+BLOCK: # MAGIC stuff
+   LOCAL_CONST LC_MAGIC_INT 2070108020;
+   LOCAL_CONST LC_MAGIC_INT_NOT 301040105;
+   FUNC INT magicset(NUL):
+      # return "magic" number
+      RETURN LC_MAGIC_INT;
+   FUNC_END
+   FUNC INT magicnot(NUL):
+      # return something NOT "magic" number
+      RETURN LC_MAGIC_INT_NOT;
+   FUNC_END
+BLOCK_END # MAGIC stuff
+
+FUNC BOL ismagic(INT xx):
+   # does XX equal magic number?
+   RETURN iseq(xx, magicset());
+FUNC_END
+
+??INSERT_FILE "round.fwip"??
+??INSERT_FILE "trig.fwip"??
+
+FUNC DBL ln1p(DBL xx):
+   # ln(1 + XX) accurately via
+   # ln(1+x) = (x**1/1 - x**2/2 + x**3/3 - x**4/4 + ...
+   #         = x (1 - x (1/2 + x (1/3 - x (1/4 + ...
+   DBL retvalu;
+   DBL sum_curr;
+   DBL jj;
+   DBL start;
+
+   IF 0.1 < ABS(xx):
+      retvalu = LN(1.0 + xx);
+   ELSIF Kw.iszero(xx):
+      retvalu = 0.0;
+   ELSE:
+      start = CEIL(ABS(LN(Kw.DBLEPS) / LN(ABS(xx))));
+      IF start < 2:
+         start = 2;
+      IF_END
+      sum_curr = 0.0;
+      FOR jj FROM start TO 1 BY -1:
+         sum_curr = 1.0 / jj - sum_curr * xx;
+      FOR_END
+      retvalu = sum_curr * xx;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL expm1(DBL xx):
+   # exp(XX) - 1 accurately via
+   #    == x**1/1 + x**2/2 + x**3/6 + x**4/24 ...
+   #    == x (1 + x/2 (1 + x/3 (1 + x/4 (...
+   DBL retvalu;
+   DBL sum_curr;
+   DBL jj;
+   DBL start;
+
+   IF 0.1 < ABS(xx):
+      retvalu = EXP(xx) - 1.0;
+   ELSIF Kw.iszero(xx):
+      retvalu = 0.0;
+   ELSE:
+      start = CEIL(ABS(LN(Kw.DBLEPS) / LN(ABS(xx))));
+      IF start < 2:
+         start = 2;
+      IF_END
+      sum_curr = 0.0;
+      FOR jj FROM start TO 1 BY -1:
+         sum_curr = xx * (1.0 + sum_curr) / jj;
+      FOR_END
+      retvalu = sum_curr;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL cosm1(DBL xx):
+   # cos(XX) - 1 accurately via
+   #    == - x**2/2 + x**4/24 - x**6/720 ...
+   #    == - x**2/2 (1 - x**2/12 (1 + x**2/30 (1 - ...
+   DBL retvalu;
+   DBL sum_curr;
+   DBL jj;
+   DBL start;
+   DBL xr_sqr;
+
+   IF 0.1 < ABS(xx):
+      retvalu = COS(xx) - 1.0;
+   ELSIF Kw.iszero(xx):
+      retvalu = 0.0;
+   ELSE:
+      start = CEIL(ABS(LN(Kw.DBLEPS) / LN(ABS(xx))));
+      IF start < 6:
+         start = 6;
+      ELSIF Kw.isodd(start):
+         start += 1;
+      IF_END
+      xr_sqr = - xx * xx;
+      sum_curr = 1.0 / (start * (start + 1));
+      FOR jj FROM start TO 2 BY -2:
+         sum_curr += 1;
+         sum_curr *= xr_sqr / (jj * (jj - 1));
+      FOR_END
+      retvalu = sum_curr;
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL lns(DBL xx):
+   # log of ABS(XX) , bounded
+   DBL aa;
+   DBL retvalu;
+
+   aa = ABS(xx);
+   IF aa < 1.0 / DBLMAX:
+      retvalu = -DBLMAXLN - 1.0;
+   ELSE:
+      retvalu = LN(aa);
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL trip(DBL xx):
+   # piecewise linear function from -1 to 1, period 1
+   # TRIP(0)=1  TRIP(0.5)=-1  TRIP(1)=1
+   DBL retvalu;
+   DBL fx;
+
+   fx = 4.0 * frac(xx);
+
+   IF fx < 2.0:
+      retvalu = 1.0 - fx;
+   ELSE:
+      retvalu = fx - 3.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+BLOCK: # cube root
+   LOCAL_FUNC DBL lf_cbrtx_gt_zero(DBL xx):
+      # power of 2 closest to cuberoot of ABS(XX)
+      # only call this with a positive (0) argument
+      # if XX in [27/64,64/27) then
+      #    ZZ in [1,8) and YY == 1
+      DBL yy;
+      DBL zz;
+
+      zz = 64.0 * xx / 27.0;  # (4/3)**3
+      yy = 1.0;
+      WHILE zz <= 1.0:
+         zz *= 8.0;
+         yy /= 2.0;
+      WHILE_END
+      WHILE 8.0 < zz:
+         zz /= 8.0;
+         yy *= 2.0;
+      WHILE_END
+      # Now 1.0 < zz <= 8.0
+
+      RETURN yy;
+   FUNC_END
+
+   FUNC DBL cbrt(DBL yy):
+      # cube root of YY sans logarithms or exponentials
+      # using Newton-Raphson method on  F(XX) = XX * XX * XX - YY
+      DBL ayy;
+      DBL init_xx;
+      ??RAPHSON_DECLARATIONS??
+
+      ayy = ABS(yy);
+      IF 0.0 < ayy:
+         # find a quick approximation of ABS(YY)**(1/3)
+         init_xx = lf_cbrtx_gt_zero(ayy);
+         IF yy < 0:
+            init_xx = -init_xx;
+         IF_END
+         # refine approximation using NR method on
+         #       nrvx_xx**3 - YY = 0
+         ??RAPHSON_LOOP init_xx
+               ; nrvx_xx * nrvx_xx - yy / nrvx_xx
+               ; 3 * nrvx_xx??
+      ELSE:
+         nrvx_xx = 0.0;
+      IF_END
+      RETURN nrvx_xx;
+   FUNC_END
+BLOCK_END
+
+FUNC DBL cuberoot(DBL xx):
+   # convienent name
+   RETURN cbrt(xx);
+FUNC_END
+
+FUNC DBL squareroot(DBL xx):
+   # convienent name
+   RETURN SQRT(xx);
+FUNC_END
+
+BLOCK: # continued fraction
+   LOCAL_FUNC INT lf_continued_fraction(DBL orig
+         , INT show_diff):
+      INT whole;
+      DBL xx;
+      DBL epsilon;
+      INT den_a;
+      INT den_b;
+      INT den_c;
+      INT num_a;
+      INT num_b;
+      INT num_c;
+      DBL diff;
+      INT steps;
+      DBL appr;
+
+      steps = 0;
+      xx = orig;
+      den_b = 0;
+      num_b = 1;
+      den_a = 1;
+      num_a = 0;
+      epsilon = Kw.DBLEPS / 2.0;
+      AWAIT ABS(diff) < epsilon:   # DBLEPS * 2**n
+         whole = FLOORL(xx);
+
+         den_c = den_b * whole + den_a;
+         num_c = num_b * whole + num_a;
+         den_a = den_b;
+         num_a = num_b;
+         den_b = den_c;
+         num_b = num_c;
+         steps += 1;
+         appr = (1.0 * num_b / den_b);
+         diff = orig - appr;
+
+         PRINTSTR("");
+         PRINTVAL(whole);
+         IF 0 <= show_diff:
+            PRINTSTR(STRING_TAB);
+            PRINTVAL(num_b);
+            PRINTSTR(" / ");
+            PRINTVAL(den_b);
+            PRINTSTR(STRING_TAB);
+            PRINTVAL(appr);
+            IF 0 < show_diff:
+               PRINTSTR(STRING_TAB);
+               PRINTVAL(diff);
+            IF_END
+            PRINTSTR(STRING_NL);
+         ELSE:
+            PRINTSTR(" ");
+         IF_END
+
+         IF Kw.iseq(xx, whole):
+            AWAIT_EXIT;
+         IF_END
+
+         xx = 1.0 / (xx - whole);
+         epsilon *= 2.0;
+      AWAIT_END
+
+      RETURN steps;
+   FUNC_END
+
+   FUNC INT print_contfra(DBL orig):
+      # Print continued fraction coeffs of ORIG
+      RETURN lf_continued_fraction(orig, -1);
+   FUNC_END
+
+   FUNC INT print_contfrac(DBL orig):
+      # Print continued fraction of ORIG
+      RETURN lf_continued_fraction(orig, 0);
+   FUNC_END
+
+   FUNC INT print_contfracd(DBL orig):
+      # Print continued fraction of ORIG w/ diffs
+      RETURN lf_continued_fraction(orig, 1);
+   FUNC_END
+BLOCK_END # continued fraction
+
+FUNC INT print_num2char(INT num):
+   # print NUM as a character 0-9a-zA-Z_?
+   IF num < 32:
+      IF num < 16:
+         IF num < 8:
+            IF num < 4:
+               IF num < 2:
+                  IF num < 1:
+                     PRINTSTR("0");
+                  ELSE:
+                     PRINTSTR("1");
+                  IF_END
+               ELSIF num < 3:
+                  PRINTSTR("2");
+               ELSE:
+                  PRINTSTR("3");
+               IF_END
+            ELSIF num < 6:
+               IF num < 5:
+                  PRINTSTR("4");
+               ELSE:
+                  PRINTSTR("5");
+               IF_END
+            ELSIF num < 7:
+               PRINTSTR("6");
+            ELSE:
+               PRINTSTR("7");
+            IF_END
+         ELSIF num < 12:
+            IF num < 10:
+               IF num < 9:
+                  PRINTSTR("8");
+               ELSE:
+                  PRINTSTR("9");
+               IF_END
+            ELSIF num < 11:
+               PRINTSTR("a");
+            ELSE:
+               PRINTSTR("b");
+            IF_END
+         ELSIF num < 14:
+            IF num < 13:
+               PRINTSTR("c");
+            ELSE:
+               PRINTSTR("d");
+            IF_END
+         ELSIF num < 15:
+            PRINTSTR("e");
+         ELSE:
+            PRINTSTR("f");
+         IF_END
+      ELSIF num < 24:
+         IF num < 20:
+            IF num < 18:
+               IF num < 17:
+                  PRINTSTR("g");
+               ELSE:
+                  PRINTSTR("h");
+               IF_END
+            ELSIF num < 19:
+               PRINTSTR("i");
+            ELSE:
+               PRINTSTR("j");
+            IF_END
+         ELSIF num < 22:
+            IF num < 21:
+               PRINTSTR("k");
+            ELSE:
+               PRINTSTR("l");
+            IF_END
+         ELSIF num < 23:
+            PRINTSTR("m");
+         ELSE:
+            PRINTSTR("n");
+         IF_END
+      ELSIF num < 28:
+         IF num < 26:
+            IF num < 25:
+               PRINTSTR("o");
+            ELSE:
+               PRINTSTR("p");
+            IF_END
+         ELSIF num < 27:
+            PRINTSTR("q");
+         ELSE:
+            PRINTSTR("r");
+         IF_END
+      ELSIF num < 30:
+         IF num < 29:
+            PRINTSTR("s");
+         ELSE:
+            PRINTSTR("t");
+         IF_END
+      ELSIF num < 31:
+         PRINTSTR("u");
+      ELSE:
+         PRINTSTR("v");
+      IF_END
+   ELSIF num < 48:
+      IF num < 40:
+         IF num < 36:
+            IF num < 34:
+               IF num < 33:
+                  PRINTSTR("w");
+               ELSE:
+                  PRINTSTR("x");
+               IF_END
+            ELSIF num < 35:
+               PRINTSTR("y");
+            ELSE:
+               PRINTSTR("z");
+            IF_END
+         ELSIF num < 38:
+            IF num < 37:
+               PRINTSTR("A");
+            ELSE:
+               PRINTSTR("B");
+            IF_END
+         ELSIF num < 39:
+            PRINTSTR("C");
+         ELSE:
+            PRINTSTR("D");
+         IF_END
+      ELSIF num < 44:
+         IF num < 42:
+            IF num < 41:
+               PRINTSTR("E");
+            ELSE:
+               PRINTSTR("F");
+            IF_END
+         ELSIF num < 43:
+            PRINTSTR("G");
+         ELSE:
+            PRINTSTR("H");
+         IF_END
+      ELSIF num < 46:
+         IF num < 45:
+            PRINTSTR("I");
+         ELSE:
+            PRINTSTR("J");
+         IF_END
+      ELSIF num < 47:
+         PRINTSTR("K");
+      ELSE:
+         PRINTSTR("L");
+      IF_END
+   ELSIF num < 56:
+      IF num < 52:
+         IF num < 50:
+            IF num < 49:
+               PRINTSTR("M");
+            ELSE:
+               PRINTSTR("N");
+            IF_END
+         ELSIF num < 51:
+            PRINTSTR("O");
+         ELSE:
+            PRINTSTR("P");
+         IF_END
+      ELSIF num < 54:
+         IF num < 53:
+            PRINTSTR("Q");
+         ELSE:
+            PRINTSTR("R");
+         IF_END
+      ELSIF num < 55:
+         PRINTSTR("S");
+      ELSE:
+         PRINTSTR("T");
+      IF_END
+   ELSIF num < 60:
+      IF num < 58:
+         IF num < 57:
+            PRINTSTR("U");
+         ELSE:
+            PRINTSTR("V");
+         IF_END
+      ELSIF num < 59:
+         PRINTSTR("W");
+      ELSE:
+         PRINTSTR("X");
+      IF_END
+   ELSIF num < 62:
+      IF num < 61:
+         PRINTSTR("Y");
+      ELSE:
+         PRINTSTR("Z");
+      IF_END
+   ELSIF num < 63:
+      PRINTSTR("_");
+   ELSIF num < 64:
+      PRINTSTR("?");
+   ELSE:
+      PRINTSTR("(");
+      PRINTVAL(num);
+      PRINTSTR(")");
+   IF_END
+
+   RETURN num;
+FUNC_END
+
+FUNC INT print_base_out(INT num, INT baset):
+   # print NUM out in base BASET
+   # return number of characters printed
+   INT digits_arr[65];
+   INT dig_count;
+   INT ii;
+
+   MODE_INTEGER:
+   IF num < 0:
+      PRINTSTR("-");
+      num = -num;
+   IF_END
+
+   dig_count = 0;
+   AWAIT num == 0:
+      digits_arr[dig_count] = num % baset;
+      dig_count += 1;
+      num = FLOORL(num / baset);
+   AWAIT_END
+   FOR ii FROM dig_count - 1 TO 0 BY -1:
+      CALL print_num2char(digits_arr[ii]);
+   FOR_END
+   MODE_INTEGER_END
+
+   RETURN dig_count;
+FUNC_END
+
+FUNC INT print_base_outf(DBL num, INT baset):
+   # print NUM out in base BASET
+   # return number of characters printed
+   INT dig_count;
+   INT ii;
+   DBL frc;
+   INT dig;
+   INT lim;
+
+   dig_count = 0;
+   IF num < 0.0:
+      PRINTSTR("-");
+      num = -num;
+      dig_count += 1;
+   IF_END
+
+   dig_count += print_base_out(FLOORL(num), baset) + 1;
+   PRINTSTR(".");
+   lim = CEILL(-lg(DBLEPS) / lg(baset));
+   frc = frac(num) * baset;
+   ii = 1;
+   WHILE NOT Kw.iszero(frc) AND ii <= lim:
+      dig = FLOORL(frc);
+      CALL print_num2char(dig);
+      frc -= dig;
+      frc *= baset;
+      ii += 1;
+   WHILE_END
+
+   RETURN dig_count + lim;
+FUNC_END
+
+??INSERT_FILE "hyper.fwip"??
+??INSERT_FILE "lambert.fwip"??
+??INSERT_FILE "integral.fwip"??
+??INSERT_FILE "number.fwip"??
+??INSERT_FILE "bessel.fwip"??
+??INSERT_FILE "partition.fwip"??
+??INSERT_FILE "bits.fwip"??
+??INSERT_FILE "erf.fwip"??
+??INSERT_FILE "gamma.fwip"??
+??INSERT_FILE "combin.fwip"??
+??INSERT_FILE "julian.fwip"??
+??INSERT_FILE "mean.fwip"??
+??INSERT_FILE "random.fwip"??
+??INSERT_FILE "randdist.fwip"??
+??INSERT_FILE "stat.fwip"??
+??INSERT_FILE "stts.fwip"??
+??INSERT_FILE "fit.fwip"??  # must come after stts
+??INSERT_FILE "approx.fwip"??
+??INSERT_FILE "sphere.fwip"??
+??INSERT_FILE "shc.fwip"??
+??INSERT_FILE "elliptic.fwip"??
+??INSERT_FILE "ellipse.fwip"??
+??INSERT_FILE "cdf.fwip"??
+??INSERT_FILE "search.fwip"??
+
+FUNC DBL blackbody(DBL wavelength, DBL temperk):
+   # spectral radiance at WAVELENGTH and TEMPERK
+   # returns WATT / (STERADIAN METER**3)
+   # == (2.0 * PI**4 * BOLTZMANN**5 * temperk**5)
+   #                    / (15 * PLANCK**4 * LIGHT**3)
+   #         * bb_pdf(temperk * wavelength * BOLTZMANN
+   #                           / (LIGHT * PLANCK))
+   DBL hc;
+   DBL hc_kt;
+   DBL retvalu;
+
+   IF wavelength <= 0.0 OR temperk <= 0.0:
+      retvalu = 0.0;
+   ELSE:
+      hc = Kw.PLANCK * Kw.LIGHT;
+      hc_kt = hc / (Kw.BOLTZMANN * temperk);
+      retvalu = 2.0 * hc * Kw.LIGHT / (POW(wavelength, 5)
+         * (EXP(hc_kt / wavelength) - 1));
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL blackbodymode(DBL temperk):
+   # Wavelength at mode of black body spectral radiance
+   # at TEMPERK
+   DBL hc_kt;
+   DBL retvalu;
+
+   IF temperk <= 0.0:
+      retvalu = 0.0;
+   ELSE:
+      hc_kt = Kw.PLANCK * Kw.LIGHT / (Kw.BOLTZMANN * temperk);
+      retvalu = hc_kt / (5 + Kw.wp(-5 * EXP(-5)));
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL blackbodypower(DBL temperk):
+   # power output by a blackbody at temperature TEMPERK
+   # Also known as Stefan-Boltzmann Law
+   RETURN Kw.STEFAN * POW(temperk, 4.0);
+FUNC_END
+
+FUNC DBL pendulum(DBL len_m, DBL ang_offset_rad, DBL grav):
+   # Period of a pendulum of length LEN_M,
+   #      initial angle offset ANG_OFFSET_RAD,
+   #      and acceleration due to gravity GRAV.
+   RETURN TAU * SQRT(len_m / grav)
+         / Kw.agmean(1, COS(ang_offset_rad / 2.0));
+
+FUNC_END

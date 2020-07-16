@@ -1,0 +1,1421 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-12 kdw  sqrttwo const
+# 2020-06-22 kdw  local-use mved before var decls
+# 2020-06-19 kdw  comments added
+# 2020-06-17 kdw  Modulo operator
+# 2020-06-09 kdw  comment changed
+# 2020-06-03 kdw  writeonly keyword
+# 2020-05-13 kdw  comment trivially changed
+# 2020-05-12 kdw  nul rets changed
+# 2020-05-11 kdw  local-decl syntx change
+# 2020-05-05 kdw  magic check func changed
+# 2020-04-20 kdw  co[m]b default value changed
+# 2020-04-17 kdw  fact[o]rialt rmed; stirling rework
+# 2020-04-15 kdw  refactor
+# 2020-04-14 kdw  tests added
+# 2020-04-12 kdw  comment change
+# 2020-04-11 kdw  comment change; minor rearrange
+# 2020-04-10 kdw  comment change
+# 2020-04-09 kdw  MO[D]E syntax change
+# 2020-04-08 kdw  d2(lt)_d1, d2(ur)_d1 funcs fixed
+# 2020-04-07 kdw  more d1.*_d2 funcs
+# 2020-04-04 kdw  d2h[y]pot_d11
+# 2020-04-02 kdw  re[t]urn rework
+# 2020-04-01 kdw  l[a-z][2]ii rnamd to d2[a-z]+_d1
+# 2020-03-31 kdw  ls[2]ii
+# 2020-03-29 kdw  fac[t]oriald[o]uble renam
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-06 kdw  RE[P]LACE / IN[D]EX changes
+# 2020-03-03 kdw  comment change
+# 2020-03-02 kdw  s/_NE[X]T/_E[N]D/g
+# 2020-02-26 kdw  comment change
+# 2020-01-28 kdw  work on funcs w/ array args
+# 2020-01-26 kdw  n2perm and n2comb work
+# 2019-12-27 kdw  eplicit K[w] module
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-10-29 kdw  [OE]GF comments
+# 2019-10-28 kdw  eulerx refactor; zigzag; GF comments
+# 2019-10-23 kdw  lntwo const
+# 2019-10-22 kdw  localized lf_n2combr
+# 2019-10-04 kdw  comment change
+# 2019-10-02 kdw  tweak
+# 2019-09-17 kdw  rmed c[n]v_db[l]2i32
+# 2019-09-10 kdw  LAN[G]UAGE NOT to LAN[G]UAGE_N[O]T
+# 2019-08-26 kdw  PRI[N]TS to PR[I]NTSTR
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-22 kdw  comment changed
+# 2019-08-18 kdw  L[O]G to L[N]
+# 2019-08-15 kdw  array passing issues
+# 2019-08-11 kdw  language comments
+# 2019-08-07 kdw  language comments
+# 2019-08-06 kdw  rmed backslashes;macro arg renam
+# 2019-07-03 kdw  var renam "s/ind/_ind/;s/__ind/_ind/"
+# 2019-06-02 kdw  func desc added
+# 2019-05-24 kdw  local replaced private
+# 2019-05-22 kdw  fubini work
+# 2019-05-01 kdw  consts explicit module name
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-18 kdw  language tweak
+# 2019-03-08 kdw  is[e]qual to is[e]q; et al.
+# 2019-03-06 kdw  is.* funcs changed
+# 2018-10-08 kdw  vbdotnet stuff
+# 2018-07-17 kdw  private lf_.* funcs
+# 2018-05-22 kdw  comment change
+# 2018-05-18 kdw  LAN[G]UAGE syntax change
+# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
+# 2018-05-14 kdw  var ranam
+# 2018-05-13 kdw  MO?DE.* syntax change
+# 2018-05-06 kdw  comment change
+# 2018-05-01 kdw  eulerian/binomial/stirling refactor
+# 2018-04-29 kdw  eulerian()
+# 2018-04-03 kdw  rm () from return
+# 2018-04-02 kdw  Pro?totype, et al.
+# 2018-04-01 kdw  LAN[G]UAGE_E[N]D
+# 2018-03-27 kdw  simpified
+# 2018-03-20 kdw  replaced index w/ "at"replace
+# 2018-01-16 kdw  birthday(inv)? work
+# 2018-01-03 kdw  combination, permutation
+# 2017-12-31 kdw  rmed lobb; ballot[s]? rework
+# 2017-12-26 kdw  ballot numbers
+# 2017-12-25 kdw  lobb numbers
+# 2017-12-23 kdw  fubini numbers
+# 2017-12-22 kdw  bell number experiment
+# 2017-11-26 kdw  FR[O]M and B[Y] keywords
+# 2017-11-23 kdw  rm digits from var names
+# 2017-11-22 kdw  var renam
+# 2017-11-19 kdw  double factorial (factorial2)
+# 2017-10-21 kdw  LA[N]G[U]AGE.* syntax changed
+# 2017-10-20 kdw  LA[N]G[U]AGE.* syntax changed
+# 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
+# 2017-06-23 kdw  REPL?ACE redo
+# 2017-06-21 kdw  LA[N]G.* AND MASTER.* change
+# 2017-06-20 kdw  comments changed
+# 2017-06-13 kdw  C now handles return arrays
+# 2017-06-03 kdw  PRI?NT.* changed
+# 2017-05-31 kdw  var renam
+# 2017-05-17 kdw  printtab converted to prints
+# 2017-04-21 kdw  func to function
+# 2017-03-28 kdw  comment cleanup
+# 2017-03-27 kdw  comment cleanup
+# 2017-03-17 kdw  space after comma
+# 2017-03-13 kdw  continue not supported
+# 2017-03-12 kdw  shorten long comments
+# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-06 kdw  sigils rmed
+# 2017-02-27 kdw  PA?SS deprecated
+# 2017-02-24 kdw  array var names
+# 2017-02-22 kdw  array var names
+# 2017-02-21 kdw  array var names
+# 2017-02-20 kdw  array var names
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-13 kdw  FWIP language change
+# 2017-02-12 kdw  FWIP language change
+# 2017-02-07 kdw  comment rearrangement; SE[C]ANT stuff
+# 2017-01-06 kdw  ?[?]LAN[G]UAGE_ change
+# 2016-12-07 kdw  comment change
+# 2016-12-06 kdw  comb, n2* rework
+# 2016-12-03 kdw  comment change
+# 2016-11-24 kdw  LAN[G]UAGE_N[O]T to LAN[G]UAGE_IFN[O]T
+# 2016-11-23 kdw  comment change
+# 2016-11-22 kdw  PRI?NTLN to PRI?NTLINE
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-11-15 kdw  B?ITS*/MO?D change
+# 2016-11-14 kdw  LA[N]G stuff
+# 2016-11-13 kdw  bino?mialx
+# 2016-11-12 kdw  bel?lx
+# 2016-09-15 kdw  comment change
+# 2016-09-14 kdw  lang change
+# 2016-05-24 kdw  longlines
+# 2016-05-04 kdw  deprecating PRI?NT
+# 2016-05-03 kdw  figured out how to spell weird
+# 2016-04-27 kdw  _[_]BL?OCK* change
+# 2016-01-11 kdw  printing long array change
+# 2015-12-21 kdw  define local functions before use
+# 2015-12-14 kdw  rmed sigils; long lines
+# 2015-12-11 kdw  _[_]EN[D]IF_[_] obsoleted
+# 2015-12-09 kdw  lead space error fixed (BC code)
+# 2015-12-03 kdw  shortened function names
+# 2015-12-02 kdw  function renamed
+# 2015-12-01 kdw  variable renamed
+# 2015-11-26 kdw  long lines
+# 2015-11-19 kdw  long lines
+# 2015-11-17 kdw  F[O]R format changed
+# 2015-11-17 kdw  block comments
+# 2015-11-16 kdw  tweak
+# 2015-11-13 kdw  shortened comment; tweak ca[t]alan
+# 2015-11-12 kdw  shortened comment
+# 2015-10-05 kdw  is* functions
+# 2015-10-02 kdw  debugging n[2]pe[r]m
+# 2015-09-30 kdw  _[_]IF_[N]OT_.*
+# 2015-09-29 kdw  layout tweak
+# 2015-09-25 kdw  B[I]T* format change
+# 2015-09-24 kdw  bit ops changed
+# 2015-09-22 kdw  _[_]* format changed
+# 2015-09-21 kdw  fixed int division problem in comb
+# 2015-09-20 kdw  created
+
+BLOCK: # factorial
+   LOCAL_DBL lv_factorial_arr[0];
+   LOCAL_INT lv_factorial_end = 0;
+   FUNC DBL factorial(INT nn):
+      # factorial(NN) = 1*2*3*...*NN
+      # EGF(factorial();x) = 1 / (1 - x)
+      LOCAL_USE lv_factorial_end;
+      LOCAL_USE lv_factorial_arr[];
+      INT mm;
+      DBL retvalu;
+
+      IF nn < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_factorial_end <= 0:
+            lv_factorial_end = 6;
+            REDIM lv_factorial_arr[], lv_factorial_end;
+            ARRAY lv_factorial_arr[]:
+               1; 1; 2; 6; 24; 120;
+            ARRAY_END
+         IF_END
+
+         IF lv_factorial_end <= nn:
+            mm = lv_factorial_end;
+            lv_factorial_end = nn + 1;
+            REDIM lv_factorial_arr[], lv_factorial_end;
+            WHILE mm < lv_factorial_end:
+               lv_factorial_arr[mm] = (mm
+                     * lv_factorial_arr[mm - 1]);
+               mm += 1;
+            WHILE_END
+         IF_END
+         retvalu = lv_factorial_arr[nn];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+#TEST:factorial(7)-5040;
+
+BLOCK: # factorialdouble
+   LOCAL_DBL lv_factorial_b_arr[0];
+   LOCAL_INT lv_factorial_b_end = 0;
+   FUNC DBL factorialdouble(INT nn):
+      # The double factorial
+      # If NN = 2*kk then
+      #    2**kk * factorial(kk) = 2*4*6*8...*NN
+      # if NN = 2*kk-1 then
+      #    factorial(2*kk) / (2**kk * factorial(kk)) = 1*3*...*NN
+      LOCAL_USE lv_factorial_b_end;
+      LOCAL_USE lv_factorial_b_arr[];
+      DBL retvalu;
+      INT mm;
+
+      IF nn < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_factorial_b_end <= 0:
+            lv_factorial_b_end = 6;
+            REDIM lv_factorial_b_arr[], lv_factorial_b_end;
+            ARRAY lv_factorial_b_arr[]:
+               1; 1; 2; 3; 8; 15;
+            ARRAY_END
+         IF_END
+         IF lv_factorial_b_end <= nn:
+            mm = lv_factorial_b_end;
+            lv_factorial_b_end = nn + 1;
+            REDIM lv_factorial_b_arr[], lv_factorial_b_end;
+            WHILE mm < lv_factorial_b_end:
+               lv_factorial_b_arr[mm] =
+                     mm * lv_factorial_b_arr[mm - 2];
+               mm += 1;
+            WHILE_END
+         IF_END
+         retvalu = lv_factorial_b_arr[nn];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+#TEST:factorialdouble(10)-3840;
+#TEST:factorialdouble(11)-10395;
+
+FUNC DBL fac(INT nn):
+   # alias for factorial
+   RETURN Kw.factorial(nn);
+FUNC_END
+
+FUNC DBL factorialt(INT n_things, INT r_each):
+   # factorial(N) / factorial(R)
+   INT ii;
+   DBL retvalu;
+
+   retvalu = 1.0;
+   FOR ii FROM r_each + 1 TO n_things:
+      retvalu *= ii;
+   FOR_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL comb(INT n_things, INT r_each):
+   # number of sets of R_EACH things selected
+   #    from N_THINGS things
+   # factorial(N) / (factorial(N - R) * factorial(R))
+   INT ii;
+   DBL retvalu;
+
+   IF r_each < 0 OR n_things < r_each:
+      retvalu = 0.0;
+   ELSE:
+      IF 2 * r_each < n_things:
+         r_each = n_things - r_each;
+      IF_END
+      # now N_THINGS / 2 <= R_EACH
+      retvalu = 1.0;
+      FOR ii FROM r_each + 1 TO n_things:
+         retvalu *= ii;
+         retvalu /= (ii - r_each);
+      FOR_END
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:comb(10,4)-210;
+
+FUNC DBL perm(INT n_things, INT r_each):
+   # number of ways to choose R_EACH things from N_THINGS things
+   # factorial(N) / factorial(N - R)
+   RETURN factorialt(n_things, n_things - r_each);
+FUNC_END
+#TEST:perm(10,4)-5040;
+
+FUNC DBL combination(INT n_things, INT r_each):
+   # number of sets of R_EACH things selected
+   #    from N_THINGS things
+   RETURN Kw.comb(n_things, r_each);
+FUNC_END
+
+FUNC DBL permutation(INT n_things, INT r_each):
+   # number of ways to choose R_EACH things from N_THINGS things
+   RETURN Kw.perm(n_things, r_each);
+FUNC_END
+
+BLOCK: # Catalan numbers
+   LOCAL_DBL lv_catalan_arr[0];
+   LOCAL_INT lv_catalan_end = 0;
+   FUNC DBL catalan(INT nn):
+      # factorial(2 * NN) / (factorial(NN + 1) * factorial(NN))
+      #   *) # of properly nested NN pairs of parenthesises
+      #   *) # binary trees with NN leaves
+      #   *) # of triangulations of a (NN+2)-gon
+      #   *) # of ways to tile a stairsep shape of height NN
+      #            with NN rectangles
+      # OGF(catalan();x) = (1 - SQRT(1 - 4 * x)) / (2 * x)
+      LOCAL_USE lv_catalan_end;
+      LOCAL_USE lv_catalan_arr[];
+      INT kk;
+      DBL retvalu;
+
+      IF nn < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_catalan_end <= 0:
+            lv_catalan_end = 1;
+            REDIM lv_catalan_arr[], lv_catalan_end;
+            lv_catalan_arr[0] = 1;
+         IF_END
+         IF lv_catalan_end <= nn:
+            kk = lv_catalan_end;
+            lv_catalan_end = nn + 1;
+            REDIM lv_catalan_arr[], lv_catalan_end;
+            WHILE kk < lv_catalan_end:
+               lv_catalan_arr[kk] = (2 * (2.0 * kk - 1)
+                  * lv_catalan_arr[kk - 1] / (kk + 1.0));
+               kk += 1;
+            WHILE_END
+         IF_END
+         retvalu = lv_catalan_arr[nn];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+
+BLOCK: # Supercatalan numbers
+   LOCAL_DBL lv_supercatalan_arr[0];
+   LOCAL_INT lv_supercatalan_end = 0;
+   FUNC DBL supercatalan(INT nn):
+      # factorial(2 * NN) / (factorial(NN + 1) * factorial(NN))
+      #   *) # of lattice paths with diagonal steps from
+      #         (NN,NN) to (0,0) which do not touch the
+      #         diagonal line x = y
+      #   *) # of non-trivial bracketings of NN symbols.
+      #      E.G. If NN=4
+      #        abcd
+      #        (ab)cd   a(bc)d   ab(cd)
+      #        (abc)d   a(bcd)
+      #        ((ab)c)d (a(bc))d a((bc)d) a(b(cd))
+      #        (ab)(cd)
+      #        Hence supercatalan(4) = 11
+      LOCAL_USE lv_supercatalan_end;
+      LOCAL_USE lv_supercatalan_arr[];
+      INT kk;
+      DBL retvalu;
+
+      IF nn < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_supercatalan_end <= 0:
+            lv_supercatalan_end = 3;
+            REDIM lv_supercatalan_arr[], lv_supercatalan_end;
+            lv_supercatalan_arr[0] = 1;
+            lv_supercatalan_arr[1] = 1;
+            lv_supercatalan_arr[2] = 1;
+         IF_END
+         IF lv_supercatalan_end <= nn:
+            kk = lv_supercatalan_end;
+            lv_supercatalan_end = nn + 1;
+            REDIM lv_supercatalan_arr[], lv_supercatalan_end;
+            WHILE kk < lv_supercatalan_end:
+               lv_supercatalan_arr[kk] = (
+                     ((6 * kk - 9) * lv_supercatalan_arr[kk - 1]
+                        - (kk - 3) * lv_supercatalan_arr[kk - 2])
+                  / kk);
+               kk += 1;
+            WHILE_END
+         IF_END
+         retvalu = lv_supercatalan_arr[nn];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+#TEST:supercatalan(10)-103049
+
+BLOCK: # Bell numbers
+   LOCAL_DBL lv_bell_arr[0];
+   LOCAL_DBL lv_bell_x_arr[0];
+   LOCAL_INT lv_bell_end = 0;
+   FUNC DBL bell(INT nn):
+      # bell(NN) equals the number of
+      #   1) possible rhyming schemes for NN lines.
+      #   2) partitions of a set of NN elements
+      #   3) ways NN distinct balls can be placed in NN boxes
+      # EGF(bell();x) = EXP(EXP(x) - 1)
+      LOCAL_USE lv_bell_end;
+      LOCAL_USE lv_bell_arr[];
+      LOCAL_USE lv_bell_x_arr[];
+      INT jj;
+      INT kk;
+      DBL retvalu;
+
+      # THIS IMPLEMENTATION HAS LV_BELL_X_ARR
+      # REVERSED FROM NORMAL (I.E. THE BELL NUMBERS FIRST
+      # APPEARS ON THE LEFT END (INDEX 0) OF THE ROW)
+      #     0  1  2  3  4
+      # 0)  1
+      # 1)  2  1
+      # 2)  5  3  2
+      # 3) 15 10  7  5
+      # 4) 52 37 27 20 15
+      # ARR[n,n] = ARR[n-1,0]
+      # ARR[n,m] = ARR[n-1,m] + ARR[n,m+1] for m < n
+      IF nn < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_bell_end <= 0:
+            lv_bell_end = 3;
+            REDIM lv_bell_arr[], lv_bell_end;
+            REDIM lv_bell_x_arr[], lv_bell_end - 1;
+            lv_bell_arr[0] = 1;
+            lv_bell_arr[1] = 1;
+            lv_bell_arr[2] = 2;
+            lv_bell_x_arr[0] = 2;
+            lv_bell_x_arr[1] = 1;
+         IF_END
+
+         IF lv_bell_end <= nn:
+            kk = lv_bell_end;
+            lv_bell_end = nn + 1;
+            REDIM lv_bell_arr[], lv_bell_end;
+            REDIM lv_bell_x_arr[], lv_bell_end - 1;
+            WHILE kk < lv_bell_end:
+               lv_bell_x_arr[kk - 1] = lv_bell_x_arr[0];
+               FOR jj FROM kk - 2 TO 0 BY -1:
+                  lv_bell_x_arr[jj] += lv_bell_x_arr[jj + 1];
+               FOR_END
+               lv_bell_arr[kk] = lv_bell_x_arr[0];
+               kk += 1;
+            WHILE_END
+         IF_END
+
+         retvalu = lv_bell_arr[nn];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+#TEST:bell(14)-190899322;
+
+FUNC DBL bellx(DBL xxn):
+   # a real valued extension of the Bell numbers 1 <= XXn
+   # using Dobinskis formula
+   DBL sum;
+   INT kk;
+   DBL sum_prev;
+   DBL den;
+
+   kk = 0;
+   sum = 0.0;
+   den = 1.0;
+   AWAIT Kw.iseq(sum_prev, sum):
+      kk += 1;
+      den *= kk;
+      sum_prev = sum;
+      sum += POW(kk, xxn) / den;
+   AWAIT_END
+   RETURN sum / Kw.E;
+FUNC_END
+
+FUNC DBL fubini(INT nn):
+   # The number of ways NN numbers can be ordered
+   #  E.G. fubini(3)=13 since
+   #   A=B<C A<B=C A<B<C A=B=C
+   #   A=C<B       A<C<B
+   #         B<A=C B<A<C
+   #   B=C<A       B<C<A
+   #         C<A=B C<A<B
+   #               C<B<A
+   # Approximately factorial(NN) / (2*log(2)**(NN+1))
+   # Also known as the ordered Bell numbers
+   # EGF(fubini();x) = 1 / (2 - EXP(x))
+   INT mm;
+   DBL sum;
+   DBL retvalu;
+
+   IF nn < 0:
+      retvalu = 0;
+   ELSIF nn == 0:
+      retvalu = 1;
+   ELSE:
+      sum = 1.0 / (2.0 * Kw.LNTWO * Kw.LNTWO);
+      FOR mm FROM 2 TO nn:
+         sum *= mm / Kw.LNTWO;
+      FOR_END
+      retvalu = Kw.round(sum);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:fubini(10)-102247563;
+
+FUNC INT d2lt_d1(INT xx, INT yy):
+   # Convert a 2D triangular coordinates into 1D coordinate
+   # If NOT 0 <= YY <= XX, return -1
+   # r/c   -1  0  1  2  3  4  5 ...
+   #   --------------------------
+   #   .    .  .  .  .  .  .  . ...
+   #   5   -1 -1 -1 -1 -1 -1 20 ...
+   #   4   -1 -1 -1 -1 -1 14 19 ...
+   #   3   -1 -1 -1 -1  9 13 18 ...
+   #   2   -1 -1 -1  5  8 12 17 ...
+   #   1   -1 -1  2  4  7 11 16 ...
+   #   0   -1  0  1  3  6 10 15
+   #  -1   -1 -1 -1 -1 -1 -1 -1 ...
+   INT retvalu;
+
+   IF 0 <= yy AND yy <= xx:
+      retvalu = yy + (xx * (xx + 1)) / 2;
+   ELSE:
+      retvalu = -1;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT d1lt_d2(INT nn, WRITEONLY INT ret_arr_p[]):
+   # Convert a 1D triangular coordinates into 2D coordinate
+   # If NOT 0 <= YY <= XX, return -1
+   # r/c   -1  0  1  2  3  4  5 ...
+   #   --------------------------
+   #   .    .  .  .  .  .  .  . ...
+   #   5   -1 -1 -1 -1 -1 -1 20 ...
+   #   4   -1 -1 -1 -1 -1 14 19 ...
+   #   3   -1 -1 -1 -1  9 13 18 ...
+   #   2   -1 -1 -1  5  8 12 17 ...
+   #   1   -1 -1  2  4  7 11 16 ...
+   #   0   -1  0  1  3  6 10 15
+   #  -1   -1 -1 -1 -1 -1 -1 -1 ...
+   INT basee;
+
+   IF nn <= 0:
+      ret_arr_p[0] = 0;
+      ret_arr_p[1] = 0;
+   ELSE:
+      basee = FLOORL((SQRT(1 + 8.0 * nn) - 1) / 2);
+      ret_arr_p[1] = nn - basee * (basee + 1) / 2; # tri(basee)
+      ret_arr_p[0] = basee;
+   IF_END
+   RETURN ret_arr_p[0];
+FUNC_END
+
+FUNC INT d2ur_d1(INT xx, INT yy):
+   # Convert a 2D square coordinates into 1D coordinate
+   # r/c   -1  0  1  2  3  4  5  6 ...
+   #   --------------------------
+   #   .   -1  .  .  .  .  .  .  . ...
+   #   5   -1 20 26 33 41 50 60 71 ...
+   #   4   -1 14 19 25 32 40 49 59 ...
+   #   3   -1  9 13 18 24 31 39 48 ...
+   #   2   -1  5  8 12 17 23 30 38 ...
+   #   1   -1  2  4  7 11 16 22 29 ...
+   #   0   -1  0  1  3  6 10 15 21 ...
+   #  -1   -1 -1 -1 -1 -1 -1 -1 -1 ...
+   INT retvalu;
+   INT suma;
+
+   IF 0 <= xx AND 0 <= yy:
+      suma = (yy + xx);
+      retvalu = suma * (suma + 1) / 2 + yy;
+   ELSE:
+      retvalu = -1;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT d1ur_d2(INT nn, WRITEONLY INT ret_arr_p[]):
+   # Convert a 1D square coordinates into 2D coordinate
+   # r/c   -1  0  1  2  3  4  5  6 ...
+   #   --------------------------
+   #   .   -1  .  .  .  .  .  .  . ...
+   #   5   -1 20 26 33 41 50 60 71 ...
+   #   4   -1 14 19 25 32 40 49 59 ...
+   #   3   -1  9 13 18 24 31 39 48 ...
+   #   2   -1  5  8 12 17 23 30 38 ...
+   #   1   -1  2  4  7 11 16 22 29 ...
+   #   0   -1  0  1  3  6 10 15 21 ...
+   #  -1   -1 -1 -1 -1 -1 -1 -1 -1 ...
+   INT basee;
+   INT y_coord;
+
+   IF nn <= 0:
+      ret_arr_p[0] = 0;
+      ret_arr_p[1] = 0;
+   ELSE:
+      basee = FLOORL((SQRT(1 + 8.0 * nn) - 1) / 2); # triinv(nn)
+      y_coord = nn - basee * (basee + 1) / 2; # tri(basee)
+      ret_arr_p[1] = y_coord;
+      ret_arr_p[0] = basee - y_coord;
+   IF_END
+   RETURN ret_arr_p[0];
+FUNC_END
+
+FUNC INT d2diamond_d1(INT xx, INT yy):
+   # Convert a 2D square coordinates into 1D coordinate
+   # r/c   ... -3 -2 -1  0  1  2  3 ...
+   #   --------------------------------
+   #   .   ...  .  .  .  .  .  .  . ...
+   #   3   ... 75 52 33 18 31 48 69 ...
+   #   2   ... 53 34 19 8  17 30 47 ...
+   #   1   ... 35 20 9  2  7  16 29 ...
+   #   0   ... 21 10 3  0  1  6  15 ...
+   #  -1   ... 37 22 11 4  5  14 27 ...
+   #  -2   ... 57 38 23 12 13 26 43 ...
+   #  -3   ... 81 58 39 24 25 42 63 ...
+   #   .   ...  .  .  .  .  .  .  . ...
+   INT ss;
+   INT tt;
+   INT retvalu;
+
+   IF 0 == yy AND xx == 0:
+      retvalu = 0;
+   ELSE:
+      ss = ABSL(xx) + ABSL(yy);
+      tt = 2 * ss * (ss - 1) + 1;
+      IF 0 < xx: # EAST half-plane
+         retvalu = tt + ss + yy - 1;
+      ELSE: # WEST half-plane
+         retvalu = tt + 3 * ss - yy - 1;
+      IF_END
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT d1diamond_d2(INT nn, WRITEONLY INT ret_arr_p[]):
+   # Convert a 1D diamond coordinates into 2D coordinate
+   # r/c   ... -3 -2 -1  0  1  2  3 ...
+   #   --------------------------------
+   #   .   ...  .  .  .  .  .  .  . ...
+   #   3   ... 75 52 33 18 31 48 69 ...
+   #   2   ... 53 34 19 8  17 30 47 ...
+   #   1   ... 35 20 9  2  7  16 29 ...
+   #   0   ... 21 10 3  0  1  6  15 ...
+   #  -1   ... 37 22 11 4  5  14 27 ...
+   #  -2   ... 57 38 23 12 13 26 43 ...
+   #  -3   ... 81 58 39 24 25 42 63 ...
+   #   .   ...  .  .  .  .  .  .  . ...
+   INT ss;
+   INT ssq;
+   INT x_coord;
+
+   IF nn <= 0:
+      x_coord = 0;
+      ret_arr_p[1] = 0;
+   ELSE:
+      ss = FLOORL(SQRT(nn) / Kw.SQRTTWO);
+      ssq = 2 * ss * ss;
+      # now ssq <= nn
+      IF nn <= ssq + 2 * ss:
+         ret_arr_p[1] = ssq - nn + ss;
+         x_coord = ssq - nn;
+         IF ss < -x_coord:
+            x_coord = -x_coord - 2 * ss;
+         IF_END
+      ELSE:
+         ret_arr_p[1] = nn - ssq - 3 * ss - 1;
+         x_coord = nn - ssq - 2 * ss;
+         IF ss < x_coord:
+            x_coord = -x_coord + 2 * ss + 2;
+         IF_END
+      IF_END
+   IF_END
+   ret_arr_p[0] = x_coord;
+   RETURN x_coord;
+FUNC_END
+
+FUNC INT d2spiral_d1(INT xx, INT yy):
+   # Convert a 2D square coordinates into 1D coordinate
+   # r/c   ... -3 -2 -1  0  1  2  3 ...
+   #   --------------------------------
+   #   .   ...  .  .  .  .  .  .  . ...
+   #   3   ... 36 35 34 33 32 31 30 ...
+   #   2   ... 37 16 15 14 13 12 29 ...
+   #   1   ... 38 17  4  3  2 11 28 ...
+   #   0   ... 39 18  5  0  1 10 27 ...
+   #  -1   ... 40 19  6  7  8  9 26 ...
+   #  -2   ... 41 20 21 22 23 24 25 ...
+   #  -3   ... 42 43 44 45 46 47 48 ...
+   #   .   ...  .  .  .  .  .  .  . ...
+   INT retvalu;
+
+   IF xx == 0 AND yy == 0:
+      retvalu = 0;
+   ELSIF ABSL(xx) <= ABSL(yy):  # NORTH and SOUTH quarter planes
+      retvalu = (4 * yy - 1) * yy - xx;
+      IF yy < 0: #SOUTH quarter plane
+         retvalu -= 2 * (yy - xx);
+      IF_END
+   ELSE: # EAST and WEST quarter planes
+      retvalu = (4 * xx - 1) * xx - yy;
+      IF 0 < xx: # EAST quarter planes
+         retvalu -= 2 * (xx - yy);
+      IF_END
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC INT d1spiral_d2(INT nn, WRITEONLY INT ret_arr_p[]):
+   # Find where NN is
+   # r/c   ... -3 -2 -1  0  1  2  3 ...
+   #   --------------------------------
+   #   .   ...  .  .  .  .  .  .  . ...
+   #   3   ... 36 35 34 33 32 31 30 ...
+   #   2   ... 37 16 15 14 13 12 29 ...
+   #   1   ... 38 17  4  3  2 11 28 ...
+   #   0   ... 39 18  5  0  1 10 27 ...
+   #  -1   ... 40 19  6  7  8  9 26 ...
+   #  -2   ... 41 20 21 22 23 24 25 ...
+   #  -3   ... 42 43 44 45 46 47 48 ...
+   #   .   ...  .  .  .  .  .  .  . ...
+   INT sqrtnn;
+   INT newdd;
+   INT fxd;
+
+   IF nn <= 0:
+      ret_arr_p[0] = 0;
+      ret_arr_p[1] = 0;
+   ELSE:
+      sqrtnn = FLOORL(SQRT(nn));
+      IF Kw.iseven(sqrtnn):
+         fxd = -sqrtnn / 2;
+      ELSE:
+         fxd = (sqrtnn + 1) / 2;
+      IF_END
+      newdd = nn - sqrtnn * sqrtnn;
+      IF newdd <= sqrtnn:
+         ret_arr_p[0] = fxd;
+         IF fxd < 0:
+            ret_arr_p[1] = -fxd - newdd;
+         ELSE:
+            ret_arr_p[1] = -fxd + newdd + 1;
+         IF_END
+      ELSE:
+         ret_arr_p[1] = fxd;
+         newdd -= sqrtnn;
+         IF fxd < 0:
+            ret_arr_p[0] = fxd + newdd;
+         ELSE:
+            ret_arr_p[0] = fxd - newdd;
+         IF_END
+      IF_END
+   IF_END
+   RETURN ret_arr_p[0];
+FUNC_END
+
+FUNC INT d2hypot_d1(INT xx, INT yy):
+   # Convert a 2D triangular coordinates into 1D coordinate
+   # If NOT 0 <= YY <= XX, return -1
+   # == number of lattice points (a,b) such that
+   #      1) 0 <= b <= a
+   #      2) a*a+b*b < XX*XX+YY*YY OR
+   #         (a*a+b*b == XX*XX+YY*YY AND XX < aa)
+   # d2hypot_d1(4,3) < d2hypot_d1(5,0)
+   # r/c   -1  0  1  2  3  4  5 ...
+   #   --------------------------
+   #   .    .  .  .  .  .  .  . ...
+   #   5   -1 -1 -1 -1 -1 -1 25 ...
+   #   4   -1 -1 -1 -1 -1 17 22 ...
+   #   3   -1 -1 -1 -1 11 13 18 ...
+   #   2   -1 -1 -1  5  8 12 16 ...
+   #   1   -1 -1  2  4  7 10 15 ...
+   #   0   -1  0  1  3  6  9 14 ...
+   #  -1   -1 -1 -1 -1 -1 -1 -1 ...
+   INT retvalu;
+   INT xlim;
+   DBL dist;
+   INT distsq;
+   INT count;
+   INT ixx;
+   INT nyy;
+   INT nyysq;
+   INT xmax;
+
+   IF 0 <= yy AND yy <= xx:
+      distsq = xx * xx + yy * yy;
+      dist = SQRT(distsq);
+      xlim = FLOORL(dist / Kw.SQRTTWO);
+      xmax = FLOORL(dist);
+      count = 0;
+      FOR ixx FROM xlim TO xmax:
+         nyysq = distsq - ixx * ixx;
+         nyy = CEILL(SQRT(nyysq));
+         IF ixx < nyy:
+            count += ixx + 1;
+         ELSE:
+            count += nyy;
+            IF ixx < xx AND nyy * nyy == nyysq:
+               count += 1;
+            IF_END
+         IF_END
+      FOR_END
+      retvalu = count + (xlim) * (xlim + 1) / 2;
+   ELSE:
+      retvalu = -1;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL binomialx(DBL xnn, DBL xkk):
+   # TGAMMA(XNN + 1) / (TGAMMA(XKK + 1) * TGAMMA(XNN + 1 - XKK))
+   # a real valued extension of BINOMIAL(XNN, XKK)
+   RETURN Kw.tgamma(xnn + 1)
+         / (Kw.tgamma(xkk + 1) * Kw.tgamma(xnn + 1 - xkk));
+FUNC_END
+
+BLOCK: # binomial numbers
+   LOCAL_DBL lv_binom_arr[0];
+   LOCAL_INT lv_binom_end = 0;
+   LOCAL_INT lv_binom_max = 0;
+   FUNC INT binomial(INT nn, INT kk):
+      # factorial(NN) / (factorial(KK) * factorial(NN - KK))
+      #   == Binomial(NN - 1, KK - 1) + Binomial(NN - 1, KK)
+      LOCAL_USE lv_binom_arr[];
+      LOCAL_USE lv_binom_end;
+      LOCAL_USE lv_binom_max;
+      INT rz_ind;
+      INT lz_ind;
+      INT rr;
+      INT ul_ind;
+      INT retvalu;
+
+      IF nn < kk OR nn < 0 OR kk < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_binom_end <= 0:
+            lv_binom_max = 2;
+            lv_binom_end = d2lt_d1(lv_binom_max, 0);
+            REDIM lv_binom_arr[], lv_binom_end;
+            lv_binom_arr[0] = 1;
+            lv_binom_arr[1] = 1;
+            lv_binom_arr[2] = 1;
+         IF_END
+
+         rr = lv_binom_max;
+         IF rr < nn + 1:
+            lv_binom_end = d2lt_d1(nn + 1, 0);
+            REDIM lv_binom_arr[], lv_binom_end;
+
+            WHILE rr <= nn:
+               ul_ind = d2lt_d1(rr - 1, 0);
+               lz_ind = ul_ind + rr;
+               lv_binom_arr[lz_ind] = 1;
+               rz_ind = lz_ind + rr;
+               WHILE lz_ind < rz_ind:
+                  lv_binom_arr[rz_ind] = lv_binom_arr[lz_ind];
+                  rz_ind -= 1;
+                  lz_ind += 1;
+                  lv_binom_arr[lz_ind] = (lv_binom_arr[ul_ind]
+                     + lv_binom_arr[ul_ind + 1]);
+                  ul_ind += 1;
+               WHILE_END
+               rr += 1;
+            WHILE_END
+            lv_binom_max = rr;
+         IF_END
+         retvalu = lv_binom_arr[d2lt_d1(nn, kk)];
+      IF_END
+
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END # binomial numbers
+#TEST:binomial(9,4)-126;
+#TEST:binomial(10,4)-210;
+
+BLOCK: # eulerian numbers
+   LOCAL_DBL lv_euler_arr[0];
+   LOCAL_INT lv_euler_end = 0;
+   LOCAL_INT lv_euler_max = 0;
+   FUNC DBL eulerian(INT nn, INT mm):
+      # EULERIAN(NN, MM) == # of permutations of 0,1,2,...NN-1
+      #       with exactly MM elements < next element
+      # EULERIAN(NN, MM) == (NN - MM) * EULERIAN(NN - 1, MM - 1)
+      #                   + (MM + 1)  * EULERIAN(NN - 1, MM)
+      # eulerian(4,0) == 1
+      #    ddd 3210
+      # eulerian(4,1) == 11
+      #    udd 0321,1320,2310
+      #    dud 1032,2031,2130,3021,3120
+      #    ddu 2103,3102,3021
+      # eulerian(4,2) == 11
+      #    uud 0132,0231,1230
+      #    udu 0213,0312,1203,1302,2301
+      #    duu 1023,2013,3012
+      # eulerian(4,3) == 1
+      #    uuu 0123
+      LOCAL_USE lv_euler_arr[];
+      LOCAL_USE lv_euler_end;
+      LOCAL_USE lv_euler_max;
+      INT cr;
+      INT rr;
+      INT lz_ind;
+      INT rz_ind;
+      INT ul_ind;
+      DBL retvalu;
+
+      IF nn < mm OR nn < 0 OR mm < 0:
+         retvalu = 0;
+      ELSE:
+         IF lv_euler_end <= 0:
+            lv_euler_max = 3;
+            lv_euler_end = d2lt_d1(lv_euler_max, 0);
+            REDIM lv_euler_arr[], lv_euler_end;
+            lv_euler_arr[0] = 0;
+            lv_euler_arr[1] = 1;
+            lv_euler_arr[2] = 0;
+            lv_euler_arr[3] = 1;
+            lv_euler_arr[4] = 1;
+            lv_euler_arr[5] = 0;
+         IF_END
+         rr = lv_euler_max;
+         IF rr < nn + 1:
+            lv_euler_end = d2lt_d1(nn + 1, 0);
+            REDIM lv_euler_arr[], lv_euler_end;
+
+            WHILE rr <= nn:
+               lz_ind = d2lt_d1(rr, 0);
+               lv_euler_arr[lz_ind] = 1;
+               lv_euler_arr[lz_ind + rr] = 0;
+               rz_ind = lz_ind + rr - 1;
+               ul_ind = d2lt_d1(rr - 1, 0);
+               cr = 1;
+               WHILE lz_ind < rz_ind:
+                  # take advantage of EULER(x,y) = EULER(x,x-y)
+                  lv_euler_arr[rz_ind] = lv_euler_arr[lz_ind];
+                  lz_ind += 1;
+                  lv_euler_arr[lz_ind] = (
+                        (rr - cr) * lv_euler_arr[ul_ind]
+                        + (cr + 1) * lv_euler_arr[ul_ind + 1]);
+                  ul_ind += 1;
+                  rz_ind -= 1;
+                  cr += 1;
+               WHILE_END
+               rr += 1;
+               lv_euler_max = rr;
+            WHILE_END
+         IF_END
+         retvalu = lv_euler_arr[d2lt_d1(nn, mm)];
+      IF_END
+
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END # eulerian numbers
+#TEST:eulerian(8,5)-4293;
+#TEST:eulerian(9,5)-88234;
+
+BLOCK: # Entringer numbers
+   LOCAL_DBL lv_entringer_arr[0];
+   LOCAL_INT lv_entringer_end = 0;
+   LOCAL_INT lv_entringer_max = 0;
+   FUNC DBL entringer(INT nn, INT kk):
+      # Entringer number
+      # == number of permutations of [0,NN],
+      #   starting with KK, which, after initially falling,
+      #   alternately rise then fall.
+      # E.G. entringer(4,2): 21403 21304 20413 20314
+      #      hence entringer(4,2) == 4
+      # E.G. entringer(4,4): 42301 41203 41302 40312 40213
+      #      hence entringer(4,4) == 5
+      LOCAL_USE lv_entringer_arr[];
+      LOCAL_USE lv_entringer_max;
+      LOCAL_USE lv_entringer_end;
+      INT cz;
+      INT inda;
+      INT rr;
+      DBL retvalu;
+
+      IF nn <= 0 OR kk < 0 OR nn < kk:
+         retvalu = 0;
+      ELSE:
+         IF lv_entringer_end <= 0:
+            lv_entringer_max = 1;
+            lv_entringer_end = d2lt_d1(lv_entringer_max, 0);
+            REDIM lv_entringer_arr[], lv_entringer_end;
+            lv_entringer_arr[0] = 1;
+         IF_END
+         rr = lv_entringer_max;
+         IF rr < nn + 1:
+            lv_entringer_end = d2lt_d1(nn + 1, 0);
+            REDIM lv_entringer_arr[], lv_entringer_end;
+            WHILE rr <= nn:
+               inda = d2lt_d1(rr, 0);
+               lv_entringer_arr[inda] = 0;
+               FOR cz FROM 1 TO rr:
+                  lv_entringer_arr[inda + cz] =
+                     lv_entringer_arr[inda + cz - 1]
+                        + lv_entringer_arr[inda - cz];
+               FOR_END
+               rr += 1;
+               lv_entringer_max = rr;
+            WHILE_END
+         IF_END
+         retvalu = lv_entringer_arr[d2lt_d1(nn, kk)];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END # Entringers numbers
+#TEST:entringer(5,3)-14
+
+FUNC DBL zigzag(INT nn):
+   # Number of alternating permutations on [0..NN-1]
+   #   starting with a rise
+   #   == entringer(NN,NN)
+   # E.G. if NN=4 the alternating permutations (starting with
+   #      a rise) are (0312) (0213) (1203) (1302) (2301)
+   # So zigzag(4) == 5
+   # EGF(zigzag();x) = sec(x) + tan(x)
+   # zigzag(NN) is about 2 * (2 / PI)**(NN + 1) * factorial(NN)
+   # bell(2 * NN) * (4**(2 * NN) - 2**(2 * NN)) =
+   #      (-1)**(NN + 1)* 2 * NN * zigzag(2 * NN - 1)
+   # sec(X) = SUM[II;0;Inf;2;zigzag(II)*XX**II/factorial(II)]
+   # tan(X) = SUM[II;1;Inf;2;zigzag(II)*XX**II/factorial(II)]
+   RETURN Kw.entringer(nn, nn);
+FUNC_END
+#TEST:zigzag(6)-61;
+#TEST:zigzag(7)-272;
+#TEST:zigzag(8)-1385;
+#TEST:zigzag(9)-7936;
+#TEST:zigzag(10)-50521;
+#TEST:zigzag(12)-2702765;
+
+FUNC DBL zig(INT nn):
+   # Zig (or Secant) numbers
+   # EGF(zig();x) = sec(SQRT(x));
+   RETURN Kw.zigzag(2 * nn);
+FUNC_END
+
+FUNC DBL zag(INT nn):
+   # Zag (or Tangent) numbers
+   # EGF(zag();x) = tan(SQRT(x)) / SQRT(x);
+   RETURN Kw.zigzag(2 * nn - 1);
+FUNC_END
+
+FUNC DBL eulerx(INT nn):
+   # Euler number
+   # EGF(eulerx();x) = sec(x)
+   DBL retvalu;
+
+   IF nn <= 0 OR Kw.isodd(nn):
+      retvalu = 0;
+   ELSE:
+      retvalu = Kw.entringer(nn, nn);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+#TEST:eulerx(12)-2702765;
+
+FUNC DBL ballot(DBL xmm, DBL xnn):
+   # probability of counting
+   #    NN votes for candidate 1 and
+   #    MM votes for candidate 2
+   # such that the winner is always strictly ahead of the loser
+   RETURN ABS(xnn - xmm) / (xmm + xnn);
+FUNC_END
+
+FUNC DBL ballots(DBL xmm, DBL xnn):
+   # probability of counting
+   #    NN votes for candidate 1 and
+   #    MM votes for candidate 2
+   # such that the winner is never behind of the loser
+   DBL retvalu;
+
+   IF xmm < xnn:
+      retvalu = (xnn - xmm + 1.0) / (xnn + 1.0);
+   ELSE:
+      retvalu = (xmm - xnn + 1.0) / (xmm + 1.0);
+   IF_END
+
+   RETURN retvalu;
+FUNC_END
+
+BLOCK: # Stirling numbers of the 1th kind
+   LOCAL_DBL lv_stir_a_arr[0];
+   LOCAL_INT lv_stir_a_end = 0;
+   LOCAL_INT lv_stir_a_max = 0;
+
+   FUNC DBL stirling1(INT nn, INT kk):
+      # Stirling numbers of the 1th kind
+      # The ABS(stirling1(NN, KK)) == # of permutations
+      #    of NN objects with exactly KK cycles.
+      # Let ff(x,n) == x(x-1)(x-2)(x-3)...(x-n+1).
+      #    ff(x,n) = SUM k = 0 TO N OF stirling1(n,k) * x**k
+      LOCAL_USE lv_stir_a_arr[];
+      LOCAL_USE lv_stir_a_end;
+      LOCAL_USE lv_stir_a_max;
+      INT col_k;
+      INT ul_ind;
+      INT cz_ind;
+      INT rr;
+      DBL retvalu;
+
+      IF nn < 0 OR kk < 0 OR nn < kk:
+         retvalu = 0;
+      ELSE:
+         # STIRLING1(NN, KK) = -(NN - 1) * STIRLING1(NN - 1, KK)
+         #         + STIRLING1(NN - 1, KK - 1);
+         # with initial conditions
+         #   A) STIRLING1(0,0) = 1 and
+         #   B) STIRLING1(NN,0) = STIRLING1(0,NN) = 0 for 0 < NN
+         IF lv_stir_a_max <= 0:
+            lv_stir_a_max = 2;
+            lv_stir_a_end = d2lt_d1(lv_stir_a_max, 0);
+            REDIM lv_stir_a_arr[], lv_stir_a_end;
+            lv_stir_a_arr[0] = 1;
+            lv_stir_a_arr[1] = 0;
+            lv_stir_a_arr[2] = 1;
+         IF_END
+
+         rr = lv_stir_a_max;
+         IF rr < nn + 1:
+            lv_stir_a_end = d2lt_d1(nn + 1, 0);
+            REDIM lv_stir_a_arr[], lv_stir_a_end;
+
+            WHILE rr <= nn:
+               cz_ind = d2lt_d1(rr, 0);
+               lv_stir_a_arr[cz_ind] = 0;
+               cz_ind += 1;
+               ul_ind = d2lt_d1(rr - 1, 0);
+               FOR col_k FROM 1 TO rr - 1:
+                  lv_stir_a_arr[cz_ind] = (
+                     lv_stir_a_arr[ul_ind]
+                     - (rr - 1) * lv_stir_a_arr[ul_ind + 1]);
+                  ul_ind += 1;
+                  cz_ind += 1;
+               FOR_END
+               lv_stir_a_arr[cz_ind] = 1;
+               rr += 1;
+               lv_stir_a_max = rr;
+            WHILE_END
+         IF_END
+         retvalu = lv_stir_a_arr[d2lt_d1(nn, kk)];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+#TEST:stirling1(9,6)+4536;
+
+BLOCK: # Stirling numbers of the 2th kind
+   LOCAL_DBL lv_stir_b_arr[0];
+   LOCAL_INT lv_stir_b_end = 0;
+   LOCAL_INT lv_stir_b_max = 0;
+   FUNC DBL stirling2(INT nn, INT kk):
+      # Stirling numbers of the 2th kind
+      # # of possible rhyming schemes for NN lines using
+      #       KK unique rhyming syllables.
+      # Let ff(x,n) == x(x-1)(x-2)(x-3)...(x-n+1).
+      #    x**n = SUM k = 0 TO NN OF stirling2(n,k) * ff(x,n)
+      # E. G. for a poem of 4 lines, there are:
+      # bell(N) = SUM[k = 0 to N](stirling2(N, k))
+      LOCAL_USE lv_stir_b_arr[];
+      LOCAL_USE lv_stir_b_end;
+      LOCAL_USE lv_stir_b_max;
+      INT col_k;
+      INT ul_ind;
+      INT cz_ind;
+      INT rr;
+      DBL retvalu;
+
+      IF nn < kk OR nn < 0 OR kk < 0:
+         retvalu = 0;
+      ELSE:
+         # STIRLING2(NN, KK) = KK * STIRLING2(NN - 1,KK)
+         #                       + STIRLING2(NN - 1,KK - 1)
+         # with initial conditions
+         #   A) STIRLING2(0,0) = 1 and
+         #   B) STIRLING2(NN,0) = STIRLING2(0,NN) = 0 for 0 < NN
+         IF lv_stir_b_end <= 0:
+            lv_stir_b_max = 2;
+            lv_stir_b_end = d2lt_d1(lv_stir_b_max, 0);
+            REDIM lv_stir_b_arr[], lv_stir_b_end;
+            lv_stir_b_arr[0] = 1;
+            lv_stir_b_arr[1] = 0;
+            lv_stir_b_arr[2] = 1;
+         IF_END
+         rr = lv_stir_b_max;
+         IF rr < nn + 1:
+            lv_stir_b_end = d2lt_d1(nn + 1, 0);
+            REDIM lv_stir_b_arr[], lv_stir_b_end;
+
+            WHILE rr <= nn:
+               cz_ind = d2lt_d1(rr, 0);
+               lv_stir_b_arr[cz_ind] = 0;
+               cz_ind += 1;
+               ul_ind = d2lt_d1(rr - 1, 0);
+               FOR col_k FROM 1 TO rr - 1:
+                  lv_stir_b_arr[cz_ind] = (
+                        lv_stir_b_arr[ul_ind]
+                           + col_k * lv_stir_b_arr[ul_ind + 1]);
+                  ul_ind += 1;
+                  cz_ind += 1;
+               FOR_END
+               lv_stir_b_arr[cz_ind] = 1;
+               rr += 1;
+               lv_stir_b_max = rr;
+            WHILE_END
+         IF_END
+         retvalu = lv_stir_b_arr[d2lt_d1(nn, kk)];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+#TEST:stirling2(9,6)-2646;
+
+BLOCK: # Bernoullis numbers
+   LOCAL_DBL lv_bern_n_arr[0];
+   LOCAL_DBL lv_bern_d_arr[0];
+   LOCAL_INT lv_bern_end = 0;
+   FUNC DBL bernoulli(INT nn):
+      # the NNth Bernoulli number
+      # if 1 < NN is odd, then bernoulli(NN) = 0
+      # EGF(bernoulli();x) = x / (EXP(x) - 1)
+      LOCAL_USE lv_bern_n_arr[];
+      LOCAL_USE lv_bern_d_arr[];
+      LOCAL_USE lv_bern_end;
+      DBL retvalu;
+      INT sz_ind;
+      DBL coeff;
+      DBL sumn;
+      DBL sumd;
+      INT jj;
+      INT mm;
+      DBL gd;
+      DBL nsumn;
+      DBL nsumd;
+      DBL xkk;
+      INT nnhalf;
+
+      IF nn == 1: # the first bernoulli number is weird
+         retvalu = -0.5;
+      ELSIF nn < 0 OR Kw.isodd(nn):
+         retvalu = 0.0;
+      ELSE:
+         IF lv_bern_end <= 0:
+            lv_bern_end = 3;
+            REDIM lv_bern_n_arr[], lv_bern_end;
+            REDIM lv_bern_d_arr[], lv_bern_end;
+            lv_bern_n_arr[0] = 1;
+            lv_bern_n_arr[1] = 1;
+            lv_bern_n_arr[2] = -1;
+            lv_bern_d_arr[0] = 1;
+            lv_bern_d_arr[1] = 6;
+            lv_bern_d_arr[2] = 30;
+         IF_END
+         nnhalf = FLOORL(nn / 2);
+         IF lv_bern_end <= nnhalf:
+            mm = lv_bern_end;
+            lv_bern_end = nnhalf + 1;
+            REDIM lv_bern_n_arr[], lv_bern_end;
+            REDIM lv_bern_d_arr[], lv_bern_end;
+
+            WHILE mm < lv_bern_end:
+               sz_ind = 2 * mm;
+               # coeff is always an integer
+               coeff = ((sz_ind + 1) * sz_ind) / 2;
+               sumn = 1.0 - sz_ind;
+               sumd = 2.0;
+               FOR jj FROM 1 TO mm - 1:
+                  # compute the numerator and denominator
+                  nsumn = Kw.round(sumn * lv_bern_d_arr[jj]
+                        + sumd * coeff * lv_bern_n_arr[jj]);
+                  nsumd = Kw.round(sumd * lv_bern_d_arr[jj]);
+                  gd = gcd(nsumn, nsumd);
+                  sumn = nsumn / gd;
+                  sumd = nsumd / gd;
+                  xkk = 2 * jj;
+                  coeff *= (sz_ind - xkk + 1.0) / (xkk + 1.0);
+                  coeff *= (sz_ind - xkk) / (xkk + 2.0);
+                  coeff = Kw.round(coeff);
+               FOR_END
+               sumd *= (sz_ind + 1);
+               gd = Kw.gcd(sumn, sumd);
+               lv_bern_n_arr[mm] = -sumn / gd;
+               lv_bern_d_arr[mm] = sumd / gd;
+               mm += 1;
+            WHILE_END
+         IF_END
+         retvalu = lv_bern_n_arr[nnhalf] / lv_bern_d_arr[nnhalf];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC INT bernoullin(INT nn):
+      # the numerator of the NNth bernoulli number
+      LOCAL_USE lv_bern_n_arr[];
+      LOCAL_USE lv_bern_d_arr[];
+      INT retvalu;
+
+      IF nn == 1: # the first Bernoulli number is weird
+         retvalu = -1;
+      ELSIF Kw.isodd(nn) OR nn < 0:
+         retvalu = 0;
+      ELSE:
+         retvalu = Kw.bernoulli(nn);
+         retvalu = lv_bern_n_arr[nn / 2];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC INT bernoullid(INT nn):
+      # the denominator of the NNth Bernoulli number
+      LOCAL_USE lv_bern_n_arr[];
+      LOCAL_USE lv_bern_d_arr[];
+      INT retvalu;
+
+      IF nn == 1: # the first Bernoulli number is weird
+         retvalu = 2;
+      ELSIF Kw.isodd(nn) OR nn < 0:
+         retvalu = 1;
+      ELSE:
+         retvalu = Kw.bernoulli(nn);
+         retvalu = lv_bern_d_arr[nn / 2];
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END
+#TEST:bernoulli(12)*2730+691;
+
+FUNC DBL birthday(DBL xnn, DBL xrr):
+   # the probability that every pigeon has a hole to itself
+   # if RR pigeons are placed in NN pigeon holes.
+   DBL prob;
+   INT ii;
+
+   prob = 1.0;
+   FOR ii FROM 1 TO xrr - 1:
+      prob *= (xnn - ii) / xnn;
+   FOR_END
+   RETURN prob;
+FUNC_END
+
+FUNC DBL birthdayinv(DBL xnn, DBL xprob):
+   # XRR such that PROB = BIRTHDAY(XRR, XNN)
+   # the number, RR, of pigeons such that the probability
+   # of placing RR pigeons in NN holes with each pigeons
+   # having its own holes is PROB
+   DBL xrr;
+   DBL cprob;
+
+   cprob = 1.0;
+   xrr = 1.0;
+   WHILE xprob < cprob:
+      cprob *= (xnn - xrr) / xnn;
+      xrr += 1;
+   WHILE_END
+   RETURN xrr;
+FUNC_END
+
+FUNC INT n2perm(INT mm, INT nn
+      , WRITEONLY INT ret_perm_arr_p[]):
+   # n2perm(M, N) == Mth permutation of N things
+   # e.g. n2perm(0, N)=(0, 1, 2, 3, ..., (N-1))
+   # e.g. n2perm(factorial(N)-1, N)=((N-1), ..., 3, 2, 1, 0)
+   INT ii;
+   INT pat_arr[];
+   INT source_arr[];
+   INT jj;
+   INT kk;
+   INT sz_ind;
+
+   MODE_INTEGER:
+   REDIM pat_arr[], nn;
+   REDIM source_arr[], nn;
+   kk = mm;
+   FOR ii FROM 1 TO nn:
+      pat_arr[nn - ii] = kk % ii;
+      kk = FLOOR(kk / ii);
+      source_arr[ii - 1] = ii - 1;
+   FOR_END
+
+   FOR ii FROM 0 TO nn - 1:
+      sz_ind = pat_arr[ii];
+      ret_perm_arr_p[ii] = source_arr[sz_ind];
+      # splice out source_arr[sz_ind]
+      FOR jj FROM sz_ind TO nn - ii - 2:
+         source_arr[jj] = source_arr[jj + 1];
+      FOR_END
+   FOR_END
+   MODE_INTEGER_END
+   REDIM pat_arr[];
+   REDIM source_arr[];
+   RETURN mm;
+FUNC_END
+
+FUNC INT n2comb(INT mm, INT nn, INT rr
+      , WRITEONLY INT ret_comb_arr_p[]):
+   # n2comb(M, N, R) = Mth combination of N things taken
+   # R at a time
+   # e.g. n2comb(0, N, R) = ((N-R), (N-R+1), .., N-1).
+   # No error checking done.
+   INT kk;
+   INT cc;
+   INT qq;
+   INT ss;
+   INT pp;
+
+   MODE_INTEGER:
+      kk = Kw.comb(nn, rr) - mm;
+      FOR ss FROM 0 TO rr - 1:
+         pp = rr - ss;
+         cc = 1;
+         qq = 1;
+         WHILE cc < kk:
+            kk -= cc;
+            # cc should always be an integer
+            cc = (cc * pp) / qq;
+            qq += 1;
+            pp += 1;
+         WHILE_END
+         ret_comb_arr_p[ss] = nn - pp;
+      FOR_END
+   MODE_INTEGER_END
+   RETURN mm;
+FUNC_END

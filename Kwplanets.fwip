@@ -1,0 +1,917 @@
+#    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-06-22 kdw  local-use mved befroe var decls
+# 2020-06-12 kdw  stern-levison and margot rework
+# 2020-06-03 kdw  writeonly keyword
+# 2020-06-01 kdw  replace "_D" with "_DT"
+# 2020-05-30 kdw  CONST syntax change
+# 2020-05-27 kdw  pl_val func renamd to lf_val
+# 2020-05-18 kdw  block added
+# 2020-05-17 kdw  pl_val func
+# 2020-05-13 kdw  .*_LA[S]T changed to .*_COU[N]T
+# 2020-05-12 kdw  nul rets changed
+# 2020-05-11 kdw  REPL[A]CE replaced with LO[C]AL_CO[N]ST
+# 2020-05-05 kdw  magic check func changed
+# 2020-05-04 kdw  comments added
+# 2020-04-28 kdw  tweaks here and there
+# 2020-04-23 kdw  const format change
+# 2020-04-12 kdw  comment change
+# 2020-04-11 kdw  macro arg format
+# 2020-04-08 kdw  preprocess sigil change
+# 2020-04-03 kdw  uniqify returns
+# 2020-03-23 kdw  added _[a]rr suffix to arrays
+# 2020-03-11 kdw  RE[P]LACE work
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-08 kdw  PR[I]NTVAL change
+# 2020-03-06 kdw  L[A]NG.* names
+# 2020-03-03 kdw  macro arg name change
+# 2020-03-02 kdw  s/_NE[X]T/_E[N]D/g
+# 2020-02-28 kdw  poly eval work
+# 2020-02-27 kdw  ho[r]ner work
+# 2020-02-26 kdw  comment change
+# 2020-02-03 kdw  .*_LOOP changed
+# 2020-01-28 kdw  updated w/ new ellips.* funcs
+# 2020-01-08 kdw  comment location chagned
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-12-18 kdw  error checking III
+# 2019-12-17 kdw  error checking fixed
+# 2019-12-15 kdw  error checking
+# 2019-12-11 kdw  debugging -- no net change
+# 2019-11-17 kdw  include Macros file
+# 2019-10-10 kdw  replace AIR with AIR_MASS
+# 2019-10-08 kdw  comment change
+# 2019-10-04 kdw  comment removal
+# 2019-10-02 kdw  macro arg format change
+# 2019-09-21 kdw  diff const renam
+# 2019-09-10 kdw  earth-gravity major refactor
+# 2019-08-30 kdw  lv_isa_.* vars; ISA block
+# 2019-08-26 kdw  PRI[N]TS to PR[I]NTSTR
+# 2019-08-22 kdw  comment changed
+# 2019-08-17 kdw  L[O]G to L[N]
+# 2019-08-15 kdw  tweak in pl_helio.*
+# 2019-08-14 kdw  comment change
+# 2019-08-13 kdw  comment shortened
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-06 kdw  added "+" to array values
+# 2019-07-05 kdw  added extra planet defs; pls[e]ttime
+# 2019-07-04 kdw  rmed extra planet defs
+# 2019-07-03 kdw  var renm:"s/ind/_ind/;s/__ind/_ind/"
+# 2019-07-02 kdw  macro renam
+# 2019-06-26 kdw  ".*D" to ".*_DT"
+# 2019-06-04 kdw  tur2deg funcs
+# 2019-06-02 kdw  NR_ to RAPHSON_
+# 2019-05-31 kdw  NR_DO to RAPHSON_LOOP; et al
+# 2019-05-29 kdw  comment changed
+# 2019-05-28 kdw  comment changed
+# 2019-05-24 kdw  s/PL_/LC_/g;
+# 2019-05-22 kdw  added "get_" to several vin_.* funcs
+# 2019-05-20 kdw  explicit module for consts
+# 2019-05-17 kdw  pl.* rmed
+# 2019-05-14 kdw  lf_isa_calc, isa_dens funcs; rework
+# 2019-05-08 kdw  func descripts
+# 2019-05-07 kdw  (lf_)?isa_.* funcs
+# 2019-04-30 kdw  failed experiment
+# 2019-04-23 kdw  e.*_air_[p]ressure() function rework
+# 2019-04-22 kdw  e.*_air_[p]ressure() function
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-18 kdw  macro syntax changed
+# 2019-03-15 kdw  use to[p]yh1
+# 2019-03-08 kdw  is[e]qual to is[e]q, et al.
+# 2019-03-04 kdw  loop-limit work
+# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-19 kdw  macro syntax
+# 2019-02-04 kdw  pmo macro, et al
+# 2019-01-30 kdw  lv_p[l]_ey var
+# 2019-01-27 kdw  pl-helioc[e]ntric func
+# 2019-01-23 kdw  probs with powers
+# 2018-12-12 kdw  macros.fwip
+# 2018-12-10 kdw  module specific refs
+# 2018-11-29 kdw  upper cased fwip defined funcs
+# 2018-11-26 kdw  PL_ prfxs
+# 2018-11-03 kdw  comment
+# 2018-10-27 kdw  comment change
+# 2018-10-04 kdw  uppercased fwip trig funcs
+# 2018-07-19 kdw  comments; array reformat
+# 2018-07-17 kdw  private lf_.* funcs
+# 2018-07-13 kdw  float number reformt
+# 2018-07-10 kdw  added "+" to exponents
+# 2018-05-24 kdw  eccentric anomaly refactor
+# 2018-05-23 kdw  orbital elements
+# 2018-05-23 kdw  eccentric anomaly func
+# 2018-05-22 kdw  comment change
+# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
+# 2018-05-16 kdw  AR?RAY syntax
+# 2018-04-19 kdw  consts rework
+# 2018-04-09 kdw  [tdr]2[rdt] func renam
+# 2018-04-03 kdw  rm () from return
+# 2018-03-26 kdw  macro redef
+# 2018-03-20 kdw  replaced index w/ "at"replace
+# 2018-03-16 kdw  constant and index format
+# 2018-03-12 kdw  made PP statements not need ";"
+# 2018-02-27 kdw  mass function refactor
+# 2018-02-19 kdw  secant and macro refactor
+# 2018-02-17 kdw  expandnow changed
+# 2018-02-14 kdw  IN[D]EX stuff
+# 2018-02-12 kdw  stern-levison
+# 2018-02-10 kdw  *_B calcd from _A and FLAT
+# 2018-02-08 kdw  *_[ABC] radii
+# 2018-01-15 kdw  margot comments
+# 2017-11-24 kdw  print string changed
+# 2017-11-23 kdw  rm digits from var names
+# 2017-11-22 kdw  var renam
+# 2017-11-07 kdw  perihelion, aphelion spelled out
+# 2017-10-23 kdw  COM[M]ENT syntax
+# 2017-10-22 kdw  peri and ap
+# 2017-10-21 kdw  in[s]ert syntax
+# 2017-10-17 kdw  GM redo; several earth redefd
+# 2017-10-15 kdw  sun mass
+# 2017-10-10 kdw  __B <= __C <= __A
+# 2017-10-09 kdw  suppress units warning with "+-"
+# 2017-10-07 kdw  __C; __RADIUS calc changed
+# 2017-10-06 kdw  mucho refactor (lots of consts)
+# 2017-10-04 kdw  NUS
+# 2017-10-03 kdw  margot  simplified
+# 2017-10-02 kdw  pl* funcs
+# 2017-10-02 kdw  only names
+# 2017-10-01 kdw  _planet_.* reorg
+# 2017-09-29 kdw  _planet_.* created
+# 2017-09-29 kdw  EA?RTHFL?AT
+# 2017-09-28 kdw  tropical year
+# 2017-09-27 kdw  EA[R]THGRA[V]ITY[AB]
+# 2017-09-26 kdw  created
+
+??INSERT_FILE "Macros.fwip"??
+
+# basic, usefull things
+IMPORT "Kw";
+
+# need the molecular mass of air for ISA calculation
+IMPORT "Kwelements";
+
+# This contain all the info about the planets
+??INSERT_FILE "const-planet.fwip"??
+
+FUNC DBL margot(DBL pmass, DBL porbit):
+   # the const, k, in the following routine equals
+   #   k = sqrt(3) * (100 * Tsun)**0.75 * AU**1.125
+   #         / (SUNMASS * C**1.5)
+   #   k = T**0.75*L**1.125/(M*L**1.5)
+   #   where:
+   #      C = 2*sqrt(3) HillRadius
+   #      HillRadius = _ORBIT * cbrt(_MASS / (3 * SUNMASS))
+   #      Tsun = 1E+10 year = lifetime of sun
+   #      T_star = (2.5E+108 s kg**3) / starMASS**3
+   #   planets have a value much greater than 1, and
+   #   dwarf planets have a value much less than 1
+   DBL retvalu;
+
+   IF pmass <= 0.0 OR porbit <= 0.0:
+      retvalu = 0.0;
+   ELSE:
+      retvalu = 5.0401742E-10 * pmass
+            / EXP(LN(porbit) * 1.125);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL sternlevison(DBL pmass, DBL porbit):
+   # the const, k, in the following routine equals
+   #   k=1.53E+5 * AU**1.5 / EARTHMASS**2
+   #   planets have a value much larger than 1, and
+   #   dwarf planets have a value much less than 1
+   DBL retvalu;
+   DBL xx;
+
+   IF pmass <= 0.0 OR porbit <= 0.0:
+      retvalu = 0.0;
+   ELSE:
+      xx = 2.0 * LN(pmass) - 1.5 * LN(porbit);
+      retvalu = 2.482E-28 * EXP(xx);
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+BLOCK:
+   # SUN must be < 2**15 for VB6 VBDOTNET
+   LOCAL_CONST LC_P1_PREV_PL -1; # 1
+   LOCAL_CONST LC_P1_SUN 0; # 1
+   LOCAL_CONST LC_P1_MERCURY 1; # 1
+   LOCAL_CONST LC_P1_VENUS 2; # 1
+   LOCAL_CONST LC_P1_EARTH 3; # 1
+   LOCAL_CONST LC_P1_MARS 4; # 1
+   LOCAL_CONST LC_P1_JUPITER 5; # 1
+   LOCAL_CONST LC_P1_SATURN 6; # 1
+   LOCAL_CONST LC_P1_URANUS 7; # 1
+   LOCAL_CONST LC_P1_NEPTUNE 8; # 1
+   LOCAL_CONST LC_P1_PLUTO 9; # 1
+   LOCAL_CONST LC_P1_CERES 10; # 1
+   LOCAL_CONST LC_P1_ERIS 11; # 1
+   LOCAL_CONST LC_P1_MAKEMAKE 12; # 1
+   LOCAL_CONST LC_P1_HAUMEA 13; # 1
+
+   LOCAL_CONST LC_P1_COUNT LC_P1_HAUMEA + 1; # 1
+   LOCAL_CONST LC_P1_ERR -1; # 1
+
+   LOCAL_CONST LC_P2_GM 0;
+   LOCAL_CONST LC_P2_YEAR 1;
+   LOCAL_CONST LC_P2_DAY 2;
+   LOCAL_CONST LC_P2_FLATNESS 3;
+   LOCAL_CONST LC_P2_A 4;
+   LOCAL_CONST LC_P2_C 5;
+   LOCAL_CONST LC_P2_ORB 6;
+   LOCAL_CONST LC_P2_ECC 7;
+   LOCAL_CONST LC_P2_INC 8;
+   LOCAL_CONST LC_P2_LON 9;
+   LOCAL_CONST LC_P2_PER 10;
+   LOCAL_CONST LC_P2_ASC 11;
+   LOCAL_CONST LC_P2_ORB_DT 12;
+   LOCAL_CONST LC_P2_ECC_DT 13;
+   LOCAL_CONST LC_P2_INC_DT 14;
+   LOCAL_CONST LC_P2_LON_DT 15;
+   LOCAL_CONST LC_P2_PER_DT 16;
+   LOCAL_CONST LC_P2_ASC_DT 17;
+   LOCAL_CONST LC_P2_COUNT 18;
+
+   LOCAL_INT lv_pl_ind = LC_P1_PREV_PL;
+   LOCAL_DBL lv_pl_arr[LC_P1_COUNT][LC_P2_COUNT];
+   LOCAL_DBL lv_pl_earth_year = EARTHYEAR;
+   LOCAL_DBL lv_pl_helio_arr[3];
+   LOCAL_DBL lv_pl_geo_arr[3];
+   LOCAL_DBL lv_pl_jtwoktime = 1.0 / 64.0;
+
+   # setup macro
+   ??MACRO PLNT_SETUP_VALUES <PP> ??
+      lv_pl_arr[LC_P1_<PP>][LC_P2_GM]       = <PP>GM;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_YEAR]     = <PP>YEAR;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_DAY]      = <PP>DAY;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_FLATNESS] = <PP>FLATNESS;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_A]        = <PP>_A;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_C]        = <PP>_C;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_ORB]     = <PP>ORBIT;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_ECC]     = <PP>ECCENTRICITY;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_INC]     = <PP>INCLINATION;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_LON]     = <PP>LONGITUDE;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_PER]     = <PP>PERIAPSIS;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_ASC]     = <PP>ASCENDING;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_ORB_DT]  = <PP>ORBIT_DT;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_ECC_DT]  = <PP>ECCENTRICITY_DT;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_INC_DT]  = <PP>INCLINATION_DT;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_LON_DT]  = <PP>LONGITUDE_DT;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_PER_DT]  = <PP>PERIAPSIS_DT;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_ASC_DT]  = <PP>ASCENDING_DT;
+   ??MACRO_END
+
+   LOCAL_FUNC INT lf_pl_init(INT plnt):
+      LOCAL_USE lv_pl_ind;
+      LOCAL_USE lv_pl_arr[];
+
+      IF lv_pl_ind < 0:
+         ??PLNT_SETUP_VALUES SUN??
+         ??PLNT_SETUP_VALUES MERCURY??
+         ??PLNT_SETUP_VALUES VENUS??
+         ??PLNT_SETUP_VALUES EARTH??
+         ??PLNT_SETUP_VALUES MARS??
+         ??PLNT_SETUP_VALUES JUPITER??
+         ??PLNT_SETUP_VALUES SATURN??
+         ??PLNT_SETUP_VALUES URANUS??
+         ??PLNT_SETUP_VALUES NEPTUNE??
+         ??PLNT_SETUP_VALUES PLUTO??
+         ??PLNT_SETUP_VALUES CERES??
+         ??PLNT_SETUP_VALUES ERIS??
+         ??PLNT_SETUP_VALUES MAKEMAKE??
+         ??PLNT_SETUP_VALUES HAUMEA??
+         IF 0 < lv_pl_jtwoktime AND lv_pl_jtwoktime < 1.0 / 32.0:
+            CALL plsettime(Kw.uet2j2k(Kw.timee()));
+         IF_END
+         lv_pl_earth_year = EARTHYEAR;
+      IF_END
+
+      IF LC_P1_SUN <= plnt AND plnt < LC_P1_COUNT:
+         lv_pl_ind = plnt;
+      ELSIF plnt == LC_P1_PREV_PL:
+         IF lv_pl_ind < 0:
+            lv_pl_ind = LC_P1_EARTH;
+         IF_END
+      ELSE:
+         lv_pl_ind = LC_P1_PREV_PL;
+      IF_END
+      RETURN lv_pl_ind;
+   FUNC_END
+
+   LOCAL_FUNC DBL lf_val(INT pa_ind
+         , INT pb_bb
+         , INT pb_bbd):
+      INT pl_ind;
+      DBL retvalu;
+
+      IF pa_ind < LC_P1_PREV_PL OR LC_P1_COUNT <= pa_ind:
+         retvalu = LC_P1_ERR;
+      ELSE:
+         pl_ind = pl(pa_ind);
+         retvalu = (lv_pl_arr[pl_ind][pb_bb]
+            + lv_pl_jtwoktime * lv_pl_arr[pl_ind][pb_bbd]);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC INT pl(INT plnt):
+      # set the selected planet to PLNT
+      RETURN lf_pl_init(plnt);
+   FUNC_END
+
+   FUNC DBL plsettime(DBL jtwokdate):
+      # set the planet-time to the JTWOKDATE
+      lv_pl_jtwoktime = jtwokdate * Kw.JD;
+      RETURN lv_pl_jtwoktime;
+   FUNC_END
+
+   ??MACRO PLNT_FUNC <AA> ??
+   FUNC DBL pl<AA>(NUL):
+      # the <AA> of the previous selected planet
+      LOCAL_USE lv_pl_ind;
+      RETURN pl_<AA>(LC_P1_PREV_PL);
+   FUNC_END
+   ??MACRO_END
+
+   ??MACRO PLNT_PHYSICAL <AA> ; <BB> ??
+   FUNC DBL pl_<AA>(INT plnt):
+      # the <AA> of planet PLNT
+      LOCAL_USE lv_pl_arr[];
+      LOCAL_USE lv_pl_ind;
+      DBL retvalu;
+
+      CALL lf_pl_init(plnt);
+      IF LC_P1_SUN <= plnt AND plnt < LC_P1_COUNT:
+         retvalu = lv_pl_arr[plnt][LC_P2_<BB>];
+      ELSIF plnt == LC_P1_PREV_PL:
+         retvalu = lv_pl_arr[lv_pl_ind][LC_P2_<BB>];
+      ELSE:
+         retvalu = LC_P1_ERR;
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+   ??PLNT_FUNC <AA> ??
+   ??MACRO_END
+
+   ??PLNT_PHYSICAL gm            ; GM ??
+   ??PLNT_PHYSICAL year          ; YEAR ??
+   ??PLNT_PHYSICAL day           ; DAY ??
+   ??PLNT_PHYSICAL flatness      ; FLATNESS ??
+   ??PLNT_PHYSICAL a             ; A ??
+   ??PLNT_PHYSICAL c             ; C ??
+
+   ??MACRO PLNT_ORBITAL <AA> ; <BB> ??
+   FUNC DBL pl_<AA>(INT plnt):
+      # compute orbital <AA> of planet PLNT
+      RETURN lf_val(plnt, LC_P2_<BB>, LC_P2_<BB>_DT);
+   FUNC_END
+   ??PLNT_FUNC <AA> ??
+   ??MACRO_END
+
+   ??PLNT_ORBITAL orbit         ; ORB ??
+   ??PLNT_ORBITAL eccentricity  ; ECC ??
+   ??PLNT_ORBITAL inclination   ; INC ??
+   ??PLNT_ORBITAL longitude     ; LON ??
+   ??PLNT_ORBITAL periapsis     ; PER ??
+   ??PLNT_ORBITAL ascending     ; ASC ??
+
+   ??MACRO PL_VAL <PP> ; <VAL> ??
+      DBL retvalu;
+      IF <PP> < LC_P1_PREV_PL OR LC_P1_COUNT <= <PP>:
+         retvalu = LC_P1_ERR;
+      ELSE:
+         retvalu = <VAL>;
+      IF_END
+      RETURN retvalu;
+   ??MACRO_END
+
+   FUNC DBL pl_mass(INT plnt):
+      # The Mass (kg) of planet PLNT
+      ??PL_VAL plnt ; pl_gm(plnt) / Kw.GRAVITATION ??
+   FUNC_END
+   ??PLNT_FUNC mass ??
+
+   FUNC DBL pl_b(INT plnt):
+      # The polar radius (m) of planet PLNT
+      ??PL_VAL plnt ; (1.0 - pl_flatness(plnt)) * pl_a(plnt) ??
+   FUNC_END
+   ??PLNT_FUNC b ??
+
+   FUNC DBL pl_radius(INT plnt):
+      # The average radius (m) of planet PLNT
+      ??PL_VAL plnt ; (pl_a(plnt) + pl_b(plnt) + pl_c(plnt))
+            / 3.0 ??
+   FUNC_END
+   ??PLNT_FUNC radius ??
+
+   FUNC DBL pl_gravity(INT plnt):
+      # The mean surface gravity (m/s**2) of planet PLNT
+      #   GM / RADIUS**2
+      ??PL_VAL plnt ; pl_gm(plnt) / Kw.square(pl_radius(plnt)) ??
+   FUNC_END
+   ??PLNT_FUNC gravity ??
+
+   FUNC DBL pl_meananomaly(INT plnt):
+      # The mean anomaly of planet PLNT
+      ??PL_VAL plnt ; Kw.fmodu(
+            pl_longitude(plnt) - pl_periapsis(plnt), Kw.TAU) ??
+   FUNC_END
+   ??PLNT_FUNC meananomaly ??
+
+   FUNC DBL pl_escape(INT plnt):
+      # The mean escape velocity (m/s) of planet PLNT
+      #    SQRT(2.0 * GM / RADIUS);
+      ??PL_VAL plnt; SQRT(2.0 * pl_gm(plnt) / pl_radius(plnt)) ??
+   FUNC_END
+   ??PLNT_FUNC escape ??
+
+   FUNC DBL pl_synodic(INT plnt):
+      # the synodic period (s) of planet PLNT
+      #    PL_YEAR * EARTHYEAR / (PL_YEAR - EARTHYEAR)
+      LOCAL_USE lv_pl_earth_year;
+      DBL yra;
+      DBL retvalu;
+
+      IF plnt < LC_P1_PREV_PL OR LC_P1_COUNT <= plnt:
+         retvalu = LC_P1_ERR;
+      ELSE:
+         yra = pl_year(plnt);
+         retvalu = Kw.divi(yra * lv_pl_earth_year
+               , ABS(yra - lv_pl_earth_year), 0.0);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+   ??PLNT_FUNC synodic ??
+
+   FUNC DBL pl_volume(INT plnt):
+      # The volume (m**3) of planet PLNT
+      ??PL_VAL plnt ; 2.0 * Kw.TAU * pl_a(plnt)
+            * pl_b(plnt) * pl_c(plnt) / 3.0 ??
+   FUNC_END
+   ??PLNT_FUNC volume ??
+
+   FUNC DBL pl_density(INT plnt):
+      # The density (kg/m**3) of planet PLNT
+      ??PL_VAL plnt ; pl_mass(plnt) / pl_volume(plnt) ??
+   FUNC_END
+   ??PLNT_FUNC density ??
+
+   FUNC DBL pl_argument(INT plnt):
+      # The argument of perihelion of planet PLNT
+      ??PL_VAL plnt ; pl_periapsis(plnt) - pl_ascending(plnt) ??
+   FUNC_END
+   ??PLNT_FUNC argument ??
+
+   FUNC DBL pl_margot(INT plnt):
+      # Margot parameter for the given planet
+      DBL retvalu;
+
+      IF plnt < LC_P1_PREV_PL OR LC_P1_COUNT <= plnt:
+         retvalu = LC_P1_ERR;
+      ELSE:
+         retvalu = margot(pl_mass(plnt), pl_orbit(plnt));
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+   ??PLNT_FUNC margot ??
+
+   FUNC DBL pl_sternlevison(INT plnt):
+      # Stern-Levison parameter for the given planet
+      DBL retvalu;
+
+      IF plnt < LC_P1_PREV_PL OR LC_P1_COUNT <= plnt:
+         retvalu = LC_P1_ERR;
+      ELSE:
+         retvalu = sternlevison(pl_mass(plnt), pl_orbit(plnt));
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+   ??PLNT_FUNC sternlevison ??
+
+   FUNC DBL pl_perihelion(INT plnt):
+      # The perihelion distance (m) of planet PLNT
+      ??PL_VAL plnt ; pl_orbit(plnt)
+            * (1.0 - pl_eccentricity(plnt)) ??
+   FUNC_END
+   ??PLNT_FUNC perihelion ??
+
+   FUNC DBL pl_aphelion(INT plnt):
+      # The aphelion distance (m) of planet PLNT
+      ??PL_VAL plnt ; pl_orbit(plnt)
+            * (1.0 + pl_eccentricity(plnt)) ??
+   FUNC_END
+   ??PLNT_FUNC aphelion ??
+
+   FUNC DBL eccentric_anomaly(DBL mean_ano_rad
+         , DBL eccen):
+      # solve 0 = EA - ECCEN * sin(EA) - MEAN_ANO_RAD for EA
+      #   using the Newton-Raphson method
+      DBL mrad;
+      DBL xrad;
+      ??RAPHSON_DECLARATIONS??
+
+      mrad = Kw.fmodu(mean_ano_rad, Kw.tur2rad(1.0));
+      xrad = mrad + eccen * SIN(mrad); # init guess
+
+      ??RAPHSON_LOOP xrad
+            ; nrvx_xx - eccen * SIN(nrvx_xx) - mean_ano_rad
+            ; 1.0 - eccen * COS(nrvx_xx) ??
+      RETURN nrvx_xx;
+   FUNC_END
+
+   FUNC DBL pl_eccentricanomaly(INT plnt):
+      # the eccentric anomaly of planet PLNT
+      ??PL_VAL plnt ; eccentric_anomaly(pl_meananomaly(plnt)
+               , pl_eccentricity(plnt)) ??
+   FUNC_END
+   ??PLNT_FUNC eccentricanomaly ??
+
+   FUNC DBL pl_heliocentric(INT plnt, DBL jtwok):
+      # compute the heliocentric (and geocentric) coordinates
+      # for planet PLNT at the given J2K time.
+      # use with functions plgeo, plhelio
+      LOCAL_USE lv_pl_helio_arr[];
+      LOCAL_USE lv_pl_geo_arr[];
+      DBL orb_m;
+      DBL eccen;
+      DBL inc_rad;
+      DBL lon_rad;
+      DBL per_rad;
+      DBL asc_rad;
+      DBL arg_rad;
+      DBL mean_anomaly_rad;
+      DBL eano_rad;
+      DBL dxx_m;
+      DBL dyy_m;
+      DBL ci;
+      DBL co;
+      DBL cw;
+      DBL si;
+      DBL so;
+      DBL sw;
+      DBL swci;
+      DBL cwci;
+      DBL obl_rad;
+      DBL retvalu;
+
+      IF lf_pl_init(plnt) < 0:
+         retvalu = LC_P1_ERR;
+      ELSE:
+         CALL plsettime(jtwok);
+
+         orb_m = plorbit();
+         eccen = pleccentricity();
+         inc_rad = plinclination();
+         lon_rad = pllongitude();
+         per_rad = plperiapsis();
+         asc_rad = plascending();
+         # step 2: compute argument of perihelion, mean anomaly
+         arg_rad = per_rad - asc_rad;
+         mean_anomaly_rad = Kw.fmod(lon_rad - per_rad
+               , Kw.tur2rad(1.0));
+
+         # step 3: calculate the eccentric anomaly
+         eano_rad = eccentric_anomaly(mean_anomaly_rad, eccen);
+
+         # step 4: compute planets heliocentric coordinates
+         dxx_m = orb_m * (COS(eano_rad) - eccen);
+         dyy_m = orb_m * Kw.topyh1(eccen) * SIN(eano_rad);
+
+         # step 5: compute J2000 eliptic plane, x axis = equinox
+         cw = COS(arg_rad);
+         sw = SIN(arg_rad);
+         co = COS(asc_rad);
+         so = SIN(asc_rad);
+         ci = COS(inc_rad);
+         si = SIN(inc_rad);
+         swci = sw * ci;
+         cwci = cw * ci;
+
+         lv_pl_helio_arr[0] = (dxx_m * (cw * co - swci * so)
+                  - dyy_m * (sw * co + cwci * so));
+         lv_pl_helio_arr[1] = (dxx_m * (cw * so + swci * co)
+                  - dyy_m * (sw * so - cwci * co));
+         lv_pl_helio_arr[2] = (dxx_m * (sw * si)
+                  + dyy_m * (cw * si));
+
+         # step 6 -- convert to ICRF frame or J2000 frame
+         obl_rad = earth_obliquity(jtwok);
+         co = COS(obl_rad);
+         so = SIN(obl_rad);
+         lv_pl_geo_arr[0] = lv_pl_helio_arr[0];
+         lv_pl_geo_arr[1] = co * lv_pl_helio_arr[1]
+               - so * lv_pl_helio_arr[2];
+         lv_pl_geo_arr[2] = so * lv_pl_helio_arr[1]
+               + co * lv_pl_helio_arr[2];
+
+         retvalu = Kw.hypot3(lv_pl_helio_arr[0]
+               , lv_pl_helio_arr[1]
+               , lv_pl_helio_arr[2]);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL plhelio(INT indd):
+      # heliocentric distance, in m, computed by the
+      #    previous call to pl_heliocentric
+      LOCAL_USE lv_pl_helio_arr[];
+      DBL ret_val;
+
+      IF 0 <= indd AND indd < 3:
+         ret_val = lv_pl_helio_arr[indd];
+      ELSE:
+         ret_val = 0;
+      IF_END
+      RETURN ret_val;
+   FUNC_END
+
+   FUNC DBL plgeo(INT indd):
+      # geocentric distance, in m, computed by the
+      #    previous call to pl_heliocentric
+      LOCAL_USE lv_pl_geo_arr[];
+      DBL ret_val;
+
+      IF 0 <= indd AND indd < 3:
+         ret_val = lv_pl_geo_arr[indd];
+      ELSE:
+         ret_val = 0;
+      IF_END
+      RETURN ret_val;
+   FUNC_END
+
+   FUNC INT pl_name(INT plnt):
+      # print the name of planet PLNT
+      INT plnt_ind;
+
+      plnt_ind = lf_pl_init(plnt);
+
+      IF plnt_ind == LC_P1_SUN:
+         PRINTSTR("SUN      ");
+      ELSIF plnt_ind == LC_P1_MERCURY:
+         PRINTSTR("MERCURY  ");
+      ELSIF plnt_ind == LC_P1_VENUS:
+         PRINTSTR("VENUS    ");
+      ELSIF plnt_ind == LC_P1_EARTH:
+         PRINTSTR("EARTH    ");
+      ELSIF plnt_ind == LC_P1_MARS:
+         PRINTSTR("MARS     ");
+      ELSIF plnt_ind == LC_P1_JUPITER:
+         PRINTSTR("JUPITER  ");
+      ELSIF plnt_ind == LC_P1_SATURN:
+         PRINTSTR("SATURN   ");
+      ELSIF plnt_ind == LC_P1_URANUS:
+         PRINTSTR("URANUS   ");
+      ELSIF plnt_ind == LC_P1_NEPTUNE:
+         PRINTSTR("NEPTUNE  ");
+      ELSIF plnt_ind == LC_P1_PLUTO:
+         PRINTSTR("PLUTO    ");
+      ELSIF plnt_ind == LC_P1_CERES:
+         PRINTSTR("CERES    ");
+      ELSIF plnt_ind == LC_P1_ERIS:
+         PRINTSTR("ERIS     ");
+      ELSIF plnt_ind == LC_P1_MAKEMAKE:
+         PRINTSTR("MAKEMAKE ");
+      ELSIF plnt_ind == LC_P1_HAUMEA:
+         PRINTSTR("HAUMEA   ");
+      ELSE:
+         PRINTSTR("UNKNOWN");
+         PRINTVAL(plnt_ind);
+      IF_END
+      RETURN plnt_ind;
+   FUNC_END
+   ??PLNT_FUNC name ??
+
+   FUNC DBL earth_radius(DBL lat_deg):
+      # earth radius, in meters, at geoditic latitiude lat_deg
+      RETURN pl_aradius(LC_P1_EARTH, lat_deg);
+   FUNC_END
+BLOCK_END
+
+FUNC DBL earth_tropicalyear(DBL jtwokdate):
+   # tropical year length (in days) for given JTWOK date
+   DBL jy;
+
+   jy = jtwokdate * Kw.DAY / Kw.JYEAR;
+   RETURN ((((
+         + 2.64E-16) * jy
+         - 7.29E-14) * jy
+         - 6.15359E-8) * jy
+         + 365.2421896698);
+FUNC_END
+
+FUNC DBL earth_distance(DBL lata_deg, DBL lona_deg
+   , DBL latb_deg, DBL lonb_deg):
+   # compute the great circle distance on the earth
+   # between the two sets of latitude and longitude
+   RETURN (Kw.great_circle_distance(
+      Kw.deg2rad(lata_deg), Kw.deg2rad(lona_deg)
+      , Kw.deg2rad(latb_deg), Kw.deg2rad(lonb_deg))
+            * EARTH_A);
+FUNC_END
+
+FUNC DBL plaradius(DBL lat_deg):
+   # radius, in meters, at geoditic latitiude lat_deg
+   DBL calat;
+   DBL sblat;
+   DBL aa;
+   DBL bb;
+
+   aa = Kw.square(pla());
+   bb = Kw.square(plb());
+   calat = Kw.square(pla() * Kw.cosd(lat_deg));
+   sblat = Kw.square(plb() * Kw.sind(lat_deg));
+
+   RETURN SQRT((aa * calat + bb * sblat) / (calat + sblat));
+FUNC_END
+
+FUNC DBL pl_aradius(INT plnt, DBL lat_deg):
+   # radius, in meters, at geoditic latitiude lat_deg
+   CALL pl(plnt);
+
+   RETURN plaradius(lat_deg);
+FUNC_END
+
+FUNC DBL earth_obliquity(DBL jtwok):
+   # OBLIQUITY -- time in JD2000 days, result in radians
+   DBL obl_rad;
+
+   obl_rad = (((
+         - 1.24828E-16) * jtwok
+         - 3.56226633E-7) * jtwok
+         + 23.4392889);
+
+   RETURN Kw.deg2rad(obl_rad);
+FUNC_END
+
+FUNC DBL earth_gravity(DBL lat_deg):
+   # earth gravity, in m/s**2, at geoditic latitiude LAT_DEG
+   # using the Somigliana formula with WGS-84 parameters
+   # See https://en.wikipedia.org/wiki/Normal_gravity_formula
+   DBL slatsq;
+   DBL obltsq;
+   DBL kk;
+
+   slatsq = Kw.square(Kw.sind(lat_deg));
+
+   # the following two variables are actually constants given
+   # the earth flatness, gravitya, and gravityb
+   # oblateness is calculated as
+   #    oblateness = sqrt(flatness * (2 - flatness))
+   obltsq = EARTHFLATNESS * (2.0 - EARTHFLATNESS);
+   kk = (((1.0 - EARTHFLATNESS) * Kw.EARTHGRAVITYB)
+         - Kw.EARTHGRAVITYA);
+
+   RETURN (Kw.EARTHGRAVITYA + kk * slatsq)
+         / SQRT(1.0 - obltsq * slatsq);
+FUNC_END
+
+FUNC DBL earth_gravity_height(DBL lat_deg, DBL height_m):
+   # earth gravity, in m/s**2, at geoditic latititude LAT_DEG
+   # at an elevation of HEIGHT_M meters
+   RETURN (earth_gravity(lat_deg)
+         - height_m * 2.0 * EARTHGM / Kw.cube(EARTH_A));
+FUNC_END
+
+BLOCK:   # ISA atmosphere
+   LOCAL_CONST LC_ISA_TEMPERATURE 0;
+   LOCAL_CONST LC_ISA_PRESSURE 1;
+   LOCAL_CONST LC_ISA_DENSITY 2;
+   LOCAL_CONST LC_ISA_XHEIGHT 0;
+   LOCAL_CONST LC_ISA_XTEMPERATURE 1;
+   LOCAL_CONST LC_ISA_XLAPSERATE 2;
+   LOCAL_CONST LC_ISA_XPRESSURE 3;
+   LOCAL_CONST LC_ISA_XDENSITY 4;
+   LOCAL_DBL lv_isa_arr[7][5];
+   LOCAL_DBL lv_isa_magic = 0.0;
+
+   ??MACRO ISA_INIT <IND> ; <HEI> ; <TEMP> ;
+            <LAPSE> ; <PRES> ; <DENS> ??
+      lv_isa_arr[<IND>][LC_ISA_XHEIGHT] = <HEI>;
+      lv_isa_arr[<IND>][LC_ISA_XTEMPERATURE] = <TEMP>;
+      lv_isa_arr[<IND>][LC_ISA_XLAPSERATE] = <LAPSE>;
+      lv_isa_arr[<IND>][LC_ISA_XPRESSURE] = <PRES>;
+      lv_isa_arr[<IND>][LC_ISA_XDENSITY] = <DENS>;
+   ??MACRO_END
+
+   LOCAL_FUNC DBL lf_isa_calc(DBL height_m, INT state_x):
+      LOCAL_USE lv_isa_arr[];
+      LOCAL_USE lv_isa_magic;
+      INT h_ind;
+      DBL air_k_per_m;
+      DBL expon;
+      DBL this_temp;
+      DBL delta_h;
+      DBL ret_val;
+
+      IF NOT Kw.ismagic(lv_isa_magic):
+         # from https://en.wikipedia.org/wiki/Barometric_formula
+         ??ISA_INIT 0;     0; 288.15; -0.0065; Kw.ATM; 1.2250 ??
+         ??ISA_INIT 1; 11000; 216.65; +0.0;  22632.10; 0.36391 ??
+         ??ISA_INIT 2; 20000; 216.65; +0.001; 5474.89; 0.08803 ??
+         ??ISA_INIT 3; 32000; 228.65; +0.0028; 868.02; 0.01322 ??
+         ??ISA_INIT 4; 47000; 270.65; +0.0;    110.91; 0.00143 ??
+         ??ISA_INIT 5; 51000; 270.65; -0.0028;  66.94; 8.6E-4 ??
+         ??ISA_INIT 6; 71000; 214.65; -0.002;    3.96; 6.4E-5 ??
+         #                 m;      K;    K/m     ; Pa; kg/m**3
+         lv_isa_magic = Kw.magicset();
+      IF_END
+
+      h_ind = 6;
+      WHILE height_m < lv_isa_arr[h_ind][0] AND 0 < h_ind:
+         h_ind -= 1;
+      WHILE_END
+
+      delta_h = height_m - lv_isa_arr[h_ind][LC_ISA_XHEIGHT];
+
+      this_temp = lv_isa_arr[h_ind][LC_ISA_XTEMPERATURE]
+            + lv_isa_arr[h_ind][LC_ISA_XLAPSERATE] * delta_h;
+      IF state_x == LC_ISA_TEMPERATURE:
+         ret_val = this_temp;
+      ELSE:
+         air_k_per_m = Kw.GRAVITY * Kwelements.AIR_MASS / Kw.GAS;
+         IF Kw.iszero(lv_isa_arr[h_ind][LC_ISA_XLAPSERATE]):
+            ret_val = EXP(-air_k_per_m * delta_h
+                  / lv_isa_arr[h_ind][LC_ISA_XTEMPERATURE]);
+         ELSE:
+            expon = air_k_per_m
+                  / lv_isa_arr[h_ind][LC_ISA_XLAPSERATE];
+            IF state_x == LC_ISA_DENSITY:
+               expon += 1;
+            IF_END
+            ret_val = POW(lv_isa_arr[h_ind][LC_ISA_XTEMPERATURE]
+                        / this_temp, expon);
+         IF_END
+
+         IF state_x == LC_ISA_PRESSURE:
+            ret_val *= lv_isa_arr[h_ind][LC_ISA_XPRESSURE];
+         ELSE:
+            ret_val *= lv_isa_arr[h_ind][LC_ISA_XDENSITY];
+         IF_END
+      IF_END
+      RETURN ret_val;
+   FUNC_END
+
+   FUNC DBL isa_temp(DBL height_m):
+      # the temperature (in K) at a height HEIGHT_M
+      # of the International Standard Atmosphere
+      RETURN lf_isa_calc(height_m, LC_ISA_TEMPERATURE);
+   FUNC_END
+
+   FUNC DBL isa_pres(DBL height_m):
+      # the pressure (in pascals) at a height HEIGHT_M
+      # of the International Standard Atmosphere
+      RETURN lf_isa_calc(height_m, LC_ISA_PRESSURE);
+   FUNC_END
+
+   FUNC DBL isa_dens(DBL height_m):
+      # the density (in kg/m**3) at a height HEIGHT_M
+      # of the International Standard Atmosphere
+      RETURN lf_isa_calc(height_m, LC_ISA_DENSITY);
+   FUNC_END
+BLOCK_END   # ISA atmosphere
+
+# Thinly veiled wrappers around several ellipsoid_.* functions
+# with args in familiar degrees
+FUNC DBL vin_distance(DBL lata_deg
+      , DBL lona_deg
+      , DBL latb_deg
+      , DBL lonb_deg
+      , WRITEONLY DBL ret_bearings_arr_p[]):
+   # the distance (meters) from (LATA, LONA) to (LATB, LONB)
+   # RET_BEARINGS_ARR_P[0] = bearing from A to B (degrees)
+   # RET_BEARINGS_ARR_P[1] = bearing from B to A (degrees)
+   DBL retvalu;
+   DBL rad_arr[2];
+
+   retvalu = EARTH_A * Kw.ellipsoid_distance(EARTHFLATNESS
+         , Kw.deg2rad(lata_deg), Kw.deg2rad(lona_deg)
+         , Kw.deg2rad(latb_deg), Kw.deg2rad(lonb_deg)
+         , rad_arr[])
+               / Kw.METER;
+   ret_bearings_arr_p[0] = Kw.rad2deg(rad_arr[0]);
+   ret_bearings_arr_p[1] = Kw.rad2deg(rad_arr[1]);
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL vin_destination(DBL lata_deg
+      , DBL lona_deg
+      , DBL heading_deg
+      , DBL dist_m
+      , WRITEONLY DBL ret_dest_arr_p[]):
+   # the bearing (degree CCW from North)
+   # from (LATA, LONA) to point (LATB, LONB)
+   # RET_DEST_ARR_P[0] = Latitude of destination (degrees)
+   # RET_DEST_ARR_P[1] = Longitude of destination (degrees)
+   DBL fltnss;
+   DBL retvalu;
+   DBL rad_arr[2];
+
+   fltnss = EARTHFLATNESS;
+   retvalu = Kw.rad2deg(Kw.ellipsoid_destination(fltnss
+            , Kw.deg2rad(lata_deg), Kw.deg2rad(lona_deg)
+            , Kw.deg2rad(heading_deg)
+            , dist_m * Kw.METER / EARTH_A
+            , rad_arr[]));
+   ret_dest_arr_p[0] = Kw.rad2deg(rad_arr[0]);
+   ret_dest_arr_p[1] = Kw.rad2deg(rad_arr[1]);
+   RETURN retvalu;
+FUNC_END

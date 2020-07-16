@@ -1,0 +1,856 @@
+#    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-06-22 kdw  local-use mved before var decls
+# 2020-06-03 kdw  writeonly keyword
+# 2020-05-30 kdw  CONST syntax change
+# 2020-05-11 kdw  BL[O]CK work
+# 2020-05-06 kdw  rmed boolean vars
+# 2020-04-28 kdw  tweaks here and there
+# 2020-04-23 kdw  const format change
+# 2020-04-17 kdw  fit_poly: arg renam
+# 2020-04-16 kdw  fit_minmax: free chi array
+# 2020-04-12 kdw  comment change
+# 2020-04-10 kdw  comment change
+# 2020-04-08 kdw  proprocess sigil change
+# 2020-03-10 kdw  LO[C]AL_USE more consistent
+# 2020-03-09 kdw  LO[C]AL_.* keywords
+# 2020-03-06 kdw  RE[P]LACE / IN[D]EX changes
+# 2020-03-05 kdw  s/TRU[E]VAL/TR[U]E/;s/FALS[E]VAL/FA[L]SE/;
+# 2020-03-03 kdw  comment changed odd chars
+# 2020-03-01 kdw  rmed useless semicolons
+# 2020-02-25 kdw  function descriptions
+# 2020-02-21 kdw  spacing tweak
+# 2020-02-20 kdw  min-max var renam
+# 2020-02-03 kdw  one return / function
+# 2020-01-30 kdw  slope/intercept var name change
+# 2020-01-29 kdw  func name change s/para_/parabola_/
+# 2020-01-28 kdw  work on funcs w/ array args
+# 2020-01-27 kdw  fitt_.* renamed to fit_.* and visa versa
+# 2020-01-26 kdw  no array rets
+# 2019-12-26 kdw  module name addded to funcs
+# 2019-12-06 kdw  rmed print statments
+# 2019-11-17 kdw  modules on constants
+# 2019-10-04 kdw  comment change
+# 2019-08-24 kdw  for and count loops have from clause
+# 2019-08-18 kdw  B[O]OL to B[O]L
+# 2019-08-11 kdw  comment cleanup
+# 2019-08-06 kdw  rmed backslashes, macro arg renam
+# 2019-07-21 kdw  func descriptions
+# 2019-07-03 kdw  i[n]d vars renamd
+# 2019-05-24 kdw  local replaced private
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-01 kdw  consts explicit module name
+# 2019-03-28 kdw  x-product work
+# 2019-03-19 kdw  re[t]_val to re[t]valu
+# 2019-03-14 kdw  .*_lsz_.* to .*_ls0_.* func name change
+# 2018-12-07 kdw  comment tweak
+# 2018-10-23 kdw  spurious () rmed in if statements
+# 2018-07-23 kdw  func renam
+# 2018-07-17 kdw  private lf_.* funcs
+# 2018-05-22 kdw  comment changed
+# 2018-05-14 kdw  BLO?CK syntax change
+# 2018-04-03 kdw  rm () from return
+# 2018-03-26 kdw  macro redef
+# 2018-03-12 kdw  made PP statements not need semicolon
+# 2017-11-26 kdw  FR[O]M and B[Y] keywords
+# 2017-11-23 kdw  rm digits from var names
+# 2017-11-22 kdw  var renam
+# 2017-10-21 kdw  macros start with "at""at"
+# 2017-10-20 kdw  var renam (no triple letters)
+# 2017-10-06 kdw  comment changed; index vars
+# 2017-08-30 kdw  s/DBL_/DBL/;s/FLT_/FLT/
+# 2017-08-24 kdw  var renam
+# 2017-07-03 kdw  comment changed
+# 2017-06-29 kdw  comment changed; spacing after func line
+# 2017-06-21 kdw  comment changed
+# 2017-06-19 kdw  comment changed
+# 2017-06-15 kdw  fit_* debugging
+# 2017-06-13 kdw  fit_* debugging
+# 2017-06-08 kdw  fitt_minmax stuff
+# 2017-06-03 kdw  fitt_minmax eps[xy] stuff
+# 2017-06-02 kdw  fitt_minmax debug
+# 2017-06-01 kdw  fitt_ls*
+# 2017-04-30 kdw  func to function
+# 2017-03-12 kdw  shorten long comments
+# 2017-03-06 kdw  sigils rmed
+# 2017-02-25 kdw  var names
+# 2017-02-21 kdw  array var names
+# 2017-02-20 kdw  array var names
+# 2017-02-14 kdw  FWIP Loop syntax changed
+# 2017-02-12 kdw  FWIP language change
+# 2016-11-23 kdw  CN?ST to REA?DON?LY
+# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-20 kdw  language change
+# 2016-10-14 kdw  _pc added to var names
+# 2016-10-13 kdw  _p added to var names
+# 2016-09-15 kdw  lang change
+# 2016-09-13 kdw  lang change
+# 2016-04-27 kdw  _[_]BL?OCK* change
+# 2016-04-11 kdw  oopsy in fitt_poi?nts
+# 2015-12-28 kdw  pa?rab?ola_.* to pa?ra_.*
+# 2015-12-14 kdw  refactor f[i]t_po[i]nts wrt *para*
+# 2015-12-11 kdw  parabola_solve
+# 2015-12-02 kdw  renamed functions ; requires stuff
+# 2015-11-26 kdw  long lines
+# 2015-11-25 kdw  variables name shortened
+# 2015-11-17 kdw  F[O]R format changed
+# 2015-11-10 kdw  refactor interp[o]late_[p]oints
+# 2015-11-05 kdw  cleanup
+# 2015-11-02 kdw  spacing fixed
+# 2015-11-01 kdw  created
+
+FUNC DBL fit_poly(INT num_points
+      , READONLY DBL pts_arr_pc[]
+      , WRITEONLY DBL ret_coeff_arr_p[]):
+   # compute a polynomial of degree NUM_POINTS - 1 that passes
+   # through the points (PTS_ARR_PC[2*kk],PTS_ARR_PC[2*kk+1])
+   INT i_ind;
+   INT j_ind;
+   INT k_ind;
+   DBL prod;
+   DBL cc_arr[];
+
+   REDIM cc_arr[], num_points;
+   FOR j_ind FROM 0 TO num_points - 1:
+      # init cc_arr[] to the y-values
+      cc_arr[j_ind] = pts_arr_pc[2 * j_ind + 1];
+   FOR_END
+
+   # From Algorithm 4.3 of Conte and de Boors
+   # "Elementary Numerical Analysis", 2nd edition, pg 204
+   FOR j_ind FROM 1 TO num_points - 1:
+      k_ind = num_points - 1 - j_ind;
+      FOR i_ind FROM num_points - 1 TO j_ind BY -1:
+         cc_arr[i_ind] = ((cc_arr[i_ind - 1] - cc_arr[i_ind])
+            / (pts_arr_pc[2 * k_ind] - pts_arr_pc[2 * i_ind]));
+         k_ind -= 1;
+      FOR_END
+   FOR_END
+
+   # Jeff Stetekluhs method for combining the terms to
+   # form the coefficients of the polynomial.
+   FOR j_ind FROM 0 TO num_points - 2:
+      FOR i_ind FROM num_points - 2 TO j_ind BY -1:
+         prod = cc_arr[i_ind + 1]
+               * pts_arr_pc[2 * (i_ind - j_ind)];
+         cc_arr[i_ind] -= prod;
+      FOR_END
+   FOR_END
+
+   FOR j_ind FROM 0 TO num_points - 1:
+      ret_coeff_arr_p[j_ind] = cc_arr[j_ind];
+   FOR_END
+
+   REDIM cc_arr[];
+
+   RETURN num_points;
+FUNC_END
+
+BLOCK: # parabola info
+   LOCAL_CONST LC_PARABOLA_X_AXIS 0;
+   LOCAL_CONST LC_PARABOLA_Y_EXTREMA 1;
+   LOCAL_CONST LC_PARABOLA_REAL_ROOTS 2;
+   LOCAL_CONST LC_PARABOLA_ROOT_A 3;
+   LOCAL_CONST LC_PARABOLA_ROOT_B 4;
+   LOCAL_CONST LC_PARABOLA_COEFF_C 5;
+   LOCAL_CONST LC_PARABOLA_COEFF_B 6;
+   LOCAL_CONST LC_PARABOLA_COEFF_A 7;
+   LOCAL_DBL lv_parabola_arr[8];
+
+   FUNC DBL parabola_solve(DBL xx_a, DBL yy_a
+         , DBL xx_b, DBL yy_b
+         , DBL xx_c, DBL yy_c):
+      # return the x-axis of the vertically aligned parabola
+      #   passing through the points
+      #      (xx_a,yy_a) (xx_b,yy_b) and  (xx_c,yy_c)
+      # subsequently use parabola_get(IND) to recieve other
+      #   information about said parabola
+      LOCAL_USE lv_parabola_arr[];
+      DBL pts_arr[8];
+      DBL cc_arr[4];
+      DBL disc;
+      DBL axis;
+      DBL yyextrema;
+      INT real_roots;
+      DBL roots_arr[2];
+
+      pts_arr[0] = xx_a;
+      pts_arr[1] = yy_a;
+      pts_arr[2] = xx_b;
+      pts_arr[3] = yy_b;
+      pts_arr[4] = xx_c;
+      pts_arr[5] = yy_c;
+
+      CALL fit_poly(3, pts_arr[], cc_arr[]);
+
+      roots_arr[0] = Kw.DBLMAX;
+      roots_arr[1] = Kw.DBLMAX;
+      IF Kw.iszero(cc_arr[2]):
+         axis = Kw.DBLMAX;
+         IF Kw.iszero(cc_arr[1]):
+            yyextrema = cc_arr[0];
+            real_roots = 0;
+         ELSE:
+            yyextrema = Kw.DBLMAX;
+            real_roots = 1;
+            roots_arr[0] = (-cc_arr[0] / cc_arr[1]);
+         IF_END
+      ELSE:
+         axis = (-cc_arr[1] / (2.0 * cc_arr[2]));
+         yyextrema = (cc_arr[0]
+               + xx_a * (cc_arr[1] + xx_a * cc_arr[2]));
+         disc = (cc_arr[1] * cc_arr[1]
+               - 4.0 * cc_arr[2] * cc_arr[0]);
+         IF Kw.iszero(disc):
+            real_roots = 1;
+            roots_arr[0] = axis;
+         ELSIF 0 < disc:
+            disc = SQRT(disc) / (2.0 * cc_arr[2]);
+            real_roots = 2;
+            roots_arr[0] = axis - disc;
+            roots_arr[1] = axis + disc;
+         ELSE:
+            real_roots = 0;
+         IF_END
+      IF_END
+
+      lv_parabola_arr[LC_PARABOLA_X_AXIS] = axis;
+      lv_parabola_arr[LC_PARABOLA_Y_EXTREMA] = yyextrema;
+      lv_parabola_arr[LC_PARABOLA_REAL_ROOTS] = real_roots;
+      lv_parabola_arr[LC_PARABOLA_ROOT_A] = roots_arr[0];
+      lv_parabola_arr[LC_PARABOLA_ROOT_B] = roots_arr[1];
+      lv_parabola_arr[LC_PARABOLA_COEFF_C] = cc_arr[0];
+      lv_parabola_arr[LC_PARABOLA_COEFF_B] = cc_arr[1];
+      lv_parabola_arr[LC_PARABOLA_COEFF_A] = cc_arr[2];
+
+      RETURN axis;
+   FUNC_END
+
+   FUNC DBL parabola_get(INT ii_ind):
+      # get the results of the previous call to parabola_solve
+      #    0  x-axis
+      #    1  y extrema
+      #    2  number of real roots
+      #    3  Root 1 (if 0 < parabola_get(2))
+      #    4  Root 2 (if 1 < parabola_get(2))
+      #    5  Coeff C
+      #    6  Coeff B
+      #    7  Coeff A
+      LOCAL_USE lv_parabola_arr[];
+      DBL retvalu;
+
+      IF 0 <= ii_ind AND ii_ind <= 7:
+         retvalu = lv_parabola_arr[ii_ind];
+      ELSE:
+         retvalu = 0;
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL parabola_roots(INT ii_ind):
+      # retun the II_INDth root of the parabola computed
+      # by a previous call to parabola_solve
+      DBL retvalu;
+      IF 0 <= ii_ind AND ii_ind <= 1:
+         retvalu = parabola_get(ii_ind + LC_PARABOLA_ROOT_A);
+      ELSE:
+         retvalu = Kw.DBLMAX;
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC DBL parabola_yextrema(NUL):
+      # retun the Y extrema of the parabola computed
+      # by a previous call to parabola_solve
+      RETURN parabola_get(LC_PARABOLA_Y_EXTREMA);
+   FUNC_END
+
+   FUNC DBL parabola_xaxis(NUL):
+      # retun the x-axis of the parabola computed
+      # by a previous call to parabola_solve
+      RETURN parabola_get(LC_PARABOLA_X_AXIS);
+   FUNC_END
+
+   FUNC DBL parabola_realroots(NUL):
+      # retun the number of real roots of the parabola computed
+      # by a previous call to parabola_solve
+      RETURN parabola_get(LC_PARABOLA_REAL_ROOTS);
+   FUNC_END
+
+BLOCK_END # parabola info
+
+BLOCK: # circle info
+   LOCAL_CONST LC_CIRCLE_X 0;
+   LOCAL_CONST LC_CIRCLE_Y 1;
+   LOCAL_CONST LC_CIRCLE_RADIUS 2;
+   LOCAL_DBL lv_circle_arr[3];
+
+   FUNC DBL circle_solve(DBL aa_x, DBL aa_y
+         , DBL bb_x, DBL bb_y
+         , DBL cc_x, DBL cc_y):
+      # return the radius of the circle going through the points
+      # (aa_x,aa_y) (bb_x,bb_y) (cc_x,cc_y)
+      # subsequently use with
+      #   circle_get(0) to get the x-coordinate of the center and
+      #   circle_get(1) to get the y-coordinate of the center
+      LOCAL_USE lv_circle_arr[];
+      DBL ca_a;
+      DBL cb_a;
+      DBL ca_b;
+      DBL cb_b;
+      DBL det;
+      DBL cc_a;
+      DBL cc_b;
+      DBL center_x;
+      DBL center_y;
+      DBL radius;
+
+      ca_a = bb_y - aa_y;
+      cb_a = bb_x - aa_x;
+      ca_b = cc_y - aa_y;
+      cb_b = cc_x - aa_x;
+
+      det = 2.0 * (ca_a * cb_b - ca_b * cb_a);
+      IF NOT Kw.iszero(det):
+         cc_a = -ca_a * (aa_y + bb_y) - cb_a * (aa_x + bb_x);
+         cc_b = -ca_b * (aa_y + cc_y) - cb_b * (aa_x + cc_x);
+
+         center_x = (ca_b * cc_a - ca_a * cc_b) / det;
+         center_y = (cb_a * cc_b - cb_b * cc_a) / det;
+         radius = Kw.hypot(center_x - aa_x, center_y - aa_y);
+      ELSE:
+         center_x = Kw.DBLMAX;
+         center_y = Kw.DBLMAX;
+         radius = Kw.DBLMAX;
+      IF_END
+      lv_circle_arr[LC_CIRCLE_X] = center_x;
+      lv_circle_arr[LC_CIRCLE_Y] = center_y;
+      lv_circle_arr[LC_CIRCLE_RADIUS] = radius;
+      RETURN radius;
+   FUNC_END
+   FUNC DBL circle_get(INT ii_ind):
+      # get the results of the previous call to circle_solve
+      #    0  x-center
+      #    1  y-canter
+      #    2  radius
+      LOCAL_USE lv_circle_arr[];
+      DBL retvalu;
+
+      IF 0 <= ii_ind AND ii_ind <= 2:
+         retvalu = lv_circle_arr[ii_ind];
+      ELSE:
+         retvalu = 0;
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END # circle info
+
+FUNC DBL fit_minmax(INT num_points
+      , READONLY DBL pt_arr_pc[]
+      , WRITEONLY DBL ret_coeff_arr_p[]):
+   # USES AN O(N**3) ALGORITHM; The N*log(N) algorithm via
+   #   a Graham scan is numerically unstable for nearly
+   #   linear data
+   # Given
+   #   NUM_POINTS = number of points
+   #   points (PT_ARR_PC[2*kk],PT_ARR_PC[2*kk+1])
+   # Compute a minmax-line to thePT_ARR_PC[] data
+   #   With the properties (** assuming generic data **)
+   #      1) The maximum linear deviation, M_y, from the
+   #         minmax-line to the data points is minimized
+   #         among ALL lines in the X-Y plane;
+   #      2) There exists three data points whose distance
+   #         to the minmax-line is equal to M_y; and
+   #      3) The minmax-line has the largest slope amongst
+   #         all lines satisfying properties 1 and 2.
+   # returns the max deviation from the found line
+   #    RET_COEFF_ARR_P[0] = y-intercept
+   #    RET_COEFF_ARR_P[1] = slope
+   #    RET_COEFF_ARR_P[2] = max-deviation
+   DBL xxp_arr[];
+   DBL yyp_arr[];
+   INT i_ind;
+   INT j_ind;
+   INT k_ind;
+   DBL this_spread;
+   DBL nx_spr;
+   DBL nx_a;
+   DBL nx_b;
+   DBL dxx;
+   DBL dyy;
+   DBL pty;
+   DBL epsxx;
+   DBL epsyy;
+   DBL slope_t;
+   DBL intercept_t;
+   DBL max_dyy;
+   DBL min_dyy;
+
+   REDIM xxp_arr[], num_points;
+   REDIM yyp_arr[], num_points;
+   epsxx = 0.0;
+   epsyy = 0.0;
+   FOR j_ind FROM 0 TO num_points - 1:
+      xxp_arr[j_ind] = pt_arr_pc[2 * j_ind];
+      yyp_arr[j_ind] = pt_arr_pc[2 * j_ind + 1];
+      IF epsxx < ABS(xxp_arr[j_ind]):
+         epsxx = ABS(xxp_arr[j_ind]);
+      IF_END
+      IF epsyy < ABS(yyp_arr[j_ind]):
+         epsyy = ABS(yyp_arr[j_ind]);
+      IF_END
+   FOR_END
+   nx_spr = -1;
+   nx_a = 0;
+   nx_b = 0;
+   epsxx *= 16 * Kw.DBLEPS;
+   epsyy *= 16 * Kw.DBLEPS;
+
+   FOR i_ind FROM 1 TO num_points - 1:
+      FOR j_ind FROM 0 TO i_ind - 1:
+         dxx = xxp_arr[i_ind] - xxp_arr[j_ind];
+         IF epsxx < ABS(dxx):
+            slope_t = (yyp_arr[i_ind] - yyp_arr[j_ind]) / dxx;
+            intercept_t = yyp_arr[i_ind]
+                  - slope_t * xxp_arr[i_ind];
+            # Y = slope_t * X + intercept_t is the line
+            #    through PT(i_ind) and PT(j_ind)
+            pty = slope_t * xxp_arr[0] + intercept_t;
+            dyy = yyp_arr[0] - pty;
+            min_dyy = dyy;
+            max_dyy = dyy;
+            k_ind = 1;
+            WHILE k_ind < num_points:
+               pty = slope_t * xxp_arr[k_ind] + intercept_t;
+               dyy = yyp_arr[k_ind] - pty;
+               IF dyy < min_dyy:
+                  min_dyy = dyy;
+               IF_END
+               IF max_dyy < dyy:
+                  max_dyy = dyy;
+               IF_END
+
+               this_spread = max_dyy - min_dyy;
+
+               IF (0 < nx_spr AND nx_spr + epsyy < this_spread)
+                     OR (min_dyy < -epsyy AND epsyy < max_dyy):
+                  WHILE_EXIT;
+               IF_END
+               k_ind += 1;
+            WHILE_END
+
+            IF num_points <= k_ind:
+               IF nx_spr < 0
+                     OR this_spread < nx_spr - epsyy
+                     OR (this_spread <= nx_spr + epsyy
+                           AND ABS(nx_a) < ABS(slope_t)):
+                  nx_a = slope_t;
+                  nx_b = intercept_t + (min_dyy + max_dyy) / 2.0;
+                  nx_spr = this_spread;
+               IF_END
+            IF_END
+
+         IF_END
+      FOR_END
+   FOR_END
+
+   REDIM xxp_arr[];
+   REDIM yyp_arr[];
+
+   ret_coeff_arr_p[1] = nx_a;
+   ret_coeff_arr_p[0] = nx_b;
+   ret_coeff_arr_p[2] = nx_spr / 2.0;
+
+   RETURN nx_spr / 2.0;
+FUNC_END
+
+BLOCK:
+   LOCAL_FUNC DBL lf_signcrossproduct(DBL aa_x, DBL aa_y
+         , DBL bb_x, DBL bb_y
+         , DBL cc_x, DBL cc_y):
+      # the z-component of the cross product of the vectors
+      #   (bb_x - aa_x, bb_y - aa_y, 0), and
+      #   (cc_x - aa_x, cc_y - aa_y, 0)
+      DBL cr;
+      DBL bbaa_x;
+      DBL bbaa_y;
+      DBL ccaa_x;
+      DBL ccaa_y;
+
+      bbaa_x = bb_x - aa_x;
+      bbaa_y = bb_y - aa_y;
+      ccaa_x = cc_x - aa_x;
+      ccaa_y = cc_y - aa_y;
+
+      cr = bbaa_x * ccaa_y - ccaa_x * bbaa_y;
+
+      RETURN cr;
+   FUNC_END
+
+   FUNC DBL fitx_minmax(INT num_points
+         , READONLY DBL pt_arr_pc[]
+         , WRITEONLY DBL ret_arr_p[]):
+      # USES a O(NUM_POINTS*CONVEXHULLSIZE) algorithnm
+      # Given
+      #   num_points = size of the XXP_ARR and YYP_ARR arrays
+      #   PT_ARR_PC = an array of x and y values (0-based)
+      # Compute a minmax-line to the XX and YY data
+      #   With the properties (** assuming generic data **)
+      #      1) The maximum linear deviation, M_y, from the
+      #         minmax-line to the data points is minimized
+      #         among ALL lines in the X-Y plane;
+      #      2) There exists three data points whose distance
+      #         to the minmax-line is equal to M_y; and
+      #      3) The minmax-line has the largest slope amongst
+      #         all lines satisfying properties 1 and 2.
+      # returns the max deviation from the found line
+      #    RET_ARR_P[0] = y-intercept
+      #    RET_ARR_P[1] = slope
+      #    RET_ARR_P[2] = max-deviation
+      # Pseudo-code for Jarvis march
+      # INPUT   S_arr[] array of 2-D points
+      # OUTPUT  P_arr[] array of 2-D points
+      #      that is the convex hull of S_arr[]
+      # jarvis(S_arr[])
+      #    # pntH is always a point on the convex hull of S_arr[]
+      #    pntH = LeftmostBottommostPointIn(S_arr[])
+      #    P_ind = 0
+      #    REPEAT
+      #       P_arr[P_ind] = pntH
+      #       pntX = S_arr[0]
+      #       FOR S_ind FROM 1 TO LEN(S_arr[])
+      #          IF (pntX == pntH) OR
+      #             (pntX IS CCW_of(S_arr[S_ind],P_arr[P_ind]):
+      #             pntX = S_arr[S_ind]
+      #       P_ind++;
+      #       pntH = pntX
+      #    UNTIL pntX == P_arr[0]
+      #    RETURN P_arr[] # the convex hull of S_arr
+      DBL xxp_arr[];
+      DBL yyp_arr[];
+      INT chi_arr[];
+      INT chisize;
+      INT hh;
+      INT i_ind;
+      INT j_ind;
+      INT k_ind;
+      DBL this_spread;
+      DBL nx_spr;
+      DBL nx_a;
+      DBL nx_b;
+      DBL dxx;
+      DBL pty;
+      DBL dyy;
+      DBL epsxx;
+      DBL epsyy;
+      DBL slope_t;
+      DBL intercept_t;
+      DBL max_dyy;
+      DBL min_dyy;
+      INT e_ind;
+      INT t_ind;
+      INT poh_ind;
+      DBL crx;
+      INT lmbm_ind;  # leftmost, bottommost point index
+
+      REDIM xxp_arr[], num_points;
+      REDIM yyp_arr[], num_points;
+      REDIM chi_arr[], num_points;
+      epsxx = 0.0;
+      epsyy = 0.0;
+      lmbm_ind = 0;
+      FOR j_ind FROM 0 TO num_points - 1:
+         xxp_arr[j_ind] = pt_arr_pc[2 * j_ind];
+         yyp_arr[j_ind] = pt_arr_pc[2 * j_ind + 1];
+         IF epsxx < ABS(xxp_arr[j_ind]):
+            epsxx = ABS(xxp_arr[j_ind]);
+         IF_END
+         IF epsyy < ABS(yyp_arr[j_ind]):
+            epsyy = ABS(yyp_arr[j_ind]);
+         IF_END
+         IF xxp_arr[j_ind] <= xxp_arr[lmbm_ind]:
+            IF xxp_arr[j_ind] < xxp_arr[lmbm_ind]
+                  OR yyp_arr[j_ind] <= yyp_arr[lmbm_ind]:
+               lmbm_ind = j_ind;
+            IF_END
+         IF_END
+      FOR_END
+      nx_spr = -1;
+      nx_a = 0;
+      nx_b = 0;
+      epsxx *= 16 * Kw.DBLEPS;
+      epsyy *= 16 * Kw.DBLEPS;
+
+      poh_ind = lmbm_ind;
+      chisize = 0;
+      AWAIT e_ind == chi_arr[0]:
+         chi_arr[chisize] = poh_ind;
+         e_ind = 0;
+         FOR j_ind FROM 0 TO num_points - 1:
+            IF e_ind == poh_ind:
+               e_ind = j_ind;
+            ELSE:
+               t_ind = chi_arr[chisize];
+               crx = lf_signcrossproduct(
+                     xxp_arr[j_ind], yyp_arr[j_ind]
+                     , xxp_arr[t_ind], yyp_arr[t_ind]
+                     , xxp_arr[e_ind], yyp_arr[e_ind]);
+               IF crx < 0:
+                  e_ind = j_ind;
+               IF_END
+            IF_END
+         FOR_END
+         chisize += 1;
+         IF num_points < chisize:
+            DIE "OOPS";
+         IF_END
+         poh_ind = e_ind;
+      AWAIT_END
+      chi_arr[chisize] = chi_arr[0];
+      chisize += 1;
+
+      FOR hh FROM 0 TO chisize - 2:
+         i_ind = chi_arr[hh];
+         j_ind = chi_arr[hh + 1];
+         dxx = xxp_arr[i_ind] - xxp_arr[j_ind];
+         IF epsxx < ABS(dxx):
+            slope_t = (yyp_arr[i_ind] - yyp_arr[j_ind]) / dxx;
+            intercept_t = yyp_arr[i_ind]
+                  - slope_t * xxp_arr[i_ind];
+            # Y=slope_t*X+intercept_t is the line through points
+            #    (xx[i_ind],yy[i_ind]) and (xx[j_ind],yy[j_ind])
+            dyy = yyp_arr[0]
+                  - (slope_t * xxp_arr[0] + intercept_t);
+            min_dyy = dyy;
+            max_dyy = dyy;
+            this_spread = 0;
+            k_ind = 1;
+            WHILE k_ind < num_points:
+               pty = (slope_t * xxp_arr[k_ind] + intercept_t);
+               dyy = yyp_arr[k_ind] - pty;
+               IF dyy < min_dyy:
+                  min_dyy = dyy;
+               IF_END
+               IF max_dyy < dyy:
+                  max_dyy = dyy;
+               IF_END
+
+               this_spread = max_dyy - min_dyy;
+
+               IF (0 < nx_spr AND nx_spr + epsyy < this_spread)
+                     OR (min_dyy < -epsyy AND epsyy < max_dyy):
+                  WHILE_EXIT;
+               IF_END
+               k_ind += 1;
+            WHILE_END
+
+            IF num_points <= k_ind:
+               IF nx_spr < 0
+                     OR this_spread < nx_spr - epsyy
+                     OR (this_spread <= nx_spr + epsyy
+                        AND ABS(nx_a) < ABS(slope_t)):
+                  nx_a = slope_t;
+                  nx_b = intercept_t + (min_dyy + max_dyy) / 2.0;
+                  nx_spr = this_spread;
+               IF_END
+            IF_END
+
+         IF_END
+      FOR_END
+
+      REDIM xxp_arr[];
+      REDIM yyp_arr[];
+      REDIM chi_arr[];
+
+      ret_arr_p[0] = nx_b;
+      ret_arr_p[1] = nx_a;
+      ret_arr_p[2] = nx_spr / 2.0;
+
+      RETURN ret_arr_p[2];
+   FUNC_END
+BLOCK_END
+
+FUNC DBL fit_minmax0(INT num_points
+      , READONLY DBL pts_arr_pc[]
+      , WRITEONLY DBL ret_arr_p[]):
+   # find the minmax line through the given data
+   # that passes through the point
+   #      (PTS_ARR_PC[0],PTS_ARR_PC[1])
+   # returns the max deviation from the found line
+   #    RET_ARR_P[0] = y-intercept
+   #    RET_ARR_P[1] = slope
+   #    RET_ARR_P[2] = max-deviation
+   DBL xxp_arr[];
+   DBL yyp_arr[];
+   INT i_ind;
+   INT j_ind;
+   INT k_ind;
+   DBL this_spread;
+   DBL minmaxz_spread;
+   DBL minmaxz_slope;
+   DBL minmaxz_intercept;
+   DBL dxx;
+   DBL dyy;
+   DBL pty;
+   DBL epsxx;
+   DBL epsyy;
+   DBL slope_t;
+   DBL intercept_t;
+   DBL midxx;
+   DBL midyy;
+   DBL max_dyy;
+   DBL min_dyy;
+
+   REDIM xxp_arr[], num_points;
+   REDIM yyp_arr[], num_points;
+   epsxx = 0.0;
+   epsyy = 0.0;
+   FOR j_ind FROM 0 TO num_points - 1:
+      xxp_arr[j_ind] = pts_arr_pc[2 * j_ind];
+      yyp_arr[j_ind] = pts_arr_pc[2 * j_ind + 1];
+      IF epsxx < ABS(xxp_arr[j_ind]):
+         epsxx = ABS(xxp_arr[j_ind]);
+      IF_END
+      IF epsyy < ABS(yyp_arr[j_ind]):
+         epsyy = ABS(yyp_arr[j_ind]);
+      IF_END
+   FOR_END
+   minmaxz_spread = -1;
+   minmaxz_slope = 0;
+   minmaxz_intercept = yyp_arr[0];
+   epsxx *= 8 * Kw.DBLEPS;
+   epsyy *= 8 * Kw.DBLEPS;
+   FOR i_ind FROM 2 TO num_points - 1:
+      FOR j_ind FROM 2 TO i_ind - 1:
+         midxx = (xxp_arr[i_ind] + xxp_arr[j_ind])/ 2.0;
+         midyy = (yyp_arr[i_ind] + yyp_arr[j_ind])/ 2.0;
+         # (midxx,midyy) is the mid-points between
+         #   (xxp_arr[i_ind],yyp_arr[i_ind]) and
+         #   (xxp_arr[j_ind],yyp_arr[j_ind])
+         dxx = xxp_arr[0] - midxx;
+         IF epsxx < ABS(dxx):
+            slope_t = (yyp_arr[0] - midyy) / dxx;
+            intercept_t = yyp_arr[0] - slope_t * xxp_arr[0];
+            # Now the line Y=slope_t*X+intercept_t is the line
+            # through (xx[0],yy[0]) and (midxx,midyy)
+            min_dyy = 0;
+            max_dyy = 0;
+            FOR k_ind FROM 0 TO num_points - 1:
+               pty = slope_t * xxp_arr[k_ind] + intercept_t;
+               dyy = yyp_arr[k_ind] - pty;
+               IF dyy < min_dyy:
+                  min_dyy = dyy;
+               IF_END
+               IF max_dyy < dyy:
+                  max_dyy = dyy;
+               IF_END
+               this_spread = max_dyy - min_dyy;
+               IF 0 < minmaxz_spread
+                     AND minmaxz_spread + epsyy < this_spread:
+                  FOR_EXIT;
+               IF_END
+            FOR_END
+
+            IF minmaxz_spread < 0
+                  OR this_spread < minmaxz_spread - epsyy:
+               minmaxz_slope = slope_t;
+               minmaxz_intercept = intercept_t;
+               minmaxz_spread = this_spread;
+            IF_END
+         IF_END
+      FOR_END
+   FOR_END
+
+   IF 0 <= minmaxz_spread:
+      ret_arr_p[1] = minmaxz_slope;
+      ret_arr_p[0] = minmaxz_intercept;
+      ret_arr_p[2] = minmaxz_spread / 2.0;
+   IF_END
+   REDIM xxp_arr[];
+   REDIM yyp_arr[];
+
+   RETURN minmaxz_spread / 2.0;
+FUNC_END
+
+FUNC DBL fit_ls(INT num_points
+      , READONLY DBL pts_arr_pc[]
+      , WRITEONLY DBL ret_arr_p[]):
+   # Find the least square fit LINE to the NUM_POINTS
+   # in the array PTS_ARR_PC[]
+   #    RET_ARR_P[0] = y-intercept
+   #    RET_ARR_P[1] = slope
+   #    RET_ARR_P[2] = correlation
+   #    RET_ARR_P[3] = stderr
+   INT i_ind;
+   DBL dxx;
+   DBL dyy;
+   DBL xx;
+   DBL yy;
+   DBL slope;
+   DBL mean_yy;
+   DBL ssq_yy;
+   DBL mean_xx;
+   DBL ssq_xx;
+   DBL covariance_xy;
+
+   mean_xx = 0.0;
+   ssq_xx = 0.0;
+   mean_yy = 0.0;
+   ssq_yy = 0.0;
+   covariance_xy = 0.0;
+   FOR i_ind FROM 0 TO num_points - 1:
+      xx = pts_arr_pc[2 * i_ind];
+      dxx = xx - mean_xx;
+      mean_xx += dxx / (i_ind + 1);
+      ssq_xx += dxx * (xx - mean_xx);
+
+      yy = pts_arr_pc[2 * i_ind + 1];
+      dyy = yy - mean_yy;
+      mean_yy += dyy / (i_ind + 1);
+      ssq_yy += dyy * (yy - mean_yy);
+
+      covariance_xy += dxx * dyy * i_ind / (i_ind + 1.0);
+   FOR_END
+
+   slope = covariance_xy / ssq_xx;
+   ret_arr_p[1] = slope;
+   ret_arr_p[0] = mean_yy - slope * mean_xx;
+   ret_arr_p[2] = covariance_xy / SQRT(ssq_xx * ssq_yy);
+   ret_arr_p[3] = SQRT((ssq_yy - slope * covariance_xy)
+               / (num_points - 2));
+
+   RETURN ret_arr_p[2];
+FUNC_END
+
+FUNC DBL fit_ls0(INT num_points
+         , READONLY DBL pts_arr_pc[]
+         , WRITEONLY DBL ret_lsz_arr_p[]):
+   # Given
+   #   NUM_POINTS = points in PTS_ARR_PC array
+   #   PTS_ARR_PC = array of x,y values (0-based)
+   # Compute the least squares fit line to the
+   #    XX and YY data
+   #    y = ret_SLOPE * x + ret_INTERCEPT
+   #    that passes through the first data point
+   #    RET_ARR_P[0]  y-intercept of LS0 line
+   #    RET_ARR_P[1]  slope       of LS0 line
+   # returns the slope of said line
+   DBL xxsum;
+   DBL xysum;
+   DBL dxx;
+   DBL slope;
+   INT j_ind;
+   INT i_ind;
+
+   xxsum = 0.0;
+   xysum = 0.0;
+   FOR i_ind FROM 1 TO num_points - 1:
+      j_ind = 2 * i_ind;
+      dxx = (pts_arr_pc[j_ind] - pts_arr_pc[0]);
+      xxsum += dxx * dxx;
+      xysum += dxx * (pts_arr_pc[j_ind + 1] - pts_arr_pc[1]);
+   FOR_END
+   slope = xysum / xxsum;
+   ret_lsz_arr_p[1] = slope;
+   ret_lsz_arr_p[0] = (pts_arr_pc[1] - slope * pts_arr_pc[0]);
+   RETURN slope;
+FUNC_END
