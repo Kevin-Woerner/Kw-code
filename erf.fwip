@@ -493,7 +493,7 @@ FUNC DBL erf__4(DBL xx):
       factz = (2.0 * xx / SQRT(Kw.PI));
       factx = factz;
       sum_curr = 0.0;
-      # adjacent terms are combined to avoid cancellation
+      # adjacent terms combined to avoid cancellation
       AWAIT Kw.iseq(sum_prev, sum_curr) COUNT nn FROM 3 BY 2:
          twonnpone = 2 * nn + 1;
          factx *= xxsq * xxsq / ((nn - 1) * nn);
@@ -507,7 +507,7 @@ FUNC DBL erf__4(DBL xx):
       # this uses an asymptotic series for erf(x)
       factx = - EXP(-xxsq) / (xx * SQRT(Kw.PI));
       sum_curr = 0.0;
-      # adjacent terms are combined to avoid cancellation
+      # adjacent terms combined to avoid cancellation
       kk = Kw.round(xxsq);
       FOR nn FROM 1 TO kk - 5 BY 2:
          factx *= nn * (nn + 1) / (twoxxsq * twoxxsq);
