@@ -1,7 +1,9 @@
 #    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-22 kdw  local-use mved before var decls
 # 2020-05-11 kdw  local-decl syntx change
-# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-26 kdw  BL[O]CK indentation work
 # 2020-04-12 kdw  comment change
 # 2020-03-09 kdw  LO[C]AL_.* keywords
 # 2020-03-05 kdw  minor tweak
@@ -13,14 +15,14 @@
 # 2019-08-24 kdw  for and count loops have from clause
 # 2019-08-18 kdw  B[O]OL to B[O]L
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2018-12-17 kdw  created
 
 BLOCK:  # search
-   LOCAL_INT lv_search_target = 0;
+   BLOCK_DEF INT lv_search_target = 0;
 
    FUNC INT search_check(INT gg):
-      LOCAL_USE lv_search_target;
+      BLOCK_USE lv_search_target;
       INT retvalu;
 
       IF gg < lv_search_target:
@@ -34,7 +36,7 @@ BLOCK:  # search
    FUNC_END
 
    FUNC INT search_search(INT gg):
-      LOCAL_USE lv_search_target;
+      BLOCK_USE lv_search_target;
       INT curr;
       INT delta;
       INT result;

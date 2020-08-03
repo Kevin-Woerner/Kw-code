@@ -1,4 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-02 kdw  var renam g?d
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  s/LO[C]AL_/BL[O]CK_/
 # 2020-07-12 kdw  sqrttwo const
 # 2020-06-22 kdw  local-use mved before var decls
 # 2020-06-19 kdw  comments added
@@ -156,13 +159,13 @@
 # 2015-09-20 kdw  created
 
 BLOCK: # factorial
-   LOCAL_DBL lv_factorial_arr[0];
-   LOCAL_INT lv_factorial_end = 0;
+   BLOCK_DEF DBL lv_factorial_arr[0];
+   BLOCK_DEF INT lv_factorial_end = 0;
    FUNC DBL factorial(INT nn):
       # factorial(NN) = 1*2*3*...*NN
       # EGF(factorial();x) = 1 / (1 - x)
-      LOCAL_USE lv_factorial_end;
-      LOCAL_USE lv_factorial_arr[];
+      BLOCK_USE lv_factorial_end;
+      BLOCK_USE lv_factorial_arr[];
       INT mm;
       DBL retvalu;
 
@@ -195,16 +198,16 @@ BLOCK_END
 #TEST:factorial(7)-5040;
 
 BLOCK: # factorialdouble
-   LOCAL_DBL lv_factorial_b_arr[0];
-   LOCAL_INT lv_factorial_b_end = 0;
+   BLOCK_DEF DBL lv_factorial_b_arr[0];
+   BLOCK_DEF INT lv_factorial_b_end = 0;
    FUNC DBL factorialdouble(INT nn):
       # The double factorial
       # If NN = 2*kk then
       #    2**kk * factorial(kk) = 2*4*6*8...*NN
       # if NN = 2*kk-1 then
       #    factorial(2*kk) / (2**kk * factorial(kk)) = 1*3*...*NN
-      LOCAL_USE lv_factorial_b_end;
-      LOCAL_USE lv_factorial_b_arr[];
+      BLOCK_USE lv_factorial_b_end;
+      BLOCK_USE lv_factorial_b_arr[];
       DBL retvalu;
       INT mm;
 
@@ -296,8 +299,8 @@ FUNC DBL permutation(INT n_things, INT r_each):
 FUNC_END
 
 BLOCK: # Catalan numbers
-   LOCAL_DBL lv_catalan_arr[0];
-   LOCAL_INT lv_catalan_end = 0;
+   BLOCK_DEF DBL lv_catalan_arr[0];
+   BLOCK_DEF INT lv_catalan_end = 0;
    FUNC DBL catalan(INT nn):
       # factorial(2 * NN) / (factorial(NN + 1) * factorial(NN))
       #   *) # of properly nested NN pairs of parenthesises
@@ -306,8 +309,8 @@ BLOCK: # Catalan numbers
       #   *) # of ways to tile a stairsep shape of height NN
       #            with NN rectangles
       # OGF(catalan();x) = (1 - SQRT(1 - 4 * x)) / (2 * x)
-      LOCAL_USE lv_catalan_end;
-      LOCAL_USE lv_catalan_arr[];
+      BLOCK_USE lv_catalan_end;
+      BLOCK_USE lv_catalan_arr[];
       INT kk;
       DBL retvalu;
 
@@ -336,8 +339,8 @@ BLOCK: # Catalan numbers
 BLOCK_END
 
 BLOCK: # Supercatalan numbers
-   LOCAL_DBL lv_supercatalan_arr[0];
-   LOCAL_INT lv_supercatalan_end = 0;
+   BLOCK_DEF DBL lv_supercatalan_arr[0];
+   BLOCK_DEF INT lv_supercatalan_end = 0;
    FUNC DBL supercatalan(INT nn):
       # factorial(2 * NN) / (factorial(NN + 1) * factorial(NN))
       #   *) # of lattice paths with diagonal steps from
@@ -351,8 +354,8 @@ BLOCK: # Supercatalan numbers
       #        ((ab)c)d (a(bc))d a((bc)d) a(b(cd))
       #        (ab)(cd)
       #        Hence supercatalan(4) = 11
-      LOCAL_USE lv_supercatalan_end;
-      LOCAL_USE lv_supercatalan_arr[];
+      BLOCK_USE lv_supercatalan_end;
+      BLOCK_USE lv_supercatalan_arr[];
       INT kk;
       DBL retvalu;
 
@@ -386,18 +389,18 @@ BLOCK_END
 #TEST:supercatalan(10)-103049
 
 BLOCK: # Bell numbers
-   LOCAL_DBL lv_bell_arr[0];
-   LOCAL_DBL lv_bell_x_arr[0];
-   LOCAL_INT lv_bell_end = 0;
+   BLOCK_DEF DBL lv_bell_arr[0];
+   BLOCK_DEF DBL lv_bell_x_arr[0];
+   BLOCK_DEF INT lv_bell_end = 0;
    FUNC DBL bell(INT nn):
       # bell(NN) equals the number of
       #   1) possible rhyming schemes for NN lines.
       #   2) partitions of a set of NN elements
       #   3) ways NN distinct balls can be placed in NN boxes
       # EGF(bell();x) = EXP(EXP(x) - 1)
-      LOCAL_USE lv_bell_end;
-      LOCAL_USE lv_bell_arr[];
-      LOCAL_USE lv_bell_x_arr[];
+      BLOCK_USE lv_bell_end;
+      BLOCK_USE lv_bell_arr[];
+      BLOCK_USE lv_bell_x_arr[];
       INT jj;
       INT kk;
       DBL retvalu;
@@ -813,15 +816,15 @@ FUNC DBL binomialx(DBL xnn, DBL xkk):
 FUNC_END
 
 BLOCK: # binomial numbers
-   LOCAL_DBL lv_binom_arr[0];
-   LOCAL_INT lv_binom_end = 0;
-   LOCAL_INT lv_binom_max = 0;
+   BLOCK_DEF DBL lv_binom_arr[0];
+   BLOCK_DEF INT lv_binom_end = 0;
+   BLOCK_DEF INT lv_binom_max = 0;
    FUNC INT binomial(INT nn, INT kk):
       # factorial(NN) / (factorial(KK) * factorial(NN - KK))
       #   == Binomial(NN - 1, KK - 1) + Binomial(NN - 1, KK)
-      LOCAL_USE lv_binom_arr[];
-      LOCAL_USE lv_binom_end;
-      LOCAL_USE lv_binom_max;
+      BLOCK_USE lv_binom_arr[];
+      BLOCK_USE lv_binom_end;
+      BLOCK_USE lv_binom_max;
       INT rz_ind;
       INT lz_ind;
       INT rr;
@@ -872,9 +875,9 @@ BLOCK_END # binomial numbers
 #TEST:binomial(10,4)-210;
 
 BLOCK: # eulerian numbers
-   LOCAL_DBL lv_euler_arr[0];
-   LOCAL_INT lv_euler_end = 0;
-   LOCAL_INT lv_euler_max = 0;
+   BLOCK_DEF DBL lv_euler_arr[0];
+   BLOCK_DEF INT lv_euler_end = 0;
+   BLOCK_DEF INT lv_euler_max = 0;
    FUNC DBL eulerian(INT nn, INT mm):
       # EULERIAN(NN, MM) == # of permutations of 0,1,2,...NN-1
       #       with exactly MM elements < next element
@@ -892,9 +895,9 @@ BLOCK: # eulerian numbers
       #    duu 1023,2013,3012
       # eulerian(4,3) == 1
       #    uuu 0123
-      LOCAL_USE lv_euler_arr[];
-      LOCAL_USE lv_euler_end;
-      LOCAL_USE lv_euler_max;
+      BLOCK_USE lv_euler_arr[];
+      BLOCK_USE lv_euler_end;
+      BLOCK_USE lv_euler_max;
       INT cr;
       INT rr;
       INT lz_ind;
@@ -953,9 +956,9 @@ BLOCK_END # eulerian numbers
 #TEST:eulerian(9,5)-88234;
 
 BLOCK: # Entringer numbers
-   LOCAL_DBL lv_entringer_arr[0];
-   LOCAL_INT lv_entringer_end = 0;
-   LOCAL_INT lv_entringer_max = 0;
+   BLOCK_DEF DBL lv_entringer_arr[0];
+   BLOCK_DEF INT lv_entringer_end = 0;
+   BLOCK_DEF INT lv_entringer_max = 0;
    FUNC DBL entringer(INT nn, INT kk):
       # Entringer number
       # == number of permutations of [0,NN],
@@ -965,9 +968,9 @@ BLOCK: # Entringer numbers
       #      hence entringer(4,2) == 4
       # E.G. entringer(4,4): 42301 41203 41302 40312 40213
       #      hence entringer(4,4) == 5
-      LOCAL_USE lv_entringer_arr[];
-      LOCAL_USE lv_entringer_max;
-      LOCAL_USE lv_entringer_end;
+      BLOCK_USE lv_entringer_arr[];
+      BLOCK_USE lv_entringer_max;
+      BLOCK_USE lv_entringer_end;
       INT cz;
       INT inda;
       INT rr;
@@ -1078,9 +1081,9 @@ FUNC DBL ballots(DBL xmm, DBL xnn):
 FUNC_END
 
 BLOCK: # Stirling numbers of the 1th kind
-   LOCAL_DBL lv_stir_a_arr[0];
-   LOCAL_INT lv_stir_a_end = 0;
-   LOCAL_INT lv_stir_a_max = 0;
+   BLOCK_DEF DBL lv_stir_a_arr[0];
+   BLOCK_DEF INT lv_stir_a_end = 0;
+   BLOCK_DEF INT lv_stir_a_max = 0;
 
    FUNC DBL stirling1(INT nn, INT kk):
       # Stirling numbers of the 1th kind
@@ -1088,9 +1091,9 @@ BLOCK: # Stirling numbers of the 1th kind
       #    of NN objects with exactly KK cycles.
       # Let ff(x,n) == x(x-1)(x-2)(x-3)...(x-n+1).
       #    ff(x,n) = SUM k = 0 TO N OF stirling1(n,k) * x**k
-      LOCAL_USE lv_stir_a_arr[];
-      LOCAL_USE lv_stir_a_end;
-      LOCAL_USE lv_stir_a_max;
+      BLOCK_USE lv_stir_a_arr[];
+      BLOCK_USE lv_stir_a_end;
+      BLOCK_USE lv_stir_a_max;
       INT col_k;
       INT ul_ind;
       INT cz_ind;
@@ -1144,9 +1147,9 @@ BLOCK_END
 #TEST:stirling1(9,6)+4536;
 
 BLOCK: # Stirling numbers of the 2th kind
-   LOCAL_DBL lv_stir_b_arr[0];
-   LOCAL_INT lv_stir_b_end = 0;
-   LOCAL_INT lv_stir_b_max = 0;
+   BLOCK_DEF DBL lv_stir_b_arr[0];
+   BLOCK_DEF INT lv_stir_b_end = 0;
+   BLOCK_DEF INT lv_stir_b_max = 0;
    FUNC DBL stirling2(INT nn, INT kk):
       # Stirling numbers of the 2th kind
       # # of possible rhyming schemes for NN lines using
@@ -1155,9 +1158,9 @@ BLOCK: # Stirling numbers of the 2th kind
       #    x**n = SUM k = 0 TO NN OF stirling2(n,k) * ff(x,n)
       # E. G. for a poem of 4 lines, there are:
       # bell(N) = SUM[k = 0 to N](stirling2(N, k))
-      LOCAL_USE lv_stir_b_arr[];
-      LOCAL_USE lv_stir_b_end;
-      LOCAL_USE lv_stir_b_max;
+      BLOCK_USE lv_stir_b_arr[];
+      BLOCK_USE lv_stir_b_end;
+      BLOCK_USE lv_stir_b_max;
       INT col_k;
       INT ul_ind;
       INT cz_ind;
@@ -1210,16 +1213,16 @@ BLOCK_END
 #TEST:stirling2(9,6)-2646;
 
 BLOCK: # Bernoullis numbers
-   LOCAL_DBL lv_bern_n_arr[0];
-   LOCAL_DBL lv_bern_d_arr[0];
-   LOCAL_INT lv_bern_end = 0;
+   BLOCK_DEF DBL lv_bern_n_arr[0];
+   BLOCK_DEF DBL lv_bern_d_arr[0];
+   BLOCK_DEF INT lv_bern_end = 0;
    FUNC DBL bernoulli(INT nn):
       # the NNth Bernoulli number
       # if 1 < NN is odd, then bernoulli(NN) = 0
       # EGF(bernoulli();x) = x / (EXP(x) - 1)
-      LOCAL_USE lv_bern_n_arr[];
-      LOCAL_USE lv_bern_d_arr[];
-      LOCAL_USE lv_bern_end;
+      BLOCK_USE lv_bern_n_arr[];
+      BLOCK_USE lv_bern_d_arr[];
+      BLOCK_USE lv_bern_end;
       DBL retvalu;
       INT sz_ind;
       DBL coeff;
@@ -1227,7 +1230,7 @@ BLOCK: # Bernoullis numbers
       DBL sumd;
       INT jj;
       INT mm;
-      DBL gd;
+      DBL gdn;
       DBL nsumn;
       DBL nsumd;
       DBL xkk;
@@ -1267,18 +1270,18 @@ BLOCK: # Bernoullis numbers
                   nsumn = Kw.round(sumn * lv_bern_d_arr[jj]
                         + sumd * coeff * lv_bern_n_arr[jj]);
                   nsumd = Kw.round(sumd * lv_bern_d_arr[jj]);
-                  gd = gcd(nsumn, nsumd);
-                  sumn = nsumn / gd;
-                  sumd = nsumd / gd;
+                  gdn = gcd(nsumn, nsumd);
+                  sumn = nsumn / gdn;
+                  sumd = nsumd / gdn;
                   xkk = 2 * jj;
                   coeff *= (sz_ind - xkk + 1.0) / (xkk + 1.0);
                   coeff *= (sz_ind - xkk) / (xkk + 2.0);
                   coeff = Kw.round(coeff);
                FOR_END
                sumd *= (sz_ind + 1);
-               gd = Kw.gcd(sumn, sumd);
-               lv_bern_n_arr[mm] = -sumn / gd;
-               lv_bern_d_arr[mm] = sumd / gd;
+               gdn = Kw.gcd(sumn, sumd);
+               lv_bern_n_arr[mm] = -sumn / gdn;
+               lv_bern_d_arr[mm] = sumd / gdn;
                mm += 1;
             WHILE_END
          IF_END
@@ -1289,8 +1292,8 @@ BLOCK: # Bernoullis numbers
 
    FUNC INT bernoullin(INT nn):
       # the numerator of the NNth bernoulli number
-      LOCAL_USE lv_bern_n_arr[];
-      LOCAL_USE lv_bern_d_arr[];
+      BLOCK_USE lv_bern_n_arr[];
+      BLOCK_USE lv_bern_d_arr[];
       INT retvalu;
 
       IF nn == 1: # the first Bernoulli number is weird
@@ -1306,8 +1309,8 @@ BLOCK: # Bernoullis numbers
 
    FUNC INT bernoullid(INT nn):
       # the denominator of the NNth Bernoulli number
-      LOCAL_USE lv_bern_n_arr[];
-      LOCAL_USE lv_bern_d_arr[];
+      BLOCK_USE lv_bern_n_arr[];
+      BLOCK_USE lv_bern_d_arr[];
       INT retvalu;
 
       IF nn == 1: # the first Bernoulli number is weird

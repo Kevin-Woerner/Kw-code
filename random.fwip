@@ -1,4 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-25 kdw  s/BITWISE/BIT/
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-22 kdw  local-use mved befroe var decls
 # 2020-06-17 kdw  mode integer added to several funcs
 # 2020-05-30 kdw  CONST syntax change
@@ -8,7 +11,7 @@
 # 2020-05-11 kdw  REPL[A]CE replaced with LO[C]AL_CO[N]ST
 # 2020-05-05 kdw  magic check func changed
 # 2020-04-28 kdw  tweaks here and there
-# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-26 kdw  BL[O]CK indentation work
 # 2020-04-23 kdw  const format change
 # 2020-04-14 kdw  minor tweak to init array
 # 2020-04-12 kdw  comment change
@@ -33,14 +36,14 @@
 # 2019-07-03 kdw  var renam: "s/ind/_ind/;s/__ind/_ind/"
 # 2019-05-29 kdw  comment changed
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-17 kdw  explicit module for intmax
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
 # 2019-02-28 kdw  REP?LACE/DEF?INE work
 # 2018-07-17 kdw  private lf_.* funcs
 # 2018-06-19 kdw  die keyword
 # 2018-05-15 kdw  DIE.* change
-# 2018-05-14 kdw  BLOCK syntax
+# 2018-05-14 kdw  BL[O]CK syntax
 # 2018-05-13 kdw  MO?DE.* syntax change
 # 2018-04-03 kdw  rm () from return
 # 2018-04-02 kdw  Pro?totype, et al.
@@ -119,28 +122,28 @@
 # 2015-09-20 kdw  created
 
 BLOCK: # Random numbers
-   LOCAL_CONST LC_KNUTH_MAX 1073741823; # 2**30-1 MUST BE ODD
-   LOCAL_CONST LC_KNUTH_QUALITY_COUNT 1009;
-   LOCAL_CONST LC_KNUTH_KK_COUNT 100;
-   LOCAL_CONST LC_KNUTH_LL 37;
-   LOCAL_CONST LC_KNUTH_TT 70;
+   BLOCK_DEF CONST LC_KNUTH_MAX 1073741823; # 2**30-1 MUST BE ODD
+   BLOCK_DEF CONST LC_KNUTH_QUALITY_COUNT 1009;
+   BLOCK_DEF CONST LC_KNUTH_KK_COUNT 100;
+   BLOCK_DEF CONST LC_KNUTH_LL 37;
+   BLOCK_DEF CONST LC_KNUTH_TT 70;
    # array size must be greater than LC_KNUTH_QUALITY_COUNT
    #  AND greater than 2 * LC_KNUTH_KK_COUNT - 1
-   LOCAL_CONST LC_KNUTH_ARRAY_COUNT 1100;
+   BLOCK_DEF CONST LC_KNUTH_ARRAY_COUNT 1100;
 
-   LOCAL_INT lv_ranz_ind = -3;
-   LOCAL_DBL lv_ranz_magic = 0.0;
-   LOCAL_INT lv_ranz_arr[LC_KNUTH_QUALITY_COUNT];
-   LOCAL_INT lv_ran_a_arr[LC_KNUTH_ARRAY_COUNT];
+   BLOCK_DEF INT lv_ranz_ind = -3;
+   BLOCK_DEF DBL lv_ranz_magic = 0.0;
+   BLOCK_DEF INT lv_ranz_arr[LC_KNUTH_QUALITY_COUNT];
+   BLOCK_DEF INT lv_ran_a_arr[LC_KNUTH_ARRAY_COUNT];
    # generator state
-   LOCAL_INT lv_ran_x_arr[LC_KNUTH_KK_COUNT];
+   BLOCK_DEF INT lv_ran_x_arr[LC_KNUTH_KK_COUNT];
 
    # cannabalized from D. E. Knuth: "The Art of
    # Computer Programming" Vol 2, Ed 3, pg 186
    ## Random Number Generation
-   LOCAL_FUNC INT lf_ran_cycle(INT nn):
-      LOCAL_USE lv_ran_x_arr[];
-      LOCAL_USE lv_ran_a_arr[];
+   BLOCK_DEF FUNC INT lf_ran_cycle(INT nn):
+      BLOCK_USE lv_ran_x_arr[];
+      BLOCK_USE lv_ran_a_arr[];
       INT aa;
       INT bb;
       INT cc;
@@ -162,7 +165,7 @@ BLOCK: # Random numbers
 
       WHILE aa < nn:
          mody = lv_ran_a_arr[bb] - lv_ran_a_arr[cc];
-         lv_ran_a_arr[aa] = BITWISEAND(LC_KNUTH_MAX, mody);
+         lv_ran_a_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
          aa += 1;   # [KK   ..nn)
          bb += 1;   # [0    ..nn-KK)
          cc += 1;   # [KK-LL..nn-LL)
@@ -171,7 +174,7 @@ BLOCK: # Random numbers
       aa = 0;
       WHILE aa < LC_KNUTH_LL:
          mody = lv_ran_a_arr[bb] - lv_ran_a_arr[cc];
-         lv_ran_x_arr[aa] = BITWISEAND(LC_KNUTH_MAX, mody);
+         lv_ran_x_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
          aa += 1;   # [0    ..LL)
          bb += 1;   # [nn-KK..nn-KK+LL)
          cc += 1;   # [nn-LL..nn)
@@ -180,7 +183,7 @@ BLOCK: # Random numbers
       cc = 0;
       WHILE aa < LC_KNUTH_KK_COUNT:
          mody = lv_ran_a_arr[bb] - lv_ran_x_arr[cc];
-         lv_ran_x_arr[aa] = BITWISEAND(LC_KNUTH_MAX, mody);
+         lv_ran_x_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
          aa += 1;   # [LL      ..KK)
          bb += 1;   # [nn-KK+LL..nn)
          cc += 1;   # [0       ..KK-LL)
@@ -190,11 +193,11 @@ BLOCK: # Random numbers
       RETURN bb;
    FUNC_END
 
-   LOCAL_FUNC INT lf_fill_ranz(NUL):
-      LOCAL_USE lv_ranz_magic;
-      LOCAL_USE lv_ranz_ind;
-      LOCAL_USE lv_ranz_arr[];
-      LOCAL_USE lv_ran_a_arr[];
+   BLOCK_DEF FUNC INT lf_fill_ranz(NUL):
+      BLOCK_USE lv_ranz_magic;
+      BLOCK_USE lv_ranz_ind;
+      BLOCK_USE lv_ranz_arr[];
+      BLOCK_USE lv_ran_a_arr[];
       INT jj;
 
       CALL lf_ran_cycle(LC_KNUTH_QUALITY_COUNT);
@@ -208,10 +211,10 @@ BLOCK: # Random numbers
       RETURN lv_ranz_arr[0];
    FUNC_END
 
-   LOCAL_FUNC INT lf_next_ranz(NUL):
-      LOCAL_USE lv_ranz_magic;
-      LOCAL_USE lv_ranz_ind;
-      LOCAL_USE lv_ranz_arr[];
+   BLOCK_DEF FUNC INT lf_next_ranz(NUL):
+      BLOCK_USE lv_ranz_magic;
+      BLOCK_USE lv_ranz_ind;
+      BLOCK_USE lv_ranz_arr[];
 
       # if not initialized: initialize;
       # else if buffer empty: create more
@@ -231,7 +234,7 @@ BLOCK: # Random numbers
       # Initialize Random Number generator
       # with an array of SEED_SIZE longs
       # (at most LC_KNUTH_KK_COUNT are used)
-      LOCAL_USE lv_ran_x_arr[];
+      BLOCK_USE lv_ran_x_arr[];
       INT tt;
       INT jj;
       INT kk;
@@ -244,7 +247,7 @@ BLOCK: # Random numbers
       INT bitmask;
 
       MODE_INTEGER:
-      rndss = BITWISEAND((seed_arr_pc[0] + 2)
+      rndss = BITAND((seed_arr_pc[0] + 2)
             , (LC_KNUTH_MAX - 1));
       # rndss is now even
       FOR jj FROM 0 TO LC_KNUTH_KK_COUNT - 1:
@@ -268,9 +271,9 @@ BLOCK: # Random numbers
             rndff = seed_arr_pc[seed_ind];
             bitmask = BITSHIFTL(1, 30);
          IF_END
-         IF BITWISEAND(rndff, bitmask) <> 0:
+         IF BITAND(rndff, bitmask) <> 0:
             # bitmask, rnd_arr[ii] are even, hence so is xor
-            rnd_arr[jj] = BITWISEXOR(bitmask, rnd_arr[jj]);
+            rnd_arr[jj] = BITXOR(bitmask, rnd_arr[jj]);
          IF_END
          bitmask = BITSHIFTR(bitmask, 1);
       FOR_END
@@ -279,7 +282,7 @@ BLOCK: # Random numbers
       # All numbers in rnd_arr[] are even
       rnd_arr[1] += 1;
       # All numbers rnd_arr[] are even EXCEPT rnd_arr[1]
-      rndss = BITWISEAND(seed_arr_pc[0], LC_KNUTH_MAX);
+      rndss = BITAND(seed_arr_pc[0], LC_KNUTH_MAX);
       tt = LC_KNUTH_TT - 1;
 
       WHILE 0 < tt:
@@ -293,9 +296,9 @@ BLOCK: # Random numbers
          kk = LC_KNUTH_KK_COUNT - 2;
          WHILE 0 <= kk:
             rndx = rnd_arr[dd] - rnd_arr[jj];
-            rnd_arr[dd] = BITWISEAND(rndx, LC_KNUTH_MAX);
+            rnd_arr[dd] = BITAND(rndx, LC_KNUTH_MAX);
             rndx = rnd_arr[kk] - rnd_arr[jj];
-            rnd_arr[kk] = BITWISEAND(rndx, LC_KNUTH_MAX);
+            rnd_arr[kk] = BITAND(rndx, LC_KNUTH_MAX);
             dd -= 1;
             kk -= 1;
             jj -= 1;
@@ -307,7 +310,7 @@ BLOCK: # Random numbers
             FOR_END
             rnd_arr[0] = rnd_arr[LC_KNUTH_KK_COUNT];
             jj = rnd_arr[LC_KNUTH_LL] - rnd_arr[0];
-            rnd_arr[LC_KNUTH_LL] = BITWISEAND(LC_KNUTH_MAX, jj);
+            rnd_arr[LC_KNUTH_LL] = BITAND(LC_KNUTH_MAX, jj);
             rndss = BITSHIFTR(rndss, 1);
          ELSIF rndss == 0:
             tt -= 1;

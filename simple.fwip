@@ -1,4 +1,5 @@
 #    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-18 kdw  comment to ratio
 # 2020-06-16 kdw  D[I]V keyword deprecated
 # 2020-06-15 kdw  ra[t]io func added
@@ -13,7 +14,7 @@
 # 2019-10-28 kdw  GF comments
 # 2019-07-08 kdw  sq[i]nv func
 # 2019-06-02 kdw  func desc added
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2018-09-28 kdw  st[e]p to st[a]ir renam
 # 2018-09-26 kdw  sq, cu funcs

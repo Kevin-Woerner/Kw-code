@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  s/LO[C]AL_/BL[O]CK_/
 # 2020-06-22 kdw  local-use mved before var decls
 # 2020-05-30 kdw  CONST syntax change
 # 2020-05-19 kdw  moonorbit is from kwplanets
@@ -176,7 +178,6 @@
 ??INSERT_FILE "Macros.fwip"??
 # basic, useful stuff
 IMPORT "Kw";
-# Need some things from planets ...
 IMPORT "Kwplanets";
 
 CONST SUNBELOW_RAD 0.5667 * Kw.ARCDEG + Kw.RADIAN
@@ -289,19 +290,19 @@ FUNC_END
 # where T is in Julian years from 2000-01-01
 
 BLOCK:    # sunx vars and funcs
-   LOCAL_DBL lv_x_sun_dist_m = 0.0;
-   LOCAL_DBL lv_x_sun_dec_rad = 0.0;
-   LOCAL_DBL lv_x_sun_ra_rad = 0.0;
-   LOCAL_DBL lv_x_sun_rad = 0.0;
+   BLOCK_DEF DBL lv_x_sun_dist_m = 0.0;
+   BLOCK_DEF DBL lv_x_sun_dec_rad = 0.0;
+   BLOCK_DEF DBL lv_x_sun_ra_rad = 0.0;
+   BLOCK_DEF DBL lv_x_sun_rad = 0.0;
    # location dependent variables
-   LOCAL_DBL lv_x_loc_transit_tz_day = 0.0;
-   LOCAL_DBL lv_x_loc_halfday_day = 0.0;
+   BLOCK_DEF DBL lv_x_loc_transit_tz_day = 0.0;
+   BLOCK_DEF DBL lv_x_loc_halfday_day = 0.0;
 
-   LOCAL_FUNC DBL lf_x_earth_position(DBL jtwok):
-      LOCAL_USE lv_x_sun_rad;
-      LOCAL_USE lv_x_sun_ra_rad;
-      LOCAL_USE lv_x_sun_dec_rad;
-      LOCAL_USE lv_x_sun_dist_m;
+   BLOCK_DEF FUNC DBL lf_x_earth_position(DBL jtwok):
+      BLOCK_USE lv_x_sun_rad;
+      BLOCK_USE lv_x_sun_ra_rad;
+      BLOCK_USE lv_x_sun_dec_rad;
+      BLOCK_USE lv_x_sun_dist_m;
       DBL ww_rad;
       DBL ecc;
       DBL mm_rad;
@@ -350,11 +351,11 @@ BLOCK:    # sunx vars and funcs
          , DBL lon_deg, DBL lat_deg):
       # Compute the sunrise, sunset, and transit times
       # for the givan location and J2000 day JTWOK
-      LOCAL_USE lv_x_loc_transit_tz_day;
-      LOCAL_USE lv_x_loc_halfday_day;
-      LOCAL_USE lv_x_sun_rad;
-      LOCAL_USE lv_x_sun_ra_rad;
-      LOCAL_USE lv_x_sun_dec_rad;
+      BLOCK_USE lv_x_loc_transit_tz_day;
+      BLOCK_USE lv_x_loc_halfday_day;
+      BLOCK_USE lv_x_sun_rad;
+      BLOCK_USE lv_x_sun_ra_rad;
+      BLOCK_USE lv_x_sun_dec_rad;
       DBL ut_transit_day;
       DBL lha;
 
@@ -392,39 +393,39 @@ BLOCK:    # sunx vars and funcs
 
    FUNC DBL kwsunx_set_day(NUL):
       # sunset time (in DAYS) from prev KWSUNX_INIT call
-      LOCAL_USE lv_x_loc_transit_tz_day;
-      LOCAL_USE lv_x_loc_halfday_day;
+      BLOCK_USE lv_x_loc_transit_tz_day;
+      BLOCK_USE lv_x_loc_halfday_day;
       RETURN lv_x_loc_transit_tz_day + lv_x_loc_halfday_day;
    FUNC_END
 
    FUNC DBL kwsunx_rise_day(NUL):
       # sunrise time (in DAYS) from prev KWSUNX_INIT call
-      LOCAL_USE lv_x_loc_transit_tz_day;
-      LOCAL_USE lv_x_loc_halfday_day;
+      BLOCK_USE lv_x_loc_transit_tz_day;
+      BLOCK_USE lv_x_loc_halfday_day;
       RETURN lv_x_loc_transit_tz_day - lv_x_loc_halfday_day;
    FUNC_END
 
    FUNC DBL kwsunx_transit_day(NUL):
       # sun transit time (in DAYS) from prev KWSUNX_INIT call
-      LOCAL_USE lv_x_loc_transit_tz_day;
+      BLOCK_USE lv_x_loc_transit_tz_day;
       RETURN lv_x_loc_transit_tz_day;
    FUNC_END
 
    FUNC DBL kwsunx_dist_m(NUL):
       # sun distance (in METERS) from prev KWSUNX_INIT call
-      LOCAL_USE lv_x_sun_dist_m;
+      BLOCK_USE lv_x_sun_dist_m;
       RETURN lv_x_sun_dist_m;
    FUNC_END
 
    FUNC DBL kwsunx_dec_rad(NUL):
       # suns declination (in RADIANS) from prev KWSUNX_INIT call
-      LOCAL_USE lv_x_sun_dec_rad;
+      BLOCK_USE lv_x_sun_dec_rad;
       RETURN lv_x_sun_dec_rad;
    FUNC_END
 
    FUNC DBL kwsunx_ra_rad(NUL):
       # suns RA (in RADIANS) from prev KWSUNX_INIT call
-      LOCAL_USE lv_x_sun_ra_rad;
+      BLOCK_USE lv_x_sun_ra_rad;
       RETURN lv_x_sun_ra_rad;
    FUNC_END
 BLOCK_END # sunx vars and funcs
@@ -453,9 +454,9 @@ FUNC DBL kwsun_eccentric_anomaly_rad(DBL ma_deg
 FUNC_END
 
 BLOCK:    # sun position
-   LOCAL_DBL lv_sun_ra_rad = 0.0;
-   LOCAL_DBL lv_sun_dec_rad = 0.0;
-   LOCAL_DBL lv_sun_dist_m = 0.0;
+   BLOCK_DEF DBL lv_sun_ra_rad = 0.0;
+   BLOCK_DEF DBL lv_sun_dec_rad = 0.0;
+   BLOCK_DEF DBL lv_sun_dist_m = 0.0;
 
    FUNC DBL kwsun_sun(DBL jtwok):
       # takes JTWOK (julian days since J2000.0):
@@ -465,8 +466,8 @@ BLOCK:    # sun position
       #    and LV_SUN_DIST_M == sun distance in meters
       # Positions claimed to be within 1 arc min
       #    by Montenbruck and Pfleger
-      LOCAL_USE lv_sun_ra_rad;
-      LOCAL_USE lv_sun_dec_rad;
+      BLOCK_USE lv_sun_ra_rad;
+      BLOCK_USE lv_sun_dec_rad;
       DBL mean_longitude_sun_rad;
       DBL mean_anomaly_sun_rad;
       DBL dl_arcsec;
@@ -517,31 +518,31 @@ BLOCK:    # sun position
    FUNC DBL kwsun_dist_m(NUL):
       # sun - earth distance (in METERS)
       # via last call to kwsun_sun
-      LOCAL_USE lv_sun_dist_m;
+      BLOCK_USE lv_sun_dist_m;
       RETURN lv_sun_dist_m;
    FUNC_END
 
    FUNC DBL kwsun_dec_rad(NUL):
       # suns declination via last call to kwsun_sun
-      LOCAL_USE lv_sun_dec_rad;
+      BLOCK_USE lv_sun_dec_rad;
       RETURN lv_sun_dec_rad;
    FUNC_END
 
    FUNC DBL kwsun_ra_rad(NUL):
       # suns right ascension via last call to kwsun_sun
-      LOCAL_USE lv_sun_ra_rad;
+      BLOCK_USE lv_sun_ra_rad;
       RETURN lv_sun_ra_rad;
    FUNC_END
 BLOCK_END # sun position
 
 BLOCK:
    # return the sine of the altitude of the sun
-   LOCAL_FUNC DBL lf_sinalt(DBL jtwok
+   BLOCK_DEF FUNC DBL lf_sinalt(DBL jtwok
       , DBL geo_longitude_deg
       , DBL cos_geo_latitude
       , DBL sin_geo_latitude):
-      LOCAL_USE lv_sun_ra_rad;
-      LOCAL_USE lv_sun_dec_rad;
+      BLOCK_USE lv_sun_ra_rad;
+      BLOCK_USE lv_sun_dec_rad;
       DBL tau_rads;
 
       CALL kwsun_sun(jtwok);
@@ -554,7 +555,7 @@ BLOCK:
                * COS(tau_rads);
    FUNC_END
 
-   LOCAL_FUNC DBL lf_parabola_solve(DBL delta_x, DBL ym
+   BLOCK_DEF FUNC DBL lf_parabola_solve(DBL delta_x, DBL ym
       , DBL yz, DBL yp):
       # find the parabola through the points
       #   (-delta, ym), (0.0, yz), (delta, yp)
@@ -562,7 +563,7 @@ BLOCK:
             , delta_x, yp);
    FUNC_END
 
-   LOCAL_FUNC DBL lf_sun_event(DBL jtwok
+   BLOCK_DEF FUNC DBL lf_sun_event(DBL jtwok
          , DBL time_zone_in_hours
          , DBL geo_lon_deg
          , DBL geo_lat_deg
@@ -779,8 +780,8 @@ BLOCK:
 BLOCK_END
 
 BLOCK:    # moon position
-   LOCAL_DBL lv_moon_ra_rad = 0.0;
-   LOCAL_DBL lv_moon_dec_rad = 0.0;
+   BLOCK_DEF DBL lv_moon_ra_rad = 0.0;
+   BLOCK_DEF DBL lv_moon_dec_rad = 0.0;
 
    FUNC DBL kwsun_moon(DBL jtwok):
       # returns ra and dec of Moon to 5 arc min (ra)
@@ -881,20 +882,20 @@ BLOCK:    # moon position
    FUNC DBL kwsun_moon_dec_rad(NUL):
       # return the moons declination (in RADIANS) computed
       # from the previous call to KWSUN_MOON()
-      LOCAL_USE lv_moon_dec_rad;
+      BLOCK_USE lv_moon_dec_rad;
       RETURN lv_moon_dec_rad;
    FUNC_END
 
    FUNC DBL kwsun_moon_ra_rad(NUL):
       # return the moons right ascension (in RADIANS) computed
       # from the previous call to KWSUN_MOON()
-      LOCAL_USE lv_moon_ra_rad;
+      BLOCK_USE lv_moon_ra_rad;
       RETURN lv_moon_ra_rad;
    FUNC_END
 BLOCK_END # moon position
 
 BLOCK:
-   LOCAL_FUNC DBL lf_ra_sunmoon_diff_rad(DBL jtwok
+   BLOCK_DEF FUNC DBL lf_ra_sunmoon_diff_rad(DBL jtwok
          , DBL frad):
       DBL moon_ra;
       DBL sun_ra;

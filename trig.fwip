@@ -1,4 +1,11 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-03 kdw  explicit module for pi and tau
+# 2020-08-02 kdw  g?d func
+# 2020-07-29 kdw  block-def work
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  s/LO[C]AL_/BL[O]CK_/
+# 2020-07-23 kdw  minor reorg
+# 2020-07-22 kdw  var rename w/ circ_
 # 2020-06-30 kdw  tests changed
 # 2020-06-12 kdw  uppercased tan function
 # 2020-06-03 kdw  writeonly keyword
@@ -118,40 +125,38 @@ FUNC_END
 #   RETURN(nrvx_xx);
 #FUNC_END
 
-BLOCK: # sinc stuff
-   # X value where sinc(X) has its minimum
-   LOCAL_CONST LC_SINC_MIN_X
-      4.4934094579090641753079882808139693729311345; # 1
-   FUNC DBL sincinv(DBL yy):
-      # Solve SINC(XX) = YY for YY in the interval
-      #   (sinc(LC_SINC_MIN_X),1.0) -> (LC_SINC_MIN_X,0)
-      DBL min_yy;
-      DBL start_xx;
-      DBL aa;
-      DBL bb;
+FUNC DBL sincinv(DBL yy):
+   # Solve SINC(XX) = YY for YY in the interval
+   #   (sinc(LC_SINC_MIN_X),1.0) -> (LC_SINC_MIN_X,0)
+   DBL min_yy;
+   DBL min_xx;
+   DBL start_xx;
+   DBL aa;
+   DBL bb;
+   ??RAPHSON_DECLARATIONS??
 
-      ??RAPHSON_DECLARATIONS??
-      min_yy = sinc(LC_SINC_MIN_X);
-      IF yy <= min_yy:
-         # XX such that d(SINC(XX)) / dXX == 0
-         #   i.e.  (XX * COS(XX) - SIN(XX)) / XX**2 == 0
-         nrvx_xx = LC_SINC_MIN_X;
-      ELSIF yy < 1.0:
-         # SINC(XX) = YY implies SIN(XX) - YY * XX = 0
-         aa = yy - min_yy;
-         bb = 1.0 - yy;
-         start_xx = (aa * SQRT(5.0 * bb)
-               + bb * (LC_SINC_MIN_X - SQRT(6 * aa)))
-            / (aa + bb);
-         ??RAPHSON_LOOP start_xx
-            ; SIN(nrvx_xx) - yy * nrvx_xx
-            ; COS(nrvx_xx) - yy ??
-      ELSE:  # 1.0 <= yy
-         nrvx_xx = 0.0;
-      IF_END
-      RETURN nrvx_xx;
-   FUNC_END
-BLOCK_END
+   # X value where sinc(X) has its minimum
+   min_xx = 4.4934094579090641753079882808139693729311345;
+   min_yy = sinc(min_xx);
+   IF yy <= min_yy:
+      # XX such that d(SINC(XX)) / dXX == 0
+      #   i.e.  (XX * COS(XX) - SIN(XX)) / XX**2 == 0
+      nrvx_xx = min_xx;
+   ELSIF yy < 1.0:
+      # SINC(XX) = YY implies SIN(XX) - YY * XX = 0
+      aa = yy - min_yy;
+      bb = 1.0 - yy;
+      start_xx = (aa * SQRT(5.0 * bb)
+            + bb * (min_xx - SQRT(6 * aa)))
+         / (1.0 - min_yy);
+      ??RAPHSON_LOOP start_xx
+         ; SIN(nrvx_xx) - yy * nrvx_xx
+         ; COS(nrvx_xx) - yy ??
+   ELSE:  # 1.0 <= yy
+      nrvx_xx = 0.0;
+   IF_END
+   RETURN nrvx_xx;
+FUNC_END
 
 FUNC DBL sincc(DBL xx_rad):
    # YY = SINC(XX) = SIN(XX) / XX via Taylor series
@@ -192,7 +197,7 @@ FUNC DBL sincc(DBL xx_rad):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL versin(DBL xx_rad):
+FUNC DBL versin(DBL circ_rad):
    # calculate YY = VERSIN(XX) = 1 - COS(X) via Taylor series
    DBL trigsign;
    DBL xr_rad;
@@ -202,7 +207,7 @@ FUNC DBL versin(DBL xx_rad):
    DBL term;
    DBL sum_prev;
 
-   xr_rad = Kw.fmod(xx_rad, Kw.TAU);
+   xr_rad = Kw.fmod(circ_rad, Kw.TAU);
    # now 0 <= XR_RAD  < Kw.TAU
    IF Kw.TAU / 2.0 < xr_rad:
       # cos(x) = cos(Kw.TAU - x)
@@ -231,16 +236,16 @@ FUNC DBL versin(DBL xx_rad):
    RETURN sum_curr;
 FUNC_END
 
-FUNC DBL haversin(DBL xx_rad):
+FUNC DBL haversin(DBL circ_rad):
    # YY = VERSINE(XX) / 2 = (1 - COS(XX)) / 2
-   RETURN versin(xx_rad) / 2.0;
+   RETURN versin(circ_rad) / 2.0;
 FUNC_END
 
 ??MACRO ANGCON1 <FROM_ANG> ; <FROM_SCL> ; <FROM_DSC>
       ; <INTO_ANG> ; <INTO_SCL> ; <INTO_DSC> ??
-FUNC DBL <FROM_ANG>2<INTO_ANG>(DBL xx_<FROM_ANG>):
+FUNC DBL <FROM_ANG>2<INTO_ANG>(DBL circ_<FROM_ANG>):
    # convert <FROM_DSC>s to <INTO_DSC>s
-   RETURN xx_<FROM_ANG> * <FROM_SCL> / <INTO_SCL>;
+   RETURN circ_<FROM_ANG> * <FROM_SCL> / <INTO_SCL>;
 FUNC_END
 ??MACRO_END
 
@@ -275,27 +280,27 @@ FUNC DBL rad2dms(DBL xx_rads):
    RETURN dd_deg + (mm_min + dg / 100.0) / 100.0;
 FUNC_END
 
-FUNC DBL rad2dms2(DBL xx_rads):
+FUNC DBL rad2dms2(DBL circ_rads):
    # convert radians to deg.minut-sec
    DBL dg;
    DBL dd_deg_arr[2];
    DBL mm_min_arr[2];
 
-   dg = rad2deg(xx_rads);
+   dg = rad2deg(circ_rads);
    dg = Kw.modf(dg, dd_deg_arr[]) * Kw.ARCDEG / Kw.ARCMIN;
    dg = Kw.modf(dg, mm_min_arr[]) * Kw.ARCMIN / Kw.ARCSEC;
 
    RETURN dd_deg_arr[0] + (mm_min_arr[0] + dg / 100.0) / 100.0;
 FUNC_END
 
-FUNC DBL dms2rad(DBL xx_dms):
+FUNC DBL dms2rad(DBL circ_dms):
    # convert a number of the form DD.MMSS*... to radians
    DBL dd_deg;
    DBL mm_min;
    DBL dg;
 
-   dd_deg = FLOOR(xx_dms);
-   dg = (xx_dms - dd_deg) * 100.0;
+   dd_deg = FLOOR(circ_dms);
+   dg = (circ_dms - dd_deg) * 100.0;
    mm_min = FLOOR(dg);
    dg = (dg - mm_min) * 100.0;
    RETURN (dg * Kw.ARCSEC
@@ -304,28 +309,28 @@ FUNC DBL dms2rad(DBL xx_dms):
          / Kw.RADIAN;
 FUNC_END
 
-FUNC DBL deg2dms(DBL xx_deg):
+FUNC DBL deg2dms(DBL circ_deg):
    # convert degrees to DD.MMSS+ format
-   RETURN rad2dms(deg2rad(xx_deg));
+   RETURN rad2dms(deg2rad(circ_deg));
 FUNC_END
 
-FUNC DBL dms2deg(DBL xx_dms):
+FUNC DBL dms2deg(DBL circ_dms):
    # convert DD.MMSS+ format to degrees
-   RETURN rad2deg(dms2rad(xx_dms));
+   RETURN rad2deg(dms2rad(circ_dms));
 FUNC_END
 
 #   Other-Trig-functions ---- ----- ----- ----- ----- ----- -----
-FUNC DBL cot(DBL xx_rad):
+FUNC DBL cot(DBL circ_rad):
    # Cotangent Range (-Inf, Inf)
-   RETURN COS(xx_rad) / SIN(xx_rad);
+   RETURN COS(circ_rad) / SIN(circ_rad);
 FUNC_END
-FUNC DBL sec(DBL xx_rad):
+FUNC DBL sec(DBL circ_rad):
    # Secant Range [1, Inf) or [-1, -Inf)
-   RETURN 1.0 / COS(xx_rad);
+   RETURN 1.0 / COS(circ_rad);
 FUNC_END
-FUNC DBL csc(DBL xx_rad):
+FUNC DBL csc(DBL circ_rad):
    # Cosecant Range [1, Inf) or [-1, -Inf)
-   RETURN 1.0 / SIN(xx_rad);
+   RETURN 1.0 / SIN(circ_rad);
 FUNC_END
 
 #   Inverse-trig-functions -- ----- ----- ----- ----- ----- -----
@@ -357,32 +362,54 @@ FUNC DBL cscinv(DBL xx):
 FUNC_END
 
 #   Hyperbolic-Trig-functions ----- ----- ----- ----- ----- -----
-FUNC DBL sinh(DBL xx):
+FUNC DBL sinh(DBL hyp_rad):
    # Hyperbolic Sine (-Inf, Inf) to (-Inf, Inf)
-   RETURN (EXP(xx) - EXP(-xx)) / 2.0;
+   RETURN (EXP(hyp_rad) - EXP(-hyp_rad)) / 2.0;
 FUNC_END
-FUNC DBL cosh(DBL xx):
+FUNC DBL cosh(DBL hyp_rad):
    # Hyperbolic Cosine (-Inf, 0, Inf) to (Inf, 1, Inf)
-   RETURN (EXP(xx) + EXP(-xx)) / 2.0;
+   RETURN (EXP(hyp_rad) + EXP(-hyp_rad)) / 2.0;
 FUNC_END
-FUNC DBL tanh(DBL xx):
+FUNC DBL tanh(DBL hyp_rad):
    # Hyperbolic Tangent (-Inf, Inf) to (-1, 1)
-   RETURN sinh(xx) / cosh(xx);
+   RETURN sinh(hyp_rad) / cosh(hyp_rad);
 FUNC_END
-FUNC DBL coth(DBL xx):
+FUNC DBL coth(DBL hyp_rad):
    # Hyperbolic Cotangent
    # (-Inf, 0) to (-1, -Inf); (0, Inf) to (Inf, 1);
-   RETURN cosh(xx) / sinh(xx);
+   RETURN cosh(hyp_rad) / sinh(hyp_rad);
 FUNC_END
-FUNC DBL sech(DBL xx):
+FUNC DBL sech(DBL hyp_rad):
    # Hyperbolic Secant
    # (-Inf, 0, Inf) to (0, 1, 0)
-   RETURN 1.0 / cosh(xx);
+   RETURN 1.0 / cosh(hyp_rad);
 FUNC_END
-FUNC DBL csch(DBL xx):
+FUNC DBL csch(DBL hyp_rad):
    # Hyperbolic Cosecant
    # (-Inf, 0) to (-0, -Inf); (0, Inf) to (Inf, 0);
-   RETURN 1.0 / sinh(xx);
+   RETURN 1.0 / sinh(hyp_rad);
+FUNC_END
+
+FUNC DBL gd(DBL hyp_rad):
+   # convert HYP_RAD into CIRC_RAD
+   #        xx     1
+   # INTEGRATE  ------- dt
+   #         0  COSH(t)
+   #    SIN(GD(X)) = TANH(X)
+   #    TAN(GD(X)) = SINH(X)
+   #    COS(GD(X)) = 1 / COSH(X)
+   RETURN 2.0 * ATAN2(EXP(hyp_rad), 1.0) - Kw.PI / 2.0;
+FUNC_END
+
+FUNC DBL gdinv(DBL xx):
+   # Inverse Gudermannian function
+   #        xx    1
+   # INTEGRATE  ------ dt
+   #         0  COS(t)
+   DBL xxn;
+
+   xxn = Kw.fmods(xx, Kw.PI);
+   RETURN LN(ABS((1.0 + SIN(xxn)) / COS(xxn)));
 FUNC_END
 
 #   Inverse-hyperbolic-trig-functions --- ----- ----- ----- -----
@@ -431,9 +458,9 @@ FUNC_END
 
 ??MACRO TRIG_DEF_FUNC <TRIGFUNC>; <SUFFIX>; <FBAS>
       ; <FUNCDESC>; <FROM_NAME>; <FROM_DESC> ??
-FUNC DBL <TRIGFUNC><SUFFIX>(DBL xx):
-   # The <FUNCDESC> of the angle given in <FROM_DESC>
-   RETURN <FBAS>(<FROM_NAME>2rad(xx));
+FUNC DBL <TRIGFUNC><SUFFIX>(DBL circ_<FROM_NAME>):
+   # The <FUNCDESC> of the angle given in CIRC_<FROM_DESC>
+   RETURN <FBAS>(<FROM_NAME>2rad(circ_<FROM_NAME>));
 FUNC_END
 FUNC DBL <TRIGFUNC><SUFFIX>inv(DBL xx):
    # The inverse of <FUNCDESC> in <FROM_DESC>

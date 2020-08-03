@@ -1,4 +1,5 @@
 #    Copyright (C) 2020 by Kevin D. Woerner
+# 2020-08-03 kdw  explicit module for pi and tau
 # 2020-07-02 kdw  more tests; circ computed
 # 2020-06-25 kdw  func renam
 # 2020-06-15 kdw  ell[i]psem func
@@ -90,7 +91,7 @@ FUNC DBL ellipsecir(DBL aa, DBL bb):
          suma += mm * Kw.square(xx - yy);
       AWAIT_END
 
-      retvalu = PI * (Kw.square(aa + bb) - suma) / (xx + yy);
+      retvalu = Kw.PI * (Kw.square(aa + bb) - suma) / (xx + yy);
    IF_END
    RETURN retvalu;
 FUNC_END

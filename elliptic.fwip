@@ -1,4 +1,8 @@
 #    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-08-03 kdw  explicit module for pi and tau
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
+# 2020-07-23 kdw  minor reorg
 # 2020-07-07 kdw  extend to m<0 and 1<m II
 # 2020-07-05 kdw  extend to m<0 and 1<m
 # 2020-07-03 kdw  cir[2]ell and ell[2]cir funcs
@@ -32,7 +36,7 @@
 # 2019-08-06 kdw  rmed backslahses;macro arg renam
 # 2019-06-02 kdw  elliptic1 wtf?; no net change
 # 2019-05-29 kdw  comment changed
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-16 kdw  loop limit def mved
 # 2019-05-01 kdw  consts explicit module name
 # 2019-03-15 kdw  use to[p]yh1
@@ -88,6 +92,23 @@ FUNC DBL elliptic1__1(DBL mm):
    # Complete Elliptic Integral of the 1th kind
    #   == RF(0, 1-MM, 1)
    RETURN Kw.carlsonRF(0.0, 1.0 - mm, 1.0);
+FUNC_END
+
+FUNC DBL elliptic1__2(DBL mm):
+   # Complete Elliptic Integral of the 1th kind
+   DBL term;
+   DBL sum_curr;
+   DBL sum_prev;
+   INT ii;
+
+   term = Kw.TAU / 4.0;
+   sum_curr = 0;
+   AWAIT Kw.iseq(sum_curr, sum_prev) COUNT ii FROM 1 BY 2:
+      term *= Kw.square(mm * ii / (ii + 1));
+      sum_prev = sum_curr;
+      sum_curr += term;
+   AWAIT_END
+   RETURN sum_curr;
 FUNC_END
 
 FUNC DBL elliptic1i(DBL mm, DBL circ_rad):
@@ -533,6 +554,8 @@ FUNC_END
 FUNC DBL jacobiphi(DBL mm
       , DBL elli_rad):
    # convert ELLI_RAD into CIRC_RAD
+   #    SIN(jacobiphi(M,ELLI_RAD)) = sn(M,ELLI_RAD)
+   #    COS(jacobiphi(M,ELLI_RAD)) = cn(M,ELLI_RAD)
    DBL ai;
    DBL bb;
    DBL circ_rad;
@@ -720,7 +743,11 @@ FUNC DBL ns(DBL mm, DBL elli_rad):
 FUNC_END
 
 BLOCK: # Jacobi elliptic functions
-   LOCAL_FUNC INT lv_ellpj(DBL mm
+   BLOCK_DEF DBL lv_mm = -10.0;
+   BLOCK_DEF DBL lv_elli_rad = -10.0;
+   BLOCK_DEF DBL lv_arr_arr[4];
+
+   BLOCK_DEF FUNC INT lv_ellpj(DBL mm
          , DBL elli_rad
          , WRITEONLY DBL ret_arr_p[]):
       # compute the Jacobian function sn, cn, dn and ph
@@ -728,6 +755,8 @@ BLOCK: # Jacobi elliptic functions
       # cn = RET_ARR_P[1]
       # dn = RET_ARR_P[2]
       # ph = RET_ARR_P[3]
+      BLOCK_USE lv_mm;
+      BLOCK_USE lv_elli_rad;
       DBL ai;
       DBL csx;
       DBL snx;
@@ -781,33 +810,48 @@ BLOCK: # Jacobi elliptic functions
          ret_arr_p[2] = junk_arr[1];
          ret_arr_p[3] = junk_arr[3];
       IF_END
+      lv_mm = mm;
+      lv_elli_rad = elli_rad;
       RETURN 0;
    FUNC_END
 
    FUNC DBL sn__1(DBL mm, DBL elli_rad):
-      DBL arr_arr[4];
+      BLOCK_USE lv_mm;
+      BLOCK_USE lv_elli_rad;
+      BLOCK_USE lv_arr_arr[];
 
-      CALL lv_ellpj(mm, elli_rad, arr_arr[]);
-      RETURN arr_arr[0];
+      IF Kw.isneq(mm, lv_mm) OR Kw.isneq(elli_rad, lv_elli_rad):
+         CALL lv_ellpj(mm, elli_rad, lv_arr_arr[]);
+      IF_END
+      RETURN lv_arr_arr[0];
    FUNC_END
 
    FUNC DBL cn__1(DBL mm, DBL elli_rad):
-      DBL arr_arr[4];
+      BLOCK_USE lv_mm;
+      BLOCK_USE lv_elli_rad;
+      BLOCK_USE lv_arr_arr[];
 
-      CALL lv_ellpj(mm, elli_rad, arr_arr[]);
-      RETURN arr_arr[1];
+      IF Kw.isneq(mm, lv_mm) OR Kw.isneq(elli_rad, lv_elli_rad):
+         CALL lv_ellpj(mm, elli_rad, lv_arr_arr[]);
+      IF_END
+      RETURN lv_arr_arr[1];
    FUNC_END
 
    FUNC DBL dn__1(DBL mm, DBL elli_rad):
-      DBL arr_arr[4];
+      BLOCK_USE lv_mm;
+      BLOCK_USE lv_elli_rad;
+      BLOCK_USE lv_arr_arr[];
 
-      CALL lv_ellpj(mm, elli_rad, arr_arr[]);
-      RETURN arr_arr[2];
+      IF Kw.isneq(mm, lv_mm) OR Kw.isneq(elli_rad, lv_elli_rad):
+         CALL lv_ellpj(mm, elli_rad, lv_arr_arr[]);
+      IF_END
+      RETURN lv_arr_arr[2];
    FUNC_END
 BLOCK_END   # Jacobi elliptic functions
 
 FUNC DBL nom(DBL mm):
-   RETURN EXP(-PI *  Kw.elliptic1(1.0 - mm) / Kw.elliptic1(mm));
+   RETURN EXP(-Kw.PI * Kw.elliptic1(1.0 - mm)
+            / Kw.elliptic1(mm));
 FUNC_END
 
 FUNC DBL theta1(DBL mm, DBL zz):
@@ -910,16 +954,16 @@ FUNC DBL nevillethetac(DBL mm, DBL zz):
    DBL cos_inc;
 
    km = Kw.elliptic1(mm);
-   qq = EXP(-PI * Kw.elliptic1(1.0 - mm) / km);
+   qq = EXP(-Kw.PI * Kw.elliptic1(1.0 - mm) / km);
    sum_curr = 0;
-   cos_inc = PI * zz / km;
-   cos_of = PI * zz / (2 * km);
+   cos_inc = Kw.PI * zz / km;
+   cos_of = Kw.PI * zz / (2 * km);
    AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
       sum_prev = sum_curr;
       sum_curr += POW(qq, nn * nn + nn) * COS(cos_of);
       cos_of += cos_inc;
    AWAIT_END
-   RETURN sum_curr * SQRT(TAU * SQRT(qq / mm) / km);
+   RETURN sum_curr * SQRT(Kw.TAU * SQRT(qq / mm) / km);
 FUNC_END
 
 FUNC DBL nevillethetad(DBL mm, DBL zz):
@@ -932,16 +976,16 @@ FUNC DBL nevillethetad(DBL mm, DBL zz):
    DBL cos_inc;
 
    km = Kw.elliptic1(mm);
-   qq = EXP(-PI * Kw.elliptic1(1.0 - mm) / km);
+   qq = EXP(-Kw.PI * Kw.elliptic1(1.0 - mm) / km);
    sum_curr = 0;
-   cos_inc = PI * zz / km;
-   cos_of = PI * zz / km;
+   cos_inc = Kw.PI * zz / km;
+   cos_of = Kw.PI * zz / km;
    AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 1:
       sum_prev = sum_curr;
       sum_curr += POW(qq, nn * nn) * COS(cos_of);
       cos_of += cos_inc;
    AWAIT_END
-   RETURN (1 + 2 * sum_curr) * SQRT(TAU / km) / 2.0;
+   RETURN (1 + 2 * sum_curr) * SQRT(Kw.TAU / km) / 2.0;
 FUNC_END
 
 FUNC DBL nevillethetan(DBL mm, DBL zz):
@@ -955,11 +999,11 @@ FUNC DBL nevillethetan(DBL mm, DBL zz):
    DBL cos_inc;
 
    km = Kw.elliptic1(mm);
-   qq = EXP(-PI * Kw.elliptic1(1.0 - mm) / km);
+   qq = EXP(-Kw.PI * Kw.elliptic1(1.0 - mm) / km);
    sum_curr = 0;
    sig = -1;
-   cos_inc = PI * zz / km;
-   cos_of = PI * zz / km;
+   cos_inc = Kw.PI * zz / km;
+   cos_of = Kw.PI * zz / km;
    AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 1:
       sum_prev = sum_curr;
       sum_curr += sig * POW(qq, nn * nn) * COS(cos_of);
@@ -967,7 +1011,7 @@ FUNC DBL nevillethetan(DBL mm, DBL zz):
       sig = -sig;
    AWAIT_END
    RETURN (1 + 2 * sum_curr)
-         * SQRT(TAU / (km * SQRT(1.0 - mm))) / 2.0;
+         * SQRT(Kw.TAU / (km * SQRT(1.0 - mm))) / 2.0;
 FUNC_END
 
 FUNC DBL nevillethetas(DBL mm, DBL zz):
@@ -981,18 +1025,19 @@ FUNC DBL nevillethetas(DBL mm, DBL zz):
    DBL cos_inc;
 
    km = Kw.elliptic1(mm);
-   qq = EXP(-PI * Kw.elliptic1(1.0 - mm) / km);
+   qq = EXP(-Kw.PI * Kw.elliptic1(1.0 - mm) / km);
    sum_curr = 0;
    sig = 1;
-   cos_inc = PI * zz / km;
-   cos_of = PI * zz / (2 * km);
+   cos_inc = Kw.PI * zz / km;
+   cos_of = Kw.PI * zz / (2 * km);
    AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
       sum_prev = sum_curr;
       sum_curr += sig * POW(qq, nn * nn + nn) * SIN(cos_of);
       sig = -sig;
       cos_of += cos_inc;
    AWAIT_END
-   RETURN sum_curr * SQRT(TAU * SQRT(qq / (mm * (1 - mm))) / km);
+   RETURN sum_curr * SQRT(Kw.TAU
+            * SQRT(qq / (mm * (1 - mm))) / km);
 FUNC_END
 
 # In general:
@@ -1001,6 +1046,7 @@ FUNC_END
 #   elliptic1i(m,jacobiphi(m,elli_rad)) == elli_rad
 #         in [0,elliptic1(m)]
 #   jacobiphi(m,elliptic1i(m,circ_rad)) == circ_rad in [0,PI/2]
+#   cx**2 + sx**2 = nx**2 for x in s,d,c,n
 #   sn(m,elliptic1i(m,circ_rad)) == SIN(circ_rad)
 #   cn(m,elliptic1i(m,circ_rad)) == COS(circ_rad)
 #   sc(m,elliptic1i(m,circ_rad)) == TAN(circ_rad)

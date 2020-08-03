@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-22 kdw  local-use mved before var decls
 # 2020-06-03 kdw  writeonly keyword
 # 2020-05-30 kdw  CONST syntax change
@@ -37,7 +39,7 @@
 # 2019-07-21 kdw  func descriptions
 # 2019-07-03 kdw  i[n]d vars renamd
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-01 kdw  consts explicit module name
 # 2019-03-28 kdw  x-product work
 # 2019-03-19 kdw  re[t]_val to re[t]valu
@@ -146,15 +148,15 @@ FUNC DBL fit_poly(INT num_points
 FUNC_END
 
 BLOCK: # parabola info
-   LOCAL_CONST LC_PARABOLA_X_AXIS 0;
-   LOCAL_CONST LC_PARABOLA_Y_EXTREMA 1;
-   LOCAL_CONST LC_PARABOLA_REAL_ROOTS 2;
-   LOCAL_CONST LC_PARABOLA_ROOT_A 3;
-   LOCAL_CONST LC_PARABOLA_ROOT_B 4;
-   LOCAL_CONST LC_PARABOLA_COEFF_C 5;
-   LOCAL_CONST LC_PARABOLA_COEFF_B 6;
-   LOCAL_CONST LC_PARABOLA_COEFF_A 7;
-   LOCAL_DBL lv_parabola_arr[8];
+   BLOCK_DEF CONST LC_PARABOLA_X_AXIS 0;
+   BLOCK_DEF CONST LC_PARABOLA_Y_EXTREMA 1;
+   BLOCK_DEF CONST LC_PARABOLA_REAL_ROOTS 2;
+   BLOCK_DEF CONST LC_PARABOLA_ROOT_A 3;
+   BLOCK_DEF CONST LC_PARABOLA_ROOT_B 4;
+   BLOCK_DEF CONST LC_PARABOLA_COEFF_C 5;
+   BLOCK_DEF CONST LC_PARABOLA_COEFF_B 6;
+   BLOCK_DEF CONST LC_PARABOLA_COEFF_A 7;
+   BLOCK_DEF DBL lv_parabola_arr[8];
 
    FUNC DBL parabola_solve(DBL xx_a, DBL yy_a
          , DBL xx_b, DBL yy_b
@@ -164,7 +166,7 @@ BLOCK: # parabola info
       #      (xx_a,yy_a) (xx_b,yy_b) and  (xx_c,yy_c)
       # subsequently use parabola_get(IND) to recieve other
       #   information about said parabola
-      LOCAL_USE lv_parabola_arr[];
+      BLOCK_USE lv_parabola_arr[];
       DBL pts_arr[8];
       DBL cc_arr[4];
       DBL disc;
@@ -235,7 +237,7 @@ BLOCK: # parabola info
       #    5  Coeff C
       #    6  Coeff B
       #    7  Coeff A
-      LOCAL_USE lv_parabola_arr[];
+      BLOCK_USE lv_parabola_arr[];
       DBL retvalu;
 
       IF 0 <= ii_ind AND ii_ind <= 7:
@@ -279,10 +281,10 @@ BLOCK: # parabola info
 BLOCK_END # parabola info
 
 BLOCK: # circle info
-   LOCAL_CONST LC_CIRCLE_X 0;
-   LOCAL_CONST LC_CIRCLE_Y 1;
-   LOCAL_CONST LC_CIRCLE_RADIUS 2;
-   LOCAL_DBL lv_circle_arr[3];
+   BLOCK_DEF CONST LC_CIRCLE_X 0;
+   BLOCK_DEF CONST LC_CIRCLE_Y 1;
+   BLOCK_DEF CONST LC_CIRCLE_RADIUS 2;
+   BLOCK_DEF DBL lv_circle_arr[3];
 
    FUNC DBL circle_solve(DBL aa_x, DBL aa_y
          , DBL bb_x, DBL bb_y
@@ -292,7 +294,7 @@ BLOCK: # circle info
       # subsequently use with
       #   circle_get(0) to get the x-coordinate of the center and
       #   circle_get(1) to get the y-coordinate of the center
-      LOCAL_USE lv_circle_arr[];
+      BLOCK_USE lv_circle_arr[];
       DBL ca_a;
       DBL cb_a;
       DBL ca_b;
@@ -332,7 +334,7 @@ BLOCK: # circle info
       #    0  x-center
       #    1  y-canter
       #    2  radius
-      LOCAL_USE lv_circle_arr[];
+      BLOCK_USE lv_circle_arr[];
       DBL retvalu;
 
       IF 0 <= ii_ind AND ii_ind <= 2:
@@ -464,7 +466,7 @@ FUNC DBL fit_minmax(INT num_points
 FUNC_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_signcrossproduct(DBL aa_x, DBL aa_y
+   BLOCK_DEF FUNC DBL lf_signcrossproduct(DBL aa_x, DBL aa_y
          , DBL bb_x, DBL bb_y
          , DBL cc_x, DBL cc_y):
       # the z-component of the cross product of the vectors
@@ -517,14 +519,14 @@ BLOCK:
       #    REPEAT
       #       P_arr[P_ind] = pntH
       #       pntX = S_arr[0]
-      #       FOR S_ind FROM 1 TO LEN(S_arr[])
-      #          IF (pntX == pntH) OR
-      #             (pntX IS CCW_of(S_arr[S_ind],P_arr[P_ind]):
-      #             pntX = S_arr[S_ind]
+      #       foreach S_pnt IN S_arr[1..len(S_arr[])]:
+      #          if (pntX == pntH) OR
+      #                (pntX IS CCW_of(S_pnt,P_arr[P_ind]):
+      #             pntX = S_pnt
       #       P_ind++;
       #       pntH = pntX
       #    UNTIL pntX == P_arr[0]
-      #    RETURN P_arr[] # the convex hull of S_arr
+      #    return P_arr[] # the convex hull of S_arr
       DBL xxp_arr[];
       DBL yyp_arr[];
       INT chi_arr[];

@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-25 kdw  var renam
 # 2020-06-22 kdw  local-use mved before var decls
 # 2020-05-30 kdw  CONST syntax change
@@ -9,7 +11,7 @@
 # 2020-05-08 kdw  lf[_]stt[s]_init func
 # 2020-05-06 kdw  rmed boolean vars
 # 2020-05-05 kdw  magic check func changed
-# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-26 kdw  BL[O]CK indentation work
 # 2020-04-23 kdw  const format change
 # 2020-04-12 kdw  comment change
 # 2020-04-11 kdw  macro arg format
@@ -37,7 +39,7 @@
 # 2019-06-04 kdw  func comments
 # 2019-05-29 kdw  comment changed
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2019-03-18 kdw  macro syntax changed
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
@@ -120,18 +122,18 @@
 # 2015-09-20 kdw  created
 
 BLOCK: # Statistics block
-   LOCAL_CONST LC_STTS_NUM 0;
-   LOCAL_CONST LC_STTS_MEAN 1;
-   LOCAL_CONST LC_STTS_MSQ 2;
-   LOCAL_CONST LC_STTS_MAX 3;
-   LOCAL_CONST LC_STTS_MIN 4;
-   LOCAL_CONST LC_STTS_MAGIC 5;
-   LOCAL_CONST LC_STTS_COUNT 6;
-   LOCAL_CONST LC_STTS_MAX_KEY 100;
-   LOCAL_DBL lv_sttx_arr[LC_STTS_MAX_KEY][LC_STTS_COUNT];
+   BLOCK_DEF CONST LC_STTS_NUM 0;
+   BLOCK_DEF CONST LC_STTS_MEAN 1;
+   BLOCK_DEF CONST LC_STTS_MSQ 2;
+   BLOCK_DEF CONST LC_STTS_MAX 3;
+   BLOCK_DEF CONST LC_STTS_MIN 4;
+   BLOCK_DEF CONST LC_STTS_MAGIC 5;
+   BLOCK_DEF CONST LC_STTS_COUNT 6;
+   BLOCK_DEF CONST LC_STTS_MAX_KEY 100;
+   BLOCK_DEF DBL lv_sttx_arr[LC_STTS_MAX_KEY][LC_STTS_COUNT];
 
-   LOCAL_FUNC BOL lf_stts_is_inited(INT ix_hndl):
-      LOCAL_USE lv_sttx_arr[];
+   BLOCK_DEF FUNC BOL lf_stts_is_inited(INT ix_hndl):
+      BLOCK_USE lv_sttx_arr[];
       INT vll;
       INT ii;
       INT jj;
@@ -156,7 +158,7 @@ BLOCK: # Statistics block
       RETURN retvalu_bol;
    FUNC_END
 
-   LOCAL_FUNC INT lf_stts_find_empty(NUL):
+   BLOCK_DEF FUNC INT lf_stts_find_empty(NUL):
       INT ix_hndl;
 
       ix_hndl = 0;
@@ -174,7 +176,7 @@ BLOCK: # Statistics block
       , DBL meanx, DBL var
       , DBL minim, DBL maxim):
       # init STTS LC_HNDL w/ given parameters; return handle
-      LOCAL_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_arr[];
 
       lv_sttx_arr[ix_hndl][LC_STTS_NUM] = n_count;
       lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = meanx;
@@ -190,7 +192,7 @@ BLOCK: # Statistics block
       , DBL meanx, DBL msq
       , DBL minim, DBL maxim):
       # init STTS LC_HNDL w/ given parameters; return handle
-      LOCAL_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_arr[];
 
       lv_sttx_arr[ix_hndl][LC_STTS_NUM] = num_count;
       lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = meanx;
@@ -216,7 +218,7 @@ BLOCK: # Statistics block
 
    FUNC INT stts_delete(INT ix_hndl):
       # delete STTS w/ given handle
-      LOCAL_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_arr[];
 
       lv_sttx_arr[ix_hndl][LC_STTS_MAGIC] = Kw.magicnot();
       RETURN ix_hndl;
@@ -225,7 +227,7 @@ BLOCK: # Statistics block
    ??MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> ??
    FUNC DBL <STFUNC>(INT ix_hndl):
       # <STDESC> of LC_HNDLth stts calc
-      LOCAL_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_arr[];
 
       RETURN lv_sttx_arr[ix_hndl][<STIND>];
    FUNC_END
@@ -290,7 +292,7 @@ BLOCK: # Statistics block
    FUNC DBL stts_update(INT ix_hndl, DBL new_data):
       # add NEW_DATA to STTS w/ handle LC_HNDL
       # return difference between NEW_DATA and OLD mean
-      LOCAL_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_arr[];
       DBL delta;
       DBL numy;
 
@@ -380,7 +382,7 @@ BLOCK: # Statistics block
 
    FUNC INT stts_shift(INT ix_hndl, DBL data_shift):
       # "shift" STTS w/ handle LC_HNDL by DATA_SHIFT
-      LOCAL_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_arr[];
 
       lv_sttx_arr[ix_hndl][LC_STTS_MAX] += data_shift;
       lv_sttx_arr[ix_hndl][LC_STTS_MIN] += data_shift;
@@ -390,7 +392,7 @@ BLOCK: # Statistics block
 
    FUNC INT stts_scale(INT ix_hndl, DBL xfactor):
       # "scale" STTS w/ handle LC_HNDL by XFACTOR
-      LOCAL_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_arr[];
       DBL newmax;
       DBL newmin;
 
@@ -411,7 +413,7 @@ BLOCK: # Statistics block
 
    FUNC INT stts_copy(INT hto, INT hfrom):
       # copy STTS w/ handle HFROM to STTS w/ handle HTO
-      LOCAL_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_arr[];
       INT ii;
 
       FOR ii FROM 0 TO LC_STTS_COUNT - 1:
@@ -482,15 +484,15 @@ BLOCK: # Statistics block
    FUNC_END
 
    BLOCK: # Correlation Statistics block
-      LOCAL_CONST LC_STTSC_XX 0;
-      LOCAL_CONST LC_STTSC_YY 1;
-      LOCAL_CONST LC_STTSC_COVAR 2;
-      LOCAL_CONST LC_STTSC_MAGIC 3;
-      LOCAL_CONST LC_STTSC_COUNT 4;
-      LOCAL_DBL lv_corx_arr[LC_STTS_MAX_KEY][LC_STTSC_COUNT];
+      BLOCK_DEF CONST LC_STTSC_XX 0;
+      BLOCK_DEF CONST LC_STTSC_YY 1;
+      BLOCK_DEF CONST LC_STTSC_COVAR 2;
+      BLOCK_DEF CONST LC_STTSC_MAGIC 3;
+      BLOCK_DEF CONST LC_STTSC_COUNT 4;
+      BLOCK_DEF DBL lv_corx_arr[LC_STTS_MAX_KEY][LC_STTSC_COUNT];
 
-      LOCAL_FUNC BOL lf_corr_is_init(INT ix_chnd):
-         LOCAL_USE lv_corx_arr[];
+      BLOCK_DEF FUNC BOL lf_corr_is_init(INT ix_chnd):
+         BLOCK_USE lv_corx_arr[];
          BOL retvalu_bol;
          DBL vll;
 
@@ -503,7 +505,7 @@ BLOCK: # Statistics block
          RETURN retvalu_bol;
       FUNC_END
 
-      LOCAL_FUNC INT lf_corr_find_empty(NUL):
+      BLOCK_DEF FUNC INT lf_corr_find_empty(NUL):
          INT ix_chnd;
 
          ix_chnd = 0;
@@ -519,7 +521,7 @@ BLOCK: # Statistics block
 
       FUNC INT corr_new(NUL):
          # handle for a new correlation calc
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
          INT ix_chnd;
 
          ix_chnd = lf_corr_find_empty();
@@ -533,7 +535,7 @@ BLOCK: # Statistics block
 
       FUNC INT corr_delete(INT ix_chnd):
          # delete data of LC_CHNDth correlation calc
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
 
          lv_corx_arr[ix_chnd][LC_STTSC_MAGIC] = Kw.magicnot();
          CALL stts_delete(lv_corx_arr[ix_chnd][LC_STTSC_XX]);
@@ -542,20 +544,20 @@ BLOCK: # Statistics block
       FUNC_END
 
       FUNC INT corr_handlex(INT ix_chnd):
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
 
          RETURN lv_corx_arr[ix_chnd][LC_STTSC_XX];
       FUNC_END
 
       FUNC INT corr_handley(INT ix_chnd):
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
 
          RETURN lv_corx_arr[ix_chnd][LC_STTSC_YY];
       FUNC_END
 
       FUNC DBL corr_update(INT ix_chnd, DBL xx, DBL yy):
          # update LC_CHNDth corr calc with point (XX,YY)
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
          INT num;
          DBL ddxx;
          DBL ddyy;
@@ -575,7 +577,7 @@ BLOCK: # Statistics block
 
       FUNC DBL corrslope(INT ix_chnd):
          # slope of least squares line of LC_CHNDth corr calc
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
          DBL den;
          DBL retvalu;
          INT xxhnd;
@@ -594,7 +596,7 @@ BLOCK: # Statistics block
 
       FUNC DBL corry0(INT ix_chnd):
          # y-intercept of least squares line of LC_CHNDth corr
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
          DBL retvalu;
          INT yyhnd;
          INT xxhnd;
@@ -610,7 +612,7 @@ BLOCK: # Statistics block
 
       FUNC DBL corrcorr(INT ix_chnd):
          # Correlation Coefficient [-1,1] of LC_CHNDth corr calc
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
          DBL retvalu;
          DBL xxmsq;
          DBL yymsq;
@@ -631,7 +633,7 @@ BLOCK: # Statistics block
 
       FUNC DBL corrstderr(INT ix_chnd):
          # stderr of least squares line of LC_CHNDth corr calc
-         LOCAL_USE lv_corx_arr[];
+         BLOCK_USE lv_corx_arr[];
          INT yyhnd;
          DBL diff;
          DBL retvalu;

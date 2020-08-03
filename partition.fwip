@@ -1,4 +1,6 @@
 #    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-22 kdw  local-use mved before var decls
 # 2020-06-03 kdw  writeonly keyword
 # 2020-05-11 kdw  local-decl syntx change
@@ -14,7 +16,7 @@
 # 2019-08-06 kdw  rmed backslashes, macro arg renam
 # 2019-05-28 kdw  comment changed
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2018-05-14 kdw  BLO?CK syntax change
 # 2018-04-26 kdw  comment change
@@ -27,8 +29,8 @@
 # 2017-04-11 kdw  created
 
 BLOCK: # partition function
-   LOCAL_DBL lv_partitionr_arr[0];
-   LOCAL_INT lv_partitionr_end = 0;
+   BLOCK_DEF DBL lv_partitionr_arr[0];
+   BLOCK_DEF INT lv_partitionr_end = 0;
 
    FUNC DBL partition(INT nn):
       # number of partitions of NN
@@ -45,8 +47,8 @@ BLOCK: # partition function
       # where 1,5,12,22,35 comes from (3*kk*kk-kk) / 2
       #       1, 2, 5, 7, 12, 15, 22, 26, 35, 40, 51, 57
       #        +1 +3 +2 +5  +3  +7  +4  +9  +5  +11 +6
-      LOCAL_USE lv_partitionr_arr[];
-      LOCAL_USE lv_partitionr_end;
+      BLOCK_USE lv_partitionr_arr[];
+      BLOCK_USE lv_partitionr_end;
       DBL retvalu;
       INT jj;
       INT mm;
@@ -101,8 +103,8 @@ BLOCK_END # partition function
 #TEST:partition(30)-5604
 
 BLOCK: # partitionq function
-   LOCAL_DBL lv_partitionq_arr[0];
-   LOCAL_INT lv_partitionq_end = 0;
+   BLOCK_DEF DBL lv_partitionq_arr[0];
+   BLOCK_DEF INT lv_partitionq_end = 0;
 
    FUNC DBL partitionq(INT nn):
       # number of partitions of NN into distinct parts
@@ -113,8 +115,8 @@ BLOCK: # partitionq function
       #    and one can partition 8 into odd parts 6 ways:
       #       1+1+1+1+1+1+1+1, 1+1+1+1+1+3,
       #       1+1+3+3, 1+1+1+5, 1+7, 3+5
-      LOCAL_USE lv_partitionq_arr[];
-      LOCAL_USE lv_partitionq_end;
+      BLOCK_USE lv_partitionq_arr[];
+      BLOCK_USE lv_partitionq_end;
       DBL retvalu;
       INT jj;
       INT mm;

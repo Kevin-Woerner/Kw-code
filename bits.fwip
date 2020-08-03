@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-25 kdw  s/BITWISE/BIT/
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-17 kdw  Modulo operator
 # 2020-05-18 kdw  while conditios redo
 # 2020-05-13 kdw  lang_.* vars
@@ -23,7 +25,7 @@
 # 2019-08-06 kdw  rmed backshlashes, macro arg renam
 # 2019-07-31 kdw  bit to bitwise func nams
 # 2019-06-02 kdw  func desc added
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2019-03-08 kdw  rmed ampersand
 # 2018-06-09 kdw  mved tests
@@ -86,7 +88,7 @@ FUNC INT bitwisenot(INT xx):
    INT retvalu;
 
    MODE_INTEGER:
-   retvalu = BITWISENOT(xx);
+   retvalu = BITNOT(xx);
    MODE_INTEGER_END
    RETURN retvalu;
 FUNC_END
@@ -96,7 +98,7 @@ FUNC INT bitwiseand(INT xx, INT yy):
    INT retvalu;
 
    MODE_INTEGER:
-   retvalu = BITWISEAND(xx, yy);
+   retvalu = BITAND(xx, yy);
    MODE_INTEGER_END
    RETURN retvalu;
 FUNC_END
@@ -106,7 +108,7 @@ FUNC INT bitwiseor(INT xx, INT yy):
    INT retvalu;
 
    MODE_INTEGER:
-   retvalu = BITWISEOR(xx, yy);
+   retvalu = BITOR(xx, yy);
    MODE_INTEGER_END
    RETURN retvalu;
 FUNC_END
@@ -116,7 +118,7 @@ FUNC INT bitwisexor(INT xx, INT yy):
    INT retvalu;
 
    MODE_INTEGER:
-   retvalu = BITWISEXOR(xx, yy);
+   retvalu = BITXOR(xx, yy);
    MODE_INTEGER_END
    RETURN retvalu;
 FUNC_END
@@ -332,7 +334,7 @@ FUNC INT bits_ls1b(INT orig):
       retvalu = 0;
    ELSE:
       divisor = 1;
-      WHILE 0 == BITWISEAND(divisor, orig):
+      WHILE 0 == BITAND(divisor, orig):
          divisor *= 2;
       WHILE_END
       retvalu = divisor;
@@ -351,7 +353,7 @@ FUNC INT bits_ms1b(INT orig):
       retvalu = 0;
    ELSE:
       divisor = -2;
-      WHILE 0 <> BITWISEAND(divisor, orig):
+      WHILE 0 <> BITAND(divisor, orig):
          divisor *= 2;
       WHILE_END
       retvalu = -divisor / 2;
@@ -371,7 +373,7 @@ FUNC INT bits_ls1bpos(INT orig):
    ELSE:
       divisor = 1;
       bit_count = 0;
-      WHILE 0 == BITWISEAND(divisor, orig):
+      WHILE 0 == BITAND(divisor, orig):
          divisor *= 2;
          bit_count += 1;
       WHILE_END
@@ -394,7 +396,7 @@ FUNC INT bits_ms1bpos(INT orig):
    ELSE:
       divisor = -2;
       bit_count = 0;
-      WHILE 0 <> BITWISEAND(divisor, orig):
+      WHILE 0 <> BITAND(divisor, orig):
          divisor *= 2;
          bit_count += 1;
       WHILE_END
@@ -417,10 +419,10 @@ FUNC INT bits_assign(INT orig
    ELSE:
       divisor = bits_ls1bpos(which_mask);
       # first, clear target bits in ORIG:
-      tempo = BITWISEAND(orig, BITWISENOT(which_mask));
+      tempo = BITAND(orig, BITNOT(which_mask));
       # second, set the appropriate bit s in TEMPV
       tempv = BITSHIFTL(value_to_set, divisor);
-      retvalu = BITWISEOR(tempo, BITWISEAND(tempv, which_mask));
+      retvalu = BITOR(tempo, BITAND(tempv, which_mask));
    IF_END
 
    RETURN retvalu;
@@ -429,12 +431,12 @@ FUNC_END
 
 FUNC INT bits_get(INT vall, INT mask):
    # value of VALL And MASK right justified
-   RETURN BITWISEAND(vall, mask) / bits_ls1b(mask);
+   RETURN BITAND(vall, mask) / bits_ls1b(mask);
 FUNC_END
 #TEST:bits_get(436940,992)-22;
 
 FUNC INT bits_set(INT vall, INT mask):
    # value of VALL shifted left into MASK
-   RETURN BITWISEAND(vall * bits_ls1b(mask), mask);
+   RETURN BITAND(vall * bits_ls1b(mask), mask);
 FUNC_END
 #TEST:bits_set(5,112)-80;

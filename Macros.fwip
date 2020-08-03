@@ -1,4 +1,5 @@
 #    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-20 kdw  comment change
 # 2020-04-26 kdw  block indentation
 # 2020-04-23 kdw  const format change
@@ -44,13 +45,13 @@
    INT scvx_ii;
 ??MACRO_END
 
-??MACRO SECANT_LOOP <XINIT> ; <XDELT> ; <FUNC> ??
+??MACRO SECANT_LOOP <XINIT> ; <XDELT> ; <FUNCTION> ??
    # return XX where
-   #   <FUNC>(XX) == 0
+   #   <FUNCTION>(XX) == 0
    # BEG Secant Calculation
    scvx_dx = <XDELT>;
    scvx_xx = <XINIT>;
-   scvx_yy = <FUNC>;
+   scvx_yy = <FUNCTION>;
    FOR scvx_ii FROM 0 TO ??LOOP_LIMIT??:
       scvx_xp = scvx_xx;
       scvx_yp = scvx_yy;
@@ -58,7 +59,7 @@
       IF Kw.iseq(scvx_xp, scvx_xx):
          FOR_EXIT;
       IF_END
-      scvx_yy = <FUNC>;
+      scvx_yy = <FUNCTION>;
       scvx_dy = (scvx_yy - scvx_yp);
       IF Kw.iszero(scvx_dy):
          FOR_EXIT;
@@ -76,18 +77,18 @@
    DBL nrvx_xp;
 ??MACRO_END
 
-??MACRO RAPHSON_LOOP <XINIT> ; <FUNC> ; <DFUNC> ??
+??MACRO RAPHSON_LOOP <XINIT> ; <FUNCTION> ; <DFUNCTION> ??
    # return XX where
-   #    <FUNC>(XX) == 0
+   #    <FUNCTION>(XX) == 0
    # BEG Newton-Raphson Calculation
    nrvx_xx = <XINIT>;
    FOR nrvx_ii FROM 0 TO ??LOOP_LIMIT??:
       nrvx_xp = nrvx_xx;
-      nrvx_dy = <DFUNC>;
+      nrvx_dy = <DFUNCTION>;
       IF Kw.iszero(nrvx_dy):
          FOR_EXIT;
       IF_END
-      nrvx_yy = <FUNC>;
+      nrvx_yy = <FUNCTION>;
       nrvx_xx -= nrvx_yy / nrvx_dy;
       IF Kw.iseq(nrvx_xp, nrvx_xx):
          FOR_EXIT;

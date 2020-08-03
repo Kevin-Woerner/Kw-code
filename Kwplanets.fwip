@@ -1,4 +1,6 @@
 #    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-07-18 kdw  rmed some imports
 # 2020-06-22 kdw  local-use mved befroe var decls
 # 2020-06-12 kdw  stern-levison and margot rework
@@ -144,9 +146,8 @@
 
 # basic, usefull things
 IMPORT "Kw";
-
-# need the molecular mass of air for ISA calculation
 IMPORT "Kwelements";
+# need the molecular mass of air for ISA calculation
 
 # http://hpiers.obspm.fr/eop-pc/models/constants.html
 # See also https://en.wikipedia.org/wiki/Sidereal_time
@@ -319,7 +320,7 @@ CONST HAUMEA_C       8.52E+5 * Kw.METER; #L
 ??MACRO PLANET_DORBITAL_ELEMENTS <BODY>
       ; <DISV> ; <ECCV> ; <INCV> ; <LONV> ; <PERV> ; <ASCV>
       ; <DISD> ; <ECCD> ; <INCD> ; <LOND> ; <PERD> ; <ASCD> ??
-# ORBITAL ELEMENTS FOR <BODY>
+# Orbital Elements for <BODY>
 CONST <BODY>ORBIT          <DISV> * Kw.AU;     #L
 CONST <BODY>ECCENTRICITY   <ECCV>;             #1
 CONST <BODY>INCLINATION    <INCV> * Kw.ARCDEG; #A
@@ -443,51 +444,51 @@ FUNC_END
 
 BLOCK:
    # SUN must be < 2**15 for VB6 VBDOTNET
-   LOCAL_CONST LC_P1_PREV_PL -1; # 1
-   LOCAL_CONST LC_P1_SUN 0; # 1
-   LOCAL_CONST LC_P1_MERCURY 1; # 1
-   LOCAL_CONST LC_P1_VENUS 2; # 1
-   LOCAL_CONST LC_P1_EARTH 3; # 1
-   LOCAL_CONST LC_P1_MARS 4; # 1
-   LOCAL_CONST LC_P1_JUPITER 5; # 1
-   LOCAL_CONST LC_P1_SATURN 6; # 1
-   LOCAL_CONST LC_P1_URANUS 7; # 1
-   LOCAL_CONST LC_P1_NEPTUNE 8; # 1
-   LOCAL_CONST LC_P1_PLUTO 9; # 1
-   LOCAL_CONST LC_P1_CERES 10; # 1
-   LOCAL_CONST LC_P1_ERIS 11; # 1
-   LOCAL_CONST LC_P1_MAKEMAKE 12; # 1
-   LOCAL_CONST LC_P1_HAUMEA 13; # 1
+   BLOCK_DEF CONST LC_P1_PREV_PL -1; # 1
+   BLOCK_DEF CONST LC_P1_SUN 0; # 1
+   BLOCK_DEF CONST LC_P1_MERCURY 1; # 1
+   BLOCK_DEF CONST LC_P1_VENUS 2; # 1
+   BLOCK_DEF CONST LC_P1_EARTH 3; # 1
+   BLOCK_DEF CONST LC_P1_MARS 4; # 1
+   BLOCK_DEF CONST LC_P1_JUPITER 5; # 1
+   BLOCK_DEF CONST LC_P1_SATURN 6; # 1
+   BLOCK_DEF CONST LC_P1_URANUS 7; # 1
+   BLOCK_DEF CONST LC_P1_NEPTUNE 8; # 1
+   BLOCK_DEF CONST LC_P1_PLUTO 9; # 1
+   BLOCK_DEF CONST LC_P1_CERES 10; # 1
+   BLOCK_DEF CONST LC_P1_ERIS 11; # 1
+   BLOCK_DEF CONST LC_P1_MAKEMAKE 12; # 1
+   BLOCK_DEF CONST LC_P1_HAUMEA 13; # 1
 
-   LOCAL_CONST LC_P1_COUNT LC_P1_HAUMEA + 1; # 1
-   LOCAL_CONST LC_P1_ERR -1; # 1
+   BLOCK_DEF CONST LC_P1_COUNT LC_P1_HAUMEA + 1; # 1
+   BLOCK_DEF CONST LC_P1_ERR -1; # 1
 
-   LOCAL_CONST LC_P2_GM 0;
-   LOCAL_CONST LC_P2_YEAR 1;
-   LOCAL_CONST LC_P2_DAY 2;
-   LOCAL_CONST LC_P2_FLATNESS 3;
-   LOCAL_CONST LC_P2_A 4;
-   LOCAL_CONST LC_P2_C 5;
-   LOCAL_CONST LC_P2_ORB 6;
-   LOCAL_CONST LC_P2_ECC 7;
-   LOCAL_CONST LC_P2_INC 8;
-   LOCAL_CONST LC_P2_LON 9;
-   LOCAL_CONST LC_P2_PER 10;
-   LOCAL_CONST LC_P2_ASC 11;
-   LOCAL_CONST LC_P2_ORB_DT 12;
-   LOCAL_CONST LC_P2_ECC_DT 13;
-   LOCAL_CONST LC_P2_INC_DT 14;
-   LOCAL_CONST LC_P2_LON_DT 15;
-   LOCAL_CONST LC_P2_PER_DT 16;
-   LOCAL_CONST LC_P2_ASC_DT 17;
-   LOCAL_CONST LC_P2_COUNT 18;
+   BLOCK_DEF CONST LC_P2_GM 0;
+   BLOCK_DEF CONST LC_P2_YEAR 1;
+   BLOCK_DEF CONST LC_P2_DAY 2;
+   BLOCK_DEF CONST LC_P2_FLATNESS 3;
+   BLOCK_DEF CONST LC_P2_A 4;
+   BLOCK_DEF CONST LC_P2_C 5;
+   BLOCK_DEF CONST LC_P2_ORB 6;
+   BLOCK_DEF CONST LC_P2_ECC 7;
+   BLOCK_DEF CONST LC_P2_INC 8;
+   BLOCK_DEF CONST LC_P2_LON 9;
+   BLOCK_DEF CONST LC_P2_PER 10;
+   BLOCK_DEF CONST LC_P2_ASC 11;
+   BLOCK_DEF CONST LC_P2_ORB_DT 12;
+   BLOCK_DEF CONST LC_P2_ECC_DT 13;
+   BLOCK_DEF CONST LC_P2_INC_DT 14;
+   BLOCK_DEF CONST LC_P2_LON_DT 15;
+   BLOCK_DEF CONST LC_P2_PER_DT 16;
+   BLOCK_DEF CONST LC_P2_ASC_DT 17;
+   BLOCK_DEF CONST LC_P2_COUNT 18;
 
-   LOCAL_INT lv_pl_ind = LC_P1_PREV_PL;
-   LOCAL_DBL lv_pl_arr[LC_P1_COUNT][LC_P2_COUNT];
-   LOCAL_DBL lv_pl_earth_year = EARTHYEAR;
-   LOCAL_DBL lv_pl_helio_arr[3];
-   LOCAL_DBL lv_pl_geo_arr[3];
-   LOCAL_DBL lv_pl_jtwoktime = 1.0 / 64.0;
+   BLOCK_DEF DBL lv_pl_helio_arr[3];
+   BLOCK_DEF DBL lv_pl_geo_arr[3];
+   BLOCK_DEF INT lv_pl_ind = LC_P1_PREV_PL;
+   BLOCK_DEF DBL lv_pl_arr[LC_P1_COUNT][LC_P2_COUNT];
+   BLOCK_DEF DBL lv_pl_earth_year = EARTHYEAR;
+   BLOCK_DEF DBL lv_pl_jtwoktime = 1.0 / 64.0;
 
    # setup macro
    ??MACRO PLNT_SETUP_VALUES <PP> ??
@@ -511,9 +512,9 @@ BLOCK:
       lv_pl_arr[LC_P1_<PP>][LC_P2_ASC_DT]  = <PP>ASCENDING_DT;
    ??MACRO_END
 
-   LOCAL_FUNC INT lf_pl_init(INT plnt):
-      LOCAL_USE lv_pl_ind;
-      LOCAL_USE lv_pl_arr[];
+   BLOCK_DEF FUNC INT lf_pl_init(INT plnt):
+      BLOCK_USE lv_pl_ind;
+      BLOCK_USE lv_pl_arr[];
 
       IF lv_pl_ind < 0:
          ??PLNT_SETUP_VALUES SUN??
@@ -548,7 +549,7 @@ BLOCK:
       RETURN lv_pl_ind;
    FUNC_END
 
-   LOCAL_FUNC DBL lf_val(INT pa_ind
+   BLOCK_DEF FUNC DBL lf_val(INT pa_ind
          , INT pb_bb
          , INT pb_bbd):
       INT pl_ind;
@@ -578,7 +579,7 @@ BLOCK:
    ??MACRO PLNT_FUNC <AA> ??
    FUNC DBL pl<AA>(NUL):
       # the <AA> of the previous selected planet
-      LOCAL_USE lv_pl_ind;
+      BLOCK_USE lv_pl_ind;
       RETURN pl_<AA>(LC_P1_PREV_PL);
    FUNC_END
    ??MACRO_END
@@ -586,8 +587,8 @@ BLOCK:
    ??MACRO PLNT_PHYSICAL <AA> ; <BB> ??
    FUNC DBL pl_<AA>(INT plnt):
       # the <AA> of planet PLNT
-      LOCAL_USE lv_pl_arr[];
-      LOCAL_USE lv_pl_ind;
+      BLOCK_USE lv_pl_arr[];
+      BLOCK_USE lv_pl_ind;
       DBL retvalu;
 
       CALL lf_pl_init(plnt);
@@ -678,7 +679,7 @@ BLOCK:
    FUNC DBL pl_synodic(INT plnt):
       # the synodic period (s) of planet PLNT
       #    PL_YEAR * EARTHYEAR / (PL_YEAR - EARTHYEAR)
-      LOCAL_USE lv_pl_earth_year;
+      BLOCK_USE lv_pl_earth_year;
       DBL yra;
       DBL retvalu;
 
@@ -780,8 +781,8 @@ BLOCK:
       # compute the heliocentric (and geocentric) coordinates
       # for planet PLNT at the given J2K time.
       # use with functions plgeo, plhelio
-      LOCAL_USE lv_pl_helio_arr[];
-      LOCAL_USE lv_pl_geo_arr[];
+      BLOCK_USE lv_pl_helio_arr[];
+      BLOCK_USE lv_pl_geo_arr[];
       DBL orb_m;
       DBL eccen;
       DBL inc_rad;
@@ -864,7 +865,7 @@ BLOCK:
    FUNC DBL plhelio(INT indd):
       # heliocentric distance, in m, computed by the
       #    previous call to pl_heliocentric
-      LOCAL_USE lv_pl_helio_arr[];
+      BLOCK_USE lv_pl_helio_arr[];
       DBL ret_val;
 
       IF 0 <= indd AND indd < 3:
@@ -878,7 +879,7 @@ BLOCK:
    FUNC DBL plgeo(INT indd):
       # geocentric distance, in m, computed by the
       #    previous call to pl_heliocentric
-      LOCAL_USE lv_pl_geo_arr[];
+      BLOCK_USE lv_pl_geo_arr[];
       DBL ret_val;
 
       IF 0 <= indd AND indd < 3:
@@ -1023,16 +1024,16 @@ FUNC DBL earth_gravity_height(DBL lat_deg, DBL height_m):
 FUNC_END
 
 BLOCK:   # ISA atmosphere
-   LOCAL_CONST LC_ISA_TEMPERATURE 0;
-   LOCAL_CONST LC_ISA_PRESSURE 1;
-   LOCAL_CONST LC_ISA_DENSITY 2;
-   LOCAL_CONST LC_ISA_XHEIGHT 0;
-   LOCAL_CONST LC_ISA_XTEMPERATURE 1;
-   LOCAL_CONST LC_ISA_XLAPSERATE 2;
-   LOCAL_CONST LC_ISA_XPRESSURE 3;
-   LOCAL_CONST LC_ISA_XDENSITY 4;
-   LOCAL_DBL lv_isa_arr[7][5];
-   LOCAL_DBL lv_isa_magic = 0.0;
+   BLOCK_DEF CONST LC_ISA_TEMPERATURE 0;
+   BLOCK_DEF CONST LC_ISA_PRESSURE 1;
+   BLOCK_DEF CONST LC_ISA_DENSITY 2;
+   BLOCK_DEF CONST LC_ISA_XHEIGHT 0;
+   BLOCK_DEF CONST LC_ISA_XTEMPERATURE 1;
+   BLOCK_DEF CONST LC_ISA_XLAPSERATE 2;
+   BLOCK_DEF CONST LC_ISA_XPRESSURE 3;
+   BLOCK_DEF CONST LC_ISA_XDENSITY 4;
+   BLOCK_DEF DBL lv_isa_arr[7][5];
+   BLOCK_DEF DBL lv_isa_magic = 0.0;
 
    ??MACRO ISA_INIT <IND> ; <HEI> ; <TEMP> ;
             <LAPSE> ; <PRES> ; <DENS> ??
@@ -1043,9 +1044,9 @@ BLOCK:   # ISA atmosphere
       lv_isa_arr[<IND>][LC_ISA_XDENSITY] = <DENS>;
    ??MACRO_END
 
-   LOCAL_FUNC DBL lf_isa_calc(DBL height_m, INT state_x):
-      LOCAL_USE lv_isa_arr[];
-      LOCAL_USE lv_isa_magic;
+   BLOCK_DEF FUNC DBL lf_isa_calc(DBL height_m, INT state_x):
+      BLOCK_USE lv_isa_arr[];
+      BLOCK_USE lv_isa_magic;
       INT h_ind;
       DBL air_k_per_m;
       DBL expon;

@@ -1,4 +1,7 @@
 #    Copyright (C) 2016-2020 by Kevin D. Woerner
+# 2020-08-03 kdw  explicit module for pi and tau
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-03 kdw  writeonly keyword
 # 2020-05-11 kdw  local-func syntax changed
 # 2020-05-08 kdw  local function block
@@ -20,7 +23,7 @@
 # 2019-06-04 kdw  func comments added
 # 2019-05-29 kdw  comment changed
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-01 kdw  consts explicit module name
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
@@ -146,21 +149,21 @@ FUNC DBL sphere_distance(DBL lata_rad
 FUNC_END
 
 BLOCK: # ellipsiod funcitons
-   LOCAL_FUNC DBL lf_ka(DBL usq):
+   BLOCK_DEF FUNC DBL lf_ka(DBL usq):
       DBL hyp;
 
       hyp = SQRT(1.0 + usq);
       RETURN (hyp - 1.0) / (hyp + 1.0);
    FUNC_END
 
-   LOCAL_FUNC DBL lf_cap_a(DBL usq):
+   BLOCK_DEF FUNC DBL lf_cap_a(DBL usq):
       DBL ka;
 
       ka = lf_ka(usq);
       RETURN (1.0 + Kw.square(ka / 2.0)) / (1.0 - ka);
    FUNC_END
 
-   LOCAL_FUNC DBL lf_cap_b(DBL usq):
+   BLOCK_DEF FUNC DBL lf_cap_b(DBL usq):
       DBL ka;
 
       ka = lf_ka(usq);
@@ -237,8 +240,8 @@ BLOCK: # ellipsiod funcitons
             * (sig + cap_c * s_sig * (cbsigm
                + cap_c * c_sig
                      * (2.0 * Kw.square(cbsigm) - 1.0))));
-         IF 10 < ii AND Kw.iseq(ABS(xx_prev + xx_curr), TAU):
-            xx_curr = TAU / 2.0;
+         IF 10 < ii AND Kw.iseq(ABS(xx_prev + xx_curr), Kw.TAU):
+            xx_curr = Kw.TAU / 2.0;
             AWAIT_EXIT;
          IF_END
       AWAIT_END

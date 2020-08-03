@@ -1,4 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-03 kdw  explicit module for pi and tau
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-07-10 kdw  stirling tgamma work
 # 2020-06-17 kdw  Modulo operator
 # 2020-06-12 kdw  regularized ul-gamma function work
@@ -37,7 +40,7 @@
 # 2019-05-31 kdw  NR_DO to RAPHSON_LOOP; et al
 # 2019-05-29 kdw  comment changed
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-16 kdw  loop limit def mved
 # 2019-05-01 kdw  consts explicit module name
 # 2019-03-19 kdw  re[t]_val to re[t]valu
@@ -218,7 +221,7 @@ FUNC DBL lgammainv(DBL yy):
 FUNC_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_lgamma_gt_zero(DBL xx):
+   BLOCK_DEF FUNC DBL lf_lgamma_gt_zero(DBL xx):
       # compute LN(TGAMMA(XX))
       DBL retvalu;
       DBL zz;
@@ -269,7 +272,7 @@ BLOCK:
             retvalu = LN(zz) + xx * numer / denom;
          IF_END
       ELSE:
-         uu = (xx - 0.5) * LN(xx) - xx + LN(SQRT(TAU));
+         uu = (xx - 0.5) * LN(xx) - xx + LN(SQRT(Kw.TAU));
          IF 1E+8 < xx:
             retvalu = uu;
          ELSE:
@@ -312,7 +315,7 @@ BLOCK:
 BLOCK_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_eval_cont(DBL xx, INT deg
+   BLOCK_DEF FUNC DBL lf_eval_cont(DBL xx, INT deg
          , READONLY DBL coeff_arr_pc[]):
       # evaluate XX+C0/(XX+C1/(XX+C2/...+CN/XX)..)
       DBL sum;
@@ -490,7 +493,7 @@ FUNC DBL tgammainv(DBL yy):
 FUNC_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_gamma_shift(DBL xx, DBL yy):
+   BLOCK_DEF FUNC DBL lf_gamma_shift(DBL xx, DBL yy):
       # use this property of gamma function
       # to calculate values outside of [1,2)
       #    tgamma_2(x + 1) = x * tgamma_2(x);
@@ -513,7 +516,7 @@ BLOCK:
       RETURN prod;
    FUNC_END
 
-   LOCAL_FUNC DBL lf_tgamma_gt_half(DBL xx):
+   BLOCK_DEF FUNC DBL lf_tgamma_gt_half(DBL xx):
       # compute GAMMA(XX) for 0.5 < XX
       # https://rosettacode.org/wiki/Gamma_function
       INT ii;
@@ -634,7 +637,7 @@ FUNC DBL tgammadouble(DBL xx):
 FUNC_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_ligamma_xxleaa(DBL aa, DBL xx):
+   BLOCK_DEF FUNC DBL lf_ligamma_xxleaa(DBL aa, DBL xx):
       # Lower Incomplete Gamma function
       # useful if XX <= MAX(1.1, AA)
       # ONLY CALL THIS WITH 0.0 < XX
@@ -657,7 +660,7 @@ BLOCK:
       RETURN sum_curr;
    FUNC_END
 
-   LOCAL_FUNC DBL lf_uigamma_aalexx(DBL aa, DBL xx):
+   BLOCK_DEF FUNC DBL lf_uigamma_aalexx(DBL aa, DBL xx):
       # Upper Incomplete Gamma function
       # useful if MAX(1.1, AA) <= XX
       # ONLY CALL THIS WITH 0.75 < XX
@@ -1022,9 +1025,8 @@ FUNC DBL betainc__1(DBL aa, DBL bb, DBL xx):
 FUNC_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_digamma_gt_zero(DBL xx):
-      # derivative of LN(TGAMMA(XX))
-      #   FOR ONLY POSITIVE ARGUMENTS XX
+   BLOCK_DEF FUNC DBL lf_digamma_gt_zero(DBL xx):
+      # derivative of LN(TGAMMA(XX)) for 0 < XX ONLY
       DBL rec_xx_sqr;
       DBL shift;
       DBL sxx;
@@ -1080,7 +1082,7 @@ FUNC DBL digammainv(DBL yy):
 FUNC_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_digamma_gt_zero__1(DBL xx):
+   BLOCK_DEF FUNC DBL lf_digamma_gt_zero__1(DBL xx):
       DBL gg;
       DBL aa_arr[10];
       DBL sxx;

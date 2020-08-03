@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-24 kdw  comment cleanup
+# 2020-07-23 kdw  is[n]eq
 # 2020-06-18 kdw  Modulo operator II
 # 2020-06-17 kdw  Modulo operator
 # 2020-05-29 kdw  keyword trial
@@ -26,7 +28,7 @@
 # 2019-06-04 kdw  isfl[o]orsame func
 # 2019-06-02 kdw  func desc added
 # 2019-05-29 kdw  comment changed
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-01 kdw  consts explicit module name
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
@@ -187,6 +189,17 @@ FUNC BOL iseq(DBL xx, DBL yy):
       IF -epsx <= diffxy AND diffxy <= epsx:
          retvalu_bol = TRUE;
       IF_END
+   IF_END
+   RETURN retvalu_bol;
+FUNC_END
+
+FUNC BOL isneq(DBL xx, DBL yy):
+   BOL retvalu_bol;
+
+   IF xx < yy OR yy < xx:
+      retvalu_bol = TRUE;
+   ELSE:
+      retvalu_bol = FALSE;
    IF_END
    RETURN retvalu_bol;
 FUNC_END

@@ -1,4 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-29 kdw  block-def work
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-07-14 kdw  c[o]sm1 func
 # 2020-07-07 kdw  sq[r]tx func
 # 2020-07-02 kdw  pend[u]lum func
@@ -20,7 +23,7 @@
 # 2020-05-06 kdw  rmed boolean vars
 # 2020-05-05 kdw  magic check func changed
 # 2020-04-28 kdw  tweaks here and there
-# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-26 kdw  BL[O]CK indentation work
 # 2020-04-24 kdw  rem[q]uou func
 # 2020-04-23 kdw  const format change
 # 2020-04-19 kdw  pri[n]t_nu[m]2char rework
@@ -128,7 +131,7 @@
 # 2018-05-20 kdw  const work
 # 2018-05-18 kdw  LAN[G]UAGE syntax change
 # 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
-# 2018-05-14 kdw  BLOCK syntax
+# 2018-05-14 kdw  BL[O]CK syntax
 # 2018-05-13 kdw  MO?DE.* syntax change
 # 2018-04-24 kdw  comments
 # 2018-04-19 kdw  consts rework
@@ -338,7 +341,7 @@
 # 2015-08-17 kdw  syntax error
 # 2015-08-16 kdw  added CO[N]STs, stts_*
 # 2015-08-15 kdw  tweak
-# 2015-08-14 kdw  rmed () in syntax of WHILE, FOR, IF
+# 2015-08-14 kdw  rmed () in syntax of WH[I]LE, FO[R], I[F]
 # 2015-08-12 kdw  tweak
 # 2015-08-11 kdw  touched
 # 2015-08-10 kdw  comment changed
@@ -362,7 +365,7 @@
 # 2015-07-14 kdw  gamma
 # 2015-07-13 kdw  created
 
-MASTER; # insert master functions before other code
+IMPORT_MASTER; # insert master functions before other code
 #TEST:atan2(-1,1)==-PI/4;
 #TEST:atan2(-1,-1)==-3*PI/4;
 #TEST:atan2(1,-1)==3*PI/4;
@@ -781,8 +784,8 @@ FUNC_END
 ??INSERT_FILE "is.fwip"??
 
 BLOCK: # MAGIC stuff
-   LOCAL_CONST LC_MAGIC_INT 2070108020;
-   LOCAL_CONST LC_MAGIC_INT_NOT 301040105;
+   BLOCK_DEF CONST LC_MAGIC_INT 2070108020;
+   BLOCK_DEF CONST LC_MAGIC_INT_NOT 301040105;
    FUNC INT magicset(NUL):
       # return "magic" number
       RETURN LC_MAGIC_INT;
@@ -922,7 +925,7 @@ FUNC DBL trip(DBL xx):
 FUNC_END
 
 BLOCK: # cube root
-   LOCAL_FUNC DBL lf_cbrtx_gt_zero(DBL xx):
+   BLOCK_DEF FUNC DBL lf_cbrtx_gt_zero(DBL xx):
       # power of 2 closest to cuberoot of ABS(XX)
       # only call this with a positive (0) argument
       # if XX in [27/64,64/27) then
@@ -982,7 +985,7 @@ FUNC DBL squareroot(DBL xx):
 FUNC_END
 
 BLOCK: # continued fraction
-   LOCAL_FUNC INT lf_continued_fraction(DBL orig
+   BLOCK_DEF FUNC INT lf_continued_fraction(DBL orig
          , INT show_diff):
       INT whole;
       DBL xx;

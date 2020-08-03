@@ -1,4 +1,6 @@
 #    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-07-12 kdw  sqrttwo const
 # 2020-07-10 kdw  polynomial refactor
 # 2020-07-01 kdw  tests modified
@@ -40,7 +42,7 @@
 # 2019-08-11 kdw  comment cleanup
 # 2019-08-06 kdw  rmed backslashes, macro arg renam
 # 2019-05-29 kdw  comment changed
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-01 kdw  consts explicit module name
 # 2019-04-09 kdw  comment improvement
 # 2019-03-19 kdw  re[t]_val to re[t]valu
@@ -464,7 +466,7 @@ FUNC DBL bessIn_ps(INT nn, DBL xx):
 FUNC_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_besucjy0_xge5(DBL xx, INT jfunc):
+   BLOCK_DEF FUNC DBL lf_besucjy0_xge5(DBL xx, INT jfunc):
       DBL ww;
       DBL pp;
       DBL qq;
@@ -520,7 +522,7 @@ BLOCK:
       RETURN pp * Kw.SQRTTWO / SQRT(Kw.PI * xx);
    FUNC_END
 
-   LOCAL_FUNC DBL lf_besucjy1_xge5(DBL xx, INT jfunc):
+   BLOCK_DEF FUNC DBL lf_besucjy1_xge5(DBL xx, INT jfunc):
       DBL ww;
       DBL pp;
       DBL qq;
@@ -741,11 +743,11 @@ BLOCK:
 BLOCK_END
 
 BLOCK: # define bessel ucrecur
-   LOCAL_FUNC DBL lf_bess_ucrecur(INT nn
+   BLOCK_DEF FUNC DBL lf_bess_ucrecur(INT nn
       , DBL xx
       , DBL fzero
       , DBL fone):
-      # Let Zn be any of bessYn, bessJn
+      # Let Zn be either bessYn or bessJn
       # Zn(NN+1, XX) = 2*NN*Zn(NN, XX) / XX - Zn(NN-1, XX)
       DBL av;
       DBL bv;
@@ -770,11 +772,11 @@ BLOCK: # define bessel ucrecur
       RETURN cv;
    FUNC_END
 
-   LOCAL_FUNC INT lf_limi(INT nn):
+   BLOCK_DEF FUNC INT lf_limi(INT nn):
       RETURN nn + FLOOR(SQRT(40.0 * nn));
    FUNC_END
 
-   LOCAL_FUNC DBL lf_bess_ucrecur2(INT nn
+   BLOCK_DEF FUNC DBL lf_bess_ucrecur2(INT nn
          , DBL xx):
       DBL tox;
       DBL bzp;
@@ -1010,11 +1012,11 @@ FUNC DBL bessY1__1(DBL xx):
 FUNC_END
 
 BLOCK: # define bessel lcrecur
-   LOCAL_FUNC DBL lf_bess_lcrecur(INT nn
+   BLOCK_DEF FUNC DBL lf_bess_lcrecur(INT nn
       , DBL xx
       , DBL fzero
       , DBL fone):
-      # Let zn be any of bess_jn, bess_yn
+      # Let zn be either bess_jn or bess_yn
       # jn(NN+1, XX) = (2*NN+1) * jn(NN, XX) / XX  - jn(NN-1, XX)
       DBL av;
       DBL bv;

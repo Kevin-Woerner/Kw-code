@@ -1,4 +1,9 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-02 kdw  var renam g?d
+# 2020-07-29 kdw  block-def work
+# 2020-07-27 kdw  block syntax
+# 2020-07-25 kdw  s/BITWISE/BIT/
+# 2020-07-24 kdw  s/LO[C]AL_/BL[O]CK_/
 # 2020-07-10 kdw  prim[e]nth__1 func
 # 2020-07-08 kdw  practical number check
 # 2020-07-02 kdw  test modified
@@ -269,7 +274,7 @@ FUNC INT ctz(INT nn):
    #    or number of 2s in factorization of NN
    INT ii;
    ii = 0;
-   WHILE 0 == BITWISEAND(nn, 1):
+   WHILE 0 == BITAND(nn, 1):
       ii += 1;
       nn = BITSHIFTR(nn, 1);
    WHILE_END
@@ -656,13 +661,13 @@ FUNC_END
 #TEST:primenext(24)-29;
 
 BLOCK: # Prime count
-   LOCAL_INT lv_pcf_end = 0;
-   LOCAL_DBL lv_pcf_arr[0];
+   BLOCK_DEF INT lv_pcf_end = 0;
+   BLOCK_DEF DBL lv_pcf_arr[0];
    FUNC INT primecount(DBL xx):
       # Prime Counting Function == number of primes <= XX
       # using memoization
-      LOCAL_USE lv_pcf_arr[];
-      LOCAL_USE lv_pcf_end;
+      BLOCK_USE lv_pcf_arr[];
+      BLOCK_USE lv_pcf_end;
       INT retvalu;
       INT poss_prime;
       INT s_ind;
@@ -1269,15 +1274,15 @@ FUNC INT dlog1(INT aa, INT nn):
 FUNC_END
 
 BLOCK: # Mertens function
-   LOCAL_INT lv_mertens_end = 0;
-   LOCAL_INT lv_mertens_arr[0];
+   BLOCK_DEF INT lv_mertens_end = 0;
+   BLOCK_DEF INT lv_mertens_arr[0];
    FUNC INT mertens(INT nn):
       # sum of mobius function from 0 to NN
       # I.E. count of square-free integers up to NN
       #    that have an even number of prime factors,
       #    minus count of those that have an odd number
-      LOCAL_USE lv_mertens_arr[];
-      LOCAL_USE lv_mertens_end;
+      BLOCK_USE lv_mertens_arr[];
+      BLOCK_USE lv_mertens_end;
       INT retvalu;
       INT kk;
 
@@ -1535,7 +1540,7 @@ FUNC INT prime0_f(INT nf, READONLY INT fac_arr_pc[]):
 FUNC_END
 
 BLOCK: # Prime factors
-   LOCAL_CONST LC_MAX_FACTORS 65; # 1
+   BLOCK_DEF CONST LC_MAX_FACTORS 65; # 1
 
    FUNC INT print_factor(INT nn):
       # Print out all prime factors of number NN
@@ -1876,12 +1881,12 @@ BLOCK_END
 
 FUNC INT repetendlen(INT denm, INT basee):
    # return the repetend length of 1 / DENM in base BASEE
-   INT gd;
+   INT gdn;
    INT retvalu;
 
-   AWAIT 1 == gd:
-      gd = gcd(denm, basee);
-      denm /= gd;
+   AWAIT 1 == gdn:
+      gdn = gcd(denm, basee);
+      denm /= gdn;
    AWAIT_END
 
    IF denm == 1:
@@ -1967,11 +1972,11 @@ FUNC INT bkbn(INT bb, INT kk, INT bbb):
 FUNC_END
 
 BLOCK: # Li, Lix variables
-   LOCAL_DBL lv_li_two = 0;
+   BLOCK_DEF DBL lv_li_two = 0;
 
    FUNC DBL lix(DBL xx):
       # logintegral(XX) - logintegral(2)
-      LOCAL_USE lv_li_two;
+      BLOCK_USE lv_li_two;
       # if LV_LI_TWO is not defd, def it
       IF lv_li_two <= 0:
          lv_li_two = Kw.logintegral(2.0);

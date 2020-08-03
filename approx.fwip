@@ -1,5 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
 # HI goes AFTER copyright
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-07-16 kdw  git/comment playing
 # 2020-07-14 kdw  cos[m]1 func
 # 2020-07-12 kdw  sqrttwo const
@@ -38,7 +40,7 @@
 # 2019-06-02 kdw  NR_ to RAPHSON_
 # 2019-05-31 kdw  NR_DO to RAPHSON_LOOP; et al
 # 2019-05-29 kdw  comment changed
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-01 kdw  consts explicit module name
 # 2019-04-22 kdw  F[U]NC keyword
 # 2019-03-28 kdw  tg[a]mma approximation
@@ -246,7 +248,7 @@ FUNC DBL nthroot__1(DBL xx, INT kk):
 FUNC_END
 
 BLOCK:
-   LOCAL_CONST LC_EPS Kw.DBLEPS / 16.0;
+   BLOCK_DEF CONST LC_EPS Kw.DBLEPS / 16.0;
 
    FUNC DBL cossin_ev(INT init_ii, DBL xx_rad, BOL addone_mult):
       #         +INF   (-1)**N * XX_RAD**(2*N+INIT_II)

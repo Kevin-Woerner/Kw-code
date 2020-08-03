@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-05-14 kdw  local funcs only in blocks
 # 2020-05-13 kdw  comment trivially changed
 # 2020-05-11 kdw  local-func syntax changed
@@ -20,7 +22,7 @@
 # 2019-08-06 kdw  array format issues
 # 2019-05-29 kdw  comment changed
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-16 kdw  loop limit def mved
 # 2019-05-01 kdw  consts explicit module name
 # 2019-03-19 kdw  re[t]_val to re[t]valu
@@ -84,8 +86,8 @@
 
 ??INSERT_FILE "Macros.fwip"??
 BLOCK:
-   LOCAL_FUNC DBL lf_lambert_iter(DBL xx, DBL nearw_zero):
-      ## Lamberts W0(x) function, defined by x=y*exp(y)
+   BLOCK_DEF FUNC DBL lf_lambert_iter(DBL xx, DBL nearw_zero):
+      ## Lamberts W0(x) function defined by x=y*exp(y)
       INT ii;
       DBL eww;
       DBL tnn;

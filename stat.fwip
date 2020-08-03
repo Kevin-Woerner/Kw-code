@@ -1,7 +1,9 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  comment cleanup
 # 2020-06-03 kdw  writeonly keyword
 # 2020-05-11 kdw  local-func syntax changed
-# 2020-04-26 kdw  BLOCK indentation work
+# 2020-04-26 kdw  BL[O]CK indentation work
 # 2020-04-12 kdw  comment change
 # 2020-03-09 kdw  LO[C]AL_.* keywords
 # 2020-03-03 kdw  comment change
@@ -15,7 +17,7 @@
 # 2019-08-06 kdw  rmed backshlashes, macro arg renam
 # 2019-07-22 kdw  minor cosmetic tweak
 # 2019-05-24 kdw  local replaced private
-# 2019-05-22 kdw  s/FU[N]CT[I]ON/FUNC/g
+# 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2018-07-17 kdw  private lf_.* funcs
 # 2018-04-19 kdw  consts rework
@@ -59,7 +61,7 @@
 # 2015-09-20 kdw  created
 
 BLOCK: # num to norm
-   LOCAL_FUNC DBL lf_num2norm(DBL numm):
+   BLOCK_DEF FUNC DBL lf_num2norm(DBL numm):
       DBL retvalu;
 
       IF numm <= 1:

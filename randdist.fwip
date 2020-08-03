@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-07-27 kdw  block syntax
+# 2020-07-24 kdw  s/LO[C]AL_/BL[O]CK_/
 # 2020-07-14 kdw  s/px/pbrx/g
 # 2020-07-12 kdw  sqrttwo const
 # 2020-07-10 kdw  normal cdf approx func
@@ -300,12 +302,12 @@ FUNC DBL normal_quantile(DBL prbx):
 FUNC_END
 
 BLOCK: # normal distributed nunmbers
-   LOCAL_DBL lv_rand_gau_magic = 0.0;
-   LOCAL_DBL lv_rand_gau_prev = 0.0;
+   BLOCK_DEF DBL lv_rand_gau_magic = 0.0;
+   BLOCK_DEF DBL lv_rand_gau_prev = 0.0;
    FUNC DBL normal_rand(NUL):
       # Random Normal Variable
-      LOCAL_USE lv_rand_gau_magic;
-      LOCAL_USE lv_rand_gau_prev;
+      BLOCK_USE lv_rand_gau_magic;
+      BLOCK_USE lv_rand_gau_prev;
       DBL retvalu;
       DBL uua;
       DBL uub;
@@ -1580,7 +1582,7 @@ FUNC DBL t_pdf(DBL dfn, DBL xx):
 FUNC_END
 
 BLOCK: # define t_cdf
-   LOCAL_FUNC DBL lf_subtprob(DBL nnx, DBL xx):
+   BLOCK_DEF FUNC DBL lf_subtprob(DBL nnx, DBL xx):
       DBL aa;
       DBL bb;
       DBL ww;
@@ -1629,7 +1631,7 @@ BLOCK: # define t_cdf
 BLOCK_END # define t_cdf
 
 BLOCK:
-   LOCAL_FUNC DBL lf_t_quantile(INT ndfx, DBL prbx):
+   BLOCK_DEF FUNC DBL lf_t_quantile(INT ndfx, DBL prbx):
       # Quantile Students T distribution
       DBL ux;
       DBL uxsq;
@@ -1758,7 +1760,7 @@ FUNC DBL f_cdf(INT dfn_a, INT dfn_b, DBL xx):
 FUNC_END
 
 BLOCK:
-   LOCAL_FUNC DBL lf_subfprob(INT dfn_a, INT dfn_b, DBL xx):
+   BLOCK_DEF FUNC DBL lf_subfprob(INT dfn_a, INT dfn_b, DBL xx):
       DBL retvalu;
       DBL zx;
       DBL ax;
@@ -1818,7 +1820,7 @@ BLOCK:
       RETURN retvalu;
    FUNC_END
 
-   LOCAL_FUNC DBL lf_subf_two(DBL nx, DBL mm, DBL pp):
+   BLOCK_DEF FUNC DBL lf_subf_two(DBL nx, DBL mm, DBL pp):
       DBL uu;
       DBL nx_sub_two;
       DBL xx_prev;
@@ -1854,7 +1856,7 @@ BLOCK:
       RETURN xx;
    FUNC_END
 
-   LOCAL_FUNC DBL lf_subfx(INT nx, INT mm, DBL pp):
+   BLOCK_DEF FUNC DBL lf_subfx(INT nx, INT mm, DBL pp):
       DBL retvalu;
       DBL uu;
       DBL aa;
