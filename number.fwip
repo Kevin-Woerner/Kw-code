@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-12 kdw  allow args <0 in znorder
 # 2020-08-02 kdw  var renam g?d
 # 2020-07-29 kdw  block-def work
 # 2020-07-27 kdw  block syntax
@@ -222,7 +223,7 @@
 ??INSERT_FILE "Macros.fwip"??
 
 FUNC INT powi(INT xx, INT nn):
-   # XX**NN
+   # XX**NN (assumes 0 < nn)
    INT pp;
    INT sqx;
 
@@ -245,17 +246,30 @@ FUNC INT atothenmodp(INT aa, INT nn, INT pp):
    INT cc;
 
    MODE_INTEGER:
-      retvalu = 1;
-      cc = aa % pp;
-      WHILE 0 < nn:
-         IF Kw.isodd(nn):
-            retvalu = (retvalu * cc) % pp;
-            nn = (nn - 1) / 2;
-         ELSE:
-            nn /= 2;
+      IF pp == 0:
+         retvalu = 0;
+      ELSE:
+         IF pp < 0:
+            pp = -pp;
          IF_END
-         cc = (cc * cc) % pp;
-      WHILE_END
+         IF nn < 0:
+            nn = nn % pp;
+            IF nn < 0:
+               nn += pp;
+            IF_END
+         IF_END
+         retvalu = 1;
+         cc = aa % pp;
+         WHILE 0 < nn:
+            IF Kw.isodd(nn):
+               retvalu = (retvalu * cc) % pp;
+               nn = (nn - 1) / 2;
+            ELSE:
+               nn /= 2;
+            IF_END
+            cc = (cc * cc) % pp;
+         WHILE_END
+      IF_END
    MODE_INTEGER_END
 
    RETURN retvalu;
@@ -323,7 +337,7 @@ FUNC_END
 
 FUNC INT lcam(INT aa, INT bb):
    # LC Almost M of AA and BB
-   # I.E. smallest integer JJ > 1 such that
+   # I.E. smallest integer JJ greater then 1 such that
    #    JJ mod AA = -1, 0, or 1 AND
    #    JJ mod BB = -1, 0, or 1.
    INT ii;
@@ -1829,8 +1843,9 @@ BLOCK: # Prime factors
    #TEST:carmichael(24)-2;
 
    FUNC INT znorder(INT aa, INT nn):
-      # return smallest PP such that
+      # smallest positive integer PP such that
       #   AA ** PP == 1 mod NN
+      # 0 if none exist
       INT ind;
       INT fac_arr[LC_MAX_FACTORS];
       INT nfkk;
@@ -1841,37 +1856,49 @@ BLOCK: # Prime factors
       INT exp_i;
 
       MODE_INTEGER:
-      IF nn <= 1:
-         kk = nn;   # znorder(x,0) = 0, znorder(x,1) = 1
-      ELSIF aa <= 1:
-         kk = aa;   # znorder(0,x) = 0, znorder(1,x) = 1  (x > 1)
-      ELSIF 1 < gcd(aa, nn):
+      IF nn == 0 OR aa == 0:
          kk = 0;
-      ELSE:   # Cohen 1.4.3 using Carmichael Lambda function
-         kk = carmichael(nn);
-         nfkk = factor(kk, fac_arr[]);
-         exp_i = 1;
-         FOR ind FROM 0 TO nfkk - 1:
-            prm_i = fac_arr[ind];
-            kk /= prm_i;
-            IF ind + 1 < nfkk AND prm_i == fac_arr[ind + 1]:
-               exp_i += 1;
-            ELSE:
-               ab = atothenmodp(aa, kk, nn);
-               FOR ek FROM 0 TO exp_i:
-                  IF ab == 1:
+      ELSE:
+         IF nn < 0:
+            nn = -nn;
+         IF_END
+         WHILE aa < 0:
+            aa += nn;
+         WHILE_END
+         IF nn <= 1:
+            # znorder(aa,0) = 0, znorder(aa,1) = 1
+            kk = nn;
+         ELSIF aa <= 1:
+            # znorder(0,nn) = 0, znorder(1,nn) = 1  (nn > 1)
+            kk = aa;
+         ELSIF 1 < gcd(aa, nn):
+            kk = 0;
+         ELSE:   # Cohen 1.4.3 using Carmichael Lambda function
+            kk = carmichael(nn);
+            nfkk = factor(kk, fac_arr[]);
+            exp_i = 1;
+            FOR ind FROM 0 TO nfkk - 1:
+               prm_i = fac_arr[ind];
+               kk /= prm_i;
+               IF ind + 1 < nfkk AND prm_i == fac_arr[ind + 1]:
+                  exp_i += 1;
+               ELSE:
+                  ab = atothenmodp(aa, kk, nn);
+                  FOR ek FROM 0 TO exp_i:
+                     IF ab == 1:
+                        FOR_EXIT;
+                     IF_END
+                     kk *= prm_i;
+                     ab = atothenmodp(ab, prm_i, nn);
+                  FOR_END
+                  IF exp_i < ek:
+                     kk = 0;
                      FOR_EXIT;
                   IF_END
-                  kk *= prm_i;
-                  ab = atothenmodp(ab, prm_i, nn);
-               FOR_END
-               IF exp_i < ek:
-                  kk = 0;
-                  FOR_EXIT;
+                  exp_i = 1;
                IF_END
-               exp_i = 1;
-            IF_END
-         FOR_END
+            FOR_END
+         IF_END
       IF_END
       MODE_INTEGER_END
       RETURN kk;

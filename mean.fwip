@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-11 kdw  agc[m]ean added
 # 2020-07-07 kdw  attempt to extend agmean to < 0
 # 2020-07-06 kdw  p[m]ean works w/ pp == 0
 # 2020-07-04 kdw  ag[h]mean
@@ -260,6 +261,43 @@ FUNC DBL agmean__1(DBL xa, DBL xb):
    retvalu = xsgn * xtmp;
 
    RETURN retvalu;
+FUNC_END
+
+FUNC DBL agcmean(READONLY DBL xa_arr_pc[]
+   , READONLY DBL xb_arr_pc[]
+   , WRITEONLY DBL ret_arr_p[]):
+   # Complex AGM; return magnitude
+   DBL gg_arr[2];
+   DBL aa_arr[2];
+   DBL tt_arr[2];
+   DBL pr_arr[2];
+   DBL pr_len;
+   DBL pr_theta;
+
+   gg_arr[0] = xa_arr_pc[0];
+   gg_arr[1] = xa_arr_pc[1];
+   aa_arr[0] = xb_arr_pc[0];
+   aa_arr[1] = xb_arr_pc[1];
+   AWAIT Kw.iseq(gg_arr[0], aa_arr[0])
+         AND Kw.iseq(gg_arr[1], aa_arr[1]):
+      tt_arr[0] = (aa_arr[0] + gg_arr[0]) / 2;
+      tt_arr[1] = (aa_arr[1] + gg_arr[1]) / 2;
+      pr_arr[0] = aa_arr[0] * gg_arr[0] - aa_arr[1] * gg_arr[1];
+      pr_arr[1] = aa_arr[1] * gg_arr[0] + aa_arr[0] * gg_arr[1];
+      pr_len = SQRT(Kw.hypot(pr_arr[0], pr_arr[1]));
+      pr_theta = ATAN2(pr_arr[1], pr_arr[0]) / 2.0;
+      gg_arr[0] = pr_len * COS(pr_theta);
+      gg_arr[1] = pr_len * SIN(pr_theta);
+      aa_arr[0] = tt_arr[0];
+      aa_arr[1] = tt_arr[1];
+      IF aa_arr[0] * gg_arr[0] + aa_arr[1] * gg_arr[1] < 0:
+         gg_arr[0] = -gg_arr[0];
+         gg_arr[1] = -gg_arr[1];
+      IF_END
+   AWAIT_END
+   ret_arr_p[0] = gg_arr[0];
+   ret_arr_p[1] = gg_arr[1];
+   RETURN Kw.hypot(gg_arr[0], gg_arr[1]);
 FUNC_END
 
 FUNC DBL aghmean(DBL xa, DBL xb, DBL xc):

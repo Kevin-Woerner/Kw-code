@@ -1,4 +1,5 @@
 #    Copyright (C) 2020 by Kevin D. Woerner
+# 2020-08-11 kdw  ell[i]ptic function renam
 # 2020-08-03 kdw  explicit module for pi and tau
 # 2020-07-02 kdw  more tests; circ computed
 # 2020-06-25 kdw  func renam
@@ -58,7 +59,7 @@ FUNC DBL ellipsecir__1(DBL aa, DBL bb):
    IF_END
    rati = minor_axis / major_axis;
    # now major_axis = max(AA, BB)
-   RETURN 4.0 * major_axis * Kw.elliptic2(1.0 - rati * rati);
+   RETURN 4.0 * major_axis * Kw.elliptic2m(1.0 - rati * rati);
 FUNC_END
 
 FUNC DBL ellipsecir(DBL aa, DBL bb):

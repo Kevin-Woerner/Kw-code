@@ -1,4 +1,5 @@
 #    Copyright (C) 2016-2020 by Kevin D. Woerner
+# 2020-08-05 kdw  minor refactor
 # 2020-07-24 kdw  comment cleanup
 # 2020-04-12 kdw  comment change
 # 2020-03-03 kdw  comment changed:odd chars
@@ -40,14 +41,14 @@ FUNC DBL f21(DBL aa, DBL bb, DBL cc, DBL zz):
    DBL term;
    DBL nn;
 
-   IF 1 <= ABS(zz):
+   IF 1 < ABS(zz):
       sum_curr = 0.0;
    ELSE:
       sum_curr = 1.0;
       term = 1.0;
       AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
          term *= ((aa + nn) * (bb + nn) * zz
-               / ((cc + nn) * (nn + 1)));
+               / ((cc + nn) * (1  + nn)));
          sum_prev = sum_curr;
          sum_curr += term;
       AWAIT_END
@@ -62,14 +63,14 @@ FUNC DBL f11(DBL aa, DBL bb, DBL zz):
    DBL term;
    DBL nn;
 
-   IF 1 <= ABS(zz):
+   IF 1 < ABS(zz):
       sum_curr = 0.0;
    ELSE:
       sum_curr = 1.0;
       term = 1.0;
       AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
          term *= ((aa + nn) * zz
-               / ((bb + nn) * (nn + 1)));
+               / ((bb + nn) * (1 + nn)));
          sum_prev = sum_curr;
          sum_curr += term;
       AWAIT_END
