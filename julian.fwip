@@ -1,4 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-20 kdw  boolean checks changed
+# 2020-08-19 kdw  comment change
+# 2020-08-17 kdw  comment change
 # 2020-07-29 kdw  block-def work
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
@@ -57,7 +60,7 @@
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
 # 2019-03-01 kdw  ymd[h]ms2j2k created
-# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-28 kdw  REP[L]ACE/DE[F]INE work
 # 2019-02-03 kdw  day2hms.* funcs
 # 2019-01-31 kdw  conversion func rework
 # 2018-12-08 kdw  comment change
@@ -68,11 +71,11 @@
 # 2018-07-19 kdw  comments; array reformat
 # 2018-06-14 kdw  const changed
 # 2018-05-22 kdw  comment change
-# 2018-05-14 kdw  BLO?CK syntax change
+# 2018-05-14 kdw  BL(O)CK syntax change
 # 2018-05-06 kdw  comment change
 # 2018-04-16 kdw  .*_diff work
-# 2018-04-15 kdw  k?wt work
-# 2018-04-14 kdw  epo?chx renamd to k?wt
+# 2018-04-15 kdw  (k)wt work
+# 2018-04-14 kdw  ep(o)chx renamd to (k)wt
 # 2018-04-10 kdw  reorder conversion funcs
 # 2018-04-03 kdw  rm () from return
 # 2018-03-20 kdw  replaced index w/ "at"replace
@@ -95,47 +98,47 @@
 # 2017-10-20 kdw  REP[L]ACE syntax changed
 # 2017-09-27 kdw  var nam changed
 # 2017-09-26 kdw  jewish elapsed days work
-# 2017-09-22 kdw  jd2ym?dhms rework
-# 2017-09-20 kdw  nasty bug in jd2ym?dhms; rmed ymd?2j2k
-# 2017-09-18 kdw  ymdh?ms2jd work
-# 2017-09-17 kdw  ymdh?ms2jd
+# 2017-09-22 kdw  jd2y(m)dhms rework
+# 2017-09-20 kdw  nasty bug in jd2y(m)dhms; rmed ym(d)2j2k
+# 2017-09-18 kdw  ymd(h)ms2jd work
+# 2017-09-17 kdw  ymd(h)ms2jd
 # 2017-09-14 kdw  units work
 # 2017-09-12 kdw  day2h[m]s function
-# 2017-09-11 kdw  consts renamed, refactor ymd?2j2k
+# 2017-09-11 kdw  consts renamed, refactor ym(d)2j2k
 # 2017-09-06 kdw  UNITS support
-# 2017-08-25 kdw  da?y2hms bug
+# 2017-08-25 kdw  d(a)y2hms bug
 # 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
-# 2017-07-12 kdw  mo?dulo to MO?D
-# 2017-06-23 kdw  REPL?ACE redo
+# 2017-07-12 kdw  m(o)dulo to M(O)D
+# 2017-06-23 kdw  REP(L)ACE redo
 # 2017-04-21 kdw  func to function
 # 2017-03-19 kdw  comments
 # 2017-03-17 kdw  python stuff in jd2ym.*
 # 2017-03-12 kdw  shorten long comments
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
-# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
+# 2017-02-24 kdw  REP[L]ACE rework, et al
 # 2017-02-23 kdw  var renam
 # 2017-02-20 kdw  var renam
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-12 kdw  FWIP language change
 # 2017-02-07 kdw  comment rearrangement
 # 2017-01-31 kdw  long lines
-# 2016-12-18 kdw  j?ewish_* refactor
-# 2016-12-16 kdw  j?ewish_* refactor
+# 2016-12-18 kdw  (j)ewish_* refactor
+# 2016-12-16 kdw  (j)ewish_* refactor
 # 2016-12-12 kdw  var name change; comment changed
 # 2016-12-05 kdw  comment change
 # 2016-12-04 kdw  comment reorg
 # 2016-12-02 kdw  rmed unused hour-per-degree
 # 2016-11-28 kdw  file suffix changed
-# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-21 kdw  D(E)F to F(U)NC
 # 2016-11-20 kdw  language change
 # 2016-11-19 kdw  is leap tyear refactor
-# 2016-11-18 kdw  _?_P?OD_?_
+# 2016-11-18 kdw  (_)_(P)OD(_)_
 # 2016-11-16 kdw  function renam
 # 2016-11-15 kdw  function descriptions
-# 2016-11-14 kdw  hol?id.fwip consolidation
+# 2016-11-14 kdw  ho(l)id.fwip consolidation
 # 2016-11-11 kdw  var name change
 # 2016-09-14 kdw  lang change
 # 2016-08-08 kdw  corrected comment
@@ -148,9 +151,9 @@
 # 2016-07-27 kdw  unix funcs
 # 2016-07-26 kdw  ymdhms functions
 # 2016-07-19 kdw  renamed / refactor things
-# 2016-07-18 kdw  .*do?w functions
+# 2016-07-18 kdw  .*d(o)w functions
 # 2016-07-14 kdw  const name changed
-# 2016-07-13 kdw  y?md2j2?000 epoch correction
+# 2016-07-13 kdw  (y)md2j(2)000 epoch correction
 # 2016-04-11 kdw  variables renamed
 # 2015-12-14 kdw  long line
 # 2015-11-18 kdw  long line changed
@@ -813,7 +816,7 @@ BLOCK:  # Halaqim
             alt_days += 1;
          IF_END
       ELSIF 0 == alt_dow:
-         IF 9924 <= hq_left AND NOT isjewishleap(hebyear):
+         IF 9924 <= hq_left AND (NOT isjewishleap(hebyear)):
             alt_days += 2;
          IF_END
       ELSIF 6 == alt_dow:

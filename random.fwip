@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-17 kdw  comment change
 # 2020-07-27 kdw  block syntax
 # 2020-07-25 kdw  s/BITWISE/BIT/
 # 2020-07-24 kdw  comment cleanup
@@ -39,7 +40,7 @@
 # 2019-05-22 kdw  s/FU[N]CT[I]ON/FU[N]C/g
 # 2019-05-17 kdw  explicit module for intmax
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
-# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-28 kdw  REP[L]ACE/DE[F]INE work
 # 2018-07-17 kdw  private lf_.* funcs
 # 2018-06-19 kdw  die keyword
 # 2018-05-15 kdw  DIE.* change
@@ -61,11 +62,11 @@
 # 2017-04-30 kdw  func to function
 # 2017-04-04 kdw  comments deleted
 # 2017-03-12 kdw  shorten long comments
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
-# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
+# 2017-02-24 kdw  REP[L]ACE rework, et al
 # 2017-02-21 kdw  var renam
 # 2017-02-20 kdw  array var names
 # 2017-02-14 kdw  FWIP Loop syntax changed

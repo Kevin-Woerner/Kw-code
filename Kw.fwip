@@ -1,4 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-20 kdw  boolean checks changed
+# 2020-08-19 kdw  comment change
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-29 kdw  block-def work
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
@@ -37,7 +40,7 @@
 # 2020-04-01 kdw  t[a]n to TA[N]
 # 2020-03-30 kdw  bla[c]kbo[d]y work
 # 2020-03-29 kdw  comment change
-# 2020-03-16 kdw  sigm[o]id3d?
+# 2020-03-16 kdw  sigm[o]id3d
 # 2020-03-09 kdw  LO[C]AL_.* keywords
 # 2020-03-08 kdw  PR[I]NTVAL change
 # 2020-03-06 kdw  L[A]NG.* names
@@ -94,10 +97,10 @@
 # 2019-03-09 kdw  .*mean() func renam
 # 2019-03-08 kdw  is[e]qual changed to is[e]q, et al.
 # 2019-03-04 kdw  loop-limit work
-# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-28 kdw  REP[L]ACE/DE[F]INE work
 # 2019-02-04 kdw  topy[h] abs changed to ABS
 # 2019-01-31 kdw  topy[h]; iime.hires
-# 2019-01-27 kdw  topy[h]1?
+# 2019-01-27 kdw  topy[h]1
 # 2019-01-23 kdw  added call keyword to base-out
 # 2019-01-13 kdw  var rena; reorg
 # 2018-12-18 kdw  kwelements separated
@@ -130,13 +133,13 @@
 # 2018-05-22 kdw  comment change
 # 2018-05-20 kdw  const work
 # 2018-05-18 kdw  LAN[G]UAGE syntax change
-# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
+# 2018-05-17 kdw  ARRAY.* and HOR[N]ER syntax
 # 2018-05-14 kdw  BL[O]CK syntax
-# 2018-05-13 kdw  MO?DE.* syntax change
+# 2018-05-13 kdw  MODE.* syntax change
 # 2018-04-24 kdw  comments
 # 2018-04-19 kdw  consts rework
 # 2018-04-03 kdw  rm () from return
-# 2018-04-02 kdw  Pro?totype, et al.
+# 2018-04-02 kdw  Prototype, et al.
 # 2018-04-01 kdw  LAN[G]UAGE_E[N]D
 # 2018-03-26 kdw  macro redef
 # 2018-03-17 kdw  comment change
@@ -161,7 +164,7 @@
 # 2017-10-06 kdw  rm astro and earth stuff
 # 2017-10-02 kdw  astro work
 # 2017-09-29 kdw  added squareroot, cuberoot functions
-# 2017-09-28 kdw  co?nst-as?tro.f?wip
+# 2017-09-28 kdw  const-astro.fwip
 # 2017-09-26 kdw  mved some func to earth
 # 2017-09-22 kdw  comment change
 # 2017-09-20 kdw  number format change
@@ -176,13 +179,13 @@
 # 2017-08-18 kdw  lower case constants
 # 2017-08-11 kdw  var renam
 # 2017-07-06 kdw  minor comment change
-# 2017-06-23 kdw  REPL?ACE redo
+# 2017-06-23 kdw  REPLACE redo
 # 2017-06-21 kdw  LANG_.* AND MASTER.* change
 # 2017-06-13 kdw  comment update
 # 2017-06-08 kdw  magic stuff
-# 2017-06-03 kdw  PRI?NT.* changed
+# 2017-06-03 kdw  PRINT.* changed
 # 2017-06-01 kdw  line.fwip added and deleted
-# 2017-05-03 kdw  PROT?OTYPE format changed
+# 2017-05-03 kdw  PROTOTYPE format changed
 # 2017-05-02 kdw  var renam app changed to appr
 # 2017-04-20 kdw  func changed to function
 # 2017-04-18 kdw  bessel
@@ -195,43 +198,43 @@
 # 2017-03-17 kdw  space after comma
 # 2017-03-13 kdw  VB: pow function
 # 2017-03-12 kdw  shorten long comments
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-07 kdw  futile experiment
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
-# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
+# 2017-02-24 kdw  REP[L]ACE rework, et al
 # 2017-02-23 kdw  var array nam change
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-13 kdw  FWIP language change
 # 2017-02-12 kdw  FWIP language change
-# 2017-02-08 kdw  ?[?]PRO?TOT?YPE
+# 2017-02-08 kdw  .PRO[T]OTYPE
 # 2017-01-08 kdw  INSERT syntax change
-# 2017-01-06 kdw  ?[?]LAN[G]UAGE_[I]S.* stuff
+# 2017-01-06 kdw  ..LAN[G]UAGE_[I]S.* stuff
 # 2017-01-05 kdw  log1[pm]
 # 2016-12-28 kdw  rearrangement
 # 2016-12-27 kdw  mved earth* to sphere*, et al.
 # 2016-12-26 kdw  mved *_distance funcs to new earth.fwip
 # 2016-12-20 kdw  failed experiment w/ powers
-# 2016-12-02 kdw  ?[?]INS?ERT changed
+# 2016-12-02 kdw  ..INS[E]RT changed
 # 2016-11-28 kdw  file suffix change
-# 2016-11-27 kdw  squ?are, c?ube
+# 2016-11-27 kdw  square, cube
 # 2016-11-25 kdw  constant renam
 # 2016-11-24 kdw  LAN[G]UAGE_N[O]T to LAN[G]UAGE_IFN[O]T
-# 2016-11-23 kdw  CN?ST changed to REA?DON?LY
-# 2016-11-22 kdw  high-precision EU?LER calc experiment
-# 2016-11-21 kdw  DE?F changed to FU?NC
+# 2016-11-23 kdw  CNST changed to REA[D]ONLY
+# 2016-11-22 kdw  high-precision EU[L]ER calc experiment
+# 2016-11-21 kdw  DE[F] changed to FU[N]C
 # 2016-11-20 kdw  language change
 # 2016-11-19 kdw  minor rearrangement
 # 2016-11-17 kdw  sinx rmed; cbrtx renamd
-# 2016-11-16 kdw  ma?gic stuff
+# 2016-11-16 kdw  magic stuff
 # 2016-11-15 kdw  MOD/BIT* syntax change
-# 2016-11-14 kdw  modu?lo
+# 2016-11-14 kdw  mod[u]lo
 # 2016-11-11 kdw  minor refactor
-# 2016-11-09 kdw  FO?RE?VER loop rmed
-# 2016-11-08 kdw  AW?AIT.*COU?NT syntax
+# 2016-11-09 kdw  FO[R]EVER loop rmed
+# 2016-11-08 kdw  AW[A]IT.*COU[N]T syntax
 # 2016-11-07 kdw  __LANG_* syntax changed
-# 2016-11-06 kdw  isz?ero changed to ise?qual
+# 2016-11-06 kdw  isz[e]ro changed to ise[q]ual
 # 2016-11-01 kdw  hyper
 # 2016-10-30 kdw  comment in fmod
 # 2016-10-28 kdw  comment reorg
@@ -239,8 +242,8 @@
 # 2016-10-10 kdw  BC:moved var decls in un and tn
 # 2016-10-08 kdw  lowercased Tn for BC
 # 2016-10-07 kdw  Tn
-# 2016-09-28 kdw  change in v?kk?cp.?sh
-# 2016-09-19 kdw  not magic; _[_]IN?SERT[_]_
+# 2016-09-28 kdw  change in vk[k]cp.sh
+# 2016-09-19 kdw  not magic; _[_]INSERT[_]_
 # 2016-09-14 kdw  added () to return statements
 # 2016-09-14 kdw  lang change
 # 2016-09-13 kdw  lang change
@@ -252,20 +255,20 @@
 # 2016-05-25 kdw  debugging compiler
 # 2016-05-24 kdw  long lines
 # 2016-05-18 kdw  comment change
-# 2016-05-12 kdw  VIS?UALB?ASIC6 rename
+# 2016-05-12 kdw  VIS[U]ALBA[S]IC6 rename
 # 2016-05-04 kdw  deprecated P[R]INT
-# 2016-05-02 kdw  debugging on dar?win
+# 2016-05-02 kdw  debugging on darw[i]n
 # 2016-04-27 kdw  comment tweak
 # 2016-03-12 kdw  cbrt debugging
 # 2016-02-29 kdw  comment tweak
 # 2016-01-22 kdw  long lines
 # 2016-01-05 kdw  minor comment change
 # 2015-12-31 kdw  bounded (possible) infinite loops
-# 2015-12-30 kdw  _?_DEC?LARE_?_
+# 2015-12-30 kdw  __DECLARE__
 # 2015-12-28 kdw  rearranged includes
-# 2015-12-28 kdw  _?_I?F_X_?_ changed to _?_IF_NONE_?_
-# 2015-12-21 kdw  nested _?_I?Fs
-# 2015-12-11 kdw  _?_END?IF_?_ renamed
+# 2015-12-28 kdw  __IF_X__ changed to __IF_NONE__
+# 2015-12-21 kdw  nested __IFs
+# 2015-12-11 kdw  __ENDIF__ renamed
 # 2015-12-10 kdw  i[s]zero stuff
 # 2015-12-09 kdw  debugging
 # 2015-12-04 kdw  end-cr
@@ -289,7 +292,7 @@
 # 2015-10-14 kdw  su[n].fwip
 # 2015-10-13 kdw  _[_]DEFI[N]E_[_]
 # 2015-10-10 kdw  is* functions moved
-# 2015-10-09 kdw  [agh]+m1? improvements
+# 2015-10-09 kdw  [agh]+m1 improvements
 # 2015-10-08 kdw  i[n]va[g]m1()
 # 2015-10-07 kdw  L[N]G_MA[X]IMUM
 # 2015-10-05 kdw  i[s]alm[o]stequal
@@ -337,7 +340,7 @@
 # 2015-08-21 kdw  kw[2].pl change (C stuff)
 # 2015-08-20 kdw  kw[2].pl change
 # 2015-08-19 kdw  stts_* stuff
-# 2015-08-18 kdw  redid some sta?t stuff
+# 2015-08-18 kdw  redid some stat stuff
 # 2015-08-17 kdw  syntax error
 # 2015-08-16 kdw  added CO[N]STs, stts_*
 # 2015-08-15 kdw  tweak
@@ -383,11 +386,11 @@ IMPORT_MASTER; # insert master functions before other code
 #TEST:pow(frac(sqrt(17))+floor(sqrt(17)),2)==17;
 
 # Start doing things, ..
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 
-??INSERT_FILE "constants.fwip"??
+?INSERT_FILE "constants.fwip"?
 #TEST:EULER==0.57721566490153286060651209008240243104215933594;
-??INSERT_FILE "simple.fwip"??
+?INSERT_FILE "simple.fwip"?
 
 ## Exponential related functions
 FUNC DBL ln(DBL xx):
@@ -748,7 +751,7 @@ FUNC INT cnv_dbl2si16(DBL xx):
    RETURN retvalu;
 FUNC_END
 
-??MACRO TEMP_CONVERSION <NM> ; <LC> ; <UC> ??
+?MACRO TEMP_CONVERSION <NM> ; <LC> ; <UC> ?
 FUNC DBL k2temp<LC>(DBL temp_k):
    # Kelvin temperature to a <NM> temperature
    RETURN (temp_k - Kw.K_AT_0TEMP<UC>) * Kw.KELVIN / Kw.DEG<UC>;
@@ -761,11 +764,11 @@ FUNC DBL temp<LC>(DBL temp_<LC>):
    # <NM> temperature to a Kelvin temperature
    RETURN temp<LC>2k(temp_<LC>);
 FUNC_END
-??MACRO_END
+?MACRO_END
 
-??TEMP_CONVERSION Celcius    ; c ; C ??
-??TEMP_CONVERSION Fahrenheit ; f ; F ??
-??TEMP_CONVERSION Rankine    ; r ; R ??
+?TEMP_CONVERSION Celcius    ; c ; C ?
+?TEMP_CONVERSION Fahrenheit ; f ; F ?
+?TEMP_CONVERSION Rankine    ; r ; R ?
 
 FUNC DBL tempf2tempc(DBL temp_f):
    # Fahrenheit temperature to a Celsius temperature
@@ -781,7 +784,7 @@ FUNC_END
 #TEST:tempc2tempf(37)==98.6;
 #TEST:tempf2tempc(tempc2tempf(3.2))==3.2;
 
-??INSERT_FILE "is.fwip"??
+?INSERT_FILE "is.fwip"?
 
 BLOCK: # MAGIC stuff
    BLOCK_DEF CONST LC_MAGIC_INT 2070108020;
@@ -797,12 +800,12 @@ BLOCK: # MAGIC stuff
 BLOCK_END # MAGIC stuff
 
 FUNC BOL ismagic(INT xx):
-   # does XX equal magic number?
+   # does XX equal magic number
    RETURN iseq(xx, magicset());
 FUNC_END
 
-??INSERT_FILE "round.fwip"??
-??INSERT_FILE "trig.fwip"??
+?INSERT_FILE "round.fwip"?
+?INSERT_FILE "trig.fwip"?
 
 FUNC DBL ln1p(DBL xx):
    # ln(1 + XX) accurately via
@@ -953,7 +956,7 @@ BLOCK: # cube root
       # using Newton-Raphson method on  F(XX) = XX * XX * XX - YY
       DBL ayy;
       DBL init_xx;
-      ??RAPHSON_DECLARATIONS??
+      ?RAPHSON_DECLARATIONS?
 
       ayy = ABS(yy);
       IF 0.0 < ayy:
@@ -964,9 +967,9 @@ BLOCK: # cube root
          IF_END
          # refine approximation using NR method on
          #       nrvx_xx**3 - YY = 0
-         ??RAPHSON_LOOP init_xx
+         ?RAPHSON_LOOP init_xx
                ; nrvx_xx * nrvx_xx - yy / nrvx_xx
-               ; 3 * nrvx_xx??
+               ; 3 * nrvx_xx ?
       ELSE:
          nrvx_xx = 0.0;
       IF_END
@@ -1314,7 +1317,7 @@ FUNC INT print_base_outf(DBL num, INT baset):
    lim = CEILL(-lg(DBLEPS) / lg(baset));
    frc = frac(num) * baset;
    ii = 1;
-   WHILE NOT Kw.iszero(frc) AND ii <= lim:
+   WHILE ii <= lim AND NOT Kw.iszero(frc):
       dig = FLOORL(frc);
       CALL print_num2char(dig);
       frc -= dig;
@@ -1325,30 +1328,30 @@ FUNC INT print_base_outf(DBL num, INT baset):
    RETURN dig_count + lim;
 FUNC_END
 
-??INSERT_FILE "hyper.fwip"??
-??INSERT_FILE "lambert.fwip"??
-??INSERT_FILE "integral.fwip"??
-??INSERT_FILE "number.fwip"??
-??INSERT_FILE "bessel.fwip"??
-??INSERT_FILE "partition.fwip"??
-??INSERT_FILE "bits.fwip"??
-??INSERT_FILE "erf.fwip"??
-??INSERT_FILE "gamma.fwip"??
-??INSERT_FILE "combin.fwip"??
-??INSERT_FILE "julian.fwip"??
-??INSERT_FILE "mean.fwip"??
-??INSERT_FILE "random.fwip"??
-??INSERT_FILE "randdist.fwip"??
-??INSERT_FILE "stat.fwip"??
-??INSERT_FILE "stts.fwip"??
-??INSERT_FILE "fit.fwip"??  # must come after stts
-??INSERT_FILE "approx.fwip"??
-??INSERT_FILE "sphere.fwip"??
-??INSERT_FILE "shc.fwip"??
-??INSERT_FILE "elliptic.fwip"??
-??INSERT_FILE "ellipse.fwip"??
-??INSERT_FILE "cdf.fwip"??
-??INSERT_FILE "search.fwip"??
+?INSERT_FILE "hyper.fwip"?
+?INSERT_FILE "lambert.fwip"?
+?INSERT_FILE "integral.fwip"?
+?INSERT_FILE "number.fwip"?
+?INSERT_FILE "bessel.fwip"?
+?INSERT_FILE "partition.fwip"?
+?INSERT_FILE "bits.fwip"?
+?INSERT_FILE "erf.fwip"?
+?INSERT_FILE "gamma.fwip"?
+?INSERT_FILE "combin.fwip"?
+?INSERT_FILE "julian.fwip"?
+?INSERT_FILE "mean.fwip"?
+?INSERT_FILE "random.fwip"?
+?INSERT_FILE "randdist.fwip"?
+?INSERT_FILE "stat.fwip"?
+?INSERT_FILE "stts.fwip"?
+?INSERT_FILE "fit.fwip"?  # must come after stts
+?INSERT_FILE "approx.fwip"?
+?INSERT_FILE "sphere.fwip"?
+?INSERT_FILE "shc.fwip"?
+?INSERT_FILE "elliptic.fwip"?
+?INSERT_FILE "ellipse.fwip"?
+?INSERT_FILE "cdf.fwip"?
+?INSERT_FILE "search.fwip"?
 
 FUNC DBL blackbody(DBL wavelength, DBL temperk):
    # spectral radiance at WAVELENGTH and TEMPERK

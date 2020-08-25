@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-20 kdw  boolean checks changed
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-25 kdw  s/BITWISE/BIT/
 # 2020-07-24 kdw  comment cleanup
 # 2020-06-17 kdw  Modulo operator
@@ -43,19 +45,19 @@
 # 2017-05-03 kdw  PROT?OTYPE format changed
 # 2017-04-21 kdw  func to function
 # 2017-03-13 kdw  forgotten ";" in bitor, binand
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-07 kdw  INS?ERT etal
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
 # 2017-02-24 kdw  LAN[G]UAGE change
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-13 kdw  FWIP language change
 # 2017-02-12 kdw  FWIP language change
-# 2017-02-08 kdw  "??"PRO?TOT?YPE
+# 2017-02-08 kdw  "?"PRO?TOT?YPE
 # 2017-02-07 kdw  comment change
 # 2017-01-19 kdw  var name change
-# 2017-01-06 kdw  "??"LAN[G]UAGE_I[F] deprecated
+# 2017-01-06 kdw  "?"LAN[G]UAGE_I[F] deprecated
 # 2016-12-08 kdw  comment change
 # 2016-11-23 kdw  comment cleanup
 # 2016-11-21 kdw  DE?F to FU?NC
@@ -353,7 +355,7 @@ FUNC INT bits_ms1b(INT orig):
       retvalu = 0;
    ELSE:
       divisor = -2;
-      WHILE 0 <> BITAND(divisor, orig):
+      WHILE BITAND(divisor, orig) <> 0:
          divisor *= 2;
       WHILE_END
       retvalu = -divisor / 2;
@@ -396,7 +398,7 @@ FUNC INT bits_ms1bpos(INT orig):
    ELSE:
       divisor = -2;
       bit_count = 0;
-      WHILE 0 <> BITAND(divisor, orig):
+      WHILE BITAND(divisor, orig) <> 0:
          divisor *= 2;
          bit_count += 1;
       WHILE_END

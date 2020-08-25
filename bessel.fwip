@@ -1,4 +1,5 @@
 #    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-07-12 kdw  sqrttwo const
@@ -78,7 +79,7 @@
 # 2017-04-19 kdw  funciton keyword
 # 2017-04-18 kdw  created
 
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 
 FUNC DBL bessJv(DBL vv, DBL xx):
    # Cylindrical Bessel function 1th kind Jv()

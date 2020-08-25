@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-19 kdw  comment change
+# 2020-08-17 kdw  macro syntax changed
 # 2020-08-03 kdw  explicit module for pi and tau
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
@@ -59,10 +61,10 @@
 # 2018-07-18 kdw  gamma work
 # 2018-07-17 kdw  private lf_.* funcs
 # 2018-07-13 kdw  float number reformt
-# 2018-05-22 kdw  tgam?ma2 description
+# 2018-05-22 kdw  tga(m)ma2 description
 # 2018-05-20 kdw  hnm()
-# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
-# 2018-05-16 kdw  AR?RAY syntax
+# 2018-05-17 kdw  AR(R)AY.* and HOR[N]ER syntax
+# 2018-05-16 kdw  A(R)RAY syntax
 # 2018-04-03 kdw  rm () from return
 # 2018-03-26 kdw  macro redef
 # 2018-02-19 kdw  secant and macro refactor
@@ -94,11 +96,11 @@
 # 2017-03-21 kdw  lgammainv vs BC debugging
 # 2017-03-19 kdw  comments
 # 2017-03-12 kdw  shorten long comments
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
-# 2017-03-07 kdw  INS?ERT etal
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
+# 2017-03-07 kdw  IN(S)ERT etal
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
 # 2017-02-20 kdw  array var names
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-13 kdw  FWIP language change
@@ -108,30 +110,30 @@
 # 2017-02-07 kdw  comment rearrangement; SE[C]ANT stuff
 # 2017-02-06 kdw  SE[C]ANT syntax
 # 2017-02-05 kdw  SE[C]ANT stuff
-# 2017-02-03 kdw  bet?ai?nc error return value
-# 2017-02-01 kdw  bet?ai?nc work
-# 2017-01-31 kdw  bet?ai?nc
+# 2017-02-03 kdw  be(t)a(i)nc error return value
+# 2017-02-01 kdw  be(t)a(i)nc work
+# 2017-01-31 kdw  be(t)a(i)nc
 # 2017-01-06 kdw  ?[?]USE.* to ?[?].*_MODE; ?[?]DIGR.*
 # 2016-12-25 kdw  rev to t
 # 2016-12-02 kdw  BC debugging (dbl_epi* == 0)
-# 2016-11-23 kdw  CN?ST to RE?ADO?NLY
-# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-23 kdw  C(N)ST to R(E)AD(O)NLY
+# 2016-11-21 kdw  D(E)F to F(U)NC
 # 2016-11-20 kdw  language change
-# 2016-11-18 kdw  tgamma refactor; _?_PO?D_?_
+# 2016-11-18 kdw  tgamma refactor; (_)_P(O)D(_)_
 # 2016-11-17 kdw  tgamma problem w/ args < 0.5
 # 2016-11-15 kdw  1 to 1.0 for python
-# 2016-11-14 kdw  seca?nt algorithm refactor
-# 2016-11-11 kdw  seca?nt algorithm refactor
+# 2016-11-14 kdw  sec(a)nt algorithm refactor
+# 2016-11-11 kdw  sec(a)nt algorithm refactor
 # 2016-11-08 kdw  bound loops
-# 2016-11-06 kdw  lnga?mma1
-# 2016-10-31 kdw  EX?ITL?OOP
+# 2016-11-06 kdw  lng(a)mma1
+# 2016-10-31 kdw  E(X)IT(L)OOP
 # 2016-10-28 kdw  comment reorg
 # 2016-09-15 kdw  lang change
 # 2016-09-13 kdw  lang change
 # 2016-05-18 kdw  comment change
-# 2016-01-11 kdw  corrected comment; rmed gam?maln
+# 2016-01-11 kdw  corrected comment; rmed ga(m)maln
 # 2015-12-31 kdw  bounded (possible) infinite loops
-# 2015-12-30 kdw  i?sdb?leq?ual to i?seq?ual
+# 2015-12-30 kdw  (i)sd(b)le(q)ual to (i)se(q)ual
 # 2015-12-28 kdw  .*2() functions exsized
 # 2015-12-16 kdw  long comments
 # 2015-12-14 kdw  bad sigils
@@ -144,8 +146,8 @@
 # 2015-11-12 kdw  rmed tga[m]ma2; et al.
 # 2015-10-19 kdw  ga[m]ma to tg[a]mma
 # 2015-10-13 kdw  function rename
-# 2015-10-12 kdw  gam?main?v improved ; lg?ammai?nv
-# 2015-10-11 kdw  seca?nt algorithm changed
+# 2015-10-12 kdw  ga(m)mai(n)v improved ; l(g)amma(i)nv
+# 2015-10-11 kdw  sec(a)nt algorithm changed
 # 2015-10-10 kdw  fac(torial)?inv created
 # 2015-10-09 kdw  di[g]ammai[n]v created
 # 2015-10-01 kdw  float equality checks to is.*
@@ -154,7 +156,7 @@
 # 2015-09-27 kdw  debugging ; ga[m]mainv, digamma
 # 2015-09-20 kdw  created
 
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 
 FUNC DBL lgamma__1(DBL xx):
    # compute LN(GAMMA(XX))
@@ -210,13 +212,13 @@ FUNC_END
 
 FUNC DBL lgammainv(DBL yy):
    # XX such that YY = log(GAMMA(XX))
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
    DBL yy_fixed;
    DBL xx_init;
 
    yy_fixed = yy / Kw.PI + LN(yy + 0.5);
    xx_init = yy_fixed + Kw.PI - 0.5;
-   ??SECANT_LOOP xx_init ; 0.01 ; yy - lgamma(scvx_xx)??
+   ?SECANT_LOOP xx_init ; 0.01 ; yy - lgamma(scvx_xx)?
    RETURN scvx_xx;
 FUNC_END
 
@@ -478,7 +480,7 @@ FUNC_END
 
 FUNC DBL tgammainv(DBL yy):
    # XX such that GAMMA(XX) == YY
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
    DBL kk;
    DBL cc;
    DBL pp;
@@ -488,7 +490,7 @@ FUNC DBL tgammainv(DBL yy):
    cc = SQRT(Kw.TAU) / Kw.E - tgamma(kk); # 0.0365338144849
    pp = LN((yy + cc) / SQRT(Kw.TAU));
    xx_init = pp / wp(pp / Kw.E) + 0.5;
-   ??SECANT_LOOP xx_init ; 0.01 ; yy - tgamma(scvx_xx) ??
+   ?SECANT_LOOP xx_init ; 0.01 ; yy - tgamma(scvx_xx) ?
    RETURN scvx_xx;
 FUNC_END
 
@@ -648,7 +650,7 @@ BLOCK:
 
       sum_curr = EXP(aa * LN(xx) - xx) / aa;
       rr = sum_curr;
-      FOR kk FROM 1 TO 5 * ??LOOP_LIMIT??:
+      FOR kk FROM 1 TO 5 * ?LOOP_LIMIT?:
          rr *= xx / (aa + kk);
          sum_prev = sum_curr;
          sum_curr += rr;
@@ -832,12 +834,12 @@ FUNC DBL uigammainv(DBL aa, DBL yy):
    DBL dd;
    DBL tt;
    DBL xx;
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
 
    dd = 1.0 / (9.0 * aa);
    tt = 1 - dd - gau_quantile(yy) * SQRT(dd);
    xx = aa * POW(tt, 3);
-   ??SECANT_LOOP xx ; 0.1 ; yy - uigamma(aa, scvx_xx) ??
+   ?SECANT_LOOP xx ; 0.1 ; yy - uigamma(aa, scvx_xx) ?
    RETURN scvx_xx;
 FUNC_END
 
@@ -1076,8 +1078,8 @@ BLOCK_END
 
 FUNC DBL digammainv(DBL yy):
    # compute XX such that DIGAMMA(XX) == YY
-   ??SECANT_DECLARATIONS??
-   ??SECANT_LOOP EXP(yy) ; 0.1 ; yy - digamma(scvx_xx) ??
+   ?SECANT_DECLARATIONS?
+   ?SECANT_LOOP EXP(yy) ; 0.1 ; yy - digamma(scvx_xx) ?
    RETURN scvx_xx;
 FUNC_END
 

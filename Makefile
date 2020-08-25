@@ -1,5 +1,6 @@
 #! /usr/bin/make -f
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-19 kdw  comment change
 # 2020-07-17 kdw  simplified
 # 2015-09-20 kdw  created
 
@@ -59,7 +60,7 @@ $(kdir_dep)/%$(FWIP_SUFFIXP).d : $(srcdir)/%$(FWIP_SUFFIXO) \
             $(kdir_codekdw_kw_lib)/%,$@) \
       ": \\" > $@
 	$(PERL) -ne \
-      "if(s~.*INSERT_FILE\s+\"(\S+?)\"\?\?.* \
+      "if(s~\?INSERT_FILE\s+\"(\S+?)\"\?.* \
             ~   $(srcdir)/\$$1\\\\~x){print}" \
       $< >> $@
 
@@ -67,7 +68,7 @@ include $(MAKEDIR)/Makefile.end
 
 define mdfd_inc
    $(addprefix $(srcdir)/,$(shell $(PERL) -ne \
-      "if(s/.*INSERT_FILE \"(\S+?)\"\?\?.*/$$1/){print}" \
+      "if(s/\?INSERT_FILE \"(\S+?)\"\?.*/$$1/){print}" \
       $(srcdir)/$(1)$(FWIP_SUFFIXO)))
 endef
 

@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-07-20 kdw  erf__3 tweak
@@ -71,10 +72,10 @@
 # 2017-04-26 kdw  keyword COM[M]ENT.*
 # 2017-04-21 kdw  comment change
 # 2017-04-20 kdw  func to function
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-06 kdw  sigils rmed
 # 2017-02-26 kdw  var renam
-# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-02-24 kdw  REP[L]ACE rework, et al
 # 2017-02-20 kdw  array var names
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-12 kdw  FWIP language change
@@ -109,7 +110,7 @@
 # 2015-09-30 kdw  minor refactor of e[r]f
 # 2015-09-20 kdw  created
 
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 
 BLOCK:
    BLOCK_DEF FUNC DBL lf_calerf(DBL xx, INT jint):
@@ -300,7 +301,7 @@ FUNC DBL erfcinv(DBL yy_orig):
       dx = 1.0;
       xx = 0.0;
       cc = -SQRT(Kw.TAU / 8.0);
-      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ??LOOP_LIMIT??:
+      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ?LOOP_LIMIT?:
          uu = cc * (erfcx(xx) - yy * EXP(xx * xx));
          dx = -uu / (1.0 + uu * xx);
          xx_pr = xx;
@@ -331,7 +332,7 @@ FUNC DBL erfcxinv(DBL yy):
    IF NOT Kw.iszero(yy - 1.0):
       dx = 1.0;
       cc = SQRT(8.0 / Kw.TAU);
-      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ??LOOP_LIMIT??:
+      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ?LOOP_LIMIT?:
          ex = erfcx(xx);
          df = 2.0 * xx * ex - cc;
          uu = (ex - yy) / df;
@@ -364,7 +365,7 @@ FUNC DBL erfinv(DBL yy):
       dx = 1.0;
       xx = 0.0;
       cc = SQRT(Kw.TAU / 8.0);
-      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ??LOOP_LIMIT??:
+      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ?LOOP_LIMIT?:
          uu = cc * (erf(xx) - yy) * EXP(xx * xx);
          dx = -uu / (1.0 + uu * xx);
          xx_pr = xx;

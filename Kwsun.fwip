@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  s/LO[C]AL_/BL[O]CK_/
 # 2020-06-22 kdw  local-use mved before var decls
@@ -93,12 +94,12 @@
 # 2017-03-19 kdw  commented out code
 # 2017-03-17 kdw  space-comma adjustment
 # 2017-03-12 kdw  shorten long comments
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
 # 2017-02-26 kdw  var renam
-# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-02-24 kdw  REP[L]ACE rework, et al
 # 2017-02-20 kdw  array var names
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-13 kdw  IM?PORT changed
@@ -175,7 +176,7 @@
 # 2015-10-14 kdw  created
 
 # need secant code for the nth lunation
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 # basic, useful stuff
 IMPORT "Kw";
 IMPORT "Kwplanets";
@@ -910,14 +911,14 @@ BLOCK:
    FUNC DBL kwsun_lunation(DBL nn):
       # return the J2K date of the NNth lunation
       # with 0.0 being the new moon around 2000-01-06
-      ??SECANT_DECLARATIONS??
+      ?SECANT_DECLARATIONS?
       DBL jtwokapp;
       DBL frad;
 
       jtwokapp = 5.00 + nn * Kw.MOONMONTH / Kw.JDAY;
       frad = Kw.tur2rad(Kw.frac(nn));
-      ??SECANT_LOOP jtwokapp ; 0.5
-            ; lf_ra_sunmoon_diff_rad(scvx_xx, frad) ??
+      ?SECANT_LOOP jtwokapp ; 0.5
+            ; lf_ra_sunmoon_diff_rad(scvx_xx, frad) ?
       RETURN scvx_xx;
    FUNC_END
 BLOCK_END

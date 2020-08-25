@@ -1,4 +1,8 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-24 kdw  var renam
+# 2020-08-20 kdw  boolean checks changed
+# 2020-08-19 kdw  comment change
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  s/LO[C]AL_/BL[O]CK_/
 # 2020-07-14 kdw  s/px/pbrx/g
@@ -85,8 +89,8 @@
 # 2018-07-11 kdw  var nam change
 # 2018-06-09 kdw  mved tests
 # 2018-06-08 kdw  tests
-# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
-# 2018-05-16 kdw  AR?RAY syntax
+# 2018-05-17 kdw  AR[R]AY.* and HOR[N]ER syntax
+# 2018-05-16 kdw  AR[R]AY syntax
 # 2018-04-19 kdw  comments added
 # 2018-04-03 kdw  rm () from return
 # 2018-03-26 kdw  macro redef
@@ -101,7 +105,7 @@
 # 2017-08-31 kdw  [pc]dftri, [pc]dfgeo, [pc]dfpoi added
 # 2017-08-30 kdw  s/DBL_/DBL/;s/FLT_/FLT/
 # 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
-# 2017-06-21 kdw  added ";" to COM?MENT lines
+# 2017-06-21 kdw  added ";" to COM[M]ENT lines
 # 2017-05-25 kdw  line wrap problem wrt python
 # 2017-05-16 kdw  chisqr work
 # 2017-04-26 kdw  keyword COMMENT.*
@@ -109,12 +113,12 @@
 # 2017-04-21 kdw  var renam
 # 2017-04-20 kdw  func to function
 # 2017-03-12 kdw  shorten long comments
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
-# 2017-03-07 kdw  INS?ERT etal
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
+# 2017-03-07 kdw  INS[E]RT etal
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  RE?TURN syntax more finicky
-# 2017-02-28 kdw  REQ?UIRE function ()
-# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-03-01 kdw  RE[T]URN syntax more finicky
+# 2017-02-28 kdw  REQ[U]IRE function ()
+# 2017-02-24 kdw  REP[L]ACE rework, et al
 # 2017-02-20 kdw  made die more uniform
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-13 kdw  FWIP language change
@@ -122,26 +126,26 @@
 # 2017-02-08 kdw  SE[C]ANT syntax
 # 2017-02-07 kdw  var renam
 # 2017-02-06 kdw  SE[C]ANT syntax
-# 2017-02-03 kdw  cdfb?etainv
+# 2017-02-03 kdw  cdfb[e]tainv
 # 2017-01-31 kdw  beta dist
-# 2017-01-06 kdw  ?[?]USE.* to ?[?].*_MODE; ?[?]DIGR.*
+# 2017-01-06 kdw  ..USE.* to ...*_MODE; ..DIGR.*
 # 2017-01-03 kdw  var renam
 # 2017-01-02 kdw  Pareto
 # 2016-12-23 kdw  die change
 # 2016-12-03 kdw  comment change
 # 2016-11-27 kdw  long lines
 # 2016-11-24 kdw  reformatting of await loops
-# 2016-11-22 kdw  moved cdfno?rmal2 to ap?prox and renam
-# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-22 kdw  moved cdfno[r]mal2 to ap[p]rox and renam
+# 2016-11-21 kdw  D[E]F to FU[N]C
 # 2016-11-20 kdw  language change
-# 2016-11-18 kdw  _?_P?OD_?_
+# 2016-11-18 kdw  __POD__
 # 2016-11-16 kdw  comments
 # 2016-11-15 kdw  MOD/BIT* syntax change
-# 2016-11-14 kdw  seca?nt algorithm refactor
-# 2016-11-11 kdw  seca?nt algorithm refactor
+# 2016-11-14 kdw  sec[a]nt algorithm refactor
+# 2016-11-11 kdw  sec[a]nt algorithm refactor
 # 2016-11-06 kdw  while loop replaced with await
 # 2016-11-01 kdw  debugging t-distribution
-# 2016-10-31 kdw  EX?ITL?OOP
+# 2016-10-31 kdw  EX[I]TL[O]OP
 # 2016-10-30 kdw  lang change
 # 2016-09-15 kdw  lang change
 # 2016-09-13 kdw  lang change
@@ -149,8 +153,8 @@
 # 2016-07-19 kdw  float numbers (added ".0")
 # 2016-05-18 kdw  comment change
 # 2015-12-28 kdw  .*2() functions rmed
-# 2015-12-28 kdw  _?_I?F_X_?_ to _?_IF_NONE_?_
-# 2015-12-26 kdw  commented out _cdf?ks_?1
+# 2015-12-28 kdw  __IF_X__ to __IF_NONE_ _
+# 2015-12-26 kdw  commented out _cdf[k]s_1
 # 2015-12-16 kdw  long comments
 # 2015-12-14 kdw  long lines
 # 2015-12-11 kdw  s/LC_// from some consts
@@ -172,7 +176,7 @@
 
 # http://www2.econ.osaka-u.ac.jp/(tilde)tanizaki/cv/books
 #      /cmse/cmse.pdf
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 
 FUNC DBL int_pdf(DBL nn, DBL xx):
    # PDF Uniform Integer
@@ -180,7 +184,7 @@ FUNC DBL int_pdf(DBL nn, DBL xx):
    DBL retvalu;
    DBL mm;
 
-   IF xx < 0.0 OR nn < xx OR NOT isint(xx):
+   IF xx < 0.0 OR nn < xx OR (NOT Kw.isint(xx)):
       retvalu = 0.0;
    ELSE: # XX is an integer in [0,NN)
       mm = FLOOR(nn);
@@ -1095,15 +1099,15 @@ FUNC DBL beta_quantile(DBL shap_a, DBL shap_b, DBL prbx):
    # Quantile Beta distribution with shape parameters
    #    0 < SHAP_A and 0 < SHAP_B
    DBL retvalu;
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
 
    IF prbx <= 0.0:
       retvalu = 0.0;
    ELSIF 1.0 <= prbx:
       retvalu = 1.0;
    ELSE:
-      ??SECANT_LOOP 0.25 ; 0.50
-            ; prbx - beta_cdf(shap_a, shap_b, scvx_xx) ??
+      ?SECANT_LOOP 0.25 ; 0.50
+            ; prbx - beta_cdf(shap_a, shap_b, scvx_xx) ?
       retvalu = scvx_xx;
    IF_END
    RETURN retvalu;
@@ -1164,7 +1168,7 @@ FUNC DBL gamma_rand(DBL shap):
    # Random Gamma Variable w/ shape SHAP
    DBL i_shape;
    DBL f_shape;
-   DBL val;
+   DBL rval;
    DBL jj;
    DBL ee;
    DBL gg;
@@ -1176,12 +1180,12 @@ FUNC DBL gamma_rand(DBL shap):
    DBL pp;
 
    i_shape = FLOOR(shap);
-   val = 1.0;
+   rval = 1.0;
    IF shap < 5:
       FOR jj FROM 1 TO i_shape:
-         val *= randd();
+         rval *= randd();
       FOR_END
-      val = -LN(val);
+      rval = -LN(rval);
       f_shape = shap - i_shape;
       IF 0.00001 < f_shape:
          # from "The Art of Computer Programming"
@@ -1197,7 +1201,7 @@ FUNC DBL gamma_rand(DBL shap):
                qq = EXP(LN(xx) * (f_shape - 1));
             IF_END
          AWAIT_END
-         val += xx;
+         rval += xx;
       IF_END
    ELSE:
       # from "The Art of Computer Programming"
@@ -1206,15 +1210,15 @@ FUNC DBL gamma_rand(DBL shap):
       gg = SQRT(shap + ee);
       yy = 0.0;
       ff = 0.0;
-      WHILE val <= 0.0 OR (1.0 + yy * yy)
-               * EXP(ee * LN(val / ee) - ff) < randd():
+      WHILE rval <= 0.0 OR (1.0 + yy * yy)
+               * EXP(ee * LN(rval / ee) - ff) < randd():
          xx = Kw.PI * randd();
          yy = SIN(xx) / COS(xx);
          ff = gg * yy;
-         val = ff + ee;
+         rval = ff + ee;
       WHILE_END
    IF_END
-   RETURN val;
+   RETURN rval;
 FUNC_END
 
 FUNC DBL chisqr_pdf(DBL df, DBL xx):
@@ -1565,11 +1569,11 @@ FUNC_END
 
 FUNC DBL ks_quantile(DBL nn, DBL prbx):
    # Quantile Kolmogorov-Smirnov distribution
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
    IF NOT Kw.isbetween(prbx, 0.0, 1.0):
       scvx_xx = 0.0;
    ELSE:
-      ??SECANT_LOOP 0.25 ; 0.5 ; prbx - ks_cdf(nn, scvx_xx) ??
+      ?SECANT_LOOP 0.25 ; 0.5 ; prbx - ks_cdf(nn, scvx_xx) ?
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -1737,11 +1741,11 @@ FUNC_END
 
 FUNC DBL t_quantile__1(DBL dfx, DBL prbx):
    # Quantile Students T distribution
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
    IF NOT Kw.isbetween(prbx, 0.0, 1.0):
       scvx_xx = 0.0;
    ELSE:
-      ??SECANT_LOOP 0.25 ; 0.5 ; prbx - t_cdf(dfx, scvx_xx) ??
+      ?SECANT_LOOP 0.25 ; 0.5 ; prbx - t_cdf(dfx, scvx_xx) ?
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -1895,15 +1899,15 @@ BLOCK_END
 
 FUNC DBL f_quantile__1(INT dfn_a, INT dfn_b, DBL prbx):
    DBL retvalu;
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
 
    IF prbx <= 0.0:
       retvalu = 0.0;
    ELSIF 1.0 <= prbx:
       retvalu = 1.0;
    ELSE:
-      ??SECANT_LOOP 0.25 ; 0.50
-            ; prbx - f_cdf(dfn_a, dfn_b, scvx_xx) ??
+      ?SECANT_LOOP 0.25 ; 0.50
+            ; prbx - f_cdf(dfn_a, dfn_b, scvx_xx) ?
       retvalu = scvx_xx;
    IF_END
    RETURN retvalu;
@@ -1911,6 +1915,7 @@ FUNC_END
 
 FUNC DBL mb_pdf(DBL aa, DBL xx):
    # PDF Maxwell-Boltzmann distribution
+   # distribution of particle speeds in an idealized gas
    RETURN SQRT(4 / Kw.TAU) * xx * xx
          * EXP(-xx * xx / (2 * aa * aa)) / (aa * aa * aa);
 FUNC_END
@@ -1929,6 +1934,7 @@ FUNC_END
 FUNC DBL maxwell_boltzmann_pdf(DBL temperature
       , DBL molecular_mass, DBL velocity):
    # PDF Maxwell-Boltzmann distribution
+   # distribution of particle speeds in an idealized gas
    DBL aa;
 
    aa = SQRT(Kw.BOLTZMANN * temperature / molecular_mass);
@@ -1938,6 +1944,7 @@ FUNC_END
 FUNC DBL maxwell_boltzmann_cdf(DBL temperature
       , DBL molecular_mass, DBL velocity):
    # CDF Maxwell-Boltzmann distribution
+   # distribution of particle speeds in an idealized gas
    # Lat AA = sqrt(BOLTZMANN * TEMPERATURE / MASS)
    # MEAN     = 4 * AA / SQRT(TAU)
    # MODE     = AA * SQRT(2)
@@ -1951,6 +1958,8 @@ FUNC_END
 FUNC DBL maxwell_juttner_pdf(DBL temperature
       , DBL molecular_mass, DBL velocity):
    # PDF Maxwell-Juttner distribution
+   # distribution of speeds of particles in a hypothetical
+   #    gas of relativistic particles.
    DBL gmm;
    DBL bt;
    DBL rtht;

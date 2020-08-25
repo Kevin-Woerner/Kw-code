@@ -1,4 +1,5 @@
 #    Copyright (C) 2016-2020 by Kevin D. Woerner
+# 2020-08-17 kdw  comment change
 # 2020-08-03 kdw  explicit module for pi and tau
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
@@ -28,7 +29,7 @@
 # 2019-03-19 kdw  re[t]_val to re[t]valu
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
 # 2019-03-06 kdw  is.* funcs changed
-# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-28 kdw  REP[L]ACE/DE[F]INE work
 # 2019-01-13 kdw  var rena; reorg
 # 2018-12-29 kdw  backslash reposition
 # 2018-12-16 kdw  BC: func args starting with " -"
@@ -51,8 +52,8 @@
 # 2017-04-21 kdw  func to function
 # 2017-03-12 kdw  shorten long comments
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-13 kdw  FWIP language change
 # 2017-02-12 kdw  FWIP language change

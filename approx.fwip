@@ -1,5 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
-# HI goes AFTER copyright
+# 2020-08-25 kdw  var renam II
+# 2020-08-24 kdw  var renam
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-07-16 kdw  git/comment playing
@@ -80,11 +82,11 @@
 # 2017-04-21 kdw  var rename
 # 2017-04-20 kdw  func to function
 # 2017-03-17 kdw  space after comma
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
-# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
+# 2017-02-24 kdw  REP[L]ACE rework, et al
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-13 kdw  FWIP language change
 # 2017-02-12 kdw  FWIP language change
@@ -124,7 +126,7 @@
 # 2015-12-04 kdw  loga[p]prox
 # 2015-12-02 kdw  created
 
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 
 ## Approximations of various functions calculated
 ## only with elementary operations (+, -, *, /)
@@ -178,7 +180,7 @@ FUNC_END
 FUNC DBL sqrt__2(DBL xx):
    # calculate the YY=sqrt(XX) via explicitly
    # inverting the function XX=YY**2
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
    DBL ini;
 
    IF xx <= 0.0:
@@ -190,7 +192,7 @@ FUNC DBL sqrt__2(DBL xx):
          ini = 2.0 * xx;
       IF_END
 
-      ??SECANT_LOOP ini ; ini / 10.0 ; xx - scvx_xx * scvx_xx ??
+      ?SECANT_LOOP ini ; ini / 10.0 ; xx - scvx_xx * scvx_xx ?
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -198,7 +200,7 @@ FUNC_END
 FUNC DBL sqrt__3(DBL yy):
    # calculate the XX=sqrt(YY) via
    # finding the zero of F(XX) = XX * XX - YY
-   ??RAPHSON_DECLARATIONS??
+   ?RAPHSON_DECLARATIONS?
    DBL ini;
 
    IF yy <= 0.0:
@@ -210,9 +212,9 @@ FUNC DBL sqrt__3(DBL yy):
          ini = 2.0 * yy;
       IF_END
 
-      ??RAPHSON_LOOP ini
+      ?RAPHSON_LOOP ini
             ; nrvx_xx * nrvx_xx - yy
-            ; 2 * nrvx_xx ??
+            ; 2 * nrvx_xx ?
    IF_END
    RETURN nrvx_xx;
 FUNC_END
@@ -254,7 +256,7 @@ BLOCK:
       #         +INF   (-1)**N * XX_RAD**(2*N+INIT_II)
       #          SUM ---------------------------------
       # N=init_ii+1      factorial(2*N+INIT_II)
-      DBL val;
+      DBL cval;
       INT ii;
       DBL trig_sum;
       DBL xr_rad;
@@ -265,11 +267,11 @@ BLOCK:
       ELSE:
          xr_rad = Kw.fmods(xx_rad, Kw.TAU);
          xr_sqr = - xr_rad * xr_rad;
-         val = 1;
+         cval = 1;
          ii = init_ii;
-         WHILE LC_EPS < ABS(val):
+         WHILE LC_EPS < ABS(cval):
             ii += 2;
-            val *= xr_sqr / (ii * (ii - 1));
+            cval *= xr_sqr / (ii * (ii - 1));
          WHILE_END
          # use Horners method
          trig_sum = 1.0 / (ii * (ii + 1.0));
@@ -322,7 +324,7 @@ BLOCK_END
 FUNC DBL exp__1(DBL xx):
    # calculate the YY=EXP(XX) via Taylor series
    INT ii;
-   DBL val;
+   DBL vale;
    DBL axx;
    DBL exp_sum;
    DBL retvalu;
@@ -344,11 +346,11 @@ FUNC DBL exp__1(DBL xx):
    WHILE_END
    # figure out how many term of the Taylor series of exp(axx)
    # we need to get the desired precision
-   val = 1.0;
+   vale = 1.0;
    ii = 1;
-   WHILE Kw.DBLEPS / 10.0 < val:
+   WHILE Kw.DBLEPS / 10.0 < vale:
       ii += 1;
-      val *= axx / ii;
+      vale *= axx / ii;
    WHILE_END
    # use Horners method to evaluate the Taylor series at AXX
    exp_sum = 1.0 / (ii + 1.0);
@@ -378,7 +380,7 @@ FUNC DBL exp__2(DBL xx):
    DBL expmo_sum;
    DBL retvalu;
    INT squarings;
-   DBL val;
+   DBL vale;
 
    IF xx < 0:
       axx = - xx;
@@ -393,11 +395,11 @@ FUNC DBL exp__2(DBL xx):
    # Now 0 <= AXX < 1
    # figure out how many term of the Taylor series of exp(axx)
    # we need to get the desired precision
-   val = 1.0;
+   vale = 1.0;
    ii = 1;
-   WHILE Kw.DBLEPS / 4.0 < val:
+   WHILE Kw.DBLEPS / 4.0 < vale:
       ii += 1;
-      val *= axx / ii;
+      vale *= axx / ii;
    WHILE_END
 
    expmo_sum = 0;

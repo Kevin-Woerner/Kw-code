@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-19 kdw  comment change
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-05-14 kdw  local funcs only in blocks
@@ -34,8 +36,8 @@
 # 2018-07-19 kdw  comments; array reformat
 # 2018-07-17 kdw  private lf_.* funcs
 # 2018-07-13 kdw  float number reformt
-# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
-# 2018-05-16 kdw  AR?RAY syntax
+# 2018-05-17 kdw  AR(R)AY.* and HOR[N]ER syntax
+# 2018-05-16 kdw  A(R)RAY syntax
 # 2018-04-03 kdw  rm () from return
 # 2018-02-16 kdw  minor refactor
 # 2018-01-08 kdw  w[mp] and inv
@@ -45,25 +47,25 @@
 # 2017-05-31 kdw  fvar rename; comments
 # 2017-04-30 kdw  func to function
 # 2017-03-19 kdw  comment changed
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
-# 2017-02-27 kdw  lf_la?mbert_iter
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
+# 2017-02-27 kdw  lf_l(a)mbert_iter
 # 2017-02-20 kdw  vars renamd
-# 2017-02-14 kdw  FWIP Loop syntax changed; L?NG to I?NT
+# 2017-02-14 kdw  FWIP Loop syntax changed; (L)NG to (I)NT
 # 2017-02-12 kdw  FWIP language change
 # 2016-11-23 kdw  int to lng
-# 2016-11-21 kdw  DE?F to FU?NC
+# 2016-11-21 kdw  D(E)F to F(U)NC
 # 2016-11-20 kdw  language change
 # 2016-11-16 kdw  comments
-# 2016-11-15 kdw  M?OD/B?IT* syntax change
-# 2016-11-14 kdw  Hal?ley algorithm correction
-# 2016-11-11 kdw  seca?nt algorithm refactor
-# 2016-11-08 kdw  AW?AIT.*COU?NT syntax
+# 2016-11-15 kdw  (M)OD/(B)IT* syntax change
+# 2016-11-14 kdw  Ha(l)ley algorithm correction
+# 2016-11-11 kdw  sec(a)nt algorithm refactor
+# 2016-11-08 kdw  A(W)AIT.*CO(U)NT syntax
 # 2016-11-07 kdw  refactor lf_lambertwx
 # 2016-11-07 kdw  __LA[N]G* syntax change
-# 2016-10-31 kdw  EX?ITLO?OP
+# 2016-10-31 kdw  E(X)ITL(O)OP
 # 2016-09-15 kdw  lang change
 # 2016-09-13 kdw  lang change
 # 2016-05-18 kdw  comment change
@@ -84,7 +86,7 @@
 # 2015-09-27 kdw  debugging
 # 2015-09-20 kdw  created
 
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 BLOCK:
    BLOCK_DEF FUNC DBL lf_lambert_iter(DBL xx, DBL nearw_zero):
       ## Lamberts W0(x) function defined by x=y*exp(y)
@@ -101,7 +103,7 @@ BLOCK:
       wjj = nearw_zero;
       # refine result using Halleys method
       AWAIT Kw.iseq(wjj, wjj_prev) COUNT ii FROM 0
-               TO ??LOOP_LIMIT??:
+               TO ?LOOP_LIMIT?:
          eww = EXP(wjj);
          tnn = wjj * eww - xx;
          snn = (wjj + 2.0) / (2.0 * (wjj + 1));

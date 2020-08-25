@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-17 kdw  comment change
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-06-03 kdw  writeonly keyword
@@ -27,9 +28,9 @@
 # 2017-11-22 kdw  var renam
 # 2017-06-13 kdw  C now handle return arrays
 # 2017-04-30 kdw  func to function
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
 # 2017-02-24 kdw  LAN[G]UAGE change
 # 2017-02-20 kdw  array var names
 # 2017-02-14 kdw  FWIP Loop syntax changed

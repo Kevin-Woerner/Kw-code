@@ -1,8 +1,11 @@
 #    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-08-20 kdw  boolean checks changed
+# 2020-08-19 kdw  comment change
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-07-18 kdw  rmed some imports
-# 2020-06-22 kdw  local-use mved befroe var decls
+# 2020-06-22 kdw  local-use mved before var decls
 # 2020-06-12 kdw  stern-levison and margot rework
 # 2020-06-03 kdw  writeonly keyword
 # 2020-06-01 kdw  replace "_D" with "_DT"
@@ -80,7 +83,7 @@
 # 2019-03-15 kdw  use to[p]yh1
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
 # 2019-03-04 kdw  loop-limit work
-# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-28 kdw  REP[L]ACE/DE[F]INE work
 # 2019-02-19 kdw  macro syntax
 # 2019-02-04 kdw  pmo macro, et al
 # 2019-01-30 kdw  lv_p[l]_ey var
@@ -101,8 +104,8 @@
 # 2018-05-23 kdw  orbital elements
 # 2018-05-23 kdw  eccentric anomaly func
 # 2018-05-22 kdw  comment change
-# 2018-05-17 kdw  ARR?AY.* and HOR[N]ER syntax
-# 2018-05-16 kdw  AR?RAY syntax
+# 2018-05-17 kdw  AR[R]AY.* and HOR[N]ER syntax
+# 2018-05-16 kdw  AR[R]AY syntax
 # 2018-04-19 kdw  consts rework
 # 2018-04-09 kdw  [tdr]2[rdt] func renam
 # 2018-04-03 kdw  rm () from return
@@ -137,12 +140,12 @@
 # 2017-10-02 kdw  only names
 # 2017-10-01 kdw  _planet_.* reorg
 # 2017-09-29 kdw  _planet_.* created
-# 2017-09-29 kdw  EA?RTHFL?AT
+# 2017-09-29 kdw  EA[R]THFLAT
 # 2017-09-28 kdw  tropical year
 # 2017-09-27 kdw  EA[R]THGRA[V]ITY[AB]
 # 2017-09-26 kdw  created
 
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 
 # basic, usefull things
 IMPORT "Kw";
@@ -166,7 +169,7 @@ CONST TROPICALYEAR EARTHTROPICALYEAR;      #T
 CONST STELLARDAY EARTHSTELLARDAY;        #T
 CONST SIDEREALDAY EARTHSIDEREALDAY;       #T
 
-??MACRO PLANET_OTHER <BODY>??
+?MACRO PLANET_OTHER <BODY>?
 # Calculated consts for <BODY>
 CONST <BODY>_B            <BODY>_A * (1.0 - <BODY>FLATNESS);#L
 CONST <BODY>RADIUS        0.333333333333333
@@ -182,11 +185,11 @@ CONST <BODY>MASS          <BODY>GM / Kw.GRAVITATION;#M
 CONST <BODY>VOLUME        2.0 * Kw.TAU / 3.0 * <BODY>RADIUS
       * <BODY>RADIUS * <BODY>RADIUS; #L3
 CONST <BODY>DENSITY       <BODY>MASS / <BODY>VOLUME; #ML-3
-??MACRO_END
+?MACRO_END
 
-??MACRO PLANET_SYNODIC <BODY>??
-??PLANET_OTHER <BODY>??
-??MACRO_END
+?MACRO PLANET_SYNODIC <BODY> ?
+?PLANET_OTHER <BODY> ?
+?MACRO_END
 
 # use IERS
 CONST SUNGMNASA   1.32712440018E+20 * Kw.UNITGM;  #L3T-2
@@ -197,7 +200,7 @@ CONST SUNDAY      24.47 * Kw.DAY; #T
 CONST SUNFLATNESS 9.0E-6; #1
 CONST SUN_A       6.957E+8 * Kw.METER; #L
 CONST SUN_C       SUN_A; #L
-??PLANET_OTHER SUN??
+?PLANET_OTHER SUN ?
 
 CONST MERCURYGM       2.2032E+13 * Kw.UNITGM; #M3T-2
 CONST MERCURYYEAR     87.9691 * Kw.DAY; #T
@@ -205,7 +208,7 @@ CONST MERCURYDAY      58.6462 * Kw.DAY; #T
 CONST MERCURYFLATNESS 0.0; #1
 CONST MERCURY_A       2.4397E+6 * Kw.METER; #L
 CONST MERCURY_C       MERCURY_A;  #L
-??PLANET_SYNODIC MERCURY??
+?PLANET_SYNODIC MERCURY ?
 
 CONST VENUSGM       3.24859E+14 * Kw.UNITGM; #M3T-2
 CONST VENUSYEAR     224.701 * Kw.DAY; #T
@@ -213,7 +216,7 @@ CONST VENUSDAY      -243.018 * Kw.DAY; #T
 CONST VENUSFLATNESS 0.0; #1
 CONST VENUS_A       6.0518E+6 * Kw.METER; #L
 CONST VENUS_C       VENUS_A;  #L
-??PLANET_SYNODIC VENUS??
+?PLANET_SYNODIC VENUS ?
 
 CONST EARTHGM       3.986004418E+14 * Kw.UNITGM; #M3T-2
 CONST EARTHYEAR     EARTHSIDEREALYEAR; #T
@@ -221,7 +224,7 @@ CONST EARTHDAY      EARTHSTELLARDAY; #T
 CONST EARTHFLATNESS 1.0 / 298.257223563; #1 # WGS84,GPS
 CONST EARTH_A       6.378137E+6 * Kw.METER; #L # WGS84,GPS
 CONST EARTH_C       EARTH_A; #L
-??PLANET_OTHER EARTH??
+?PLANET_OTHER EARTH ?
 CONST EARTHPRECESSION 50.28792 * Kw.ARCSEC / Kw.JYEAR; #AT-1
 CONST EARTHTHETA_0 0.7790572732640 * Kw.TURN; #A
 
@@ -231,7 +234,7 @@ CONST MARSDAY      1.02595676 * Kw.DAY; #T
 CONST MARSFLATNESS 1.0 / 169.81; #1
 CONST MARS_A       3.3962E+6 * Kw.METER; #L
 CONST MARS_C       MARS_A;  #L
-??PLANET_SYNODIC MARS??
+?PLANET_SYNODIC MARS ?
 
 CONST JUPITERGM       1.26686534E+17 * Kw.UNITGM; #M3T-2
 CONST JUPITERYEAR     4332.59 * Kw.DAY; #T
@@ -239,7 +242,7 @@ CONST JUPITERDAY      0.41354 * Kw.DAY; #T
 CONST JUPITERFLATNESS 1.0 / 15.4144028; #1
 CONST JUPITER_A       7.1492E+7 * Kw.METER; #L
 CONST JUPITER_C       JUPITER_A;  #L
-??PLANET_SYNODIC JUPITER??
+?PLANET_SYNODIC JUPITER ?
 
 CONST SATURNGM       3.7931187E+16 * Kw.UNITGM; #M3T-2
 CONST SATURNYEAR     10759.22 * Kw.DAY; #T
@@ -247,7 +250,7 @@ CONST SATURNDAY      0.44401 * Kw.DAY; #T
 CONST SATURNFLATNESS 1.0 / 10.208; #1
 CONST SATURN_A       6.0268E+7 * Kw.METER; #L
 CONST SATURN_C       SATURN_A;  #L
-??PLANET_SYNODIC SATURN??
+?PLANET_SYNODIC SATURN ?
 
 CONST URANUSGM       5.793939E+15 * Kw.UNITGM; #M3T-2
 CONST URANUSYEAR     30688.5 * Kw.DAY; #T
@@ -255,7 +258,7 @@ CONST URANUSDAY      -0.71833 * Kw.DAY; #T
 CONST URANUSFLATNESS 1.0 / 43.61604; #1
 CONST URANUS_A       2.5559E+7 * Kw.METER; #L
 CONST URANUS_C       URANUS_A;  #L
-??PLANET_SYNODIC URANUS??
+?PLANET_SYNODIC URANUS ?
 
 CONST NEPTUNEGM       6.836529E+15 * Kw.UNITGM; #M3T-2
 CONST NEPTUNEYEAR     6.0182E+4 * Kw.DAY; #T
@@ -263,42 +266,42 @@ CONST NEPTUNEDAY      0.67125 * Kw.DAY; #T
 CONST NEPTUNEFLATNESS 1.0 / 58.54373; #1
 CONST NEPTUNE_A       2.4764E+7 * Kw.METER; #L
 CONST NEPTUNE_C       NEPTUNE_A;  #L
-??PLANET_SYNODIC NEPTUNE??
+?PLANET_SYNODIC NEPTUNE ?
 
-CONST PLUTOGM 8.71E+11 * Kw.UNITGM; #M3T-2
-CONST PLUTOYEAR 9.056E+4 * Kw.DAY; #T
-CONST PLUTODAY 6.38723 * Kw.DAY; #T
+CONST PLUTOGM       8.71E+11 * Kw.UNITGM; #M3T-2
+CONST PLUTOYEAR     9.056E+4 * Kw.DAY; #T
+CONST PLUTODAY      6.38723 * Kw.DAY; #T
 CONST PLUTOFLATNESS 0.0; #1
-CONST PLUTO_A 1.1899E+6 * Kw.METER; #L
-CONST PLUTO_C PLUTO_A;  #L
-??PLANET_SYNODIC PLUTO??
+CONST PLUTO_A       1.1899E+6 * Kw.METER; #L
+CONST PLUTO_C       PLUTO_A;  #L
+?PLANET_SYNODIC PLUTO ?
 
-CONST MOONGM 4.9048695E+12 * Kw.UNITGM; #M3T-2
-CONST MOONYEAR 27.32166155 * Kw.DAY; #T
-CONST MOONDAY 27.321661 * Kw.DAY; #T
+CONST MOONGM       4.9048695E+12 * Kw.UNITGM; #M3T-2
+CONST MOONYEAR     27.32166155 * Kw.DAY; #T
+CONST MOONDAY      27.321661 * Kw.DAY; #T
 CONST MOONFLATNESS 1.0 / 827.667; #1
-CONST MOON_A 1.7381E+6 * Kw.METER; #L
-CONST MOON_C MOON_A;  #L
-??PLANET_SYNODIC MOON??
+CONST MOON_A       1.7381E+6 * Kw.METER; #L
+CONST MOON_C       MOON_A;  #L
+?PLANET_SYNODIC MOON ?
 CONST MOONORBIT 3.843999E+8 * Kw.METER;  #L
 CONST MOONECCENTRICITY 0.0549;                  #1
 CONST MOONINCLINATION 5.415 * Kw.ARCDEG;       #A
 
-CONST CERESGM 6.26325E+10 * Kw.UNITGM; #M3T-2
-CONST CERESYEAR 1681.63 * Kw.DAY; #T
-CONST CERESDAY 9.074170 * Kw.HOUR; #T
+CONST CERESGM       6.26325E+10 * Kw.UNITGM; #M3T-2
+CONST CERESYEAR     1681.63 * Kw.DAY; #T
+CONST CERESDAY      9.074170 * Kw.HOUR; #T
 CONST CERESFLATNESS 1.0 / 13.0432; #1
-CONST CERES_A 4.826E+5 * Kw.METER; #L
-CONST CERES_C 4.806E+5 * Kw.METER; #L
-??PLANET_SYNODIC CERES??
+CONST CERES_A       4.826E+5 * Kw.METER; #L
+CONST CERES_C       4.806E+5 * Kw.METER; #L
+?PLANET_SYNODIC CERES ?
 
-CONST ERISGM 1.108E+12 * Kw.UNITGM; #M3T-2
-CONST ERISYEAR 2.0383E+5 * Kw.DAY; #T
-CONST ERISDAY 25.9 * Kw.HOUR; #T
+CONST ERISGM       1.108E+12 * Kw.UNITGM; #M3T-2
+CONST ERISYEAR     2.0383E+5 * Kw.DAY; #T
+CONST ERISDAY      25.9 * Kw.HOUR; #T
 CONST ERISFLATNESS 0.0; #1
-CONST ERIS_A 1.163E+6 * Kw.METER; #L
-CONST ERIS_C ERIS_A;  #L
-??PLANET_SYNODIC ERIS??
+CONST ERIS_A       1.163E+6 * Kw.METER; #L
+CONST ERIS_C       ERIS_A;  #L
+?PLANET_SYNODIC ERIS ?
 
 CONST MAKEMAKEGM       2.9366E+11 * Kw.UNITGM;  #L3T-2
 CONST MAKEMAKEYEAR     1.12897E+5 * Kw.DAY; #T
@@ -306,7 +309,7 @@ CONST MAKEMAKEDAY      7.771 * Kw.HOUR; #T
 CONST MAKEMAKEFLATNESS 1.0 / 30.7917; #1
 CONST MAKEMAKE_A       7.39E+5 * Kw.METER; #L
 CONST MAKEMAKE_C       MAKEMAKE_A;  #L
-??PLANET_SYNODIC MAKEMAKE??
+?PLANET_SYNODIC MAKEMAKE ?
 
 CONST HAUMEAGM       2.674E+11 * Kw.UNITGM;  #L3T-2
 CONST HAUMEAYEAR     1.03774E+5 * Kw.DAY; #T
@@ -314,12 +317,12 @@ CONST HAUMEADAY      3.9155 * Kw.HOUR; #T
 CONST HAUMEAFLATNESS 1.0 / 1.96115; #1
 CONST HAUMEA_A       1.161E+6 * Kw.METER; #L
 CONST HAUMEA_C       8.52E+5 * Kw.METER; #L
-??PLANET_SYNODIC HAUMEA??
+?PLANET_SYNODIC HAUMEA ?
 
 ##    ORBITAL INFORMATION --- ----- ----- ----- ----- ----- -----
-??MACRO PLANET_DORBITAL_ELEMENTS <BODY>
+?MACRO PLANET_DORBITAL_ELEMENTS <BODY>
       ; <DISV> ; <ECCV> ; <INCV> ; <LONV> ; <PERV> ; <ASCV>
-      ; <DISD> ; <ECCD> ; <INCD> ; <LOND> ; <PERD> ; <ASCD> ??
+      ; <DISD> ; <ECCD> ; <INCD> ; <LOND> ; <PERD> ; <ASCD> ?
 # Orbital Elements for <BODY>
 CONST <BODY>ORBIT          <DISV> * Kw.AU;     #L
 CONST <BODY>ECCENTRICITY   <ECCV>;             #1
@@ -333,74 +336,74 @@ CONST <BODY>INCLINATION_DT  <INCD> * Kw.ARCDEG / Kw.JC; #AT-1
 CONST <BODY>LONGITUDE_DT    <LOND> * Kw.ARCDEG / Kw.JC; #AT-1
 CONST <BODY>PERIAPSIS_DT    <PERD> * Kw.ARCDEG / Kw.JC; #AT-1
 CONST <BODY>ASCENDING_DT    <ASCD> * Kw.ARCDEG / Kw.JC; #AT-1
-??MACRO_END
+?MACRO_END
 
 # from website https://ssd.jpl.nasa.gov/txt/p_elem_t1.txt
 # AU;Eccentricity;Inclination;Longitude;Periapsis;Ascending
-??PLANET_DORBITAL_ELEMENTS SUN
+?PLANET_DORBITAL_ELEMENTS SUN
    ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0
-   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ??
-??PLANET_DORBITAL_ELEMENTS EARTH
+   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ?
+?PLANET_DORBITAL_ELEMENTS EARTH
    ; 1.00000261 ; 0.01671123
    ; 359.99998469 ; 100.46457166 ; 102.93768193 ; 0.0
    ; 0.00000562 ; -0.00004392
-   ; -0.01294668 ; 35999.37244981 ; 0.32327364 ; 0.0 ??
-??PLANET_DORBITAL_ELEMENTS MERCURY
+   ; -0.01294668 ; 35999.37244981 ; 0.32327364 ; 0.0 ?
+?PLANET_DORBITAL_ELEMENTS MERCURY
    ; 0.38709927 ; 0.20563593
    ; 7.00497902 ; 252.25032350 ; 77.45779628 ; 48.33076593
    ; 0.00000037 ; 0.00001906
-   ; -0.00594749 ; 149472.67411175 ; 0.16047689 ; -0.12534081 ??
-??PLANET_DORBITAL_ELEMENTS VENUS
+   ; -0.00594749 ; 149472.67411175 ; 0.16047689 ; -0.12534081 ?
+?PLANET_DORBITAL_ELEMENTS VENUS
    ; 0.72333566 ; 0.00677672
    ; 3.39467605 ; 181.97909950 ; 131.60246718 ; 76.67984255
    ; 0.00000390 ; -0.00004107
-   ; -0.00078890 ; 58517.81538729 ; 0.00268329 ; -0.27769418 ??
-??PLANET_DORBITAL_ELEMENTS MARS
+   ; -0.00078890 ; 58517.81538729 ; 0.00268329 ; -0.27769418 ?
+?PLANET_DORBITAL_ELEMENTS MARS
    ; 1.52371034 ; 0.09339410
    ; 1.84969142 ; 355.44656795 ; 336.05637041 ; 49.55953891
    ; 0.00001847 ; 0.00007882
-   ; -0.00813131 ; 19140.30268499 ; 0.44441088 ; -0.29257343 ??
-??PLANET_DORBITAL_ELEMENTS JUPITER
+   ; -0.00813131 ; 19140.30268499 ; 0.44441088 ; -0.29257343 ?
+?PLANET_DORBITAL_ELEMENTS JUPITER
    ; 5.20288700 ; 0.04838624
    ; 1.30439695 ; 34.39644051 ; 14.72847983 ; 100.47390909
    ; -0.00011607 ; -0.00013253
-   ; -0.00183714 ; 3034.74612775 ; 0.21252668 ; 0.20469106 ??
-??PLANET_DORBITAL_ELEMENTS SATURN
+   ; -0.00183714 ; 3034.74612775 ; 0.21252668 ; 0.20469106 ?
+?PLANET_DORBITAL_ELEMENTS SATURN
    ; 9.53667594 ; 0.05386179
    ; 2.48599187 ; 49.95424423 ; 92.59887831 ; 113.66242448
    ; -0.00125060 ; -0.00050991
-   ; 0.00193609 ; 1222.49362201 ; -0.41897216 ; -0.28867794 ??
-??PLANET_DORBITAL_ELEMENTS  URANUS
+   ; 0.00193609 ; 1222.49362201 ; -0.41897216 ; -0.28867794 ?
+?PLANET_DORBITAL_ELEMENTS  URANUS
    ; 19.18916464 ; 0.04725744
    ; 0.77263783 ; 313.23810451 ; 170.95427630 ; 74.01692503
    ; -0.00196176 ; -0.00004397
-   ; -0.00242939 ; 428.48202785 ; 0.40805281 ; 0.04240589 ??
-??PLANET_DORBITAL_ELEMENTS  NEPTUNE
+   ; -0.00242939 ; 428.48202785 ; 0.40805281 ; 0.04240589 ?
+?PLANET_DORBITAL_ELEMENTS  NEPTUNE
    ; 30.06992276 ; 0.00859048
    ; 1.77004347 ; 304.87997031 ; 44.96476227 ; 131.78422574
    ; 0.00026291 ; 0.00005105
-   ; 0.00035372 ; 218.45945325 ; -0.32241464 ; -0.00508664 ??
-??PLANET_DORBITAL_ELEMENTS  PLUTO
+   ; 0.00035372 ; 218.45945325 ; -0.32241464 ; -0.00508664 ?
+?PLANET_DORBITAL_ELEMENTS  PLUTO
    ; 39.48211675 ; 0.24882730
    ; 17.14001206 ; 238.92903833 ; 224.06891629 ; 110.30393684
    ; -0.00031596 ; 0.00005170
-   ; 0.00004818 ; 145.20780515 ; -0.04062942 ; -0.01183482 ??
-??PLANET_DORBITAL_ELEMENTS CERES
+   ; 0.00004818 ; 145.20780515 ; -0.04062942 ; -0.01183482 ?
+?PLANET_DORBITAL_ELEMENTS CERES
    ; 2.76740933 ; 0.07560729
    ; 10.59321706 ; 102.82668 ; 73.023742647 ; 80.308882612359
-   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ??
-??PLANET_DORBITAL_ELEMENTS ERIS
+   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ?
+?PLANET_DORBITAL_ELEMENTS ERIS
    ; 67.781 ; 0.44068
    ; 44.0445 ; 32.4926663 ; 151.60371236817 ; 35.87992471211
-   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ??
-??PLANET_DORBITAL_ELEMENTS MAKEMAKE
+   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ?
+?PLANET_DORBITAL_ELEMENTS MAKEMAKE
    ; 45.715 ; 0.15586
    ; 29.00685 ; 177.2966805 ; 295.642772002 ; 79.616805978978
-   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ??
-??PLANET_DORBITAL_ELEMENTS HAUMEA
+   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ?
+?PLANET_DORBITAL_ELEMENTS HAUMEA
    ; 43.218 ; 0.19126
    ; 28.19 ; 215.687315 ; 238.69440821915 ; 122.01840302632
-   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ??
+   ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ; 0.0 ?
 
 FUNC DBL margot(DBL pmass, DBL porbit):
    # the const, k, in the following routine equals
@@ -464,11 +467,11 @@ BLOCK:
    BLOCK_DEF CONST LC_P1_ERR -1; # 1
 
    BLOCK_DEF CONST LC_P2_GM 0;
-   BLOCK_DEF CONST LC_P2_YEAR 1;
-   BLOCK_DEF CONST LC_P2_DAY 2;
-   BLOCK_DEF CONST LC_P2_FLATNESS 3;
-   BLOCK_DEF CONST LC_P2_A 4;
-   BLOCK_DEF CONST LC_P2_C 5;
+   BLOCK_DEF CONST LC_P2_DAY 1;
+   BLOCK_DEF CONST LC_P2_FLATNESS 2;
+   BLOCK_DEF CONST LC_P2_A 3;
+   BLOCK_DEF CONST LC_P2_C 4;
+   BLOCK_DEF CONST LC_P2_YEAR 5;
    BLOCK_DEF CONST LC_P2_ORB 6;
    BLOCK_DEF CONST LC_P2_ECC 7;
    BLOCK_DEF CONST LC_P2_INC 8;
@@ -491,13 +494,13 @@ BLOCK:
    BLOCK_DEF DBL lv_pl_jtwoktime = 1.0 / 64.0;
 
    # setup macro
-   ??MACRO PLNT_SETUP_VALUES <PP> ??
-      lv_pl_arr[LC_P1_<PP>][LC_P2_GM]       = <PP>GM;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_YEAR]     = <PP>YEAR;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_DAY]      = <PP>DAY;
+   ?MACRO PLNT_SETUP_VALUES <PP> ?
+      lv_pl_arr[LC_P1_<PP>][LC_P2_GM]      = <PP>GM;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_DAY]     = <PP>DAY;
       lv_pl_arr[LC_P1_<PP>][LC_P2_FLATNESS] = <PP>FLATNESS;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_A]        = <PP>_A;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_C]        = <PP>_C;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_A]       = <PP>_A;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_C]       = <PP>_C;
+      lv_pl_arr[LC_P1_<PP>][LC_P2_YEAR]    = <PP>YEAR;
       lv_pl_arr[LC_P1_<PP>][LC_P2_ORB]     = <PP>ORBIT;
       lv_pl_arr[LC_P1_<PP>][LC_P2_ECC]     = <PP>ECCENTRICITY;
       lv_pl_arr[LC_P1_<PP>][LC_P2_INC]     = <PP>INCLINATION;
@@ -510,27 +513,27 @@ BLOCK:
       lv_pl_arr[LC_P1_<PP>][LC_P2_LON_DT]  = <PP>LONGITUDE_DT;
       lv_pl_arr[LC_P1_<PP>][LC_P2_PER_DT]  = <PP>PERIAPSIS_DT;
       lv_pl_arr[LC_P1_<PP>][LC_P2_ASC_DT]  = <PP>ASCENDING_DT;
-   ??MACRO_END
+   ?MACRO_END
 
    BLOCK_DEF FUNC INT lf_pl_init(INT plnt):
       BLOCK_USE lv_pl_ind;
       BLOCK_USE lv_pl_arr[];
 
       IF lv_pl_ind < 0:
-         ??PLNT_SETUP_VALUES SUN??
-         ??PLNT_SETUP_VALUES MERCURY??
-         ??PLNT_SETUP_VALUES VENUS??
-         ??PLNT_SETUP_VALUES EARTH??
-         ??PLNT_SETUP_VALUES MARS??
-         ??PLNT_SETUP_VALUES JUPITER??
-         ??PLNT_SETUP_VALUES SATURN??
-         ??PLNT_SETUP_VALUES URANUS??
-         ??PLNT_SETUP_VALUES NEPTUNE??
-         ??PLNT_SETUP_VALUES PLUTO??
-         ??PLNT_SETUP_VALUES CERES??
-         ??PLNT_SETUP_VALUES ERIS??
-         ??PLNT_SETUP_VALUES MAKEMAKE??
-         ??PLNT_SETUP_VALUES HAUMEA??
+         ?PLNT_SETUP_VALUES SUN ?
+         ?PLNT_SETUP_VALUES MERCURY ?
+         ?PLNT_SETUP_VALUES VENUS ?
+         ?PLNT_SETUP_VALUES EARTH ?
+         ?PLNT_SETUP_VALUES MARS ?
+         ?PLNT_SETUP_VALUES JUPITER ?
+         ?PLNT_SETUP_VALUES SATURN ?
+         ?PLNT_SETUP_VALUES URANUS ?
+         ?PLNT_SETUP_VALUES NEPTUNE ?
+         ?PLNT_SETUP_VALUES PLUTO ?
+         ?PLNT_SETUP_VALUES CERES ?
+         ?PLNT_SETUP_VALUES ERIS ?
+         ?PLNT_SETUP_VALUES MAKEMAKE ?
+         ?PLNT_SETUP_VALUES HAUMEA ?
          IF 0 < lv_pl_jtwoktime AND lv_pl_jtwoktime < 1.0 / 32.0:
             CALL plsettime(Kw.uet2j2k(Kw.timee()));
          IF_END
@@ -576,15 +579,15 @@ BLOCK:
       RETURN lv_pl_jtwoktime;
    FUNC_END
 
-   ??MACRO PLNT_FUNC <AA> ??
+   ?MACRO PLNT_FUNC <AA> ?
    FUNC DBL pl<AA>(NUL):
       # the <AA> of the previous selected planet
       BLOCK_USE lv_pl_ind;
       RETURN pl_<AA>(LC_P1_PREV_PL);
    FUNC_END
-   ??MACRO_END
+   ?MACRO_END
 
-   ??MACRO PLNT_PHYSICAL <AA> ; <BB> ??
+   ?MACRO PLNT_PHYSICAL <AA> ; <BB> ?
    FUNC DBL pl_<AA>(INT plnt):
       # the <AA> of planet PLNT
       BLOCK_USE lv_pl_arr[];
@@ -601,32 +604,32 @@ BLOCK:
       IF_END
       RETURN retvalu;
    FUNC_END
-   ??PLNT_FUNC <AA> ??
-   ??MACRO_END
+   ?PLNT_FUNC <AA> ?
+   ?MACRO_END
 
-   ??PLNT_PHYSICAL gm            ; GM ??
-   ??PLNT_PHYSICAL year          ; YEAR ??
-   ??PLNT_PHYSICAL day           ; DAY ??
-   ??PLNT_PHYSICAL flatness      ; FLATNESS ??
-   ??PLNT_PHYSICAL a             ; A ??
-   ??PLNT_PHYSICAL c             ; C ??
+   ?PLNT_PHYSICAL gm            ; GM ?
+   ?PLNT_PHYSICAL year          ; YEAR ?
+   ?PLNT_PHYSICAL day           ; DAY ?
+   ?PLNT_PHYSICAL flatness      ; FLATNESS ?
+   ?PLNT_PHYSICAL a             ; A ?
+   ?PLNT_PHYSICAL c             ; C ?
 
-   ??MACRO PLNT_ORBITAL <AA> ; <BB> ??
+   ?MACRO PLNT_ORBITAL <AA> ; <BB> ?
    FUNC DBL pl_<AA>(INT plnt):
       # compute orbital <AA> of planet PLNT
       RETURN lf_val(plnt, LC_P2_<BB>, LC_P2_<BB>_DT);
    FUNC_END
-   ??PLNT_FUNC <AA> ??
-   ??MACRO_END
+   ?PLNT_FUNC <AA> ?
+   ?MACRO_END
 
-   ??PLNT_ORBITAL orbit         ; ORB ??
-   ??PLNT_ORBITAL eccentricity  ; ECC ??
-   ??PLNT_ORBITAL inclination   ; INC ??
-   ??PLNT_ORBITAL longitude     ; LON ??
-   ??PLNT_ORBITAL periapsis     ; PER ??
-   ??PLNT_ORBITAL ascending     ; ASC ??
+   ?PLNT_ORBITAL orbit         ; ORB ?
+   ?PLNT_ORBITAL eccentricity  ; ECC ?
+   ?PLNT_ORBITAL inclination   ; INC ?
+   ?PLNT_ORBITAL longitude     ; LON ?
+   ?PLNT_ORBITAL periapsis     ; PER ?
+   ?PLNT_ORBITAL ascending     ; ASC ?
 
-   ??MACRO PL_VAL <PP> ; <VAL> ??
+   ?MACRO PL_VAL <PP> ; <VAL> ?
       DBL retvalu;
       IF <PP> < LC_P1_PREV_PL OR LC_P1_COUNT <= <PP>:
          retvalu = LC_P1_ERR;
@@ -634,47 +637,47 @@ BLOCK:
          retvalu = <VAL>;
       IF_END
       RETURN retvalu;
-   ??MACRO_END
+   ?MACRO_END
 
    FUNC DBL pl_mass(INT plnt):
       # The Mass (kg) of planet PLNT
-      ??PL_VAL plnt ; pl_gm(plnt) / Kw.GRAVITATION ??
+      ?PL_VAL plnt ; pl_gm(plnt) / Kw.GRAVITATION ?
    FUNC_END
-   ??PLNT_FUNC mass ??
+   ?PLNT_FUNC mass ?
 
    FUNC DBL pl_b(INT plnt):
       # The polar radius (m) of planet PLNT
-      ??PL_VAL plnt ; (1.0 - pl_flatness(plnt)) * pl_a(plnt) ??
+      ?PL_VAL plnt ; (1.0 - pl_flatness(plnt)) * pl_a(plnt) ?
    FUNC_END
-   ??PLNT_FUNC b ??
+   ?PLNT_FUNC b ?
 
    FUNC DBL pl_radius(INT plnt):
       # The average radius (m) of planet PLNT
-      ??PL_VAL plnt ; (pl_a(plnt) + pl_b(plnt) + pl_c(plnt))
-            / 3.0 ??
+      ?PL_VAL plnt ; (pl_a(plnt) + pl_b(plnt) + pl_c(plnt))
+            / 3.0 ?
    FUNC_END
-   ??PLNT_FUNC radius ??
+   ?PLNT_FUNC radius ?
 
    FUNC DBL pl_gravity(INT plnt):
       # The mean surface gravity (m/s**2) of planet PLNT
       #   GM / RADIUS**2
-      ??PL_VAL plnt ; pl_gm(plnt) / Kw.square(pl_radius(plnt)) ??
+      ?PL_VAL plnt ; pl_gm(plnt) / Kw.square(pl_radius(plnt)) ?
    FUNC_END
-   ??PLNT_FUNC gravity ??
+   ?PLNT_FUNC gravity ?
 
    FUNC DBL pl_meananomaly(INT plnt):
       # The mean anomaly of planet PLNT
-      ??PL_VAL plnt ; Kw.fmodu(
-            pl_longitude(plnt) - pl_periapsis(plnt), Kw.TAU) ??
+      ?PL_VAL plnt ; Kw.fmodu(
+            pl_longitude(plnt) - pl_periapsis(plnt), Kw.TAU) ?
    FUNC_END
-   ??PLNT_FUNC meananomaly ??
+   ?PLNT_FUNC meananomaly ?
 
    FUNC DBL pl_escape(INT plnt):
       # The mean escape velocity (m/s) of planet PLNT
       #    SQRT(2.0 * GM / RADIUS);
-      ??PL_VAL plnt; SQRT(2.0 * pl_gm(plnt) / pl_radius(plnt)) ??
+      ?PL_VAL plnt; SQRT(2.0 * pl_gm(plnt) / pl_radius(plnt)) ?
    FUNC_END
-   ??PLNT_FUNC escape ??
+   ?PLNT_FUNC escape ?
 
    FUNC DBL pl_synodic(INT plnt):
       # the synodic period (s) of planet PLNT
@@ -692,26 +695,26 @@ BLOCK:
       IF_END
       RETURN retvalu;
    FUNC_END
-   ??PLNT_FUNC synodic ??
+   ?PLNT_FUNC synodic ?
 
    FUNC DBL pl_volume(INT plnt):
       # The volume (m**3) of planet PLNT
-      ??PL_VAL plnt ; 2.0 * Kw.TAU * pl_a(plnt)
-            * pl_b(plnt) * pl_c(plnt) / 3.0 ??
+      ?PL_VAL plnt ; 2.0 * Kw.TAU * pl_a(plnt)
+            * pl_b(plnt) * pl_c(plnt) / 3.0 ?
    FUNC_END
-   ??PLNT_FUNC volume ??
+   ?PLNT_FUNC volume ?
 
    FUNC DBL pl_density(INT plnt):
       # The density (kg/m**3) of planet PLNT
-      ??PL_VAL plnt ; pl_mass(plnt) / pl_volume(plnt) ??
+      ?PL_VAL plnt ; pl_mass(plnt) / pl_volume(plnt) ?
    FUNC_END
-   ??PLNT_FUNC density ??
+   ?PLNT_FUNC density ?
 
    FUNC DBL pl_argument(INT plnt):
       # The argument of perihelion of planet PLNT
-      ??PL_VAL plnt ; pl_periapsis(plnt) - pl_ascending(plnt) ??
+      ?PL_VAL plnt ; pl_periapsis(plnt) - pl_ascending(plnt) ?
    FUNC_END
-   ??PLNT_FUNC argument ??
+   ?PLNT_FUNC argument ?
 
    FUNC DBL pl_margot(INT plnt):
       # Margot parameter for the given planet
@@ -724,7 +727,7 @@ BLOCK:
       IF_END
       RETURN retvalu;
    FUNC_END
-   ??PLNT_FUNC margot ??
+   ?PLNT_FUNC margot ?
 
    FUNC DBL pl_sternlevison(INT plnt):
       # Stern-Levison parameter for the given planet
@@ -737,21 +740,21 @@ BLOCK:
       IF_END
       RETURN retvalu;
    FUNC_END
-   ??PLNT_FUNC sternlevison ??
+   ?PLNT_FUNC sternlevison ?
 
    FUNC DBL pl_perihelion(INT plnt):
       # The perihelion distance (m) of planet PLNT
-      ??PL_VAL plnt ; pl_orbit(plnt)
-            * (1.0 - pl_eccentricity(plnt)) ??
+      ?PL_VAL plnt ; pl_orbit(plnt)
+            * (1.0 - pl_eccentricity(plnt)) ?
    FUNC_END
-   ??PLNT_FUNC perihelion ??
+   ?PLNT_FUNC perihelion ?
 
    FUNC DBL pl_aphelion(INT plnt):
       # The aphelion distance (m) of planet PLNT
-      ??PL_VAL plnt ; pl_orbit(plnt)
-            * (1.0 + pl_eccentricity(plnt)) ??
+      ?PL_VAL plnt ; pl_orbit(plnt)
+            * (1.0 + pl_eccentricity(plnt)) ?
    FUNC_END
-   ??PLNT_FUNC aphelion ??
+   ?PLNT_FUNC aphelion ?
 
    FUNC DBL eccentric_anomaly(DBL mean_ano_rad
          , DBL eccen):
@@ -759,23 +762,23 @@ BLOCK:
       #   using the Newton-Raphson method
       DBL mrad;
       DBL xrad;
-      ??RAPHSON_DECLARATIONS??
+      ?RAPHSON_DECLARATIONS?
 
       mrad = Kw.fmodu(mean_ano_rad, Kw.tur2rad(1.0));
       xrad = mrad + eccen * SIN(mrad); # init guess
 
-      ??RAPHSON_LOOP xrad
+      ?RAPHSON_LOOP xrad
             ; nrvx_xx - eccen * SIN(nrvx_xx) - mean_ano_rad
-            ; 1.0 - eccen * COS(nrvx_xx) ??
+            ; 1.0 - eccen * COS(nrvx_xx) ?
       RETURN nrvx_xx;
    FUNC_END
 
    FUNC DBL pl_eccentricanomaly(INT plnt):
       # the eccentric anomaly of planet PLNT
-      ??PL_VAL plnt ; eccentric_anomaly(pl_meananomaly(plnt)
-               , pl_eccentricity(plnt)) ??
+      ?PL_VAL plnt ; eccentric_anomaly(pl_meananomaly(plnt)
+               , pl_eccentricity(plnt)) ?
    FUNC_END
-   ??PLNT_FUNC eccentricanomaly ??
+   ?PLNT_FUNC eccentricanomaly ?
 
    FUNC DBL pl_heliocentric(INT plnt, DBL jtwok):
       # compute the heliocentric (and geocentric) coordinates
@@ -930,7 +933,7 @@ BLOCK:
       IF_END
       RETURN plnt_ind;
    FUNC_END
-   ??PLNT_FUNC name ??
+   ?PLNT_FUNC name ?
 
    FUNC DBL earth_radius(DBL lat_deg):
       # earth radius, in meters, at geoditic latitiude lat_deg
@@ -1035,14 +1038,14 @@ BLOCK:   # ISA atmosphere
    BLOCK_DEF DBL lv_isa_arr[7][5];
    BLOCK_DEF DBL lv_isa_magic = 0.0;
 
-   ??MACRO ISA_INIT <IND> ; <HEI> ; <TEMP> ;
-            <LAPSE> ; <PRES> ; <DENS> ??
+   ?MACRO ISA_INIT <IND> ; <HEI> ; <TEMP> ;
+            <LAPSE> ; <PRES> ; <DENS> ?
       lv_isa_arr[<IND>][LC_ISA_XHEIGHT] = <HEI>;
       lv_isa_arr[<IND>][LC_ISA_XTEMPERATURE] = <TEMP>;
       lv_isa_arr[<IND>][LC_ISA_XLAPSERATE] = <LAPSE>;
       lv_isa_arr[<IND>][LC_ISA_XPRESSURE] = <PRES>;
       lv_isa_arr[<IND>][LC_ISA_XDENSITY] = <DENS>;
-   ??MACRO_END
+   ?MACRO_END
 
    BLOCK_DEF FUNC DBL lf_isa_calc(DBL height_m, INT state_x):
       BLOCK_USE lv_isa_arr[];
@@ -1056,13 +1059,13 @@ BLOCK:   # ISA atmosphere
 
       IF NOT Kw.ismagic(lv_isa_magic):
          # from https://en.wikipedia.org/wiki/Barometric_formula
-         ??ISA_INIT 0;     0; 288.15; -0.0065; Kw.ATM; 1.2250 ??
-         ??ISA_INIT 1; 11000; 216.65; +0.0;  22632.10; 0.36391 ??
-         ??ISA_INIT 2; 20000; 216.65; +0.001; 5474.89; 0.08803 ??
-         ??ISA_INIT 3; 32000; 228.65; +0.0028; 868.02; 0.01322 ??
-         ??ISA_INIT 4; 47000; 270.65; +0.0;    110.91; 0.00143 ??
-         ??ISA_INIT 5; 51000; 270.65; -0.0028;  66.94; 8.6E-4 ??
-         ??ISA_INIT 6; 71000; 214.65; -0.002;    3.96; 6.4E-5 ??
+         ?ISA_INIT 0;     0; 288.15; -0.0065; Kw.ATM; 1.2250 ?
+         ?ISA_INIT 1; 11000; 216.65; +0.0;  22632.10; 0.36391 ?
+         ?ISA_INIT 2; 20000; 216.65; +0.001; 5474.89; 0.08803 ?
+         ?ISA_INIT 3; 32000; 228.65; +0.0028; 868.02; 0.01322 ?
+         ?ISA_INIT 4; 47000; 270.65; +0.0;    110.91; 0.00143 ?
+         ?ISA_INIT 5; 51000; 270.65; -0.0028;  66.94; 8.6E-4 ?
+         ?ISA_INIT 6; 71000; 214.65; -0.002;    3.96; 6.4E-5 ?
          #                 m;      K;    K/m     ; Pa; kg/m**3
          lv_isa_magic = Kw.magicset();
       IF_END

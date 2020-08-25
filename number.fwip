@@ -1,6 +1,9 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-20 kdw  boolean checks changed
+# 2020-08-19 kdw  comment change
+# 2020-08-17 kdw  macro syntax changed
 # 2020-08-12 kdw  allow args <0 in znorder
-# 2020-08-02 kdw  var renam g?d
+# 2020-08-02 kdw  var renam g[d]
 # 2020-07-29 kdw  block-def work
 # 2020-07-27 kdw  block syntax
 # 2020-07-25 kdw  s/BITWISE/BIT/
@@ -62,7 +65,7 @@
 # 2020-01-20 kdw  isprime work
 # 2020-01-18 kdw  .*prim[e]nth() work
 # 2020-01-14 kdw  dlog.* funcs
-# 2020-01-09 kdw  bkb?n funcs
+# 2020-01-09 kdw  bk(bn) funcs
 # 2020-01-08 kdw  cantorial work II
 # 2020-01-07 kdw  cantorial work
 # 2020-01-04 kdw  cantorx ternary funciton
@@ -116,7 +119,7 @@
 # 2018-07-28 kdw  l[c]antim func
 # 2018-07-26 kdw  lc[a]ntim func
 # 2018-07-17 kdw  private lf_.* funcs
-# 2018-07-16 kdw  lc?am funcfibo
+# 2018-07-16 kdw  l[c]am funcfibo
 # 2018-06-13 kdw  mved tests
 # 2018-06-09 kdw  mved tests
 # 2018-06-08 kdw  more test values
@@ -126,8 +129,8 @@
 # 2018-05-28 kdw  .*_() functions
 # 2018-05-26 kdw  Mertens function
 # 2018-05-22 kdw  trivial syntax error
-# 2018-05-18 kdw  l?i function loop limit
-# 2018-05-14 kdw  BLO?CK syntax change
+# 2018-05-18 kdw  l[i] function loop limit
+# 2018-05-14 kdw  BL[O]CK syntax change
 # 2018-04-03 kdw  rm () from return
 # 2018-04-01 kdw  LAN[G]UAGE_E[N]D
 # 2018-03-26 kdw  macro redef
@@ -144,8 +147,8 @@
 # 2017-08-22 kdw  comment change
 # 2017-08-20 kdw  rmed/renamd .*_P[E]R_.* vars
 # 2017-06-21 kdw  LAN[G].* AND MA[S]TER.* change
-# 2017-05-30 kdw  approx?pn
-# 2017-05-15 kdw  polycnum, tetrac?num
+# 2017-05-30 kdw  appro[x]pn
+# 2017-05-15 kdw  polycnum, tetra[c]num
 # 2017-05-13 kdw  polynum, tri
 # 2017-04-21 kdw  func to function
 # 2017-04-11 kdw  long lines
@@ -153,11 +156,11 @@
 # 2017-03-30 kdw  comment cleanup
 # 2017-03-17 kdw  space after comma
 # 2017-03-12 kdw  shorten long comments
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
-# 2017-03-07 kdw  INS?ERT etal
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
+# 2017-03-07 kdw  INS[E]RT etal
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
 # 2017-02-24 kdw  array var renam
 # 2017-02-20 kdw  var renam
 # 2017-02-19 kdw  Li redef
@@ -166,41 +169,41 @@
 # 2017-02-12 kdw  FWIP language change
 # 2017-02-08 kdw  SE[C]ANT stuff; syntax error in Li
 # 2017-02-07 kdw  SE[C]ANT stuff
-# 2017-02-06 kdw  SE[C]ANT / CO?UNT syntax
+# 2017-02-06 kdw  SE[C]ANT / CO[U]NT syntax
 # 2017-02-03 kdw  SE[C]ANT stuff
 # 2017-01-06 kdw  ..LAN[G]_[U]AGE_[I]F deprecated
 # 2016-12-30 kdw  ipow to powi
-# 2016-12-28 kdw  handle uppercase funcs in fw?ipp
-# 2016-12-20 kdw  indent "??" lines
-# 2016-12-01 kdw  rmed LI?2
+# 2016-12-28 kdw  handle uppercase funcs in fw[i]pp
+# 2016-12-20 kdw  indent "?" lines
+# 2016-12-01 kdw  rmed L[I]2
 # 2016-11-27 kdw  long lines
-# 2016-11-23 kdw  CN?ST to REA?DON?LY
-# 2016-11-22 kdw  fixed l?i
-# 2016-11-21 kdw  DE?F to FU?NC
-# 2016-11-20 kdw  language change
-# 2016-11-19 kdw  isp?rime
-# 2016-11-15 kdw  M?OD/B?IT* syntax change
+# 2016-11-23 kdw  C[N]ST to REA[D]ONLY
+# 2016-11-22 kdw  fixed [l]i
+# 2016-11-21 kdw  D[F]to FU[N]C
+# 2016-11-20 kdw  laanguage change
+# 2016-11-19 kdw  isp[r]ime
+# 2016-11-15 kdw  M[O]D/B[I]T* syntax change
 # 2016-11-14 kdw  comment cleanup
-# 2016-11-11 kdw  seca?nt algorithm refactor
-# 2016-11-09 kdw  more AW?AIT loops
-# 2016-10-31 kdw  AWA?IT
-# 2016-10-30 kdw  EX?ITLO?OP
+# 2016-11-11 kdw  sec[a]nt algorithm refactor
+# 2016-11-09 kdw  more AW[A]IT loops
+# 2016-10-31 kdw  AW[A]IT
+# 2016-10-30 kdw  EX[I]TL[O]OP
 # 2016-10-28 kdw  comment reorder
 # 2016-10-14 kdw  _p
-# 2016-10-03 kdw  ispr?ime algorithm
-# 2016-09-27 kdw  pc?f new algorithm
-# 2016-09-26 kdw  pc?f debugged
-# 2016-09-25 kdw  pc?f
-# 2016-09-22 kdw  eule?rph?i
+# 2016-10-03 kdw  isp[r]ime algorithm
+# 2016-09-27 kdw  pcf new algorithm
+# 2016-09-26 kdw  pcf debugged
+# 2016-09-25 kdw  pcf
+# 2016-09-22 kdw  eulerphi
 # 2016-09-21 kdw  comment change
 # 2016-09-15 kdw  comment change
 # 2016-09-14 kdw  lang change
 # 2016-09-08 kdw  eta tweak
 # 2016-09-06 kdw  eta tweak
 # 2016-09-02 kdw  tweak
-# 2016-09-01 kdw  li, Lix?
-# 2016-04-27 kdw  _[_]BL?OCK* change
-# 2016-03-03 kdw  fixed problem in fa?ctor; get_factor
+# 2016-09-01 kdw  li, Lix
+# 2016-04-27 kdw  _[_]BL[O]CK* change
+# 2016-03-03 kdw  fixed problem in fa[c]tor; get_factor
 # 2015-12-31 kdw  bounded (possible) infinite loops
 # 2015-12-30 kdw  isdblequal renamed
 # 2015-12-28 kdw  variable renamed; requires tweaked
@@ -220,7 +223,7 @@
 # 2015-09-21 kdw  BC:modulus problem
 # 2015-09-20 kdw  created
 
-??INSERT_FILE "Macros.fwip"??
+?INSERT_FILE "Macros.fwip"?
 
 FUNC INT powi(INT xx, INT nn):
    # XX**NN (assumes 0 < nn)
@@ -933,7 +936,7 @@ FUNC DBL fiboxinv(DBL yy):
    #    tries to deliver smallest positive value; i.e
    #       fiboxinv(X) < 1.094576105145116
    #          for all X < 1.009824331847821
-   ??SECANT_DECLARATIONS??
+   ?SECANT_DECLARATIONS?
    DBL x_init;
 
    IF yy <= 0:
@@ -949,7 +952,7 @@ FUNC DBL fiboxinv(DBL yy):
          x_init = LN(yy * SQRT(5.0)) / LN(Kw.PHI);
       IF_END
 
-      ??SECANT_LOOP x_init ; 0.05 ; yy - fibox(scvx_xx) ??
+      ?SECANT_LOOP x_init ; 0.05 ; yy - fibox(scvx_xx) ?
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -1238,7 +1241,7 @@ FUNC INT dlog(INT aa, INT bb, INT nn):
       retvalu = 1;
    ELSIF aa <= 0 OR bb <= 0 OR nn <= 0:
       retvalu = -1;
-   ELSIF 1 < gcd(aa, nn) OR NOT isprimitiveroot(aa, nn):
+   ELSIF 1 < gcd(aa, nn) OR (NOT isprimitiveroot(aa, nn)):
       retvalu = dlogx(aa, bb, nn);
    ELSE:
       sqnn = CEILL(SQRT(nn));
@@ -2013,11 +2016,11 @@ BLOCK: # Li, Lix variables
 
    FUNC DBL lixinv(DBL yy):
       # return XX such that YY = lix(XX)
-      ??SECANT_DECLARATIONS??
+      ?SECANT_DECLARATIONS?
       DBL x_init;
 
       x_init = yy / LN(yy);
-      ??SECANT_LOOP x_init ; 0.05 ; yy - lix(scvx_xx) ??
+      ?SECANT_LOOP x_init ; 0.05 ; yy - lix(scvx_xx) ?
       RETURN scvx_xx;
    FUNC_END
 BLOCK_END

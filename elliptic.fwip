@@ -1,4 +1,5 @@
 #    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-08-17 kdw  macro syntax changed
 # 2020-08-12 kdw  peak value for elliptic1
 # 2020-08-11 kdw  botched extending elliptic1 to 1 < m II
 # 2020-08-10 kdw  k,a parameter funcs
@@ -242,7 +243,7 @@ FUNC DBL elliptic1im(DBL mm, DBL circ_rad):
 FUNC_END
 #TEST:elliptic1im(0.81,1)==1.15966107073219896613246347782023808;
 
-??MACRO ELLIPT12 <NUM> ; <ARG> ??
+?MACRO ELLIPT12 <NUM> ; <ARG> ?
 FUNC DBL elliptic<NUM><ARG>(DBL <ARG><ARG>):
    # Complete Elliptic Integral of the <NUM>th kind.
    RETURN elliptic<NUM>m(<ARG>2m(<ARG><ARG>));
@@ -251,10 +252,10 @@ FUNC DBL elliptic<NUM>i<ARG>(DBL <ARG><ARG>, DBL circ_rad):
    # Incomplete Elliptic Integral of the <NUM>th kind.
    RETURN elliptic<NUM>im(<ARG>2m(<ARG><ARG>), circ_rad);
 FUNC_END
-??MACRO_END
+?MACRO_END
 
-??ELLIPT12 1 ; k ??
-??ELLIPT12 1 ; a ??
+?ELLIPT12 1 ; k ?
+?ELLIPT12 1 ; a ?
 
 FUNC DBL ellipticF(DBL kk, DBL circ_rad):
    # Incomplete Elliptic Integral of the 1th kind.
@@ -308,7 +309,7 @@ FUNC DBL elliptic2m(DBL mm):
       ggn = SQRT(1 - mm);
       sum = 1.0 - mm / 2.0;
       AWAIT Kw.iseq(sum, sum_prev) COUNT ii FROM 0
-               TO ??LOOP_LIMIT??:
+               TO ?LOOP_LIMIT?:
          twon *= 2.0;
          tn = aan;   # temporary variable
          aan = (aan + ggn) / 2.0;
@@ -462,8 +463,8 @@ FUNC DBL elliptic2im__1(DBL mm, DBL circ_rad):
 FUNC_END
 #TEST:elliptic2im__1(0.8,0.7)==0.656107429902428288393679575584;
 
-??ELLIPT12 2 ; k ??
-??ELLIPT12 2 ; a ??
+?ELLIPT12 2 ; k ?
+?ELLIPT12 2 ; a ?
 
 FUNC DBL elliptic3m(DBL nn, DBL mm):
    # Complete Elliptic Integral of the 3th kind.
@@ -498,7 +499,7 @@ FUNC DBL elliptic3m(DBL nn, DBL mm):
       qqn = 1.0;
       sum = qqn;
       AWAIT Kw.iseq(sum, sum_prev) AND Kw.iseq(aan, ggn)
-               COUNT ii FROM 0 TO ??LOOP_LIMIT??:
+               COUNT ii FROM 0 TO ?LOOP_LIMIT?:
          tpp = ppn * ppn;
          tag = aan * ggn;
          een = (tpp - tag) / (tpp + tag);
@@ -522,7 +523,7 @@ FUNC DBL elliptic3m(DBL nn, DBL mm):
 FUNC_END
 #TEST:elliptic3m(0.5,.25)==2.41367150420119464066692352053928994;
 
-??MACRO ELLIPT3 <ARG> ??
+?MACRO ELLIPT3 <ARG> ?
 FUNC DBL elliptic3<ARG>(DBL nn, DBL <ARG><ARG>):
    # Complete Elliptic Integral of the 3th kind.
    RETURN elliptic3m(nn, <ARG>2m(<ARG><ARG>));
@@ -531,10 +532,10 @@ FUNC DBL elliptic3i<ARG>(DBL nn, DBL <ARG><ARG>, DBL circ_rad):
    # Incomplete Elliptic Integral of the 3th kind.
    RETURN elliptic3im(nn, <ARG>2m(<ARG><ARG>), circ_rad);
 FUNC_END
-??MACRO_END
+?MACRO_END
 
-??ELLIPT3 k ??
-??ELLIPT3 a ??
+?ELLIPT3 k ?
+?ELLIPT3 a ?
 
 FUNC DBL ellipticP(DBL kk, DBL circ_rad):
    # Complete Elliptic Integral of the 3th kind.

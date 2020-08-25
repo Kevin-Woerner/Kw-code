@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-06-25 kdw  var renam
@@ -44,7 +45,7 @@
 # 2019-03-18 kdw  macro syntax changed
 # 2019-03-08 kdw  is[e]qual to is[e]q, et al.
 # 2019-03-05 kdw  comment on st[d]ev
-# 2019-02-28 kdw  REP?LACE/DEF?INE work
+# 2019-02-28 kdw  REP[L]ACE/DE[F]INE work
 # 2019-02-19 kdw  macro syntax
 # 2018-07-17 kdw  private lf_.* funcs
 # 2018-07-14 kdw  float num format
@@ -74,11 +75,11 @@
 # 2017-04-20 kdw  func to function
 # 2017-03-27 kdw  rm useless ";"
 # 2017-03-12 kdw  shorten long comments
-# 2017-03-10 kdw  get Fw?ip_Pa?rse to work
+# 2017-03-10 kdw  get Fw[i]p_Pa[r]se to work
 # 2017-03-06 kdw  sigils rmed
-# 2017-03-01 kdw  var?ylog-ad?d space messup
-# 2017-02-28 kdw  REQ?UIRE function ()
-# 2017-02-24 kdw  REP?LACE rework, et al
+# 2017-03-01 kdw  var[y]log-a[d]d space messup
+# 2017-02-28 kdw  REQ[U]IRE function ()
+# 2017-02-24 kdw  REP[L]ACE rework, et al
 # 2017-02-20 kdw  var renam
 # 2017-02-14 kdw  FWIP Loop syntax changed
 # 2017-02-13 kdw  FWIP language change
@@ -224,21 +225,21 @@ BLOCK: # Statistics block
       RETURN ix_hndl;
    FUNC_END
 
-   ??MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> ??
+   ?MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> ?
    FUNC DBL <STFUNC>(INT ix_hndl):
       # <STDESC> of LC_HNDLth stts calc
       BLOCK_USE lv_sttx_arr[];
 
       RETURN lv_sttx_arr[ix_hndl][<STIND>];
    FUNC_END
-   ??MACRO_END
+   ?MACRO_END
 
-   ??STTSFUNC sttscount ; LC_STTS_NUM   ; count ??
-   ??STTSFUNC sttsmean  ; LC_STTS_MEAN  ; mean ??
-   ??STTSFUNC sttsmsq   ; LC_STTS_MSQ   ; msq ??
-   ??STTSFUNC sttsmax   ; LC_STTS_MAX   ; max ??
-   ??STTSFUNC sttsmin   ; LC_STTS_MIN   ; min ??
-   ??STTSFUNC sttsmagic ; LC_STTS_MAGIC ; magic ??
+   ?STTSFUNC sttscount ; LC_STTS_NUM   ; count ?
+   ?STTSFUNC sttsmean  ; LC_STTS_MEAN  ; mean ?
+   ?STTSFUNC sttsmsq   ; LC_STTS_MSQ   ; msq ?
+   ?STTSFUNC sttsmax   ; LC_STTS_MAX   ; max ?
+   ?STTSFUNC sttsmin   ; LC_STTS_MIN   ; min ?
+   ?STTSFUNC sttsmagic ; LC_STTS_MAGIC ; magic ?
 
    FUNC DBL sttssum(INT ix_hndl):
       # sum of data points in STTS w/ given handle
