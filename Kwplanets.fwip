@@ -1,4 +1,5 @@
 #    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-08-29 kdw  _a[r]r changed to _mt[r]x
 # 2020-08-20 kdw  boolean checks changed
 # 2020-08-19 kdw  comment change
 # 2020-08-17 kdw  macro syntax changed
@@ -489,35 +490,36 @@ BLOCK:
    BLOCK_DEF DBL lv_pl_helio_arr[3];
    BLOCK_DEF DBL lv_pl_geo_arr[3];
    BLOCK_DEF INT lv_pl_ind = LC_P1_PREV_PL;
-   BLOCK_DEF DBL lv_pl_arr[LC_P1_COUNT][LC_P2_COUNT];
+   BLOCK_DEF DBL lv_pl_mtrx[LC_P1_COUNT][LC_P2_COUNT];
    BLOCK_DEF DBL lv_pl_earth_year = EARTHYEAR;
    BLOCK_DEF DBL lv_pl_jtwoktime = 1.0 / 64.0;
 
    # setup macro
    ?MACRO PLNT_SETUP_VALUES <PP> ?
-      lv_pl_arr[LC_P1_<PP>][LC_P2_GM]      = <PP>GM;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_DAY]     = <PP>DAY;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_FLATNESS] = <PP>FLATNESS;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_A]       = <PP>_A;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_C]       = <PP>_C;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_YEAR]    = <PP>YEAR;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_ORB]     = <PP>ORBIT;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_ECC]     = <PP>ECCENTRICITY;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_INC]     = <PP>INCLINATION;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_LON]     = <PP>LONGITUDE;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_PER]     = <PP>PERIAPSIS;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_ASC]     = <PP>ASCENDING;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_ORB_DT]  = <PP>ORBIT_DT;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_ECC_DT]  = <PP>ECCENTRICITY_DT;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_INC_DT]  = <PP>INCLINATION_DT;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_LON_DT]  = <PP>LONGITUDE_DT;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_PER_DT]  = <PP>PERIAPSIS_DT;
-      lv_pl_arr[LC_P1_<PP>][LC_P2_ASC_DT]  = <PP>ASCENDING_DT;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_GM]      = <PP>GM;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_DAY]     = <PP>DAY;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_FLATNESS] = <PP>FLATNESS;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_A]       = <PP>_A;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_C]       = <PP>_C;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_YEAR]    = <PP>YEAR;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_ORB]     = <PP>ORBIT;
+
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_ECC]    = <PP>ECCENTRICITY;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_INC]    = <PP>INCLINATION;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_LON]    = <PP>LONGITUDE;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_PER]    = <PP>PERIAPSIS;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_ASC]    = <PP>ASCENDING;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_ORB_DT] = <PP>ORBIT_DT;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_ECC_DT] = <PP>ECCENTRICITY_DT;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_INC_DT] = <PP>INCLINATION_DT;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_LON_DT] = <PP>LONGITUDE_DT;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_PER_DT] = <PP>PERIAPSIS_DT;
+      lv_pl_mtrx[LC_P1_<PP>][LC_P2_ASC_DT] = <PP>ASCENDING_DT;
    ?MACRO_END
 
    BLOCK_DEF FUNC INT lf_pl_init(INT plnt):
       BLOCK_USE lv_pl_ind;
-      BLOCK_USE lv_pl_arr[];
+      BLOCK_USE lv_pl_mtrx[];
 
       IF lv_pl_ind < 0:
          ?PLNT_SETUP_VALUES SUN ?
@@ -562,8 +564,8 @@ BLOCK:
          retvalu = LC_P1_ERR;
       ELSE:
          pl_ind = pl(pa_ind);
-         retvalu = (lv_pl_arr[pl_ind][pb_bb]
-            + lv_pl_jtwoktime * lv_pl_arr[pl_ind][pb_bbd]);
+         retvalu = (lv_pl_mtrx[pl_ind][pb_bb]
+            + lv_pl_jtwoktime * lv_pl_mtrx[pl_ind][pb_bbd]);
       IF_END
       RETURN retvalu;
    FUNC_END
@@ -590,15 +592,15 @@ BLOCK:
    ?MACRO PLNT_PHYSICAL <AA> ; <BB> ?
    FUNC DBL pl_<AA>(INT plnt):
       # the <AA> of planet PLNT
-      BLOCK_USE lv_pl_arr[];
+      BLOCK_USE lv_pl_mtrx[];
       BLOCK_USE lv_pl_ind;
       DBL retvalu;
 
       CALL lf_pl_init(plnt);
       IF LC_P1_SUN <= plnt AND plnt < LC_P1_COUNT:
-         retvalu = lv_pl_arr[plnt][LC_P2_<BB>];
+         retvalu = lv_pl_mtrx[plnt][LC_P2_<BB>];
       ELSIF plnt == LC_P1_PREV_PL:
-         retvalu = lv_pl_arr[lv_pl_ind][LC_P2_<BB>];
+         retvalu = lv_pl_mtrx[lv_pl_ind][LC_P2_<BB>];
       ELSE:
          retvalu = LC_P1_ERR;
       IF_END
@@ -1035,20 +1037,20 @@ BLOCK:   # ISA atmosphere
    BLOCK_DEF CONST LC_ISA_XLAPSERATE 2;
    BLOCK_DEF CONST LC_ISA_XPRESSURE 3;
    BLOCK_DEF CONST LC_ISA_XDENSITY 4;
-   BLOCK_DEF DBL lv_isa_arr[7][5];
+   BLOCK_DEF DBL lv_isa_mtrx[7][5];
    BLOCK_DEF DBL lv_isa_magic = 0.0;
 
    ?MACRO ISA_INIT <IND> ; <HEI> ; <TEMP> ;
             <LAPSE> ; <PRES> ; <DENS> ?
-      lv_isa_arr[<IND>][LC_ISA_XHEIGHT] = <HEI>;
-      lv_isa_arr[<IND>][LC_ISA_XTEMPERATURE] = <TEMP>;
-      lv_isa_arr[<IND>][LC_ISA_XLAPSERATE] = <LAPSE>;
-      lv_isa_arr[<IND>][LC_ISA_XPRESSURE] = <PRES>;
-      lv_isa_arr[<IND>][LC_ISA_XDENSITY] = <DENS>;
+      lv_isa_mtrx[<IND>][LC_ISA_XHEIGHT] = <HEI>;
+      lv_isa_mtrx[<IND>][LC_ISA_XTEMPERATURE] = <TEMP>;
+      lv_isa_mtrx[<IND>][LC_ISA_XLAPSERATE] = <LAPSE>;
+      lv_isa_mtrx[<IND>][LC_ISA_XPRESSURE] = <PRES>;
+      lv_isa_mtrx[<IND>][LC_ISA_XDENSITY] = <DENS>;
    ?MACRO_END
 
    BLOCK_DEF FUNC DBL lf_isa_calc(DBL height_m, INT state_x):
-      BLOCK_USE lv_isa_arr[];
+      BLOCK_USE lv_isa_mtrx[];
       BLOCK_USE lv_isa_magic;
       INT h_ind;
       DBL air_k_per_m;
@@ -1071,35 +1073,35 @@ BLOCK:   # ISA atmosphere
       IF_END
 
       h_ind = 6;
-      WHILE height_m < lv_isa_arr[h_ind][0] AND 0 < h_ind:
+      WHILE height_m < lv_isa_mtrx[h_ind][0] AND 0 < h_ind:
          h_ind -= 1;
       WHILE_END
 
-      delta_h = height_m - lv_isa_arr[h_ind][LC_ISA_XHEIGHT];
+      delta_h = height_m - lv_isa_mtrx[h_ind][LC_ISA_XHEIGHT];
 
-      this_temp = lv_isa_arr[h_ind][LC_ISA_XTEMPERATURE]
-            + lv_isa_arr[h_ind][LC_ISA_XLAPSERATE] * delta_h;
+      this_temp = lv_isa_mtrx[h_ind][LC_ISA_XTEMPERATURE]
+            + lv_isa_mtrx[h_ind][LC_ISA_XLAPSERATE] * delta_h;
       IF state_x == LC_ISA_TEMPERATURE:
          ret_val = this_temp;
       ELSE:
          air_k_per_m = Kw.GRAVITY * Kwelements.AIR_MASS / Kw.GAS;
-         IF Kw.iszero(lv_isa_arr[h_ind][LC_ISA_XLAPSERATE]):
+         IF Kw.iszero(lv_isa_mtrx[h_ind][LC_ISA_XLAPSERATE]):
             ret_val = EXP(-air_k_per_m * delta_h
-                  / lv_isa_arr[h_ind][LC_ISA_XTEMPERATURE]);
+                  / lv_isa_mtrx[h_ind][LC_ISA_XTEMPERATURE]);
          ELSE:
             expon = air_k_per_m
-                  / lv_isa_arr[h_ind][LC_ISA_XLAPSERATE];
+                  / lv_isa_mtrx[h_ind][LC_ISA_XLAPSERATE];
             IF state_x == LC_ISA_DENSITY:
                expon += 1;
             IF_END
-            ret_val = POW(lv_isa_arr[h_ind][LC_ISA_XTEMPERATURE]
+            ret_val = POW(lv_isa_mtrx[h_ind][LC_ISA_XTEMPERATURE]
                         / this_temp, expon);
          IF_END
 
          IF state_x == LC_ISA_PRESSURE:
-            ret_val *= lv_isa_arr[h_ind][LC_ISA_XPRESSURE];
+            ret_val *= lv_isa_mtrx[h_ind][LC_ISA_XPRESSURE];
          ELSE:
-            ret_val *= lv_isa_arr[h_ind][LC_ISA_XDENSITY];
+            ret_val *= lv_isa_mtrx[h_ind][LC_ISA_XDENSITY];
          IF_END
       IF_END
       RETURN ret_val;

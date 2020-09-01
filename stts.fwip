@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-08-29 kdw  _a[r]r changed to _mt[r]x
 # 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
@@ -131,29 +132,29 @@ BLOCK: # Statistics block
    BLOCK_DEF CONST LC_STTS_MAGIC 5;
    BLOCK_DEF CONST LC_STTS_COUNT 6;
    BLOCK_DEF CONST LC_STTS_MAX_KEY 100;
-   BLOCK_DEF DBL lv_sttx_arr[LC_STTS_MAX_KEY][LC_STTS_COUNT];
+   BLOCK_DEF DBL lv_sttx_mtrx[LC_STTS_MAX_KEY][LC_STTS_COUNT];
 
    BLOCK_DEF FUNC BOL lf_stts_is_inited(INT ix_hndl):
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
       INT vll;
       INT ii;
       INT jj;
       BOL retvalu_bol;
 
-      vll = lv_sttx_arr[0][LC_STTS_MAGIC];
+      vll = lv_sttx_mtrx[0][LC_STTS_MAGIC];
       IF vll <> Kw.magicset() AND vll <> Kw.magicnot():
          FOR ii FROM 0 TO LC_STTS_MAX_KEY - 1:
             FOR jj FROM 0 TO LC_STTS_MAGIC - 1:
-               lv_sttx_arr[ii][jj] = 0;
+               lv_sttx_mtrx[ii][jj] = 0;
             FOR_END
-            lv_sttx_arr[0][LC_STTS_MAGIC] = Kw.magicnot();
+            lv_sttx_mtrx[0][LC_STTS_MAGIC] = Kw.magicnot();
          FOR_END
       IF_END
 
       IF LC_STTS_MAX_KEY <= ix_hndl:
          retvalu_bol = FALSE;
       ELSE:
-         vll = lv_sttx_arr[ix_hndl][LC_STTS_MAGIC];
+         vll = lv_sttx_mtrx[ix_hndl][LC_STTS_MAGIC];
          retvalu_bol = Kw.ismagic(vll);
       IF_END
       RETURN retvalu_bol;
@@ -177,14 +178,14 @@ BLOCK: # Statistics block
       , DBL meanx, DBL var
       , DBL minim, DBL maxim):
       # init STTS LC_HNDL w/ given parameters; return handle
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
 
-      lv_sttx_arr[ix_hndl][LC_STTS_NUM] = n_count;
-      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = meanx;
-      lv_sttx_arr[ix_hndl][LC_STTS_MSQ] = var * (n_count - 1.0);
-      lv_sttx_arr[ix_hndl][LC_STTS_MIN] = minim;
-      lv_sttx_arr[ix_hndl][LC_STTS_MAX] = maxim;
-      lv_sttx_arr[ix_hndl][LC_STTS_MAGIC] = Kw.magicset();
+      lv_sttx_mtrx[ix_hndl][LC_STTS_NUM] = n_count;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] = meanx;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] = var * (n_count - 1.0);
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MIN] = minim;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] = maxim;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MAGIC] = Kw.magicset();
 
       RETURN ix_hndl;
    FUNC_END
@@ -193,14 +194,14 @@ BLOCK: # Statistics block
       , DBL meanx, DBL msq
       , DBL minim, DBL maxim):
       # init STTS LC_HNDL w/ given parameters; return handle
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
 
-      lv_sttx_arr[ix_hndl][LC_STTS_NUM] = num_count;
-      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = meanx;
-      lv_sttx_arr[ix_hndl][LC_STTS_MSQ] = msq;
-      lv_sttx_arr[ix_hndl][LC_STTS_MIN] = minim;
-      lv_sttx_arr[ix_hndl][LC_STTS_MAX] = maxim;
-      lv_sttx_arr[ix_hndl][LC_STTS_MAGIC] = Kw.magicset();
+      lv_sttx_mtrx[ix_hndl][LC_STTS_NUM] = num_count;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] = meanx;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] = msq;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MIN] = minim;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] = maxim;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MAGIC] = Kw.magicset();
 
       RETURN ix_hndl;
    FUNC_END
@@ -219,18 +220,18 @@ BLOCK: # Statistics block
 
    FUNC INT stts_delete(INT ix_hndl):
       # delete STTS w/ given handle
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
 
-      lv_sttx_arr[ix_hndl][LC_STTS_MAGIC] = Kw.magicnot();
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MAGIC] = Kw.magicnot();
       RETURN ix_hndl;
    FUNC_END
 
    ?MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> ?
    FUNC DBL <STFUNC>(INT ix_hndl):
       # <STDESC> of LC_HNDLth stts calc
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
 
-      RETURN lv_sttx_arr[ix_hndl][<STIND>];
+      RETURN lv_sttx_mtrx[ix_hndl][<STIND>];
    FUNC_END
    ?MACRO_END
 
@@ -293,32 +294,32 @@ BLOCK: # Statistics block
    FUNC DBL stts_update(INT ix_hndl, DBL new_data):
       # add NEW_DATA to STTS w/ handle LC_HNDL
       # return difference between NEW_DATA and OLD mean
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
       DBL delta;
       DBL numy;
 
       IF NOT lf_stts_is_inited(ix_hndl):
          DIE "STTS-Bad-handle";
       IF_END
-      delta = new_data - lv_sttx_arr[ix_hndl][LC_STTS_MEAN];
+      delta = new_data - lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN];
 
       # update these AFTER doing the previous calculation
-      lv_sttx_arr[ix_hndl][LC_STTS_NUM] += 1.0;
-      numy = lv_sttx_arr[ix_hndl][LC_STTS_NUM];
-      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] += (delta / numy);
-      lv_sttx_arr[ix_hndl][LC_STTS_MSQ] += (delta
-            * (new_data - lv_sttx_arr[ix_hndl][LC_STTS_MEAN]));
+      lv_sttx_mtrx[ix_hndl][LC_STTS_NUM] += 1.0;
+      numy = lv_sttx_mtrx[ix_hndl][LC_STTS_NUM];
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] += (delta / numy);
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] += (delta
+            * (new_data - lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN]));
 
       # update max / mins
       IF (numy < 2.0 OR sttsspread(ix_hndl) < 0.0):
-         lv_sttx_arr[ix_hndl][LC_STTS_MIN] = new_data;
-         lv_sttx_arr[ix_hndl][LC_STTS_MAX] = new_data;
+         lv_sttx_mtrx[ix_hndl][LC_STTS_MIN] = new_data;
+         lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] = new_data;
       ELSE:
-         IF new_data < lv_sttx_arr[ix_hndl][LC_STTS_MIN]:
-            lv_sttx_arr[ix_hndl][LC_STTS_MIN] = new_data;
+         IF new_data < lv_sttx_mtrx[ix_hndl][LC_STTS_MIN]:
+            lv_sttx_mtrx[ix_hndl][LC_STTS_MIN] = new_data;
          IF_END
-         IF lv_sttx_arr[ix_hndl][LC_STTS_MAX] < new_data:
-            lv_sttx_arr[ix_hndl][LC_STTS_MAX] = new_data;
+         IF lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] < new_data:
+            lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] = new_data;
          IF_END
       IF_END
 
@@ -333,21 +334,21 @@ BLOCK: # Statistics block
       IF NOT lf_stts_is_inited(ix_hndl):
          DIE "STTS-Bad-handle";
       IF_END
-      men = lv_sttx_arr[ix_hndl][LC_STTS_MEAN];
+      men = lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN];
       delt = old_data - men;
-      IF 0 < lv_sttx_arr[ix_hndl][LC_STTS_NUM]:
-         lv_sttx_arr[ix_hndl][LC_STTS_NUM] -= 1;
-         IF 0 < lv_sttx_arr[ix_hndl][LC_STTS_NUM]:
-            men -= delt / lv_sttx_arr[ix_hndl][LC_STTS_NUM];
-            lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = men;
-            lv_sttx_arr[ix_hndl][LC_STTS_MSQ] -=
+      IF 0 < lv_sttx_mtrx[ix_hndl][LC_STTS_NUM]:
+         lv_sttx_mtrx[ix_hndl][LC_STTS_NUM] -= 1;
+         IF 0 < lv_sttx_mtrx[ix_hndl][LC_STTS_NUM]:
+            men -= delt / lv_sttx_mtrx[ix_hndl][LC_STTS_NUM];
+            lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] = men;
+            lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] -=
                   delt * (old_data - men);
-            IF lv_sttx_arr[ix_hndl][LC_STTS_MSQ] < 0.0:
-               lv_sttx_arr[ix_hndl][LC_STTS_MSQ] = 0.0;
+            IF lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] < 0.0:
+               lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] = 0.0;
             IF_END
          ELSE:
-            lv_sttx_arr[ix_hndl][LC_STTS_MSQ] = 0.0;
-            lv_sttx_arr[ix_hndl][LC_STTS_MEAN] = 0.0;
+            lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] = 0.0;
+            lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] = 0.0;
          IF_END
       IF_END
       RETURN delt;
@@ -383,42 +384,42 @@ BLOCK: # Statistics block
 
    FUNC INT stts_shift(INT ix_hndl, DBL data_shift):
       # "shift" STTS w/ handle LC_HNDL by DATA_SHIFT
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
 
-      lv_sttx_arr[ix_hndl][LC_STTS_MAX] += data_shift;
-      lv_sttx_arr[ix_hndl][LC_STTS_MIN] += data_shift;
-      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] += data_shift;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] += data_shift;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MIN] += data_shift;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] += data_shift;
       RETURN ix_hndl;
    FUNC_END
 
    FUNC INT stts_scale(INT ix_hndl, DBL xfactor):
       # "scale" STTS w/ handle LC_HNDL by XFACTOR
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
       DBL newmax;
       DBL newmin;
 
       IF 0 < xfactor:
-         newmax = lv_sttx_arr[ix_hndl][LC_STTS_MAX] * xfactor;
-         newmin = lv_sttx_arr[ix_hndl][LC_STTS_MIN] * xfactor;
+         newmax = lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] * xfactor;
+         newmin = lv_sttx_mtrx[ix_hndl][LC_STTS_MIN] * xfactor;
       ELSE:
-         newmax = lv_sttx_arr[ix_hndl][LC_STTS_MIN] * xfactor;
-         newmin = lv_sttx_arr[ix_hndl][LC_STTS_MAX] * xfactor;
+         newmax = lv_sttx_mtrx[ix_hndl][LC_STTS_MIN] * xfactor;
+         newmin = lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] * xfactor;
       IF_END
-      lv_sttx_arr[ix_hndl][LC_STTS_MIN] = newmin;
-      lv_sttx_arr[ix_hndl][LC_STTS_MAX] = newmax;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MIN] = newmin;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MAX] = newmax;
 
-      lv_sttx_arr[ix_hndl][LC_STTS_MEAN] *= xfactor;
-      lv_sttx_arr[ix_hndl][LC_STTS_MSQ] *= xfactor * xfactor;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] *= xfactor;
+      lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] *= xfactor * xfactor;
       RETURN ix_hndl;
    FUNC_END
 
    FUNC INT stts_copy(INT hto, INT hfrom):
       # copy STTS w/ handle HFROM to STTS w/ handle HTO
-      BLOCK_USE lv_sttx_arr[];
+      BLOCK_USE lv_sttx_mtrx[];
       INT ii;
 
       FOR ii FROM 0 TO LC_STTS_COUNT - 1:
-         lv_sttx_arr[hto][ii] = lv_sttx_arr[hfrom][ii];
+         lv_sttx_mtrx[hto][ii] = lv_sttx_mtrx[hfrom][ii];
       FOR_END
 
       RETURN hto;
@@ -490,17 +491,17 @@ BLOCK: # Statistics block
       BLOCK_DEF CONST LC_STTSC_COVAR 2;
       BLOCK_DEF CONST LC_STTSC_MAGIC 3;
       BLOCK_DEF CONST LC_STTSC_COUNT 4;
-      BLOCK_DEF DBL lv_corx_arr[LC_STTS_MAX_KEY][LC_STTSC_COUNT];
+      BLOCK_DEF DBL lv_crx_mtrx[LC_STTS_MAX_KEY][LC_STTSC_COUNT];
 
       BLOCK_DEF FUNC BOL lf_corr_is_init(INT ix_chnd):
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
          BOL retvalu_bol;
          DBL vll;
 
          IF LC_STTS_MAX_KEY <= ix_chnd:
             retvalu_bol = FALSE;
          ELSE:
-            vll = lv_corx_arr[ix_chnd][LC_STTSC_MAGIC];
+            vll = lv_crx_mtrx[ix_chnd][LC_STTSC_MAGIC];
             retvalu_bol = Kw.ismagic(vll);
          IF_END
          RETURN retvalu_bol;
@@ -522,74 +523,74 @@ BLOCK: # Statistics block
 
       FUNC INT corr_new(NUL):
          # handle for a new correlation calc
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
          INT ix_chnd;
 
          ix_chnd = lf_corr_find_empty();
-         lv_corx_arr[ix_chnd][LC_STTSC_XX] = stts_new();
-         lv_corx_arr[ix_chnd][LC_STTSC_YY] = stts_new();
-         lv_corx_arr[ix_chnd][LC_STTSC_COVAR] = 0.0;
-         lv_corx_arr[ix_chnd][LC_STTSC_MAGIC] = Kw.magicset();
+         lv_crx_mtrx[ix_chnd][LC_STTSC_XX] = stts_new();
+         lv_crx_mtrx[ix_chnd][LC_STTSC_YY] = stts_new();
+         lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR] = 0.0;
+         lv_crx_mtrx[ix_chnd][LC_STTSC_MAGIC] = Kw.magicset();
 
          RETURN ix_chnd;
       FUNC_END
 
       FUNC INT corr_delete(INT ix_chnd):
          # delete data of LC_CHNDth correlation calc
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
 
-         lv_corx_arr[ix_chnd][LC_STTSC_MAGIC] = Kw.magicnot();
-         CALL stts_delete(lv_corx_arr[ix_chnd][LC_STTSC_XX]);
-         CALL stts_delete(lv_corx_arr[ix_chnd][LC_STTSC_YY]);
+         lv_crx_mtrx[ix_chnd][LC_STTSC_MAGIC] = Kw.magicnot();
+         CALL stts_delete(lv_crx_mtrx[ix_chnd][LC_STTSC_XX]);
+         CALL stts_delete(lv_crx_mtrx[ix_chnd][LC_STTSC_YY]);
          RETURN ix_chnd;
       FUNC_END
 
       FUNC INT corr_handlex(INT ix_chnd):
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
 
-         RETURN lv_corx_arr[ix_chnd][LC_STTSC_XX];
+         RETURN lv_crx_mtrx[ix_chnd][LC_STTSC_XX];
       FUNC_END
 
       FUNC INT corr_handley(INT ix_chnd):
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
 
-         RETURN lv_corx_arr[ix_chnd][LC_STTSC_YY];
+         RETURN lv_crx_mtrx[ix_chnd][LC_STTSC_YY];
       FUNC_END
 
       FUNC DBL corr_update(INT ix_chnd, DBL xx, DBL yy):
          # update LC_CHNDth corr calc with point (XX,YY)
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
          INT num;
          DBL ddxx;
          DBL ddyy;
          INT yyhnd;
          INT xxhnd;
 
-         yyhnd = lv_corx_arr[ix_chnd][LC_STTSC_YY];
-         xxhnd = lv_corx_arr[ix_chnd][LC_STTSC_XX];
+         yyhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_YY];
+         xxhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_XX];
 
          num = sttscount(xxhnd);
          ddxx = stts_update(xxhnd, xx);
          ddyy = stts_update(yyhnd, yy);
-         lv_corx_arr[ix_chnd][LC_STTSC_COVAR] += (
+         lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR] += (
                ddxx * ddyy * num / (num + 1.0));
-         RETURN lv_corx_arr[ix_chnd][LC_STTSC_COVAR];
+         RETURN lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR];
       FUNC_END
 
       FUNC DBL corrslope(INT ix_chnd):
          # slope of least squares line of LC_CHNDth corr calc
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
          DBL den;
          DBL retvalu;
          INT xxhnd;
 
-         xxhnd = lv_corx_arr[ix_chnd][LC_STTSC_XX];
+         xxhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_XX];
 
          den = sttsmsq(xxhnd);
          IF Kw.iszero(den):
             retvalu = 0.0;
          ELSE:
-            retvalu = lv_corx_arr[ix_chnd][LC_STTSC_COVAR] / den;
+            retvalu = lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR] / den;
          IF_END
 
          RETURN retvalu;
@@ -597,13 +598,13 @@ BLOCK: # Statistics block
 
       FUNC DBL corry0(INT ix_chnd):
          # y-intercept of least squares line of LC_CHNDth corr
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
          DBL retvalu;
          INT yyhnd;
          INT xxhnd;
 
-         yyhnd = lv_corx_arr[ix_chnd][LC_STTSC_YY];
-         xxhnd = lv_corx_arr[ix_chnd][LC_STTSC_XX];
+         yyhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_YY];
+         xxhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_XX];
 
          retvalu = (sttsmean(yyhnd)
             - corrslope(ix_chnd) * sttsmean(xxhnd));
@@ -613,19 +614,19 @@ BLOCK: # Statistics block
 
       FUNC DBL corrcorr(INT ix_chnd):
          # Correlation Coefficient [-1,1] of LC_CHNDth corr calc
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
          DBL retvalu;
          DBL xxmsq;
          DBL yymsq;
          DBL den;
 
-         xxmsq = sttsmsq(lv_corx_arr[ix_chnd][LC_STTSC_XX]);
-         yymsq = sttsmsq(lv_corx_arr[ix_chnd][LC_STTSC_YY]);
+         xxmsq = sttsmsq(lv_crx_mtrx[ix_chnd][LC_STTSC_XX]);
+         yymsq = sttsmsq(lv_crx_mtrx[ix_chnd][LC_STTSC_YY]);
          den = xxmsq * yymsq;
          IF Kw.iszero(den):
             retvalu = 0.0;
          ELSE:
-            retvalu = (lv_corx_arr[ix_chnd][LC_STTSC_COVAR]
+            retvalu = (lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR]
                   / SQRT(den));
          IF_END
 
@@ -634,15 +635,15 @@ BLOCK: # Statistics block
 
       FUNC DBL corrstderr(INT ix_chnd):
          # stderr of least squares line of LC_CHNDth corr calc
-         BLOCK_USE lv_corx_arr[];
+         BLOCK_USE lv_crx_mtrx[];
          INT yyhnd;
          DBL diff;
          DBL retvalu;
 
-         yyhnd = lv_corx_arr[ix_chnd][LC_STTSC_YY];
+         yyhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_YY];
 
          diff = sttsmsq(yyhnd) - (corrslope(ix_chnd)
-                  * lv_corx_arr[ix_chnd][LC_STTSC_COVAR]);
+                  * lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR]);
          IF diff < 0:
             retvalu = 0;
          ELSE:
