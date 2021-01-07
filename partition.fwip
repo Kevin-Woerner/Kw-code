@@ -1,4 +1,5 @@
 #    Copyright (C) 2017-2020 by Kevin D. Woerner
+# 2020-12-04 kdw  float explicit const work
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-06-22 kdw  local-use mved before var decls
@@ -57,17 +58,17 @@ BLOCK: # partition function
       DBL ssign;
 
       IF nn < 0:
-         retvalu = 0;
+         retvalu = 0.0;
       ELSE:
          IF lv_partitionr_end <= 0:
             lv_partitionr_end = 6;
             REDIM lv_partitionr_arr[], lv_partitionr_end;
-            lv_partitionr_arr[0] = 1;
-            lv_partitionr_arr[1] = 1;
-            lv_partitionr_arr[2] = 2;
-            lv_partitionr_arr[3] = 3;
-            lv_partitionr_arr[4] = 5;
-            lv_partitionr_arr[5] = 7;
+            lv_partitionr_arr[0] = 1.0;
+            lv_partitionr_arr[1] = 1.0;
+            lv_partitionr_arr[2] = 2.0;
+            lv_partitionr_arr[3] = 3.0;
+            lv_partitionr_arr[4] = 5.0;
+            lv_partitionr_arr[5] = 7.0;
          IF_END
 
          IF lv_partitionr_end <= nn:
@@ -75,8 +76,8 @@ BLOCK: # partition function
             lv_partitionr_end = nn + 1;
             REDIM lv_partitionr_arr[], lv_partitionr_end;
             WHILE mm < lv_partitionr_end:
-               sum = 0;
-               ssign = 1;
+               sum = 0.0;
+               ssign = 1.0;
                kk = 1;
                jj = mm - 1;
                WHILE 0 <= jj:
@@ -126,17 +127,17 @@ BLOCK: # partitionq function
       INT ee;
 
       IF nn < 0:
-         retvalu = 0;
+         retvalu = 0.0;
       ELSE:
          IF lv_partitionq_end <= 0:
             lv_partitionq_end = 6;
             REDIM lv_partitionq_arr[], lv_partitionq_end;
-            lv_partitionq_arr[0] = 1;
-            lv_partitionq_arr[1] = 1;
-            lv_partitionq_arr[2] = 1;
-            lv_partitionq_arr[3] = 2;
-            lv_partitionq_arr[4] = 2;
-            lv_partitionq_arr[5] = 3;
+            lv_partitionq_arr[0] = 1.0;
+            lv_partitionq_arr[1] = 1.0;
+            lv_partitionq_arr[2] = 1.0;
+            lv_partitionq_arr[3] = 2.0;
+            lv_partitionq_arr[4] = 2.0;
+            lv_partitionq_arr[5] = 3.0;
          IF_END
 
          IF lv_partitionq_end <= nn:
@@ -144,8 +145,8 @@ BLOCK: # partitionq function
             lv_partitionq_end = nn + 1;
             REDIM lv_partitionq_arr[], lv_partitionq_end;
             WHILE mm < lv_partitionq_end:
-               sum = 0;
-               ssign = 1;
+               sum = 0.0;
+               ssign = 1.0;
                kk = 1;
                jj = mm - 1;
                WHILE 0 <= jj:
@@ -163,9 +164,9 @@ BLOCK: # partitionq function
                IF mm == (3 * ee * ee - ee)
                         OR mm == (3 * ee * ee + ee):
                   IF Kw.isodd(ee):
-                     sum -= 1;
+                     sum -= 1.0;
                   ELSE:
-                     sum += 1;
+                     sum += 1.0;
                   IF_END
                IF_END
                lv_partitionq_arr[mm] = sum;

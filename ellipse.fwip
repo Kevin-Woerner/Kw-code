@@ -1,4 +1,7 @@
 #    Copyright (C) 2020 by Kevin D. Woerner
+# 2020-12-08 kdw  explicit module on consts
+# 2020-09-30 kdw  circumference work
+# 2020-09-29 kdw  more comments; third flattening
 # 2020-08-11 kdw  ell[i]ptic function renam
 # 2020-08-03 kdw  explicit module for pi and tau
 # 2020-07-02 kdw  more tests; circ computed
@@ -17,10 +20,7 @@ FUNC_END
 
 FUNC DBL ellipseecc(DBL aa, DBL bb):
    # eccentricity of an ellipse with semi-axes AA and BB
-   DBL rati;
-
-   rati = Kw.ratio(aa, bb);
-   RETURN SQRT(1.0 - rati * rati);
+   RETURN Kw.topyh1(Kw.ratio(aa, bb));
 FUNC_END
 
 FUNC DBL ellipsem(DBL aa, DBL bb):
@@ -32,20 +32,64 @@ FUNC DBL ellipsem(DBL aa, DBL bb):
 FUNC_END
 
 FUNC DBL ellipseflatness(DBL aa, DBL bb):
-   # flatness of an ellipse with semi-axes AA and BB
+   # first flattening of an ellipse with semi-axes AA and BB
    RETURN 1.0 - Kw.ratio(aa, bb);
 FUNC_END
 
+FUNC DBL ellipsen(DBL aa, DBL bb):
+   # third flattening of an ellipse with semi-axes AA and BB
+   RETURN ABS(aa - bb) / (aa + bb);
+FUNC_END
+
 FUNC DBL flat2ecc(DBL flt):
+   # convert first flattening to eccentricity
    RETURN SQRT(flt * (2.0 - flt));
 FUNC_END
 
 FUNC DBL ecc2flat(DBL ecc):
+   # convert eccentricity to first flattening
    RETURN 1.0 - SQRT(1.0 - ecc * ecc);
+FUNC_END
+
+FUNC DBL ellipsecir(DBL aa_orig, DBL bb_orig):
+   # circumference of an ellipse with semi-axes AA and BB
+   DBL aaa;
+   DBL bbb;
+   DBL mm;
+   DBL suma;
+   DBL temp;
+   INT ii;
+   DBL retvalu;
+
+   IF aa_orig < bb_orig:
+      aaa = bb_orig;
+      bbb = aa_orig;
+   ELSE:
+      aaa = aa_orig;
+      bbb = bb_orig;
+   IF_END
+   IF bbb <= SQRT(Kw.DBLEPS) * aaa:
+      retvalu = 4.0 * aaa;
+   ELSE:
+      suma = 0.0;
+      mm = 1.0;
+      AWAIT Kw.iseq(aaa, bbb) COUNT ii FROM 0 TO 30:
+         temp = (aaa + bbb) / 2.0;
+         bbb = SQRT(aaa * bbb);
+         aaa = temp;
+         mm += mm;
+         suma += mm * Kw.square(aaa - bbb);
+      AWAIT_END
+
+      retvalu = Kw.PI * (Kw.square(aa_orig + bb_orig) - suma)
+            / (aaa + bbb);
+   IF_END
+   RETURN retvalu;
 FUNC_END
 
 FUNC DBL ellipsecir__1(DBL aa, DBL bb):
    # circumference of an ellipse with semi-axes AA and BB
+   # via the elliptic integral of the 2th kind
    DBL major_axis;
    DBL minor_axis;
    DBL rati;
@@ -60,41 +104,6 @@ FUNC DBL ellipsecir__1(DBL aa, DBL bb):
    rati = minor_axis / major_axis;
    # now major_axis = max(AA, BB)
    RETURN 4.0 * major_axis * Kw.elliptic2m(1.0 - rati * rati);
-FUNC_END
-
-FUNC DBL ellipsecir(DBL aa, DBL bb):
-   # circumference of an ellipse with semi-axes AA and BB
-   DBL xx;
-   DBL yy;
-   DBL mm;
-   DBL suma;
-   DBL temp;
-   INT ii;
-   DBL retvalu;
-
-   IF aa < bb:
-      xx = bb;
-      yy = aa;
-   ELSE:
-      xx = aa;
-      yy = bb;
-   IF_END
-   IF yy <= SQRT(DBLEPS) * xx:
-      retvalu = 4.0 * xx;
-   ELSE:
-      suma = 0.0;
-      mm = 1.0;
-      AWAIT Kw.iseq(xx, yy) COUNT ii FROM 0 TO 20:
-         temp = (xx + yy) / 2.0;
-         yy = SQRT(xx * yy);
-         xx = temp;
-         mm += mm;
-         suma += mm * Kw.square(xx - yy);
-      AWAIT_END
-
-      retvalu = Kw.PI * (Kw.square(aa + bb) - suma) / (xx + yy);
-   IF_END
-   RETURN retvalu;
 FUNC_END
 
 #TEST:ellipsecir(1,10)==40.639741801008957425577931011816563791;

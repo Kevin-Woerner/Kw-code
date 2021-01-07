@@ -1,4 +1,7 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-03 kdw  float explicit const work
+# 2020-11-28 kdw  macro syntax overhaul
+# 2020-11-23 kdw  replace 1.0E0 with 1.0
 # 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
@@ -110,7 +113,7 @@
 # 2015-09-30 kdw  minor refactor of e[r]f
 # 2015-09-20 kdw  created
 
-?INSERT_FILE "Macros.fwip"?
+{INSERT_FILE "Macros.fwip" }
 
 BLOCK:
    BLOCK_DEF FUNC DBL lf_calerf(DBL xx, INT jint):
@@ -145,7 +148,7 @@ BLOCK:
                + 3.20937758913846947E+3);
 
          denom = (((((
-               + 1.00000000000000000E+0) * xsq
+               + 1.0) * xsq
                + 2.36012909523441209E+1) * xsq
                + 2.44024637934444173E+2) * xsq
                + 1.28261652607737228E+3) * xsq
@@ -171,7 +174,7 @@ BLOCK:
                + 1.23033935479799725E+3);
 
          denom = (((((((((
-               + 1.00000000000000000E+0) * absx
+               + 1.0) * absx
                + 1.57449261107098347E+1) * absx
                + 1.17693950891312499E+2) * absx
                + 5.37181101862009858E+2) * absx
@@ -205,7 +208,7 @@ BLOCK:
                   - 6.58749161529837803E+0);
 
             denom = ((((((
-                  + 1.00000000000000000E+4) * rxsq
+                  + 1.0E+4) * rxsq
                   + 2.56852019228982242E+4) * rxsq
                   + 1.87295284992346047E+4) * rxsq
                   + 5.27905102951428412E+3) * rxsq
@@ -301,7 +304,7 @@ FUNC DBL erfcinv(DBL yy_orig):
       dx = 1.0;
       xx = 0.0;
       cc = -SQRT(Kw.TAU / 8.0);
-      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ?LOOP_LIMIT?:
+      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO {LOOP_LIMIT}:
          uu = cc * (erfcx(xx) - yy * EXP(xx * xx));
          dx = -uu / (1.0 + uu * xx);
          xx_pr = xx;
@@ -332,7 +335,7 @@ FUNC DBL erfcxinv(DBL yy):
    IF NOT Kw.iszero(yy - 1.0):
       dx = 1.0;
       cc = SQRT(8.0 / Kw.TAU);
-      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ?LOOP_LIMIT?:
+      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO {LOOP_LIMIT}:
          ex = erfcx(xx);
          df = 2.0 * xx * ex - cc;
          uu = (ex - yy) / df;
@@ -365,7 +368,7 @@ FUNC DBL erfinv(DBL yy):
       dx = 1.0;
       xx = 0.0;
       cc = SQRT(Kw.TAU / 8.0);
-      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO ?LOOP_LIMIT?:
+      AWAIT Kw.iseq(xx_pr, xx) COUNT ii FROM 0 TO {LOOP_LIMIT}:
          uu = cc * (erf(xx) - yy) * EXP(xx * xx);
          dx = -uu / (1.0 + uu * xx);
          xx_pr = xx;
@@ -444,7 +447,7 @@ FUNC DBL erf__3(DBL xx):
    axx = ABS(xx);
    xxsq = xx * xx;
    IF axx < 4.4:
-      factx = 1;
+      factx = 1.0;
       # done this way to avoid catastrophic cancellation
       add_arr[0] = 1;
       AWAIT ABS(add_arr[nn]) < Kw.DBLEPS
@@ -452,7 +455,7 @@ FUNC DBL erf__3(DBL xx):
          factx *= -xxsq / nn;
          add_arr[nn] = factx / (2.0 * nn + 1.0);
       AWAIT_END
-      sum_curr = 0;
+      sum_curr = 0.0;
       FOR kk FROM nn TO 0 BY -1:
          sum_curr += add_arr[kk];
       FOR_END
@@ -467,7 +470,7 @@ FUNC DBL erf__3(DBL xx):
          sum_curr += factx;
       FOR_END
       sum_curr += 1.0 - EXP(-xxsq) / SQRT(Kw.PI) / axx;
-      IF xx < 0:
+      IF xx < 0.0:
          sum_curr = - sum_curr;
       IF_END
    IF_END
@@ -502,7 +505,7 @@ FUNC DBL erf__4(DBL xx):
       # adjacent terms combined to avoid cancellation
       AWAIT Kw.iseq(sum_prev, sum_curr) COUNT nn FROM 3 BY 2:
          twonnpone = 2 * nn + 1;
-         factx *= xxsq * xxsq / ((nn - 1) * nn);
+         factx *= xxsq * xxsq / ((nn - 1.0) * nn);
          term = (factx * (twonnpone * (nn - xxsq) + twoxxsq)
             / (4.0 * nn * nn - 1.0));
          sum_prev = sum_curr;
@@ -515,8 +518,8 @@ FUNC DBL erf__4(DBL xx):
       # adjacent terms combined to avoid cancellation
       kk = Kw.round(xxsq);
       FOR nn FROM 1 TO kk - 5 BY 2:
-         factx *= nn * (nn + 1) / (twoxxsq * twoxxsq);
-         term = factx * (1.0 - (2.0 * nn + 1) / twoxxsq);
+         factx *= nn * (nn + 1.0) / (twoxxsq * twoxxsq);
+         term = factx * (1.0 - (2.0 * nn + 1.0) / twoxxsq);
          sum_prev = sum_curr;
          sum_curr += term;
          IF Kw.iseq(sum_prev, sum_curr):

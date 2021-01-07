@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-10-03 kdw  s/print_.*/.*_print/
 # 2020-08-20 kdw  boolean checks changed
 # 2020-08-17 kdw  comment change
 # 2020-08-05 kdw  pcoh[h]ammer func
@@ -1369,12 +1370,14 @@ FUNC INT n2perm(INT mm, INT nn
    INT source_arr[];
    INT jj;
    INT kk;
+   INT mmm;
    INT sz_ind;
 
    MODE_INTEGER:
    REDIM pat_arr[], nn;
    REDIM source_arr[], nn;
-   kk = mm;
+   mmm = Kw.modulo(mm, factorial(nn));
+   kk = mmm;
    FOR ii FROM 1 TO nn:
       pat_arr[nn - ii] = kk % ii;
       kk = FLOOR(kk / ii);
@@ -1392,7 +1395,22 @@ FUNC INT n2perm(INT mm, INT nn
    MODE_INTEGER_END
    REDIM pat_arr[];
    REDIM source_arr[];
-   RETURN mm;
+   RETURN mmm;
+FUNC_END
+
+FUNC INT n2perm_print(INT mm, INT nn):
+   INT perm_arr[];
+   INT ii;
+   INT jj;
+
+   REDIM perm_arr[], nn;
+   jj = n2perm(mm, nn, perm_arr[]);
+   FOR ii FROM 0 TO nn - 1:
+      PRINTVAL(perm_arr[ii]);
+      PRINTSTR(" ");
+   FOR_END
+   REDIM perm_arr[];
+   RETURN jj;
 FUNC_END
 
 FUNC INT n2comb(INT mm, INT nn, INT rr
@@ -1406,9 +1424,11 @@ FUNC INT n2comb(INT mm, INT nn, INT rr
    INT qq;
    INT ss;
    INT pp;
+   INT mmm;
 
    MODE_INTEGER:
-      kk = Kw.comb(nn, rr) - mm;
+      mmm = Kw.modulo(mm, Kw.comb(nn, rr));
+      kk = Kw.comb(nn, rr) - mmm;
       FOR ss FROM 0 TO rr - 1:
          pp = rr - ss;
          cc = 1;
@@ -1423,7 +1443,22 @@ FUNC INT n2comb(INT mm, INT nn, INT rr
          ret_comb_arr_p[ss] = nn - pp;
       FOR_END
    MODE_INTEGER_END
-   RETURN mm;
+   RETURN mmm;
+FUNC_END
+
+FUNC INT n2comb_print(INT mm, INT nn, INT rr):
+   INT comb_arr[];
+   INT ii;
+   INT jj;
+
+   REDIM comb_arr[], rr;
+   jj = n2comb(mm, nn, rr, comb_arr[]);
+   FOR ii FROM 0 TO rr - 1:
+      PRINTVAL(comb_arr[ii]);
+      PRINTSTR(" ");
+   FOR_END
+   REDIM comb_arr[];
+   RETURN jj;
 FUNC_END
 
 FUNC DBL pochhammer(INT nn, DBL xx):

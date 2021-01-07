@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-09-22 kdw  var renam
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
 # 2020-06-22 kdw  local-use mved before var decls
@@ -286,39 +287,39 @@ BLOCK: # circle info
    BLOCK_DEF CONST LC_CIRCLE_RADIUS 2;
    BLOCK_DEF DBL lv_circle_arr[3];
 
-   FUNC DBL circle_solve(DBL aa_x, DBL aa_y
-         , DBL bb_x, DBL bb_y
-         , DBL cc_x, DBL cc_y):
+   FUNC DBL circle_solve(DBL x_a, DBL y_a
+         , DBL x_b, DBL y_b
+         , DBL x_c, DBL y_c):
       # return the radius of the circle going through the points
-      # (aa_x,aa_y) (bb_x,bb_y) (cc_x,cc_y)
+      # (x_a,y_a) (x_b,y_b) (x_c,y_c)
       # subsequently use with
       #   circle_get(0) to get the x-coordinate of the center and
       #   circle_get(1) to get the y-coordinate of the center
       BLOCK_USE lv_circle_arr[];
-      DBL ca_a;
-      DBL cb_a;
-      DBL ca_b;
-      DBL cb_b;
+      DBL y_ba;
+      DBL x_ba;
+      DBL y_ca;
+      DBL x_ca;
       DBL det;
-      DBL cc_a;
-      DBL cc_b;
+      DBL xy_ba;
+      DBL xy_ca;
       DBL center_x;
       DBL center_y;
       DBL radius;
 
-      ca_a = bb_y - aa_y;
-      cb_a = bb_x - aa_x;
-      ca_b = cc_y - aa_y;
-      cb_b = cc_x - aa_x;
+      y_ba = y_b - y_a;
+      x_ba = x_b - x_a;
+      y_ca = y_c - y_a;
+      x_ca = x_c - x_a;
 
-      det = 2.0 * (ca_a * cb_b - ca_b * cb_a);
+      det = 2.0 * (y_ba * x_ca - y_ca * x_ba);
       IF NOT Kw.iszero(det):
-         cc_a = -ca_a * (aa_y + bb_y) - cb_a * (aa_x + bb_x);
-         cc_b = -ca_b * (aa_y + cc_y) - cb_b * (aa_x + cc_x);
+         xy_ba = y_ba * (y_a + y_b) + x_ba * (x_a + x_b);
+         xy_ca = y_ca * (y_a + y_c) + x_ca * (x_a + x_c);
 
-         center_x = (ca_b * cc_a - ca_a * cc_b) / det;
-         center_y = (cb_a * cc_b - cb_b * cc_a) / det;
-         radius = Kw.hypot(center_x - aa_x, center_y - aa_y);
+         center_x = (y_ba * xy_ca - y_ca * xy_ba) / det;
+         center_y = (x_ca * xy_ba - x_ba * xy_ca) / det;
+         radius = Kw.hypot(center_x - x_a, center_y - y_a);
       ELSE:
          center_x = Kw.DBLMAX;
          center_y = Kw.DBLMAX;
@@ -466,24 +467,24 @@ FUNC DBL fit_minmax(INT num_points
 FUNC_END
 
 BLOCK:
-   BLOCK_DEF FUNC DBL lf_signcrossproduct(DBL aa_x, DBL aa_y
-         , DBL bb_x, DBL bb_y
-         , DBL cc_x, DBL cc_y):
+   BLOCK_DEF FUNC DBL lf_signcrossproduct(DBL x_a, DBL y_a
+         , DBL x_b, DBL y_b
+         , DBL x_c, DBL y_c):
       # the z-component of the cross product of the vectors
-      #   (bb_x - aa_x, bb_y - aa_y, 0), and
-      #   (cc_x - aa_x, cc_y - aa_y, 0)
+      #   (x_b - x_a, y_b - y_a, 0), and
+      #   (x_c - x_a, y_c - y_a, 0)
       DBL cr;
-      DBL bbaa_x;
-      DBL bbaa_y;
-      DBL ccaa_x;
-      DBL ccaa_y;
+      DBL bbx_a;
+      DBL bby_a;
+      DBL ccx_a;
+      DBL ccy_a;
 
-      bbaa_x = bb_x - aa_x;
-      bbaa_y = bb_y - aa_y;
-      ccaa_x = cc_x - aa_x;
-      ccaa_y = cc_y - aa_y;
+      bbx_a = x_b - x_a;
+      bby_a = y_b - y_a;
+      ccx_a = x_c - x_a;
+      ccy_a = y_c - y_a;
 
-      cr = bbaa_x * ccaa_y - ccaa_x * bbaa_y;
+      cr = bbx_a * ccy_a - ccx_a * bby_a;
 
       RETURN cr;
    FUNC_END

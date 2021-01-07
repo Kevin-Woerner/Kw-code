@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-03 kdw  float explicit const work
+# 2020-11-28 kdw  macro syntax overhaul
 # 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  s/LO[C]AL_/BL[O]CK_/
@@ -176,7 +178,7 @@
 # 2015-10-14 kdw  created
 
 # need secant code for the nth lunation
-?INSERT_FILE "Macros.fwip"?
+{INSERT_FILE "Macros.fwip" }
 # basic, useful stuff
 IMPORT "Kw";
 IMPORT "Kwplanets";
@@ -220,7 +222,7 @@ FUNC DBL kwsun_eccentricity(DBL jtwok):
    # earths orbital eccentricity at J2000 day JTWOK
    RETURN ((
          - 1.2025E-9) * jtwok
-         + 0.01671123);
+         + Kwplanets.EARTHECCENTRICITY);
    # (-1.041478E-9) * jtwok + 0.01671022
    # (-1.5151E-9)   * jtwok + 0.01671123
    # (-1.151E-9)    * jtwok + 0.016709
@@ -382,7 +384,7 @@ BLOCK:    # sunx vars and funcs
          lv_x_loc_halfday_day = 0.0;
       ELSE:
          lv_x_loc_halfday_day = Kw.costinv(lha)
-               + 110 * Kw.SECOND / Kw.DAY; # WHY? No idea.
+               + 110.0 * Kw.SECOND / Kw.DAY; # WHY? No idea.
       IF_END
 
       IF lv_x_loc_transit_tz_day < lv_x_loc_halfday_day:
@@ -911,14 +913,14 @@ BLOCK:
    FUNC DBL kwsun_lunation(DBL nn):
       # return the J2K date of the NNth lunation
       # with 0.0 being the new moon around 2000-01-06
-      ?SECANT_DECLARATIONS?
+      {SECANT_DECLARATIONS}
       DBL jtwokapp;
       DBL frad;
 
       jtwokapp = 5.00 + nn * Kw.MOONMONTH / Kw.JDAY;
       frad = Kw.tur2rad(Kw.frac(nn));
-      ?SECANT_LOOP jtwokapp ; 0.5
-            ; lf_ra_sunmoon_diff_rad(scvx_xx, frad) ?
+      {SECANT_LOOP jtwokapp ; 0.5
+            ; lf_ra_sunmoon_diff_rad(scvx_xx, frad) }
       RETURN scvx_xx;
    FUNC_END
 BLOCK_END

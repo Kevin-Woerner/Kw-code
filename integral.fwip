@@ -1,4 +1,5 @@
 #    Copyright (C) 2020 by Kevin D. Woerner
+# 2020-12-08 kdw  minor rearrange
 # 2020-07-07 kdw  tests changed II
 # 2020-06-30 kdw  tests changed
 # 2020-06-16 kdw  comments changed
@@ -93,22 +94,22 @@ FUNC DBL expintegrali(DBL xx):
 FUNC_END
 #TEST:expintegrali(0.37250741078136663446199186658012);
 
-FUNC DBL expintegraln(INT nn, DBL xx):
-   #       INF  EXP(-t * xx)
-   # INTEGRATE  ------------ dt
-   #         1      t**nn
-   RETURN POW(xx, nn - 1) * Kw.uigamma(1 - nn, xx);
-FUNC_END
-
 FUNC DBL expintegral1(DBL xx):
    #       INF  EXP(-t)
    # INTEGRATE  ------- dt
    #        xx      t
    DBL retvalu;
 
-   retvalu = -Kw.EULER - LN(ABS(xx)) + Kw.Ein(xx);
+   retvalu = Kw.Ein(xx) - Kw.EULER - LN(ABS(xx));
 
    RETURN retvalu;
+FUNC_END
+
+FUNC DBL expintegraln(INT nn, DBL xx):
+   #       INF  EXP(-t * xx)
+   # INTEGRATE  ------------ dt
+   #         1      t**nn
+   RETURN POW(xx, nn - 1) * Kw.uigamma(1 - nn, xx);
 FUNC_END
 
 FUNC DBL logintegral(DBL xx):

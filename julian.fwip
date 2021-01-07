@@ -1,4 +1,9 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-08 kdw  year-per-metonic constant defined
+# 2020-12-06 kdw  jewish month length rework
+# 2020-12-04 kdw  float explicit const work
+# 2020-12-02 kdw  ym[d]2j[2]k work
+# 2020-10-03 kdw  s/print_.*/.*_print/
 # 2020-08-20 kdw  boolean checks changed
 # 2020-08-19 kdw  comment change
 # 2020-08-17 kdw  comment change
@@ -348,28 +353,23 @@ FUNC DBL ymd2doy(INT g_year, INT g_month, DBL g_daymon):
    # convert year-month-day to day of year
    DBL delta;
 
-   WHILE g_month < 1:
-      g_month += Kw.MONTHS_IN_YEAR;
-      g_year -= 1;
-   WHILE_END
-   WHILE Kw.MONTHS_IN_YEAR < g_month:
-      g_month -= Kw.MONTHS_IN_YEAR;
-      g_year += 1;
-   WHILE_END
-   delta = 0;
+   # Assume 1 <= g_month <= MONTHS_IN_YEAR
    IF 2 < g_month:
+      # March 0 is the 59th day of a non-leap year.
+      delta = FLOOR(30.6001 * g_month - 32.3); # 2<mon
       IF Kw.isleapyear(g_year):
-         delta = 1;
+         delta += 1;
       IF_END
-      delta += FLOOR(30.6001 * g_month - 0.3) - 32.0; # 2<mon
    ELSIF g_month == 2:
       delta = 31;
+   ELSE:
+      delta = 0;
    IF_END
 
    RETURN delta + g_daymon;
 FUNC_END
 
-FUNC DBL ymd2j2k(DBL g_year, DBL g_month, DBL g_day):
+FUNC DBL ymd2j2k__1(DBL g_year, DBL g_month, DBL g_day):
    # convert a YEAR, MONTH, DAY into a J2000 date
    DBL yr;
    DBL mn;
@@ -377,35 +377,42 @@ FUNC DBL ymd2j2k(DBL g_year, DBL g_month, DBL g_day):
    DBL jcen;
    DBL dayoffset;
 
-   g_year -= 2000;
-   # with normal use (i.e. 1 <= month <= Kw.MONTHS_IN_YEAR),
-   #    the following loops are trivial
-   WHILE g_month < 1:
-      g_month += Kw.MONTHS_IN_YEAR;
-      g_year -= 1;
-   WHILE_END
-   WHILE Kw.MONTHS_IN_YEAR < g_month:
-      g_month -= Kw.MONTHS_IN_YEAR;
-      g_year += 1;
-   WHILE_END
-   mn = g_month + 1;
-   yr = g_year;
-   IF g_month < 3:
-      # Jan and Feb need special treatment
+   yr = g_year - 2000;
+   mn = g_month;
+   IF mn < 3:  # Jan and Feb need special treatment
       mn += Kw.MONTHS_IN_YEAR;
       yr -= 1;
    IF_END
 
    jcen = FLOOR(yr / 100);
    # The first 2 terms give the number of missing leap days
+   #  due to the " == 0 mod 100 and <> 0 mod 400" rule.
+   dayoffset = jcen - FLOOR(jcen / 4.0) + 31.3;
+   jtwok = (FLOOR(yr * Kw.JYEAR / Kw.JDAY)
+         + FLOOR(30.6001 * mn - dayoffset)
+         + g_day - 1.5);
+
+   RETURN jtwok;
+FUNC_END
+
+FUNC DBL ymd2j2k(DBL g_year, DBL g_month, DBL g_day):
+   # convert a YEAR, MONTH, DAY into a J2000 date
+   DBL yr;
+   DBL mn;
+   DBL jtwok;
+   INT jcen;
+
+   yr = g_year - 2000;
+   mn = g_month;
+
+   jcen = FLOOR((yr - 1) / 100);
+   # The oneth term gives the approximate number of days that
+   #    have elapsed since 2000-01-01
+   # The next 2 terms give the number of missing leap days
    #    due to the " == 0 mod 100 and <> 0 mod 400" rule.
-   # March 0 is the 60th day of the year 0000.
-   # The month formula (g_month == 3) gives 122.4004 to 122.
-   # Hence we need to offset by 62 to get the correct DOY.
-   dayoffset = jcen - FLOOR(jcen / 4.0) + 62;
-   jtwok = (FLOOR(yr * Kw.JYEAR / Kw.DAY)
-      + FLOOR(30.6001 * mn - dayoffset)
-      + g_day - 1.5);
+   jtwok = (FLOOR(yr * Kw.JYEAR / Kw.JDAY - 0.0001)
+         + FLOOR(jcen / 4.0) - jcen
+         + ymd2doy(yr, mn, g_day) - 0.5);
 
    RETURN jtwok;
 FUNC_END
@@ -502,8 +509,9 @@ BLOCK:  # Julian specific defines
       jcent = FLOOR(((ijulian - 60.5) * Kw.JDAY
                - Kw.JDSEC_AT_0GREGORIAN) / (100.0 * Kw.GYEAR));
       bbdays = ijulian + jcent - FLOOR(jcent / 4.0);
-      g_years = FLOOR((bbdays + 1399.9) * Kw.DAY / Kw.JYEAR);
-      bdiff = bbdays - FLOOR(g_years * Kw.JYEAR / Kw.DAY) + 1522;
+      g_years = FLOOR((bbdays + 1399.9) * Kw.JDAY / Kw.JYEAR);
+      bdiff = bbdays - FLOOR(g_years * Kw.JYEAR / Kw.JDAY)
+               + 1522;
       month_next = FLOOR(bdiff / 30.6001);
       # time (in days) remaining in month
       dtime_rem = bdiff - FLOOR(30.6001 * month_next)
@@ -594,17 +602,17 @@ BLOCK:  # Julian specific defines
    FUNC_END
 BLOCK_END
 
-FUNC DBL print_jd264(DBL jjulid):
+FUNC DBL jd264_print(DBL jjulid):
    # print out gregorian day in tthe format
    #   YYMDhms as a base-64 string for the date
    # corresponding to Julian day JJULID
    CALL jd2ymdhms(jjulid);
-   CALL print_base_out(ymdhms_get(LC_GD_YEAR), 64);
-   CALL print_base_out(ymdhms_get(LC_GD_MONTH), 64);
-   CALL print_base_out(ymdhms_get(LC_GD_DAY), 64);
-   CALL print_base_out(ymdhms_get(LC_GD_HOUR), 64);
-   CALL print_base_out(ymdhms_get(LC_GD_MIN), 64);
-   CALL print_base_outf(ymdhms_get(LC_GD_SEC), 64);
+   CALL base_out_print(ymdhms_get(LC_GD_YEAR), 64);
+   CALL base_out_print(ymdhms_get(LC_GD_MONTH), 64);
+   CALL base_out_print(ymdhms_get(LC_GD_DAY), 64);
+   CALL base_out_print(ymdhms_get(LC_GD_HOUR), 64);
+   CALL base_out_print(ymdhms_get(LC_GD_MIN), 64);
+   CALL base_outf_print(ymdhms_get(LC_GD_SEC), 64);
    RETURN jjulid;
 FUNC_END
 
@@ -688,46 +696,44 @@ FUNC DBL clockstdev(DBL secnds):
             - Kw.square(da + db + dc) / 3) / 2);
 FUNC_END
 
-FUNC INT date_easter(INT g_year):
-   # what day of *March* is easter in Gregorian year G_YEAR
-   # The algorithm is due to J.-M. Oudin (1940) and is
-   # reprinted in the Explanatory Supplement to the
-   # Astronomical Almanac, ed. P. K. Seidelmann (1992).
-   # See Chapter 12, "Calendars", by L. E. Doggett.
-   INT cc;
-   INT nn;
-   INT kk;
-   INT ff;
-   INT ii;
-   INT jj;
-   INT mm;
-   INT lps;
-
-   MODE_INTEGER:
-   cc = FLOOR(g_year / 100);
-   nn = g_year % 19;
-   lps = FLOOR(g_year / 4);
-   kk = FLOOR((cc + 8) / 25 - 1);
-   ff = FLOOR((cc - kk) / 3);
-   mm = cc - FLOOR(cc / 4);
-   ii = (mm - ff + 19 * nn + 15) % 30;
-
-   IF 28 < ii OR (ii == 28 AND 10 < nn):
-      ii -= 1;
-   IF_END
-   jj = (g_year + lps + ii + 2 - mm) % 7;
-   MODE_INTEGER_END
-
-   RETURN ii - jj + 28;
-FUNC_END
-
 BLOCK:  # Halaqim
-   BLOCK_DEF CONST HALAQIM_PER_HOUR    1080; #T
-   BLOCK_DEF CONST HALAQIM  Kw.HOUR / HALAQIM_PER_HOUR; #T
-#   BLOCK_DEF INT lv_hqphr = 2;
-#   BLOCK_DEF FUNC INT lf_hqphr(NUL):
-#      RETURN HALAQIM_PER_HOUR;
-#   FUNC_END
+   BLOCK_DEF CONST LC_HALAQIM_PER_HOUR    1080; #T
+   BLOCK_DEF CONST LC_HALAQIM  Kw.HOUR / LC_HALAQIM_PER_HOUR; #T
+   BLOCK_DEF CONST LC_YEAR_PER_METONIC 19; #1
+
+   FUNC INT date_easter(INT g_year):
+      # what day of *March* is easter in Gregorian year G_YEAR
+      # The algorithm is due to J.-M. Oudin (1940) and is
+      # reprinted in the Explanatory Supplement to the
+      # Astronomical Almanac, ed. P. K. Seidelmann (1992).
+      # See Chapter 12, "Calendars", by L. E. Doggett.
+      INT cc;
+      INT nn;
+      INT kk;
+      INT ff;
+      INT ii;
+      INT jj;
+      INT mm;
+      INT lps;
+
+      MODE_INTEGER:
+      cc = FLOOR(g_year / 100);
+      nn = g_year % LC_YEAR_PER_METONIC;
+      lps = FLOOR(g_year / 4);
+      kk = FLOOR((cc + 8) / 25 - 1);
+      ff = FLOOR((cc - kk) / 3);
+      mm = cc - FLOOR(cc / 4);
+      ii = (mm - ff + LC_YEAR_PER_METONIC * nn + 15) % 30;
+
+      IF 28 < ii OR (ii == 28 AND 10 < nn):
+         ii -= 1;
+      IF_END
+      jj = (g_year + lps + ii + 2 - mm) % 7;
+      MODE_INTEGER_END
+
+      RETURN ii - jj + 28;
+   FUNC_END
+
    FUNC DBL date_rosh_hashanah(INT g_year):
       # which day of *September* is Rosh HaShanah in
       #   the *GREGORIAN* year G_YEAR
@@ -738,21 +744,21 @@ BLOCK:  # Halaqim
       INT doww;
       MODE_INTEGER:
 
-      aa = (12 * g_year + 12) % 19;
+      aa = (12 * g_year + 12) % LC_YEAR_PER_METONIC;
       # 11<aa iff jewish leap year
       # 1 hour = 1080 parts("halaqim") = 3.333333 seconds
-      # Synodic period of the moon = 29.530587981 days
-      #                            = 29 d + 12 h + 44 m + 2.8 s
-      #                            = 29 d + 12 h + 792.84 parts
-      #                            = 765432.84046752 halaqim
-      #                        about round(MOONMONTH / HALAQIM)
+      # Moon month = 29.530587981 days
+      #            = 29 d + 12 h + 44 m + 2.8 s
+      #            = 29 d + 12 h + 792.84 halaqim
+      #            = 765432.84046752 halaqim
+      #            about round(MOONMONTH / LC_HALAQIM)
       dos = (FLOOR(g_year / 100) - FLOOR(g_year / 400) - 2
             + (g_year % 4) / 4.0
-            + (round(Kw.MOONMONTH / Kw.HALAQIM) * aa
+            + (round(Kw.MOONMONTH / Kw.LC_HALAQIM) * aa
                         - 1565.0 * g_year - 445405)
-                  / (19.0 * Kw.DAY / HALAQIM));
+                  / (LC_YEAR_PER_METONIC * Kw.DAY / LC_HALAQIM));
       day_of_september = FLOOR(dos);
-      parts = Kw.frac(dos) * Kw.DAY / HALAQIM;
+      parts = Kw.frac(dos) * Kw.DAY / LC_HALAQIM;
 
       # delay rules
       doww = ymd2dow(g_year, 9, day_of_september);
@@ -761,6 +767,7 @@ BLOCK:  # Halaqim
       # and it cant be Wednesday (or Friday), as that
       # would make Yom Kippur (== RH + 9) be next to Shabbat.
       IF doww == 0 OR doww == 3 OR doww == 5:
+         # Sunday, Wednesday, or Friday
          day_of_september += 1;   # Adu
       ELSIF doww == 1 AND 11 < aa AND 23269 <= parts:
          # Monday, leap year, and time after 21:32:43.3333333
@@ -775,7 +782,6 @@ BLOCK:  # Halaqim
 
    FUNC DBL jewish2jdx(INT hebyear):
       # Julian day of Rosh Hashanah in Jewish year HEBYEAR
-      INT hebyear_mone;
       INT months_el;
       INT halaqims_el;
       INT hour_el;
@@ -783,19 +789,23 @@ BLOCK:  # Halaqim
       INT days_left;
       INT alt_days;
       INT alt_dow;
-      MODE_INTEGER:
-      # 19 Julian Years = 235.002093574 Moon Months
-      hebyear_mone = hebyear - 1;
-      months_el = (235 * FLOOR(hebyear_mone / 19)
-            + 12 * (hebyear_mone % 19)
-            + FLOOR((7 * (hebyear_mone % 19) + 1) / 19));
+      INT hymod;
 
-      # MOONMONTH = 29 * DAY + 12 * HOUR + 792.84046752 HALAQIM
-      halaqims_el = 204 + (793 * (months_el % HALAQIM_PER_HOUR));
+      MODE_INTEGER:
+      # LC_YEAR_PER_METONIC JYears = 235.002093574 Moon Months
+      hymod = (hebyear - 1) % LC_YEAR_PER_METONIC;
+      months_el = (
+            235 * FLOOR((hebyear - 1) / LC_YEAR_PER_METONIC)
+            + 12 * hymod
+            + FLOOR((7 * hymod + 1) / LC_YEAR_PER_METONIC));
+
+      # MOONMONTH = 29*DAY + 12*HOUR + 792.84046752 LC_HALAQIM
+      halaqims_el = 204
+               + (793 * (months_el % LC_HALAQIM_PER_HOUR));
 
       hour_el = (5 + (12 * months_el)
-            + 793 * FLOOR(months_el / HALAQIM_PER_HOUR)
-            + FLOOR(halaqims_el / HALAQIM_PER_HOUR));
+            + 793 * FLOOR(months_el / LC_HALAQIM_PER_HOUR)
+            + FLOOR(halaqims_el / LC_HALAQIM_PER_HOUR));
 
       days_left = 1 + 29 * months_el
             + FLOOR(hour_el / (Kw.DAY / Kw.HOUR));
@@ -804,12 +814,12 @@ BLOCK:  # Halaqim
       #    = Gregorian date -3760-09-06
       alt_days = days_left + 347996;
       alt_dow = (alt_days % Kw.iround(Kw.WEEK / Kw.DAY));
-      hq_left = (halaqims_el % HALAQIM_PER_HOUR);
+      hq_left = (halaqims_el % LC_HALAQIM_PER_HOUR);
       MODE_INTEGER_END
       hq_left += Kw.DAY * Kw.frac(hour_el * Kw.HOUR / Kw.DAY)
-                  / Kw.HALAQIM;
+                  / LC_HALAQIM;
 
-      IF 19440 <= hq_left:
+      IF 19440 <= hq_left:  # after 18:00:00 or 64800s
          IF 0 == alt_dow OR 2 == alt_dow OR 4 == alt_dow:
             alt_days += 2;
          ELSE:
@@ -817,10 +827,12 @@ BLOCK:  # Halaqim
          IF_END
       ELSIF 0 == alt_dow:
          IF 9924 <= hq_left AND (NOT isjewishleap(hebyear)):
+            # after 09:11:20 or 33080s
             alt_days += 2;
          IF_END
       ELSIF 6 == alt_dow:
          IF 16789 <= hq_left AND isjewishleap(hebyear - 1):
+            # after 15:32:43.333 or 55963.33s
             alt_days += 1;
          IF_END
       ELSIF 1 == alt_dow OR 3 == alt_dow OR 5 == alt_dow:
@@ -828,6 +840,12 @@ BLOCK:  # Halaqim
       IF_END
 
       RETURN alt_days + 0.25;
+   FUNC_END
+
+   FUNC BOL isjewishleap(INT hebyear):
+      # Is the Jewish year HEBYEAR a leap year?
+      # True iff (HEBYEAR mod 19 == 0,3,6,8,11,14,17)
+      RETURN (7 * hebyear + 1) % LC_YEAR_PER_METONIC < 7;
    FUNC_END
 BLOCK_END   # Halaqim
 #TEST:jewish2jdx(5776)-2457279.25;
@@ -853,12 +871,6 @@ FUNC INT jewish2g(INT hebyear):
    RETURN hebyear - 3760;
 FUNC_END
 
-FUNC BOL isjewishleap(INT hebyear):
-   # Is the Jewish year HEBYEAR a leap year?
-   # True iff (HEBYEAR mod 19 == 0,3,6,8,11,14,17)
-   RETURN (7 * hebyear + 1) % 19 < 7;
-FUNC_END
-
 FUNC INT jewish_months_in_year(INT hebyear):
    # number of months in Jewish year HEBYEAR
    INT miy;
@@ -877,7 +889,7 @@ FUNC INT jewish_yearlength(INT hebyear):
 
    # Is there an easier way?
    g_year = jewish2g(hebyear - 1);
-   retvalu = (FLOOR(Kw.JYEAR / Kw.DAY)
+   retvalu = (FLOOR(Kw.JYEAR / Kw.JDAY)
          + (date_rosh_hashanah(g_year + 1)
             - date_rosh_hashanah(g_year)));
    IF Kw.isleapyear(g_year + 1):
@@ -929,10 +941,6 @@ FUNC INT jewish_monthlength(INT hebyear, INT hebmonth):
       IF Kw.iseven(hebmonth):
          retvalu = 29;
       IF_END
-   ELSIF hebmonth == 10:
-      retvalu = 29;
-   ELSIF hebmonth == 11:
-      retvalu = 30;
    ELSIF hebmonth == 8:
       IF isjewish8short(hebyear):
          retvalu = 29;
@@ -941,6 +949,10 @@ FUNC INT jewish_monthlength(INT hebyear, INT hebmonth):
       IF isjewish9short(hebyear):
          retvalu = 29;
       IF_END
+   ELSIF hebmonth == 10:
+      retvalu = 29;
+   ELSIF hebmonth == 11:
+      retvalu = 30;
    ELSIF hebmonth == 12:
       IF NOT isjewishleap(hebyear):
          retvalu = 29;

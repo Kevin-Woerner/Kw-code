@@ -1,4 +1,5 @@
 #    Copyright (C) 2018-2020 by Kevin D. Woerner
+# 2020-12-03 kdw  float explicit const work
 # 2020-07-24 kdw  comment cleanup
 # 2020-06-18 kdw  comment to ratio
 # 2020-06-16 kdw  D[I]V keyword deprecated
@@ -239,7 +240,7 @@ FUNC DBL chebeval(DBL xx, INT deg
    DBL bc;
    INT ii;
 
-   xx *= 2;
+   xx *= 2.0;
    ba = cheb_arr_pc[deg];
    bb = 0.0;
    bc = 0.0;

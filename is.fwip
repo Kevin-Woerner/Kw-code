@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-15 kdw  rmed macros
+# 2020-11-28 kdw  macro syntax overhaul
 # 2020-08-20 kdw  boolean checks changed
 # 2020-08-17 kdw  macro syntax changed
 # 2020-07-24 kdw  comment cleanup
@@ -100,28 +102,24 @@
 # 2015-10-14 kdw  isl[e]apyear
 # 2015-10-10 kdw  created
 
-?MACRO IS_FUNC <BOL_TEST> ?
-   RETURN <BOL_TEST>;
-?MACRO_END
-
 FUNC BOL iszero(DBL xx):
    # XX == 0.0
-   ?IS_FUNC 0.0 <= xx AND xx <= 0.0 ?
+   RETURN 0.0 <= xx AND xx <= 0.0;
 FUNC_END
 
 FUNC BOL iseven(DBL xx):
    # floor of XX is even
-   ?IS_FUNC Kw.fmodu(xx, 2.0) < 1.0 ?
+   RETURN Kw.fmodu(xx, 2.0) < 1.0;
 FUNC_END
 
 FUNC BOL isodd(DBL xx):
    # floor of XX is odd
-   ?IS_FUNC 1.0 <= Kw.fmodu(xx, 2.0) ?
+   RETURN 1.0 <= Kw.fmodu(xx, 2.0);
 FUNC_END
 
 FUNC BOL ismult(DBL xx, DBL mult):
    # floor of XX mod MULT < 1.0
-   ?IS_FUNC Kw.fmodu(xx, mult) < 1.0 ?
+   RETURN Kw.fmodu(xx, mult) < 1.0;
 FUNC_END
 
 FUNC BOL ismultl(INT xx, INT mult):
@@ -142,32 +140,32 @@ FUNC_END
 
 FUNC BOL isgt(DBL xx, DBL yy):
    # YY < XX
-   ?IS_FUNC yy < xx ?
+   RETURN yy < xx;
 FUNC_END
 
 FUNC BOL islt(DBL xx, DBL yy):
    # XX < YY
-   ?IS_FUNC xx < yy ?
+   RETURN xx < yy;
 FUNC_END
 
 FUNC BOL isge(DBL xx, DBL yy):
    # YY < XX
-   ?IS_FUNC yy <= xx ?
+   RETURN yy <= xx;
 FUNC_END
 
 FUNC BOL isle(DBL xx, DBL yy):
    # XX < YY
-   ?IS_FUNC xx <= yy ?
+   RETURN xx <= yy;
 FUNC_END
 
 FUNC BOL ispos(DBL xx):
    # 0 < XX
-   ?IS_FUNC 0.0 < xx ?
+   RETURN 0.0 < xx;
 FUNC_END
 
 FUNC BOL isneg(DBL xx):
    # XX < 0
-   ?IS_FUNC xx < 0.0 ?
+   RETURN xx < 0.0;
 FUNC_END
 
 FUNC BOL iseq(DBL xx, DBL yy):
@@ -196,29 +194,23 @@ FUNC BOL iseq(DBL xx, DBL yy):
 FUNC_END
 
 FUNC BOL isneq(DBL xx, DBL yy):
-   BOL retvalu_bol;
-
-   IF xx < yy OR yy < xx:
-      retvalu_bol = TRUE;
-   ELSE:
-      retvalu_bol = FALSE;
-   IF_END
-   RETURN retvalu_bol;
+   # XX <> YY
+   RETURN xx < yy OR yy < xx;
 FUNC_END
 
 FUNC BOL isint(DBL xx):
    # XX is an integer
-   ?IS_FUNC Kw.iseq(xx, FLOOR(xx)) ?
+   RETURN Kw.iseq(xx, FLOOR(xx));
 FUNC_END
 
 FUNC BOL isnegint(DBL xx):
    # XX is a negative integer
-   ?IS_FUNC xx < 0.0 AND Kw.iseq(xx, FLOOR(xx)) ?
+   RETURN xx < 0.0 AND Kw.iseq(xx, FLOOR(xx));
 FUNC_END
 
 FUNC BOL isposint(DBL xx):
    # XX is a positive integer
-   ?IS_FUNC 0.0 < xx AND Kw.iseq(xx, FLOOR(xx)) ?
+   RETURN 0.0 < xx AND Kw.iseq(xx, FLOOR(xx));
 FUNC_END
 
 FUNC DBL ifzero(DBL cond, DBL tru_val, DBL fal_val):
@@ -235,25 +227,25 @@ FUNC_END
 FUNC BOL isalmostequal(DBL xx, DBL yy, DBL epsratio):
    # Is ratio of XX and YY within EPSRATIO of 1.0?
    # TRUE if abs(XX - YY) < abs(XX * EPSRATIO)
-   ?IS_FUNC ABS(xx - yy) <= ABS(epsratio * xx) ?
+   RETURN ABS(xx - yy) <= ABS(epsratio * xx);
 FUNC_END
 
 FUNC BOL iswithin(DBL xx, DBL yy, DBL delta):
    # Is ABS(YY - XX) <= DELTA
    # Is distance of XX and YY less than DELTA?
-   ?IS_FUNC xx - delta <= yy AND yy <= xx + delta ?
+   RETURN xx - delta <= yy AND yy <= xx + delta;
 FUNC_END
 
 FUNC BOL isbetweenx(DBL xx, DBL min_xx, DBL max_xx):
    # Is MIN_XX < XX < MAX_XX?
    # is between exclusive of endpoints
-   ?IS_FUNC min_xx < xx AND xx < max_xx ?
+   RETURN min_xx < xx AND xx < max_xx;
 FUNC_END
 
 FUNC BOL isbetween(DBL xx, DBL min_xx, DBL max_xx):
    # Is MIN_XX <= XX <= MAX_XX?
    # is between inclusive of endpoints
-   ?IS_FUNC min_xx <= xx AND xx <= max_xx ?
+   RETURN min_xx <= xx AND xx <= max_xx;
 FUNC_END
 
 FUNC BOL isleapyear(INT gregyear):

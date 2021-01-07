@@ -1,4 +1,8 @@
 #    Copyright (C) 2016-2020 by Kevin D. Woerner
+# 2020-12-08 kdw  explicit modules on constants
+# 2020-12-04 kdw  float explicit const work
+# 2020-09-29 kdw  comments; var renam
+# 2020-09-25 kdw  volume, surface area
 # 2020-08-17 kdw  comment change
 # 2020-08-03 kdw  explicit module for pi and tau
 # 2020-07-27 kdw  block syntax
@@ -233,7 +237,7 @@ BLOCK: # ellipsiod funcitons
          s_alpha = c_cap_ua * c_cap_ub * s_xx / s_sig;
          c_alpha_sq = 1.0 - Kw.square(s_alpha);
          cbsigm = c_sig - Kw.divi(2.0 * s_cap_ua * s_cap_ub
-               , c_alpha_sq, 0);
+               , c_alpha_sq, 0.0);
          cap_c = ((flat / 16.0) * c_alpha_sq
             * (4.0 + flat * (4.0 - 3.0 * c_alpha_sq)));
          xx_prev = xx_curr;
@@ -379,3 +383,56 @@ BLOCK: # ellipsiod funcitons
       RETURN alpha_rad;
    FUNC_END
 BLOCK_END   # ellipsiod funcitons
+
+FUNC DBL ellipsoid_surface(DBL aa, DBL bb, DBL cc):
+   # surface area of a tri-axial ellipsoid
+   DBL absaa;
+   DBL absbb;
+   DBL abscc;
+   DBL phi;
+   DBL sinphi;
+   DBL cosphi;
+   DBL kk;
+   DBL retvalu;
+
+   absaa = ABS(aa);
+   absbb = ABS(bb);
+   abscc = ABS(cc);
+   # sort into abscc <= absbb <= absaa
+   IF absaa < absbb:
+      kk = absaa;
+      absaa = absbb;
+      absbb = kk;
+   IF_END
+   IF absbb < abscc:
+      kk = abscc;
+      abscc = absbb;
+      absbb = kk;
+      IF absaa < absbb:
+         kk = absaa;
+         absaa = absbb;
+         absbb = kk;
+      IF_END
+   IF_END
+   # Ok, Now abscc <= absbb <= absaa
+   IF abscc < absaa:
+      # general case
+      cosphi = (abscc / absaa);
+      phi = Kw.cosinv(cosphi);
+      sinphi = SIN(phi);
+      kk = SQRT((1.0 - abscc * abscc / (absbb * absbb))
+                  / (1.0 - abscc * abscc / (absaa * absaa)));
+      retvalu = Kw.TAU * (abscc * abscc + absaa * absbb / sinphi
+            * (sinphi * sinphi * Kw.elliptic2ik(kk, phi)
+            + cosphi * cosphi * Kw.elliptic1ik(kk, phi)));
+   ELSE:
+      # regular sphere: abscc == absbb == absaa
+      retvalu = 2.0 * Kw.TAU * absaa * absaa;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL ellipsoid_volume(DBL aa, DBL bb, DBL cc):
+   # volume of a tri-axial ellipsoid
+   RETURN 2.0 * Kw.TAU * aa * bb * cc / 3.0;
+FUNC_END

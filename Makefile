@@ -1,5 +1,11 @@
 #! /usr/bin/make -f
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-02 kdw  macro syntax made more flexible
+# 2020-11-28 kdw  macro syntax overhaul
+# 2020-11-27 kdw  rmed temp files
+# 2020-11-16 kdw  vars renamd
+# 2020-11-12 kdw  simplfied
+# 2020-09-03 kdw  HOS[T]NAME changed to K[W]C[N]
 # 2020-08-19 kdw  comment change
 # 2020-07-17 kdw  simplified
 # 2015-09-20 kdw  created
@@ -11,36 +17,34 @@ include $(MAKEDIR)/Makefile.beg
 # defined in above file: k?dir_We?rks?hc k?dir_kw
 ##################################################### FWIP CODE #
 #******* THE ORDER OF THE FOLLOWING SUFFIXES IS IMPORTANT
-FWIP_SUFOTH:=.h .pm .units .bc .vb .c .rpn .py .varylog .bas
-FWIP_SUFFIXP:=.fwipp
-FWIP_SUFFIXO:=.fwip
+lv_sufoth:=.h .pm .units .bc .vb .c .rpn .py .varylog .bas
+lv_suffixp:=.fwipp
+lv_suffixo:=.fwip
 
 all : all_kwfwips
 
-KW_FWIP_NAMES:=Kw Kwelements Kwplanets Kwsun
-FWIP_D_FILES:=$(addprefix $(kdir_dep)/,\
-      $(addsuffix $(FWIP_SUFFIXP).d,$(KW_FWIP_NAMES)))
-KW_FWIP_TARGETS:=$(addprefix $(kdir_codekdw_kw_lib)/,\
-   $(foreach sffy,$(FWIP_SUFOTH) $(FWIP_SUFFIXP),\
-      $(addsuffix $(sffy),$(KW_FWIP_NAMES))))
-.PRECIOUS: $(KW_FWIP_TARGETS)
+lv_kwfwip_nam:=Kw Kwelements Kwplanets Kwsun
+lv_files_kwfwip_targets:=$(addprefix $(kdir_codekdw_kw_lib)/,\
+   $(foreach sffy,$(lv_sufoth) $(lv_suffixp),\
+      $(addsuffix $(sffy),$(lv_kwfwip_nam))))
+.PRECIOUS: $(lv_files_kwfwip_targets)
 
-ifeq ($(KWC_SHC),$(HOSTNAME))
-   WORKSHC_FILES:=$(patsubst $(kdir_codekdw_kw_lib)/%,\
-         $(kdir_workshc_lib_kw)/%,$(KW_FWIP_TARGETS))
+ifeq ($(KWC_SHC),$(KWCN))
+   lv_files_workshc:=$(patsubst $(kdir_codekdw_kw_lib)/%,\
+         $(kdir_workshc_lib_kw)/%,$(lv_files_kwfwip_targets))
    $(kdir_workshc_lib_kw)/% : $(kdir_bindir_include)/%
 	$(CP) $< $@
 	$(CHMOD) --reference=$< $@
 else
-   WORKSHC_FILES:=
+   lv_files_workshc:=
 endif
 
-LV_TARGETS:=$(WORKSHC_FILES) $(ALL_BISON_TARGETS) \
-      $(LIBKW_ALL) $(KW_FWIP_TARGETS) \
-      $(addprefix $(kdir_obj)/,$(addsuffix .o,$(KW_FWIP_NAMES)))\
-      $(addprefix $(kdir_dep)/,$(addsuffix .d,$(KW_FWIP_NAMES)))\
+lv_files_targets:=$(lv_files_workshc) $(ALL_BISON_TARGETS) \
+      $(LIBKW_ALL) $(lv_files_kwfwip_targets) \
+      $(addprefix $(kdir_obj)/,$(addsuffix .o,$(lv_kwfwip_nam)))\
+      $(addprefix $(kdir_dep)/,$(addsuffix .d,$(lv_kwfwip_nam)))\
    $(patsubst $(kdir_codekdw_kw_lib)/%, \
-         $(kdir_bindir_include)/%, $(KW_FWIP_TARGETS))
+         $(kdir_bindir_include)/%, $(lv_files_kwfwip_targets))
 
 .PHONY : all_kwfwips
 
@@ -50,26 +54,26 @@ define mdfd_fwipp_translate
       | $(KWSS_VKKCP_SH) $< $@ > $@
 endef
 
-$(addprefix %,$(FWIP_SUFOTH)) : %$(FWIP_SUFFIXP)
+$(addprefix %,$(lv_sufoth)) : %$(lv_suffixp)
 	$(call mdfd_fwipp_translate,$(suffix $@))
 	$(CHMOD) 640 $@
 
-$(kdir_dep)/%$(FWIP_SUFFIXP).d : $(srcdir)/%$(FWIP_SUFFIXO) \
+$(kdir_dep)/%$(lv_suffixp).d : $(srcdir)/%$(lv_suffixo) \
    $(KWSS_VKKCP_SH) $(kfil_dep)
 	$(ECHO) $(patsubst $(kdir_dep)/%.d, \
             $(kdir_codekdw_kw_lib)/%,$@) \
       ": \\" > $@
 	$(PERL) -ne \
-      "if(s~\?INSERT_FILE\s+\"(\S+?)\"\?.* \
-            ~   $(srcdir)/\$$1\\\\~x){print}" \
+            "if (s~\{INSERT_FILE\s+\"(\S+?)\"\s*\}.*\
+            ~$(srcdir)/\$$1\\\\~x) {print}" \
       $< >> $@
 
 include $(MAKEDIR)/Makefile.end
 
 define mdfd_inc
    $(addprefix $(srcdir)/,$(shell $(PERL) -ne \
-      "if(s/\?INSERT_FILE \"(\S+?)\"\?.*/$$1/){print}" \
-      $(srcdir)/$(1)$(FWIP_SUFFIXO)))
+      "if (s~\{INSERT_FILE\s+\"(\S+?)\"\}.*~$$1~) {print}" \
+      $(srcdir)/$(1)$(lv_suffixo)))
 endef
 
 define mdfd_create
@@ -80,25 +84,22 @@ $(lastword $(MAKEFILE_LIST)) \
    | $(PERL) -pe "s@$(TMPDIR)@TMPDIR@"
 endef
 
-$(kdir_codekdw_kw_lib)/%$(FWIP_SUFFIXP) : \
-   $(srcdir)/%$(FWIP_SUFFIXO)  $(kdir_dep)/%$(FWIP_SUFFIXP).d \
+$(kdir_codekdw_kw_lib)/%$(lv_suffixp) : \
+   $(srcdir)/%$(lv_suffixo) $(kdir_dep)/%$(lv_suffixp).d \
    $(FWIP_PREPROCESS) $(FWIP_TAB) $(FWIP_FORMATY) \
    $(FWIP_WRAP)
-	$(FWIP_PREPROCESS) $< > $(kdir_fwip)/$(@F).pp
-	$(ECHO) "MAKELISTA=" $(MAKEFILE_LIST)
-	$(CAT) $(kdir_fwip)/$(@F).pp | $(FWIP_TAB) \
-   > $(kdir_fwip)/$(@F).parse
 	$(call mdfd_create) > $@
-	$(FWIP_FORMATY) $(kdir_fwip)/$(@F).parse | $(FWIP_WRAP) >> $@
+	$(FWIP_PREPROCESS) $< | $(FWIP_TAB) | $(FWIP_FORMATY) \
+      | $(FWIP_WRAP) >> $@
 	$(CHMOD) 640 $@
 
-$(addprefix %,$(FWIP_SUFOTH)) : %$(FWIP_SUFFIXP) \
+$(addprefix %,$(lv_sufoth)) : %$(lv_suffixp) \
    $(FWIP_TRANSLATOR)
 	$(call mdfd_fwipp_translate,$(suffix $@))
 	$(CHMOD) 640 $@
 
 $(kdir_codekdw_kw_lib)/%.py      \
-   : $(kdir_codekdw_kw_lib)/%$(FWIP_SUFFIXP) $(FWIP_TRANSLATOR)
+   : $(kdir_codekdw_kw_lib)/%$(lv_suffixp) $(FWIP_TRANSLATOR)
 	$(call mdfd_fwipp_translate,$(suffix $@))
 	$(CHMOD) 750 $@
 
@@ -109,28 +110,28 @@ $(kdir_codekdw_kw_lib)/%.bas     \
 $(kdir_codekdw_kw_lib)/%.units   \
 $(kdir_codekdw_kw_lib)/%.rpn     \
 $(kdir_codekdw_kw_lib)/%.vb      \
-   : $(kdir_codekdw_kw_lib)/%$(FWIP_SUFFIXP) $(FWIP_TRANSLATOR) \
+   : $(kdir_codekdw_kw_lib)/%$(lv_suffixp) $(FWIP_TRANSLATOR) \
       $(MAKEFILE_LIST)
 	$(call mdfd_fwipp_translate,$(suffix $@))
 	$(CHMOD) 640 $@
 
 $(kdir_codekdw_kw_lib)/%.c  \
-   : $(kdir_codekdw_kw_lib)/%$(FWIP_SUFFIXP) $(FWIP_TRANSLATOR) \
+   : $(kdir_codekdw_kw_lib)/%$(lv_suffixp) $(FWIP_TRANSLATOR) \
       $(kdir_codekdw_kw_lib)/%.h
 	$(call mdfd_fwipp_translate,$(suffix $@))
 	$(CHMOD) 640 $@
 
 $(kdir_codekdw_kw_lib)/%.fw  \
-   : $(kdir_codekdw_kw_lib)/%$(FWIP_SUFFIXP)
+   : $(kdir_codekdw_kw_lib)/%$(lv_suffixp)
 	$(GREP) -vP "^ *# \d{4}-\d\d-\d\d kd(pw|w ) " $< > $@
 
 $(kdir_codekdw_kw_lib)/%.varylog \
-   : $(kdir_codekdw_kw_lib)/%$(FWIP_SUFFIXP) $(FWIP_TRANSLATOR)
+   : $(kdir_codekdw_kw_lib)/%$(lv_suffixp) $(FWIP_TRANSLATOR)
 	$(ECHO) "MAKELISTC=" $(MAKEFILE_LIST)
 	$(call mdfd_create) > $@
 	$(CAT) $< \
             | $(GREP) -E "^# ([0-9]{4}(-[0-3][0-9]){2} kdw  )" \
-            | $(PERL) -pe "s/\$(FWIP_SUFFIXO)\\b//;\
+            | $(PERL) -pe "s/\$(lv_suffixo)\\b//;\
       s/(.*:)(.*\\skdw\\s\\s)/$$2$$1/;"\
             | $(SORT) -r \
             | $(KWSS_VKKCP_SH) $< $@ >> $@
@@ -143,15 +144,15 @@ all_kwfwips :
 	$(MAKE) -j kwfwips_h
 	$(MAKE) -j kwfwips_all
 
-kwfwips_fwipp: $(foreach kwn,$(KW_FWIP_NAMES),\
-      $(kdir_codekdw_kw_lib)/$(kwn)$(FWIP_SUFFIXP))
-kwfwips_h: $(foreach kwn,$(KW_FWIP_NAMES),\
+kwfwips_fwipp: $(foreach kwn,$(lv_kwfwip_nam),\
+      $(kdir_codekdw_kw_lib)/$(kwn)$(lv_suffixp))
+kwfwips_h: $(foreach kwn,$(lv_kwfwip_nam),\
       $(kdir_codekdw_kw_lib)/$(kwn).h) kwfwips_fwipp
-kwfwips_kw : $(foreach kwn,$(KW_FWIP_NAMES),\
-      $(foreach suf,$(filter-out .h,$(FWIP_SUFOTH)),\
+kwfwips_kw : $(foreach kwn,$(lv_kwfwip_nam),\
+      $(foreach suf,$(filter-out .h,$(lv_sufoth)),\
                $(kdir_codekdw_kw_lib)/$(kwn)$(suf))) kwfwips_h
 kwfwips_all : $(filter-out $(kdir_codekdw_kw_lib)/%, \
-            $(LV_TARGETS)) kwfwips_kw
+            $(lv_files_targets)) kwfwips_kw
 
 $(kdir_dep)/%.d : $(kdir_codekdw_kw_lib)/%.c \
    $(kdir_codekdw_kw_lib)/%.h
@@ -159,12 +160,13 @@ $(kdir_dep)/%.d : $(kdir_codekdw_kw_lib)/%.c \
 .PHONY : lv_realclean
 realclean : lv_realclean
 lv_realclean :
-	$(RM) $(LV_TARGETS)
+	$(RM) $(lv_files_targets)
+
+lv_files_fwip_d:=$(addprefix $(kdir_dep)/,\
+      $(addsuffix $(lv_suffixp).d,$(lv_kwfwip_nam)))
 
 ifeq ($(origin MAKECMDGOALS),undefined)
-   -include $(FWIP_D_FILES)
-else   # ifeq ($(origin MAKECMDGOALS),undefined)
-   ifneq ($(MAKECMDGOALS:%clean=clean),clean)
-      -include $(FWIP_D_FILES)
-   endif   # ifneq ($(MAKECMDGOALS:%clean=clean),clean)
+   -include $(lv_files_fwip_d)
+else ifneq ($(MAKECMDGOALS:%clean=clean),clean)
+   -include $(lv_files_fwip_d)
 endif   # ifeq ($(origin MAKECMDGOALS),undefined)

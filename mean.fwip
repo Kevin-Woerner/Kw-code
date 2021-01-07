@@ -1,4 +1,9 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-15 kdw  agm1inv poly work
+# 2020-12-08 kdw  explicit module on consts
+# 2020-12-04 kdw  float explicit const work
+# 2020-11-28 kdw  macro syntax overhaul
+# 2020-09-30 kdw  agmeaninv[ag]
 # 2020-08-17 kdw  macro syntax changed
 # 2020-08-11 kdw  agc[m]ean added
 # 2020-07-07 kdw  attempt to extend agmean to < 0
@@ -95,7 +100,7 @@
 # 2015-10-11 kdw  seca?nt algorithm changed
 # 2015-10-10 kdw  created
 
-?INSERT_FILE "Macros.fwip"?
+{INSERT_FILE "Macros.fwip" }
 
 FUNC DBL amean(DBL xa, DBL xb):
    # The arithmetic mean
@@ -111,8 +116,8 @@ FUNC DBL lmean(DBL xa, DBL xb):
    # The logarithmic mean: (XA - XB) / log(XA / XB)
    DBL retvalu;
    DBL diffy;
-   IF xa <= 0 OR xb <= 0:
-      retvalu = 0;
+   IF xa <= 0.0 OR xb <= 0.0:
+      retvalu = 0.0;
    ELSIF Kw.iseq(xa, xb):
       retvalu = xa;
    ELSE:
@@ -140,8 +145,8 @@ FUNC DBL pmean(DBL pp, DBL xa, DBL xb):
    # pmean(1,...)   arithmetic
    # pmean(2,...)   quadratic
    DBL retvalu;
-   IF xa <= 0 OR xb <= 0:
-      retvalu = 0;
+   IF xa <= 0.0 OR xb <= 0.0:
+      retvalu = 0.0;
    ELSIF Kw.iseq(xa, xb):
       retvalu = xa;
    ELSIF Kw.iszero(pp):
@@ -153,12 +158,12 @@ FUNC DBL pmean(DBL pp, DBL xa, DBL xb):
    RETURN retvalu;
 FUNC_END
 
-?MACRO MEAN_SIMPLE <NAME> ; <DESC> ; <FORMULA> ?
+{MACRO MEAN_SIMPLE <NAME> ; <DESC> ; <FORMULA> {
    FUNC DBL <NAME>mean(DBL xa, DBL xb):
       # The <DESC> mean
       DBL retvalu;
-      IF xa < 0 OR xb < 0:
-         retvalu = 0;
+      IF xa < 0.0 OR xb < 0.0:
+         retvalu = 0.0;
       ELSIF Kw.iseq(xa, xb):
          retvalu = xa;
       ELSE:
@@ -171,7 +176,7 @@ FUNC_END
       # The <DESC> mean of 1.0 and XA
       RETURN <NAME>mean(1.0, xa);
    FUNC_END
-?MACRO_END
+}}
 
 # for x in (0,+INF): AH(1,x) == G(1,x)
 # for x in (1,+INF):
@@ -180,13 +185,13 @@ FUNC_END
 # H < GH < HL < G=AH < GL < L,HQ < AG < AL < GQ < A,LQ < AQ < Q
 # lm1(x) < hqm1(x) in (0.07228214847860485, 13.83467455032826)
 # am1(x) < lqm1(x) in (0.07565734259951488, 13.21748776312862)
-?MEAN_SIMPLE g ; geometric ; SQRT(xa * xb) ?
-?MEAN_SIMPLE h ; harmonic  ; 2.0 * xa * xb / (xa + xb) ?
-?MEAN_SIMPLE q ; quadratic ; SQRT((xa * xa + xb * xb) / 2.0) ?
-?MEAN_SIMPLE heronian ; heronian
-      ; (xa + xb + SQRT(xa * xb)) / 3.0 ?
+{MEAN_SIMPLE g ; geometric ; SQRT(xa * xb) }
+{MEAN_SIMPLE h ; harmonic  ; 2.0 * xa * xb / (xa + xb) }
+{MEAN_SIMPLE q ; quadratic ; SQRT((xa * xa + xb * xb) / 2.0) }
+{MEAN_SIMPLE heronian ; heronian
+      ; (xa + xb + SQRT(xa * xb)) / 3.0 }
 
-?MACRO MEAN_ITERATE <NAME> ; <F1> ; <F2> ; <DESC> ?
+{MACRO MEAN_ITERATE <NAME> ; <F1> ; <F2> ; <DESC> {
 FUNC DBL <NAME>mean(DBL xa, DBL xb):
    # The <DESC> mean
    INT ii;
@@ -194,15 +199,15 @@ FUNC DBL <NAME>mean(DBL xa, DBL xb):
    DBL xtmp;
    DBL pdifff;
    DBL cdifff;
-   IF xa <= 0 OR xb <= 0:
-      retvalu = 0;
+   IF xa <= 0.0 OR xb <= 0.0:
+      retvalu = 0.0;
    ELSIF Kw.iseq(xa, xb):
       retvalu = xa;
    ELSE:
       cdifff = ABS(xa - xb);
-      AWAIT Kw.iswithin(xa, xb, 10 * DBLEPS)
+      AWAIT Kw.iswithin(xa, xb, 10.0 * Kw.DBLEPS)
                OR pdifff < cdifff
-            COUNT ii FROM 0 TO ?LOOP_LIMIT?:
+            COUNT ii FROM 0 TO {LOOP_LIMIT}:
          pdifff = cdifff;
          xtmp = <F1>;
          xa = <F2>;
@@ -218,29 +223,29 @@ FUNC DBL <NAME>mean1(DBL xa):
    # The <DESC> of 1.0 and XA
    RETURN <NAME>mean(1.0, xa);
 FUNC_END
-?MACRO_END
+}}
 
-?MEAN_ITERATE ag ; SQRT(xa * xb) ; (xa + xb) / 2.0
-      ; arithmetic-geometric ?
+{MEAN_ITERATE ag ; SQRT(xa * xb) ; (xa + xb) / 2.0
+      ; arithmetic-geometric }
 #TEST:agmean(1,2)-1.4567910310469068691864323832650819749738639;
-?MEAN_ITERATE ah ; 2.0 * xa * xb / (xa + xb) ; (xa + xb) / 2.0
-      ; arithmetic-harmonic ?
-?MEAN_ITERATE al ; lmean(xa, xb) ; (xa + xb) / 2.0
-      ; arithmetic-logarithmic ?
-?MEAN_ITERATE aq ; (xa + xb) / 2.0 ; qmean(xa, xb)
-      ; arithmetic-quadratic ?
-?MEAN_ITERATE gh ; 2.0 * xa * xb / (xa + xb) ; SQRT(xa * xb)
-      ; geometric-harmonic ?
-?MEAN_ITERATE gl ; SQRT(xa * xb) ; lmean(xa, xb)
-      ; geometric-logarithm ?
-?MEAN_ITERATE gq ; SQRT(xa * xb) ; qmean(xa,xb)
-      ; geometric-quadratic ?
-?MEAN_ITERATE hl ; 2.0 * xa * xb / (xa + xb) ; lmean(xa, xb)
-      ; harmonic-logarithmic ?
-?MEAN_ITERATE hq ; 2.0 * xa * xb / (xa + xb) ; qmean(xa, xb)
-      ; harmonic-quadratic ?
-?MEAN_ITERATE lq ; lmean(xa, xb) ; qmean(xa, xb)
-      ; logarithmic-quadratic ?
+{MEAN_ITERATE ah ; 2.0 * xa * xb / (xa + xb) ; (xa + xb) / 2.0
+      ; arithmetic-harmonic }
+{MEAN_ITERATE al ; lmean(xa, xb) ; (xa + xb) / 2.0
+      ; arithmetic-logarithmic }
+{MEAN_ITERATE aq ; (xa + xb) / 2.0 ; qmean(xa, xb)
+      ; arithmetic-quadratic }
+{MEAN_ITERATE gh ; 2.0 * xa * xb / (xa + xb) ; SQRT(xa * xb)
+      ; geometric-harmonic }
+{MEAN_ITERATE gl ; SQRT(xa * xb) ; lmean(xa, xb)
+      ; geometric-logarithm }
+{MEAN_ITERATE gq ; SQRT(xa * xb) ; qmean(xa,xb)
+      ; geometric-quadratic }
+{MEAN_ITERATE hl ; 2.0 * xa * xb / (xa + xb) ; lmean(xa, xb)
+      ; harmonic-logarithmic }
+{MEAN_ITERATE hq ; 2.0 * xa * xb / (xa + xb) ; qmean(xa, xb)
+      ; harmonic-quadratic }
+{MEAN_ITERATE lq ; lmean(xa, xb) ; qmean(xa, xb)
+      ; logarithmic-quadratic }
 
 FUNC DBL agmean__1(DBL xa, DBL xb):
    # The arithmetic-geometric mean extended to negative numbers
@@ -249,15 +254,12 @@ FUNC DBL agmean__1(DBL xa, DBL xb):
    DBL xtmp;
    DBL xsgn;
 
-   xsgn = 1;
-   AWAIT Kw.iswithin(xa, xb, 10 * DBLEPS)
-            COUNT ii FROM 0 TO ?LOOP_LIMIT?:
+   xsgn = 1.0;
+   AWAIT Kw.iswithin(xa, xb, 10.0 * Kw.DBLEPS)
+            COUNT ii FROM 0 TO {LOOP_LIMIT}:
       xtmp = xa;
       xa = (xa + xb) / 2.0;
       xb = SQRT(ABS(xtmp * xb)) * Kw.sign(xa);
-#      IF NOT Kw.isss(xa * xb, xa + xb):
-#         xsgn = -xsgn;
-#      IF_END
    AWAIT_END
    retvalu = xsgn * xtmp;
 
@@ -291,7 +293,7 @@ FUNC DBL agcmean(READONLY DBL xa_arr_pc[]
       gg_arr[1] = pr_len * SIN(pr_theta);
       aa_arr[0] = tt_arr[0];
       aa_arr[1] = tt_arr[1];
-      IF aa_arr[0] * gg_arr[0] + aa_arr[1] * gg_arr[1] < 0:
+      IF aa_arr[0] * gg_arr[0] + aa_arr[1] * gg_arr[1] < 0.0:
          gg_arr[0] = -gg_arr[0];
          gg_arr[1] = -gg_arr[1];
       IF_END
@@ -309,13 +311,13 @@ FUNC DBL aghmean(DBL xa, DBL xb, DBL xc):
    DBL tc;
    DBL retvalu;
 
-   IF xa <= 0 OR xb <= 0 OR xc <= 0:
-      retvalu = 0;
+   IF xa <= 0.0 OR xb <= 0.0 OR xc <= 0.0:
+      retvalu = 0.0;
    ELSIF Kw.iseq(xa, xb) AND Kw.iseq(xa, xc):
       retvalu = xa;
    ELSE:
-      AWAIT Kw.iswithin(xa, xc, 10 * DBLEPS)
-            COUNT ii FROM 0 TO ?LOOP_LIMIT?:
+      AWAIT Kw.iswithin(xa, xc, 10.0 * Kw.DBLEPS)
+            COUNT ii FROM 0 TO {LOOP_LIMIT}:
          ta = xa;
          tb = xb;
          tc = xc;
@@ -335,9 +337,33 @@ FUNC DBL rms(DBL xa, DBL xb):
    RETURN SQRT((xa * xa + xb * xb) / 2.0);
 FUNC_END
 
+FUNC DBL agmeaninva(DBL aa
+      , DBL gg):
+   DBL new_aa;
+
+   IF gg < aa:
+      new_aa = aa + SQRT(aa * aa - gg * gg);
+   ELSE:
+      new_aa = gg + SQRT(gg * gg - aa * aa);
+   IF_END
+   RETURN new_aa;
+FUNC_END
+
+FUNC DBL agmeaninvg(DBL aa
+      , DBL gg):
+   DBL new_gg;
+
+   IF gg < aa:
+      new_gg = gg * gg / aa;
+   ELSE:
+      new_gg = aa * aa / gg;
+   IF_END
+   RETURN new_gg;
+FUNC_END
+
 FUNC DBL agmean1inv(DBL yy):
    # The inverse arithmetic-geometric mean
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
    DBL x_init;
    DBL dx;
    DBL cc;
@@ -355,12 +381,12 @@ FUNC DBL agmean1inv(DBL yy):
          x_init = ((((((((
                - 0.09765625) * cc
                + 0.12890625) * cc
-               + 0.18750000) * cc
-               + 0.18750000) * cc
-               - 0.25000000) * cc
-               + 0.50000000) * cc
-               + 2.00000000) * cc
-               + 1.00000000);
+               + 0.1875) * cc
+               + 0.1875) * cc
+               - 0.25) * cc
+               + 0.5) * cc
+               + 2.0) * cc
+               + 1.0);
       ELSE:
          cc = -(Kw.PI / 2.0);
          x_init = yy * Kw.wm(cc / (4.0 * yy)) / cc;
@@ -371,7 +397,7 @@ FUNC DBL agmean1inv(DBL yy):
       ELSE:
          dx = x_init * 0.5;
       IF_END
-      ?SECANT_LOOP x_init ; dx ; yy - agmean1(scvx_xx) ?
+      {SECANT_LOOP x_init ; dx ; yy - agmean1(scvx_xx) }
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -380,14 +406,14 @@ FUNC_END
 
 FUNC DBL ghmean1inv(DBL yy):
    # The inverse geometric harmonic mean
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
    DBL x_init;
 
    IF yy <= 0.0:
       scvx_xx = 0.0;
    ELSE:
       x_init = EXP(Kw.PI * yy / 2.0 - 1.385) - 0.22;
-      ?SECANT_LOOP x_init ; 0.2 ; yy - ghmean1(scvx_xx) ?
+      {SECANT_LOOP x_init ; 0.2 ; yy - ghmean1(scvx_xx) }
    IF_END
    RETURN scvx_xx;
 FUNC_END

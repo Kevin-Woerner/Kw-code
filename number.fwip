@@ -1,4 +1,12 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-08 kdw  explicit module on consts
+# 2020-11-28 kdw  macro syntax overhaul
+# 2020-11-10 kdw  n2[p]rimish II
+# 2020-10-03 kdw  s/print_.*/.*_print/
+# 2020-09-22 kdw  var renam
+# 2020-09-10 kdw  kevy func III
+# 2020-09-07 kdw  kevy func II
+# 2020-09-06 kdw  kevy func
 # 2020-08-20 kdw  boolean checks changed
 # 2020-08-19 kdw  comment change
 # 2020-08-17 kdw  macro syntax changed
@@ -223,7 +231,7 @@
 # 2015-09-21 kdw  BC:modulus problem
 # 2015-09-20 kdw  created
 
-?INSERT_FILE "Macros.fwip"?
+{INSERT_FILE "Macros.fwip" }
 
 FUNC INT powi(INT xx, INT nn):
    # XX**NN (assumes 0 < nn)
@@ -936,7 +944,7 @@ FUNC DBL fiboxinv(DBL yy):
    #    tries to deliver smallest positive value; i.e
    #       fiboxinv(X) < 1.094576105145116
    #          for all X < 1.009824331847821
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
    DBL x_init;
 
    IF yy <= 0:
@@ -952,7 +960,7 @@ FUNC DBL fiboxinv(DBL yy):
          x_init = LN(yy * SQRT(5.0)) / LN(Kw.PHI);
       IF_END
 
-      ?SECANT_LOOP x_init ; 0.05 ; yy - fibox(scvx_xx) ?
+      {SECANT_LOOP x_init ; 0.05 ; yy - fibox(scvx_xx) }
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -1559,7 +1567,7 @@ FUNC_END
 BLOCK: # Prime factors
    BLOCK_DEF CONST LC_MAX_FACTORS 65; # 1
 
-   FUNC INT print_factor(INT nn):
+   FUNC INT factor_print(INT nn):
       # Print out all prime factors of number NN
       INT ind;
       INT fac_arr[LC_MAX_FACTORS];
@@ -1927,35 +1935,42 @@ FUNC INT repetendlen(INT denm, INT basee):
    RETURN retvalu;
 FUNC_END
 
-FUNC INT print_kevy(INT den, INT start, INT basee):
-   # print out number in base BASEE, starting with digit START
-   #    such that to divide number by DEN you move first digit of
-   #    number to last
-   # I.E. Given DEN, START, and BASEE: find NN such that
-   #   START * (BASEE ** NN - DEN) == 0 mod (BASEE * DEN - 1)
-   #   Then print out this number in base BASEE:
-   #      DEN * START * (BASEE ** NN - DEN) / (BASEE * DEN - 1)
+FUNC INT kevy_print(INT den, INT start, INT basee):
+   # print out number in base BASEE, starting with START
+   #    such that to divide number by DEN you move START from
+   #    the beginning of the number to the end
+   # I.E. Given DEN, START, and BASEE:
+   #    Let KK = CEIL((LN(START) + 0.01) / LN(BASE)), and
+   #        NN = dlog(BASEE, DEN, BASEE**KK * DEN - 1)
+   #   Then print (in base BASEE):
+   #   DEN * START * (BASEE ** NN - DEN) / (BASEE**KK * DEN - 1)
    # Return number of digits printed
    INT numer;
    INT valu;
    INT leny;
+   INT rema;
+   INT overall_len;
+   INT baseek;
+   INT digits_in_start;
 
+   digits_in_start = FLOORL(LN(start) / LN(basee) + 1);
+   baseek = POW(basee, digits_in_start);
+   overall_len = (Kw.dlog(basee, den, den * baseek - 1) + 3)
+         * digits_in_start;
    MODE_INTEGER:
    leny = 0;
-   IF start < basee * den:
-      numer = start;
-      valu = start;
-      AWAIT numer == start OR den * basee < leny:
-         CALL print_num2char(valu);
-         leny += 1;
-         valu = FLOORL(numer / den);
-         numer = (numer % den) * basee + valu;
-      AWAIT_END
-      IF basee <= start:
-         PRINTSTR("-");
-         PRINTVAL(FLOORL(start / basee));
+   numer = start;
+   valu = start;
+   AWAIT 2 * overall_len < leny:
+      CALL base_out_fix_print(valu, basee, digits_in_start);
+      leny += digits_in_start;
+      valu = FLOORL(numer / den);
+      rema = numer % den;
+      numer = rema * baseek + valu;
+      IF numer == start:
+         AWAIT_EXIT;
       IF_END
-   IF_END
+   AWAIT_END
    MODE_INTEGER_END
    RETURN leny;
 FUNC_END
@@ -1988,14 +2003,14 @@ FUNC INT bkn(INT bb, INT kk):
    RETURN znorder(bb, kk * bb - 1);
 FUNC_END
 
-FUNC INT bkbn(INT bb, INT kk, INT bbb):
-   # return NN where KK*BBB*(BB**NN - 1) = 0 mod (KK * BB - 1)
+FUNC INT bkbn(INT bb, INT kk, INT cc):
+   # return NN where KK*CC*(BB**NN - 1) = 0 mod (KK * BB - 1)
    INT mdls;
 
    MODE_INTEGER:
       mdls = kk * bb - 1;
-      IF mdls % bbb == 0:
-         mdls /= bbb;
+      IF mdls % cc == 0:
+         mdls /= cc;
       IF_END
    MODE_INTEGER_END
    RETURN znorder(bb, mdls);
@@ -2016,17 +2031,33 @@ BLOCK: # Li, Lix variables
 
    FUNC DBL lixinv(DBL yy):
       # return XX such that YY = lix(XX)
-      ?SECANT_DECLARATIONS?
+      {SECANT_DECLARATIONS}
       DBL x_init;
 
       x_init = yy / LN(yy);
-      ?SECANT_LOOP x_init ; 0.05 ; yy - lix(scvx_xx) ?
+      {SECANT_LOOP x_init ; 0.05 ; yy - lix(scvx_xx) }
       RETURN scvx_xx;
    FUNC_END
 BLOCK_END
 #TEST:lix(0)==-1.04516378011749278484458888919461313652261557815;
 #TEST:lix(3)==1.11842481454969918803233347815310823001950063430;
 #TEST:lix(0)==lix(1.451369234883381050283968485892027449493032);
+
+FUNC INT n2primish(INT nn):
+   INT retvalu;
+   IF nn < 0:
+      retvalu = -n2primish(-nn);
+   ELSIF nn == 0:
+      retvalu = 0;
+   ELSIF nn < 3:
+      retvalu = nn + 1;
+   ELSIF Kw.isodd(nn):
+      retvalu = 3 * nn - 4;
+   ELSE:
+      retvalu = 3 * nn - 5;
+   IF_END
+   RETURN retvalu;
+FUNC_END
 
 FUNC DBL primenth__1(DBL nn):
    # an approximation of NNth prime
@@ -2139,14 +2170,8 @@ FUNC INT primenth(INT nn):
          ii = 5; # 11 is 5th prime
          inc = 2;
       IF_END
-      IF nn < ii:
-         PRINTSTR("II=");
-         PRINTVAL(ii);
-         PRINTSTR(" NN=");
-         PRINTVAL(nn);
-         DIE "PRIMENTH_failed";
-      IF_END
       # Now PP is IIth prime number
+      # find the NNth prime
       WHILE ii < nn:
          AWAIT Kw.isprime(pp):
             pp += inc;

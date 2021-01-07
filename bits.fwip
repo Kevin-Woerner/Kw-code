@@ -1,4 +1,5 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-11-22 kdw  language comments changed
 # 2020-08-20 kdw  boolean checks changed
 # 2020-08-17 kdw  macro syntax changed
 # 2020-07-25 kdw  s/BITWISE/BIT/
@@ -84,7 +85,7 @@
 # 2015-09-22 kdw  _[_]* format changed
 # 2015-09-20 kdw  created
 
-LANGUAGE_NOT LANG_BC:   # define bitwise functions
+LANGUAGE_NOT LANG_BC:                  # define bitwise functions
 FUNC INT bitwisenot(INT xx):
    # bitwise logical Not of XX
    INT retvalu;
@@ -124,9 +125,9 @@ FUNC INT bitwisexor(INT xx, INT yy):
    MODE_INTEGER_END
    RETURN retvalu;
 FUNC_END
-LANGUAGE_END           # define bitwise functions
+LANGUAGE_END                           # define bitwise functions
 
-LANGUAGE LANG_BC:       # define bitwise functions
+LANGUAGE LANG_BC:                      # define bitwise functions
 FUNC INT bitwisenot(INT xx):
    # bitwise logical Not of XX
    INT retvalu;
@@ -276,7 +277,7 @@ FUNC INT bitwisexor(INT xx, INT yy):
    MODE_INTEGER_END
    RETURN retvalu;
 FUNC_END
-LANGUAGE_END           # define bitwise functions
+LANGUAGE_END                           # define bitwise functions
 
 FUNC INT bitshiftl(INT hexnumber
    , INT shift_count):

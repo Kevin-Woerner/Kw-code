@@ -1,4 +1,10 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-08 kdw  explicit modules on constants
+# 2020-12-04 kdw  float explicit const work
+# 2020-11-28 kdw  macro syntax overhaul
+# 2020-11-23 kdw  replace 1.0E0 with 1.0
+# 2020-09-22 kdw  blackbody func renam
+# 2020-09-20 kdw  blackbody dist work
 # 2020-08-24 kdw  var renam
 # 2020-08-20 kdw  boolean checks changed
 # 2020-08-19 kdw  comment change
@@ -176,7 +182,7 @@
 
 # http://www2.econ.osaka-u.ac.jp/(tilde)tanizaki/cv/books
 #      /cmse/cmse.pdf
-?INSERT_FILE "Macros.fwip"?
+{INSERT_FILE "Macros.fwip" }
 
 FUNC DBL int_pdf(DBL nn, DBL xx):
    # PDF Uniform Integer
@@ -192,7 +198,7 @@ FUNC DBL int_pdf(DBL nn, DBL xx):
          IF xx < nn:
             retvalu = 1.0 / nn;
          ELSE:
-            retvalu = 0;
+            retvalu = 0.0;
          IF_END
       ELSE:
          IF xx < mm:
@@ -391,7 +397,7 @@ FUNC DBL normal_quantile__1(DBL prbx):
             - 1.55698979859887E+2) * rr
             + 6.68013118877197E+1) * rr
             - 1.32806815528857E+1) * rr
-            + 1.00000000000000E+0);
+            + 1.0);
 
       retvalu = (qq * numer / denom);
    ELSE:
@@ -415,7 +421,7 @@ FUNC DBL normal_quantile__1(DBL prbx):
             + 3.22467129070040E-1) * rr
             + 2.44513413714300E+0) * rr
             + 3.75440866190742E+0) * rr
-            + 1.00000000000000E+0);
+            + 1.0);
 
       retvalu = qq * numer / denom;
    IF_END
@@ -570,7 +576,7 @@ FUNC DBL poi_cdf(DBL meanx, DBL xx):
 
    IF xx <= 0.0 OR meanx <= 0.0:
       retvalu = 0.0;
-   ELSIF 1000 < xx / meanx:
+   ELSIF 1000.0 < xx / meanx:
       retvalu = 1;#Kw.uigamma(xx, meanx);
    ELSE:
       term = EXP(-meanx);
@@ -599,7 +605,7 @@ FUNC DBL poi_quantile(DBL meanx, DBL prbx):
    IF prbx <= 0.0 OR meanx <= 0.0:
       retvalu = 0.0;
    ELSIF 1.0 <= prbx:
-      retvalu = DBLMAX;
+      retvalu = Kw.DBLMAX;
    ELSE:
       prevsum = 0.0;
       term = EXP(-meanx);
@@ -773,7 +779,7 @@ FUNC DBL tri_pdf(DBL pp, DBL xx):
    DBL retvalu;
 
    IF pp < 0.0 OR 1.0 < pp:
-      retvalu = 0;
+      retvalu = 0.0;
    ELSE:
       IF xx < 0.0 OR 1.0 < xx:
          retvalu = 0.0;
@@ -792,10 +798,10 @@ FUNC DBL tri_cdf(DBL pp, DBL xx):
    DBL retvalu;
 
    IF pp < 0.0 OR 1.0 < pp:
-      retvalu = 0;
+      retvalu = 0.0;
    ELSE:
-      IF xx <= 0:
-         retvalu = 0;
+      IF xx <= 0.0:
+         retvalu = 0.0;
       ELSIF xx < pp:
          retvalu = xx * xx / pp;
       ELSIF xx < 1.0:
@@ -812,10 +818,10 @@ FUNC DBL tri_quantile(DBL pp, DBL prbx):
    DBL retvalu;
 
    IF pp < 0.0 OR 1.0 < pp:
-      retvalu = 0;
+      retvalu = 0.0;
    ELSE:
-      IF prbx <= 0:
-         retvalu = 0;
+      IF prbx <= 0.0:
+         retvalu = 0.0;
       ELSIF prbx < pp:
          retvalu = SQRT(prbx * pp);
       ELSIF prbx < 1.0:
@@ -837,7 +843,7 @@ FUNC DBL tri_rand(DBL pp):
    xx = randd();
    yy = randd();
    IF xx < pp:
-      IF 2 * xx < pp * yy:
+      IF 2.0 * xx < pp * yy:
          xx = pp - xx;
       IF_END
    ELSE:
@@ -1069,7 +1075,7 @@ FUNC INT zipf_quantile(DBL ss, INT max_kk, DBL prbx):
    DBL target;
 
    target = prbx * Kw.hnm(max_kk, ss);
-   summ = 0;
+   summ = 0.0;
    AWAIT target <= summ COUNT ii FROM 1:
       summ += 1.0 / POW(ii, ss);
    AWAIT_END
@@ -1099,15 +1105,15 @@ FUNC DBL beta_quantile(DBL shap_a, DBL shap_b, DBL prbx):
    # Quantile Beta distribution with shape parameters
    #    0 < SHAP_A and 0 < SHAP_B
    DBL retvalu;
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
 
    IF prbx <= 0.0:
       retvalu = 0.0;
    ELSIF 1.0 <= prbx:
       retvalu = 1.0;
    ELSE:
-      ?SECANT_LOOP 0.25 ; 0.50
-            ; prbx - beta_cdf(shap_a, shap_b, scvx_xx) ?
+      {SECANT_LOOP 0.25 ; 0.50
+            ; prbx - beta_cdf(shap_a, shap_b, scvx_xx) }
       retvalu = scvx_xx;
    IF_END
    RETURN retvalu;
@@ -1262,7 +1268,7 @@ FUNC DBL chisqr_rand(DBL df):
    DBL vv;
    DBL jj;
 
-   sum = 0;
+   sum = 0.0;
    FOR jj FROM 1 TO df:
       vv = gau_rand();
       sum += vv * vv;
@@ -1331,7 +1337,7 @@ FUNC DBL binomial_rand(DBL prob, DBL rr):
    # count of successes with probability PROB in RR trials
    DBL successes;
 
-   successes = 0;
+   successes = 0.0;
    WHILE 0 < rr:
       IF randd() < prob:
          successes += 1;
@@ -1379,7 +1385,7 @@ FUNC INT benford_rand(INT max_kk):
    DBL target;
 
    target = randd();
-   summ = 0;
+   summ = 0.0;
    AWAIT target <= summ COUNT ii FROM 1:
       summ += LN(1.0 + 1.0 / ii) / LN(max_kk);
    AWAIT_END
@@ -1569,11 +1575,11 @@ FUNC_END
 
 FUNC DBL ks_quantile(DBL nn, DBL prbx):
    # Quantile Kolmogorov-Smirnov distribution
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
    IF NOT Kw.isbetween(prbx, 0.0, 1.0):
       scvx_xx = 0.0;
    ELSE:
-      ?SECANT_LOOP 0.25 ; 0.5 ; prbx - ks_cdf(nn, scvx_xx) ?
+      {SECANT_LOOP 0.25 ; 0.5 ; prbx - ks_cdf(nn, scvx_xx) }
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -1613,7 +1619,7 @@ BLOCK: # define t_cdf
          bb = 0.5;
       ELSE:
          IF nn == 1:
-            aa = 0;
+            aa = 0.0;
          ELSE:
             aa = SIN(ww) * COS(ww) / Kw.PI;
          IF_END
@@ -1695,8 +1701,8 @@ BLOCK:
             ee_x = (nn_a * LN(nn_a / (ndfx + Kw.square(retvalu)))
                   + LN(ndfx / nn_a / Kw.TAU) - 1.0
                   + (1.0 / nn_a - 1.0 / ndfx) / 6.0) / 2.0;
-            IF 100 < ee_x: # prevent overflow in exp
-               delta = 0;
+            IF Kw.DBLMAXLN / 2.0 < ee_x: # prevent exp overflow
+               delta = 0.0;
             ELSE:
                delta = (pp_a - prbx) / EXP(ee_x);
             IF_END
@@ -1741,11 +1747,11 @@ FUNC_END
 
 FUNC DBL t_quantile__1(DBL dfx, DBL prbx):
    # Quantile Students T distribution
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
    IF NOT Kw.isbetween(prbx, 0.0, 1.0):
       scvx_xx = 0.0;
    ELSE:
-      ?SECANT_LOOP 0.25 ; 0.5 ; prbx - t_cdf(dfx, scvx_xx) ?
+      {SECANT_LOOP 0.25 ; 0.5 ; prbx - t_cdf(dfx, scvx_xx) }
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -1899,15 +1905,15 @@ BLOCK_END
 
 FUNC DBL f_quantile__1(INT dfn_a, INT dfn_b, DBL prbx):
    DBL retvalu;
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
 
    IF prbx <= 0.0:
       retvalu = 0.0;
    ELSIF 1.0 <= prbx:
       retvalu = 1.0;
    ELSE:
-      ?SECANT_LOOP 0.25 ; 0.50
-            ; prbx - f_cdf(dfn_a, dfn_b, scvx_xx) ?
+      {SECANT_LOOP 0.25 ; 0.50
+            ; prbx - f_cdf(dfn_a, dfn_b, scvx_xx) }
       retvalu = scvx_xx;
    IF_END
    RETURN retvalu;
@@ -1985,28 +1991,31 @@ FUNC DBL maxwell_juttner_pdf(DBL temperature
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL bb_pdf(DBL wavelen):
-   # PDF black-body distribution over [0,Inf)
-   # output is spectral radiance which has units of
-   #    Power / Area / length
+FUNC DBL blackbodyl_pdf(DBL wavelen):
+   # PDF blackbody distribution over [0,Inf)
    # MODE   1 / (wp(-5 * exp(-5)) + 5) == 0.201405235272642
    DBL retvalu;
 
    IF wavelen <= 0.0:
       retvalu = 0.0;
    ELSE:
-      retvalu = 1.0 / (POW(wavelen, 5.0)
-            * (EXP(1.0 / wavelen) - 1.0));
+      retvalu = POW(wavelen, -5.0) / (EXP(1.0 / wavelen) - 1.0);
    IF_END
 
    RETURN retvalu * 15.0 / POW(Kw.PI, 4.0);
 FUNC_END
 
-FUNC DBL blackbody_pdf(DBL wavelen):
-   # PDF black-body distribution over [0,Inf)
-   # output is spectral radiance which has units of
-   #    Power / Area / length
-   RETURN bb_pdf(wavelen);
+FUNC DBL blackbodyf_pdf(DBL freq):
+   # PDF blackbody distribution over [0,Inf)
+   DBL retvalu;
+
+   IF freq <= 0.0:
+      retvalu = 0.0;
+   ELSE:
+      retvalu = POW(freq, 3.0) / (EXP(freq) - 1.0);
+   IF_END
+
+   RETURN retvalu * 15.0 / POW(Kw.PI, 4.0);
 FUNC_END
 
 FUNC INT ints_rand(INT nn, READONLY DBL prob_arr_pc[]):
@@ -2017,13 +2026,13 @@ FUNC INT ints_rand(INT nn, READONLY DBL prob_arr_pc[]):
    DBL rndm;
    DBL hh;
 
-   sum = 0;
+   sum = 0.0;
 
    FOR p_ind FROM 0 TO nn - 1:
       sum += prob_arr_pc[p_ind];
    FOR_END
    rndm = randd();
-   hh = 0;
+   hh = 0.0;
    FOR p_ind FROM 0 TO nn - 1:
       hh += prob_arr_pc[p_ind] / sum;
       IF rndm < hh:

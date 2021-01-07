@@ -1,4 +1,6 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-04 kdw  float explicit const work
+# 2020-11-28 kdw  macro syntax overhaul
 # 2020-08-29 kdw  _a[r]r changed to _mt[r]x
 # 2020-08-17 kdw  macro syntax changed
 # 2020-07-27 kdw  block syntax
@@ -145,7 +147,7 @@ BLOCK: # Statistics block
       IF vll <> Kw.magicset() AND vll <> Kw.magicnot():
          FOR ii FROM 0 TO LC_STTS_MAX_KEY - 1:
             FOR jj FROM 0 TO LC_STTS_MAGIC - 1:
-               lv_sttx_mtrx[ii][jj] = 0;
+               lv_sttx_mtrx[ii][jj] = 0.0;
             FOR_END
             lv_sttx_mtrx[0][LC_STTS_MAGIC] = Kw.magicnot();
          FOR_END
@@ -226,21 +228,21 @@ BLOCK: # Statistics block
       RETURN ix_hndl;
    FUNC_END
 
-   ?MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> ?
+   {MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> {
    FUNC DBL <STFUNC>(INT ix_hndl):
       # <STDESC> of LC_HNDLth stts calc
       BLOCK_USE lv_sttx_mtrx[];
 
       RETURN lv_sttx_mtrx[ix_hndl][<STIND>];
    FUNC_END
-   ?MACRO_END
+   }}
 
-   ?STTSFUNC sttscount ; LC_STTS_NUM   ; count ?
-   ?STTSFUNC sttsmean  ; LC_STTS_MEAN  ; mean ?
-   ?STTSFUNC sttsmsq   ; LC_STTS_MSQ   ; msq ?
-   ?STTSFUNC sttsmax   ; LC_STTS_MAX   ; max ?
-   ?STTSFUNC sttsmin   ; LC_STTS_MIN   ; min ?
-   ?STTSFUNC sttsmagic ; LC_STTS_MAGIC ; magic ?
+   {STTSFUNC sttscount ; LC_STTS_NUM   ; count }
+   {STTSFUNC sttsmean  ; LC_STTS_MEAN  ; mean }
+   {STTSFUNC sttsmsq   ; LC_STTS_MSQ   ; msq }
+   {STTSFUNC sttsmax   ; LC_STTS_MAX   ; max }
+   {STTSFUNC sttsmin   ; LC_STTS_MIN   ; min }
+   {STTSFUNC sttsmagic ; LC_STTS_MAGIC ; magic }
 
    FUNC DBL sttssum(INT ix_hndl):
       # sum of data points in STTS w/ given handle
@@ -336,9 +338,9 @@ BLOCK: # Statistics block
       IF_END
       men = lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN];
       delt = old_data - men;
-      IF 0 < lv_sttx_mtrx[ix_hndl][LC_STTS_NUM]:
+      IF 0.0 < lv_sttx_mtrx[ix_hndl][LC_STTS_NUM]:
          lv_sttx_mtrx[ix_hndl][LC_STTS_NUM] -= 1;
-         IF 0 < lv_sttx_mtrx[ix_hndl][LC_STTS_NUM]:
+         IF 0.0 < lv_sttx_mtrx[ix_hndl][LC_STTS_NUM]:
             men -= delt / lv_sttx_mtrx[ix_hndl][LC_STTS_NUM];
             lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] = men;
             lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] -=
@@ -607,7 +609,7 @@ BLOCK: # Statistics block
          xxhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_XX];
 
          retvalu = (sttsmean(yyhnd)
-            - corrslope(ix_chnd) * sttsmean(xxhnd));
+               - corrslope(ix_chnd) * sttsmean(xxhnd));
 
          RETURN retvalu;
       FUNC_END
@@ -644,10 +646,10 @@ BLOCK: # Statistics block
 
          diff = sttsmsq(yyhnd) - (corrslope(ix_chnd)
                   * lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR]);
-         IF diff < 0:
-            retvalu = 0;
+         IF diff < 0.0:
+            retvalu = 0.0;
          ELSE:
-            retvalu = SQRT(diff / (sttscount(yyhnd) - 2));
+            retvalu = SQRT(diff / (sttscount(yyhnd) - 2.0));
          IF_END
 
          RETURN retvalu;

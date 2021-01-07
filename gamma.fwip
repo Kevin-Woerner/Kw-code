@@ -1,4 +1,9 @@
 #    Copyright (C) 2015-2020 by Kevin D. Woerner
+# 2020-12-08 kdw  explicit modules on constants
+# 2020-12-03 kdw  float explicit const work
+# 2020-11-28 kdw  macro syntax overhaul
+# 2020-11-23 kdw  replace 1.0E0 with 1.0
+# 2020-11-21 kdw  gammamin const
 # 2020-08-19 kdw  comment change
 # 2020-08-17 kdw  macro syntax changed
 # 2020-08-03 kdw  explicit module for pi and tau
@@ -156,7 +161,7 @@
 # 2015-09-27 kdw  debugging ; ga[m]mainv, digamma
 # 2015-09-20 kdw  created
 
-?INSERT_FILE "Macros.fwip"?
+{INSERT_FILE "Macros.fwip" }
 
 FUNC DBL lgamma__1(DBL xx):
    # compute LN(GAMMA(XX))
@@ -170,8 +175,8 @@ FUNC DBL lgamma__1(DBL xx):
    IF xx <= 0.0 AND Kw.isint(xx):
       retvalu = LN(Kw.DBLMAX);
    ELSE:
-      IF xx < 0:
-         qq = 1 - xx;
+      IF xx < 0.0:
+         qq = 1.0 - xx;
       ELSE:
          qq = xx;
       IF_END
@@ -201,7 +206,7 @@ FUNC DBL lgamma__1(DBL xx):
       tt = qq + 607.0 / 128.0 - 0.5;
       qq = LN(Kw.TAU) / 2.0 + (qq - 0.5) * LN(tt) + LN(sum) - tt;
 
-      IF xx < 0:
+      IF xx < 0.0:
          retvalu = LN(Kw.PI / ABS(SIN(2.0 * Kw.TAU * xx))) - qq;
       ELSE:
          retvalu = qq;
@@ -212,13 +217,13 @@ FUNC_END
 
 FUNC DBL lgammainv(DBL yy):
    # XX such that YY = log(GAMMA(XX))
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
    DBL yy_fixed;
    DBL xx_init;
 
    yy_fixed = yy / Kw.PI + LN(yy + 0.5);
    xx_init = yy_fixed + Kw.PI - 0.5;
-   ?SECANT_LOOP xx_init ; 0.01 ; yy - lgamma(scvx_xx)?
+   {SECANT_LOOP xx_init ; 0.01 ; yy - lgamma(scvx_xx) }
    RETURN scvx_xx;
 FUNC_END
 
@@ -263,7 +268,7 @@ BLOCK:
                   - 8.53555664245765465627E+5);
 
             denom = (((((((
-                  +1.00000000000000000000E+0) * xx
+                  +1.0) * xx
                   -3.51815701436523470549E+2) * xx
                   -1.70642106651881159223E+4) * xx
                   -2.20528590553854454839E+5) * xx
@@ -275,11 +280,11 @@ BLOCK:
          IF_END
       ELSE:
          uu = (xx - 0.5) * LN(xx) - xx + LN(SQRT(Kw.TAU));
-         IF 1E+8 < xx:
+         IF 1.0E+8 < xx:
             retvalu = uu;
          ELSE:
             pp = 1.0 / (xx * xx);
-            IF 1000 < xx: # lgamma(1E+3<xx<1E+8)
+            IF 1000.0 < xx: # lgamma(1E+3<xx<1E+8)
                zz = (((
                      + 7.9365079365079365079365E-4) * pp
                      - 2.7777777777777777777778E-3) * pp
@@ -406,16 +411,16 @@ FUNC DBL tgamma__1(DBL xx):
    DBL denom;
    DBL numer;
 
-   IF Kw.isposint(1 - xx):
+   IF Kw.isposint(1.0 - xx):
       rslt = Kw.DBLMAX;
    ELSE:
       zz = 1.0;
       WHILE 3.0 <= xx:
-         xx -= 1;
+         xx -= 1.0;
          zz *= xx;
       WHILE_END
       WHILE xx < 2.0:
-         IF ABS(xx) < 1E-9:
+         IF ABS(xx) < 1.0E-9:
             WHILE_EXIT;
          IF_END
          zz /= xx;
@@ -425,7 +430,7 @@ FUNC DBL tgamma__1(DBL xx):
       IF Kw.iseq(xx, 0.0):
          rslt = Kw.DBLMAX;
       ELSIF xx < 2.0:
-         rslt = zz / ((1 + Kw.EULER * xx) * xx);
+         rslt = zz / ((1.0 + Kw.EULER * xx) * xx);
       ELSIF Kw.iseq(xx, 2.0):
          rslt = zz;
       ELSE:
@@ -480,17 +485,17 @@ FUNC_END
 
 FUNC DBL tgammainv(DBL yy):
    # XX such that GAMMA(XX) == YY
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
    DBL kk;
    DBL cc;
    DBL pp;
    DBL xx_init;
 
-   kk = 1.46163214496836234126265954; # zero of digamma
+   kk = Kw.GAMMAMIN; # zero of digamma
    cc = SQRT(Kw.TAU) / Kw.E - tgamma(kk); # 0.0365338144849
    pp = LN((yy + cc) / SQRT(Kw.TAU));
    xx_init = pp / wp(pp / Kw.E) + 0.5;
-   ?SECANT_LOOP xx_init ; 0.01 ; yy - tgamma(scvx_xx) ?
+   {SECANT_LOOP xx_init ; 0.01 ; yy - tgamma(scvx_xx) }
    RETURN scvx_xx;
 FUNC_END
 
@@ -501,7 +506,7 @@ BLOCK:
       #    tgamma_2(x + 1) = x * tgamma_2(x);
       DBL prod;
 
-      IF Kw.isposint(1 - yy):
+      IF Kw.isposint(1.0 - yy):
          prod = Kw.DBLMAX;
       ELSE:
          prod = 1.0;
@@ -560,7 +565,7 @@ BLOCK:
       DBL yy;
       DBL rslt;
 
-      IF Kw.isposint(1 - xx):
+      IF Kw.isposint(1.0 - xx):
          rslt = Kw.DBLMAX;
       ELSE:
          yy = xx - FLOOR(xx) + 2.0;
@@ -590,7 +595,7 @@ BLOCK:
       # value of gamma function
       DBL retvalu;
 
-      IF Kw.isposint(1 - xx):
+      IF Kw.isposint(1.0 - xx):
          retvalu = Kw.DBLMAX;
       ELSIF xx < 0.5:
          retvalu = (Kw.PI / SIN(Kw.PI * xx)
@@ -613,7 +618,7 @@ FUNC DBL tgamma__stirling(DBL xx):
    sc = 1.0;
    WHILE xx < 10.0:
       sc /= xx;
-      xx += 1;
+      xx += 1.0;
    WHILE_END
    yy = xx - 1.0;
    ryy = 1.0 / yy;
@@ -650,7 +655,7 @@ BLOCK:
 
       sum_curr = EXP(aa * LN(xx) - xx) / aa;
       rr = sum_curr;
-      FOR kk FROM 1 TO 5 * ?LOOP_LIMIT?:
+      FOR kk FROM 1 TO 5 * {LOOP_LIMIT}:
          rr *= xx / (aa + kk);
          sum_prev = sum_curr;
          sum_curr += rr;
@@ -692,7 +697,7 @@ BLOCK:
       IF xx <= 0.0:
          retvalu = 0.0;
       ELSIF aa <= 0.0:
-         retvalu = DBLMAX;
+         retvalu = Kw.DBLMAX;
       ELSIF xx <= 1.1 OR xx <= aa:
          retvalu = lf_ligamma_xxleaa(aa, xx);
       ELSE:  # 0 < XX <= 1.1 AND AA < XX
@@ -709,7 +714,7 @@ BLOCK:
       DBL retvalu;
 
       IF aa <= 0.0:
-         retvalu = DBLMAX;
+         retvalu = Kw.DBLMAX;
       ELSIF xx <= 0.0:
          retvalu = tgamma(aa);
       ELSIF xx <= 1.1 OR xx <= aa:
@@ -729,7 +734,7 @@ FUNC DBL rligamma(DBL aa, DBL xx):
    IF xx <= 0.0:
       retvalu = 0.0;
    ELSIF aa <= 0.0:
-      retvalu = DBLMAX;
+      retvalu = Kw.DBLMAX;
    ELSE:
       retvalu = ligamma(aa, xx) / tgamma(aa);
    IF_END
@@ -742,9 +747,9 @@ FUNC DBL ruigamma(DBL aa, DBL xx):
    DBL retvalu;
 
    IF aa <= 0.0:
-      retvalu = DBLMAX;
+      retvalu = Kw.DBLMAX;
    ELSIF xx <= 0.0:
-      retvalu = 1;
+      retvalu = 1.0;
    ELSE:
       retvalu = uigamma(aa, xx) / tgamma(aa);
    IF_END
@@ -772,7 +777,7 @@ FUNC DBL uigamma__1(DBL aa, DBL xx):
       retvalu = 1.0;
    ELSE:
       ax = aa * LN(xx) - xx - lgamma(aa);
-      IF ax < -DBLMAXLN:
+      IF ax < -Kw.DBLMAXLN:
          retvalu = 0.0;
       ELSE:
          ax = EXP(ax);
@@ -781,8 +786,8 @@ FUNC DBL uigamma__1(DBL aa, DBL xx):
             rr = aa;
             cc = 1.0;
             ans = 1.0;
-            AWAIT cc / ans < DBLEPS:
-               rr += 1;
+            AWAIT cc / ans < Kw.DBLEPS:
+               rr += 1.0;
                cc *= xx / rr;
                ans += cc;
             AWAIT_END
@@ -798,7 +803,7 @@ FUNC DBL uigamma__1(DBL aa, DBL xx):
             qkma = zz * xx;
             ans = pkma / qkma;
 
-            AWAIT tt <= DBLEPS:
+            AWAIT tt <= Kw.DBLEPS:
                cc += 1.0;
                yy += 1.0;
                zz += 2.0;
@@ -816,11 +821,11 @@ FUNC DBL uigamma__1(DBL aa, DBL xx):
                pkma = pk;
                qkmb = qkma;
                qkma = qk;
-               IF 1 / DBLEPS < ABS(pk):
-                  pkmb *= DBLEPS;
-                  pkma *= DBLEPS;
-                  qkmb *= DBLEPS;
-                  qkma *= DBLEPS;
+               IF 1.0 / Kw.DBLEPS < ABS(pk):
+                  pkmb *= Kw.DBLEPS;
+                  pkma *= Kw.DBLEPS;
+                  qkmb *= Kw.DBLEPS;
+                  qkma *= Kw.DBLEPS;
                IF_END
             AWAIT_END
             retvalu = ans * ax;
@@ -834,17 +839,17 @@ FUNC DBL uigammainv(DBL aa, DBL yy):
    DBL dd;
    DBL tt;
    DBL xx;
-   ?SECANT_DECLARATIONS?
+   {SECANT_DECLARATIONS}
 
    dd = 1.0 / (9.0 * aa);
-   tt = 1 - dd - gau_quantile(yy) * SQRT(dd);
+   tt = 1.0 - dd - gau_quantile(yy) * SQRT(dd);
    xx = aa * POW(tt, 3);
-   ?SECANT_LOOP xx ; 0.1 ; yy - uigamma(aa, scvx_xx) ?
+   {SECANT_LOOP xx ; 0.1 ; yy - uigamma(aa, scvx_xx) }
    RETURN scvx_xx;
 FUNC_END
 
 FUNC DBL ligammainv(DBL aa, DBL yy):
-   RETURN uigammainv(aa, 1 - yy);
+   RETURN uigammainv(aa, 1.0 - yy);
 FUNC_END
 
 FUNC DBL lbeta(DBL aa, DBL bb):
@@ -861,12 +866,12 @@ FUNC DBL beta(DBL aa, DBL bb):
    DBL lbe;
 
    lbe = lbeta(aa, bb);
-   IF DBLMAXLN < lbe:
-      retvalu = DBLMAX;
-   ELSIF -DBLMAXLN < lbe:
+   IF Kw.DBLMAXLN < lbe:
+      retvalu = Kw.DBLMAX;
+   ELSIF -Kw.DBLMAXLN < lbe:
       retvalu = EXP(lbe);
    ELSE:
-      retvalu = -DBLMAX;
+      retvalu = -Kw.DBLMAX;
    IF_END
    RETURN retvalu;
 FUNC_END
@@ -993,7 +998,7 @@ FUNC DBL betainc__1(DBL aa, DBL bb, DBL xx):
       cc = 1.0;
       dd = 0.0;
       jj = 0;
-      AWAIT ABS(1.0 - cd) < DBLEPS COUNT ii FROM 0 TO 200:
+      AWAIT ABS(1.0 - cd) < Kw.DBLEPS COUNT ii FROM 0 TO 200:
          IF ii == 0:
             numerator = 1.0;
          ELSIF jj == 0: # Even
@@ -1003,18 +1008,18 @@ FUNC DBL betainc__1(DBL aa, DBL bb, DBL xx):
          ELSE: # Odd
             mm = (ii - 1) / 2;
             numerator = -((aa + mm) * (aa + bb + mm) * xx)
-                  / ((aa + 2.0 * mm) * (aa + 2.0 * mm + 1));
+                  / ((aa + 2.0 * mm) * (aa + 2.0 * mm + 1.0));
          IF_END
 
          # Do 1 iteration of Lentz algorithm.
          dd = 1.0 + numerator * dd;
-         IF ABS(dd) < DBLEPS * DBLEPS:
-            dd = DBLEPS * DBLEPS;
+         IF ABS(dd) < Kw.DBLEPS * Kw.DBLEPS:
+            dd = Kw.DBLEPS * Kw.DBLEPS;
          IF_END
          dd = 1.0 / dd;
          cc = 1.0 + numerator / cc;
-         IF ABS(cc) < DBLEPS * DBLEPS:
-            cc = DBLEPS * DBLEPS;
+         IF ABS(cc) < Kw.DBLEPS * Kw.DBLEPS:
+            cc = Kw.DBLEPS * Kw.DBLEPS;
          IF_END
 
          cd = cc * dd;
@@ -1078,8 +1083,8 @@ BLOCK_END
 
 FUNC DBL digammainv(DBL yy):
    # compute XX such that DIGAMMA(XX) == YY
-   ?SECANT_DECLARATIONS?
-   ?SECANT_LOOP EXP(yy) ; 0.1 ; yy - digamma(scvx_xx) ?
+   {SECANT_DECLARATIONS}
+   {SECANT_LOOP EXP(yy) ; 0.1 ; yy - digamma(scvx_xx) }
    RETURN scvx_xx;
 FUNC_END
 
