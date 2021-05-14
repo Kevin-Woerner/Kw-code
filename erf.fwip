@@ -1,4 +1,11 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-15 kdw  indent work
+# 2021-04-11 kdw  indent work
+# 2021-04-07 kdw  long lines update II
+# 2021-03-27 kdw  long lines update
+# 2021-03-25 kdw  mnor reformat
+# 2021-02-05 kdw  wikipedia refs; test lines
+# 2021-02-04 kdw  add spaces to test lines
 # 2020-12-03 kdw  float explicit const work
 # 2020-11-28 kdw  macro syntax overhaul
 # 2020-11-23 kdw  replace 1.0E0 with 1.0
@@ -24,7 +31,7 @@
 # 2020-04-02 kdw  erf rework
 # 2020-03-25 kdw  tests
 # 2020-03-09 kdw  LO[C]AL_.* keywords
-# 2020-03-05 kdw  s/TRU[E]VAL/TR[U]E/;s/FALS[E]VAL/FA[L]SE/
+# 2020-03-05 kdw  s/TRU[E]VAL/TR[U]E/; s/FALS[E]VAL/FA[L]SE/
 # 2020-03-03 kdw  comment change
 # 2020-03-01 kdw  .*_NE[X]T deprecated, et al.
 # 2020-02-28 kdw  poly eval work
@@ -118,14 +125,11 @@
 BLOCK:
    BLOCK_DEF FUNC DBL lf_calerf(DBL xx, INT jint):
       # Support function for erf funcs.
-      # This routine was cannibalized from code written
-      # by Peter John Acklam (email pjacklamonline.no),
-      # and retrieved from http://cpansearch.perl.org/src/REID
-      # /Games-Go-GoPair-1.001/Erf.pm
-      # Coefficients from "Rational Chebyshev Approximations
-      # for the Error Function" by W. J. Cody, Argonne National
-      # Laboratory, 1969
-
+      # This routine was cannibalized from code written by Peter John Acklam
+      #    (email pjacklamonline.no), and retrieved from
+      #    http://cpansearch.perl.org/src/REID/Games-Go-GoPair-1.001/Erf.pm
+      # Coefficients from "Rational Chebyshev Approximations for the Error
+      #     Function" by W. J. Cody, Argonne National Laboratory, 1969
       DBL result;
       DBL retvalu;
       DBL absx;
@@ -141,19 +145,17 @@ BLOCK:
       flag = 0;
       IF absx <= 0.46875:
          numer = (((((
-               + 1.85777706184603153E-1) * xsq
-               + 3.16112374387056560E+0) * xsq
-               + 1.13864154151050156E+2) * xsq
-               + 3.77485237685302021E+2) * xsq
-               + 3.20937758913846947E+3);
-
+                  + 1.85777706184603153E-1) * xsq
+                  + 3.16112374387056560E+0) * xsq
+                  + 1.13864154151050156E+2) * xsq
+                  + 3.77485237685302021E+2) * xsq
+                  + 3.20937758913846947E+3);
          denom = (((((
-               + 1.0) * xsq
-               + 2.36012909523441209E+1) * xsq
-               + 2.44024637934444173E+2) * xsq
-               + 1.28261652607737228E+3) * xsq
-               + 2.84423683343917062E+3);
-         # pickle
+                  + 1.00000000000000000E+0) * xsq
+                  + 2.36012909523441209E+1) * xsq
+                  + 2.44024637934444173E+2) * xsq
+                  + 1.28261652607737228E+3) * xsq
+                  + 2.84423683343917062E+3);
          retvalu = xx * numer / denom;
          IF jint == 1:
             retvalu = 1.0 - retvalu;
@@ -163,32 +165,28 @@ BLOCK:
          flag = 1;
       ELSIF absx <= 4.0: # for 0.46875 < abs(x) <= 4.0
          numer = (((((((((
-               + 2.15311535474403846E-8) * absx
-               + 5.64188496988670089E-1) * absx
-               + 8.88314979438837594E+0) * absx
-               + 6.61191906371416295E+1) * absx
-               + 2.98635138197400131E+2) * absx
-               + 8.81952221241769090E+2) * absx
-               + 1.71204761263407058E+3) * absx
-               + 2.05107837782607147E+3) * absx
-               + 1.23033935479799725E+3);
-
+                  + 2.15311535474403846E-8) * absx
+                  + 5.64188496988670089E-1) * absx
+                  + 8.88314979438837594E+0) * absx
+                  + 6.61191906371416295E+1) * absx
+                  + 2.98635138197400131E+2) * absx
+                  + 8.81952221241769090E+2) * absx
+                  + 1.71204761263407058E+3) * absx
+                  + 2.05107837782607147E+3) * absx
+                  + 1.23033935479799725E+3);
          denom = (((((((((
-               + 1.0) * absx
-               + 1.57449261107098347E+1) * absx
-               + 1.17693950891312499E+2) * absx
-               + 5.37181101862009858E+2) * absx
-               + 1.62138957456669019E+3) * absx
-               + 3.29079923573345963E+3) * absx
-               + 4.36261909014324716E+3) * absx
-               + 3.43936767414372164E+3) * absx
-               + 1.23033935480374942E+3);
-
-         result = numer / denom;
-         # now result = EXP(xsq) * erfc(absx);
+                  + 1.00000000000000000E+0) * absx
+                  + 1.57449261107098347E+1) * absx
+                  + 1.17693950891312499E+2) * absx
+                  + 5.37181101862009858E+2) * absx
+                  + 1.62138957456669019E+3) * absx
+                  + 3.29079923573345963E+3) * absx
+                  + 4.36261909014324716E+3) * absx
+                  + 3.43936767414372164E+3) * absx
+                  + 1.23033935480374942E+3);
+         result = numer / denom; # now result = EXP(xsq) * erfc(absx);
       ELSE:  # for 4.0 < abs(x)
          rsqrpi = SQRT(1.0 / Kw.PI);
-
          IF jint <> 2 AND SQRT(LN(Kw.DBLMAX)) <= absx:
             result = 0.0;
          ELSIF jint == 2 AND 6.71E+7 <= absx:
@@ -200,21 +198,19 @@ BLOCK:
          ELSE:
             rxsq = 1.0 / (absx * absx);
             numer = ((((((
-                  - 1.63153871373020978E+2) * rxsq
-                  - 3.05326634961232344E+3) * rxsq
-                  - 3.60344899949804439E+3) * rxsq
-                  - 1.25781726111229246E+3) * rxsq
-                  - 1.60837851487422766E+2) * rxsq
-                  - 6.58749161529837803E+0);
-
+                     - 1.63153871373020978E+2) * rxsq
+                     - 3.05326634961232344E+3) * rxsq
+                     - 3.60344899949804439E+3) * rxsq
+                     - 1.25781726111229246E+3) * rxsq
+                     - 1.60837851487422766E+2) * rxsq
+                     - 6.58749161529837803E+0);
             denom = ((((((
-                  + 1.0E+4) * rxsq
-                  + 2.56852019228982242E+4) * rxsq
-                  + 1.87295284992346047E+4) * rxsq
-                  + 5.27905102951428412E+3) * rxsq
-                  + 6.05183413124413191E+2) * rxsq
-                  + 2.33520497626869185E+1);
-
+                     + 1.00000000000000000E+4) * rxsq
+                     + 2.56852019228982242E+4) * rxsq
+                     + 1.87295284992346047E+4) * rxsq
+                     + 5.27905102951428412E+3) * rxsq
+                     + 6.05183413124413191E+2) * rxsq
+                     + 2.33520497626869185E+1);
             result = (rsqrpi + rxsq * numer / denom) / absx;
             # now result = EXP(xsq) * erfc(absx);
          IF_END
@@ -241,14 +237,14 @@ BLOCK:
                ELSE:
                   retvalu = -((0.5 - result) + 0.5);
                IF_END
-               #now result=erf(x)
+               #now result == erf(x)
             ELSIF jint == 1:
                IF xx < 0.0:
                   retvalu = 2.0 - result;
                ELSE:
                   retvalu = result;
                IF_END
-               # now retvalu=erfc(x)
+               # now retvalu == erfc(x)
             ELSE:
                retvalu = 0.0;
             IF_END
@@ -388,16 +384,16 @@ FUNC DBL erf__1(DBL xx):
 
    tt = (1.0 / (1.0 + (0.5 * ABS(xx))));
    ply = ((((((((((
-         + 1.70872770E-1) * tt
-         - 8.22152230E-1) * tt
-         + 1.48851587E+0) * tt
-         - 1.13520398E+0) * tt
-         + 2.78868070E-1) * tt
-         - 1.86288060E-1) * tt
-         + 9.67841800E-2) * tt
-         + 3.74091960E-1) * tt
-         + 1.00002368E+0) * tt
-         - 1.26551223E+0);
+            + 1.70872770E-1) * tt
+            - 8.22152230E-1) * tt
+            + 1.48851587E+0) * tt
+            - 1.13520398E+0) * tt
+            + 2.78868070E-1) * tt
+            - 1.86288060E-1) * tt
+            + 9.67841800E-2) * tt
+            + 3.74091960E-1) * tt
+            + 1.00002368E+0) * tt
+            - 1.26551223E+0);
 
    ans = 1.0 - tt * EXP((-xx * xx) + ply);
 
@@ -408,20 +404,19 @@ FUNC DBL erf__1(DBL xx):
 FUNC_END
 
 FUNC DBL erf__2(DBL xx):
-   # See Wikipedia::Error_Function::Numerical_approximation
-   #       ::Polynomial
+   # See Wikipedia::Error_Function::Numerical_approximation::Polynomial
    DBL tt;
    DBL ans;
    DBL ply;
 
    tt = 1.0 / (1.0 + 0.3275911 * ABS(xx));
    ply = ((((((
-         + 1.061405429E+0) * tt
-         - 1.453152027E+0) * tt
-         + 1.421413741E+0) * tt
-         - 2.844967360E-1) * tt
-         + 2.548295920E-1) * tt
-         + 0.000000000E+0);
+            + 1.061405429E+0) * tt
+            - 1.453152027E+0) * tt
+            + 1.421413741E+0) * tt
+            - 2.844967360E-1) * tt
+            + 2.548295920E-1) * tt
+            + 0.000000000E+0);
    ans = 1.0 - EXP(-xx * xx) * ply;
 
    IF xx < 0.0:
@@ -482,7 +477,7 @@ FUNC DBL erf__4(DBL xx):
    # INTEGRATE  --------- dt
    #       -xx  SQRT(PI)
    # via Taylor series (for ABS(xx)<4.4) or asymptotic series
-   #  Range (-1, 1)  (includes endpoints due to rounding)
+   #    Range (-1, 1)  (includes endpoints due to rounding)
    DBL xxsq;
    DBL axx;
    DBL sum_prev;
@@ -494,6 +489,7 @@ FUNC DBL erf__4(DBL xx):
    DBL factz;
    DBL twoxxsq;
    DBL term;
+   DBL denom;
 
    axx = ABS(xx);
    xxsq = xx * xx;
@@ -506,8 +502,8 @@ FUNC DBL erf__4(DBL xx):
       AWAIT Kw.iseq(sum_prev, sum_curr) COUNT nn FROM 3 BY 2:
          twonnpone = 2 * nn + 1;
          factx *= xxsq * xxsq / ((nn - 1.0) * nn);
-         term = (factx * (twonnpone * (nn - xxsq) + twoxxsq)
-            / (4.0 * nn * nn - 1.0));
+         denom = 4.0 * nn * nn - 1.0;
+         term = factx * (twonnpone * (nn - xxsq) + twoxxsq) / denom;
          sum_prev = sum_curr;
          sum_curr += term;
       AWAIT_END
@@ -534,18 +530,18 @@ FUNC DBL erf__4(DBL xx):
    RETURN sum_curr;
 FUNC_END
 
-#TEST:erfinv(erf(0.23))==0.23;
-#TEST:erfc(0.5)  ==0.4795001221869534623172533461080354712635484;
-#TEST:erf(0.5)   ==0.520499877813046537682746653891964528736;
-#TEST:erf__3(0.5)==0.520499877813046537682746653891964528736;
-#TEST:erf__4(0.5)==0.520499877813046537682746653891964528736;
-#TEST:erf(1)     ==0.842700792949714869341220635082609259296067;
-#TEST:erf__3(1)  ==0.842700792949714869341220635082609259296067;
-#TEST:erf__4(1)  ==0.842700792949714869341220635082609259296067;
-#TEST:erfc(1.5)  ==0.0338948535246892729330237383540521413185895;
-#TEST:erf(1.5)   ==0.9661051464753107270669762616459478586814105;
-#TEST:erf__3(1.5)==0.9661051464753107270669762616459478586814105;
-#TEST:erf__4(1.5)==0.9661051464753107270669762616459478586814105;
-#TEST:erf(5.0)   ==0.9999999999984625402055719651498116565146166;
-#TEST:erf__4(5.0)==0.9999999999984625402055719651498116565146166;
-#TEST:erf__3(5.0)==0.9999999999984625402055719651498116565146166;
+#TEST: erfinv(erf(0.23)) == 0.23;
+#TEST: erfc(0.5)   == 0.4795001221869534623172533461080354712636;
+#TEST: erf(0.5)    == 0.5204998778130465376827466538919645287363;
+#TEST: erf__3(0.5) == 0.5204998778130465376827466538919645287363;
+#TEST: erf__4(0.5) == 0.5204998778130465376827466538919645287363;
+#TEST: erf(1)      == 0.8427007929497148693412206350826092592961;
+#TEST: erf__3(1)   == 0.8427007929497148693412206350826092592961;
+#TEST: erf__4(1)   == 0.8427007929497148693412206350826092592961;
+#TEST: erfc(1.5)   == 0.0338948535246892729330237383540521413186;
+#TEST: erf(1.5)    == 0.9661051464753107270669762616459478586814;
+#TEST: erf__3(1.5) == 0.9661051464753107270669762616459478586814;
+#TEST: erf__4(1.5) == 0.9661051464753107270669762616459478586814;
+#TEST: erf(5.0)    == 0.9999999999984625402055719651498116565146;
+#TEST: erf__4(5.0) == 0.9999999999984625402055719651498116565146;
+#TEST: erf__3(5.0) == 0.9999999999984625402055719651498116565146;

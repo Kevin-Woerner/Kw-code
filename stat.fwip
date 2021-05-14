@@ -1,4 +1,7 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-15 kdw  indent work
+# 2021-04-09 kdw  indent work
+# 2021-03-08 kdw  upped line length allowed
 # 2020-12-04 kdw  float explicit const work
 # 2020-08-17 kdw  comment change
 # 2020-07-27 kdw  block syntax
@@ -69,8 +72,8 @@ BLOCK: # num to norm
       IF numm <= 1:
          retvalu = 0.0;
       ELSE:
-         retvalu = (3.0 * SQRT(LN(numm)) - 1.4
-            - (0.5 * LN(numm) - 0.39) / numm);
+         retvalu = 3.0 * SQRT(LN(numm)) - 1.4
+                  - (0.5 * LN(numm) - 0.39) / numm;
       IF_END
       RETURN retvalu;
    FUNC_END
@@ -142,8 +145,7 @@ FUNC DBL minabs(INT nn, READONLY DBL data_arr_pc[]):
    RETURN minaby;
 FUNC_END
 
-FUNC DBL maxabsoffset(DBL offset, INT nn
-      , READONLY DBL data_arr_pc[]):
+FUNC DBL maxabsoffset(DBL offset, INT nn, READONLY DBL data_arr_pc[]):
    # return value in an array the farthest from OFFSET
    INT ii;
    DBL maxaby;
@@ -159,8 +161,7 @@ FUNC DBL maxabsoffset(DBL offset, INT nn
    RETURN maxaby + offset;
 FUNC_END
 
-FUNC DBL minabsoffset(DBL offset, INT nn
-      , READONLY DBL data_arr_pc[]):
+FUNC DBL minabsoffset(DBL offset, INT nn, READONLY DBL data_arr_pc[]):
    # return value in an array the closest to OFFSET
    INT ii;
    DBL minaby;
@@ -209,7 +210,7 @@ FUNC DBL maxi(INT num, READONLY DBL data_arr_pc[]):
 FUNC_END
 
 FUNC DBL maxmin(INT num, READONLY DBL data_arr_pc[]
-      , WRITEONLY DBL ret_maxmin_arr_p[]):
+         , WRITEONLY DBL ret_maxmin_arr_p[]):
    # return the spread of the data
    #   RET_MAXMIN_ARR_p[0] = maximum
    #   RET_MAXMIN_ARR_p[1] = minimum

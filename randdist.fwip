@@ -1,4 +1,14 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-20 kdw  var name change (mainly mm)
+# 2021-04-15 kdw  indent work
+# 2021-04-09 kdw  indent work
+# 2021-04-08 kdw  comment changes
+# 2021-03-28 kdw  upped line length work
+# 2021-03-15 kdw  lx_.* const names
+# 2021-03-13 kdw  line len upped to 77
+# 2021-02-05 kdw  wikipedia refs
+# 2021-02-04 kdw  add spaces to test lines
+# 2021-02-01 kdw  bool syntax debugging
 # 2020-12-08 kdw  explicit modules on constants
 # 2020-12-04 kdw  float explicit const work
 # 2020-11-28 kdw  macro syntax overhaul
@@ -41,7 +51,7 @@
 # 2020-03-20 kdw  tri and trap work
 # 2020-03-10 kdw  fixed pd[f]bb
 # 2020-03-09 kdw  LO[C]AL_.* keywords
-# 2020-03-05 kdw  s/TRU[E]VAL/TR[U]E/;s/FALS[E]VAL/FA[L]SE/
+# 2020-03-05 kdw  s/TRU[E]VAL/TR[U]E/; s/FALS[E]VAL/FA[L]SE/
 # 2020-03-03 kdw  comment change
 # 2020-03-02 kdw  s/_NE[X]T/_E[N]D/g;
 # 2020-02-28 kdw  poly eval work
@@ -180,51 +190,51 @@
 # 2015-09-25 kdw  use isodd, iseven instead of [M]OD
 # 2015-09-20 kdw  created
 
-# http://www2.econ.osaka-u.ac.jp/(tilde)tanizaki/cv/books
+# http://www2.econ.osaka-u.ac.jp/ (tilde)tanizaki/cv/books
 #      /cmse/cmse.pdf
 {INSERT_FILE "Macros.fwip" }
 
-FUNC DBL int_pdf(DBL nn, DBL xx):
+FUNC DBL int_pdf(DBL para_nn, DBL xx):
    # PDF Uniform Integer
-   # Support: 0..NN-1
+   # Support: 0..PARA_NN-1
    DBL retvalu;
-   DBL mm;
+   DBL ff;
 
-   IF xx < 0.0 OR nn < xx OR (NOT Kw.isint(xx)):
+   IF xx < 0.0 OR para_nn < xx OR (NOT Kw.isint(xx)):
       retvalu = 0.0;
-   ELSE: # XX is an integer in [0,NN)
-      mm = FLOOR(nn);
-      IF Kw.isint(nn):
-         IF xx < nn:
-            retvalu = 1.0 / nn;
+   ELSE: # XX is an integer in [0,PARA_NN)
+      ff = FLOOR(para_nn);
+      IF Kw.isint(para_nn):
+         IF xx < para_nn:
+            retvalu = 1.0 / para_nn;
          ELSE:
             retvalu = 0.0;
          IF_END
       ELSE:
-         IF xx < mm:
-            retvalu = 1.0 / nn;
+         IF xx < ff:
+            retvalu = 1.0 / para_nn;
          ELSE:
-            retvalu = 1.0 - mm / nn;
+            retvalu = 1.0 - ff / para_nn;
          IF_END
       IF_END
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL int_cdf(DBL nn, DBL xx):
-   # CDF Uniform Integer [0,NN)
-   # Support: 0..NN-1
+FUNC DBL int_cdf(DBL para_nn, DBL xx):
+   # CDF Uniform Integer [0,PARA_NN)
+   # Support: 0..PARA_NN-1
    DBL retvalu;
-   DBL mm;
+   DBL ff;
 
    IF xx <= 0.0:
       retvalu = 0.0;
-   ELSIF nn <= xx:
+   ELSIF para_nn <= xx:
       retvalu = 1.0;
    ELSE:
-      mm = FLOOR(nn);
-      IF xx < mm:
-         retvalu = (FLOOR(xx) + 1) / nn;
+      ff = FLOOR(para_nn);
+      IF xx < ff:
+         retvalu = (FLOOR(xx) + 1) / para_nn;
       ELSE:
          retvalu = 1;
       IF_END
@@ -232,32 +242,32 @@ FUNC DBL int_cdf(DBL nn, DBL xx):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL int_quantile(DBL nn, DBL prbx):
-   # Quantile Uniformly Integer [0,NN)
-   # Support: 0..NN-1
+FUNC DBL int_quantile(DBL para_nn, DBL probx):
+   # Quantile Uniformly Integer [0,PARA_NN)
+   # Support: 0..PARA_NN-1
    DBL retvalu;
 
-   IF prbx <= 0.0:
+   IF probx <= 0.0:
       retvalu = 0.0;
-   ELSIF 1.0 - frac(nn) / nn <= prbx:
-      retvalu = CEIL(nn - 1);
+   ELSIF 1.0 - frac(para_nn) / para_nn <= probx:
+      retvalu = CEIL(para_nn - 1);
    ELSE:
-      retvalu = FLOOR(nn * prbx + 1);
+      retvalu = FLOOR(para_nn * probx + 1);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC INT int_rand(DBL nn):
-   # Random Uniform Integer Variable [0,NN)
-   # Support: 0..NN-1
-   # Average = FLOOR(NN)*(FLOOR(NN-1)/2+FRAC(NN))/NN
-   #    If NN is an integer, average=(NN-1)/2
+FUNC INT int_rand(DBL para_nn):
+   # Random Uniform Integer Variable [0,PARA_NN)
+   # Support: 0..PARA_NN-1
+   # Average = FLOOR(PARA_NN)*(FLOOR(PARA_NN-1)/2+FRAC(PARA_NN))/PARA_NN
+   #    If PARA_NN is an integer, average=(PARA_NN-1)/2
    INT retvalu;
 
-   IF nn <= 1:
+   IF para_nn <= 1:
       retvalu = 0;
    ELSE:
-      retvalu = FLOORL(randd() * nn);
+      retvalu = FLOORL(randd() * para_nn);
    IF_END
    RETURN retvalu;
 FUNC_END
@@ -266,13 +276,17 @@ FUNC DBL normal_pdf(DBL xx):
    # PDF (0,1) gaussian distribution
    # Support: (-Inf,Inf)
    # (-Inf,0,+Inf) to (0,1/SQRT(Kw.TAU),0)
+   # MEAN       0
+   # VARIANCE   1
+   # MODE       0
+   # MEDIAN     0
    RETURN EXP(-xx * xx / 2.0) / (SQRT(Kw.TAU));
 FUNC_END
 
 FUNC DBL normal_cdf(DBL xx):
    # CDF (0,1) gaussian distribution
    # Support: (-Inf,Inf)
-   RETURN Kw.erf(xx / Kw.SQRTTWO) / 2.0 + 0.5;
+   RETURN Kw.erf(xx / Kw.TWOSQRT) / 2.0 + 0.5;
 FUNC_END
 
 FUNC DBL normal_cdf__1(DBL xx):
@@ -299,16 +313,15 @@ FUNC DBL normal_cdf__1(DBL xx):
          sum_prev = sum_curr;
          sum_curr += bb;
       AWAIT_END
-      retvalu = (sum_curr * EXP(-0.5 * (xx_sqr + LN(Kw.TAU)))
-            + 0.5);
+      retvalu = (sum_curr * EXP(-0.5 * (xx_sqr + LN(Kw.TAU))) + 0.5);
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:normal_cdf__1(1)==0.84134474606854294858523254563203792;
+#TEST:normal_cdf__1(1) == 0.84134474606854294858523254563203792;
 
-FUNC DBL normal_quantile(DBL prbx):
+FUNC DBL normal_quantile(DBL probx):
    # Quantile normal distribution (0,1) to (-Inf,+Inf)
-   RETURN Kw.SQRTTWO * Kw.erfinv(2.0 * prbx - 1.0);
+   RETURN Kw.TWOSQRT * Kw.erfinv(2.0 * probx - 1.0);
 FUNC_END
 
 BLOCK: # normal distributed nunmbers
@@ -344,6 +357,10 @@ BLOCK_END  # normal distributed nunmbers
 FUNC DBL gau_pdf(DBL xx):
    # PDF gaussian distribution
    # (-Inf,0,+Inf) to (0,1/SQRT(Kw.TAU),0)
+   # MEAN       0
+   # VARIANCE   1
+   # MODE       0
+   # MEDIAN     0
    RETURN normal_pdf(xx);
 FUNC_END
 
@@ -353,9 +370,9 @@ FUNC DBL gau_cdf(DBL xx):
    RETURN normal_cdf(xx);
 FUNC_END
 
-FUNC DBL gau_quantile(DBL prbx):
+FUNC DBL gau_quantile(DBL probx):
    # Quantile normal ditribution (0,1) to (-Inf,+Inf)
-   RETURN normal_quantile(prbx);
+   RETURN normal_quantile(probx);
 FUNC_END
 
 FUNC DBL gau_rand(NUL):
@@ -363,7 +380,7 @@ FUNC DBL gau_rand(NUL):
    RETURN normal_rand();
 FUNC_END
 
-FUNC DBL normal_quantile__1(DBL prbx):
+FUNC DBL normal_quantile__1(DBL probx):
    # Quantile normal ditribution (0,1) to (-Inf,+Inf)
    DBL retvalu;
    DBL p_low;
@@ -376,67 +393,67 @@ FUNC DBL normal_quantile__1(DBL prbx):
    #Define break-point
    p_low = 0.02425;
 
-   IF prbx <= 0.0:
+   IF probx <= 0.0:
       retvalu = -(Kw.DBLMAX);
-   ELSIF 1.0 <= prbx:
+   ELSIF 1.0 <= probx:
       retvalu = Kw.DBLMAX;
-   ELSIF p_low <= prbx AND prbx <= 1.0 - p_low: # mid region
-      qq = prbx - 0.5;
+   ELSIF p_low <= probx AND probx <= 1.0 - p_low: # mid region
+      qq = probx - 0.5;
       rr = qq * qq;
       numer = ((((((
-            - 3.96968302866538E+1) * rr
-            + 2.20946098424521E+2) * rr
-            - 2.75928510446969E+2) * rr
-            + 1.38357751867269E+2) * rr
-            - 3.06647980661472E+1) * rr
-            + 2.50662827745924E+0);
+               - 3.96968302866538E+1) * rr
+               + 2.20946098424521E+2) * rr
+               - 2.75928510446969E+2) * rr
+               + 1.38357751867269E+2) * rr
+               - 3.06647980661472E+1) * rr
+               + 2.50662827745924E+0);
 
       denom = ((((((
-            - 5.44760987982241E+1) * rr
-            + 1.61585836858041E+2) * rr
-            - 1.55698979859887E+2) * rr
-            + 6.68013118877197E+1) * rr
-            - 1.32806815528857E+1) * rr
-            + 1.0);
+               - 5.44760987982241E+1) * rr
+               + 1.61585836858041E+2) * rr
+               - 1.55698979859887E+2) * rr
+               + 6.68013118877197E+1) * rr
+               - 1.32806815528857E+1) * rr
+               + 1.00000000000000E+0);
 
       retvalu = (qq * numer / denom);
    ELSE:
-      IF prbx < p_low:      # lower region
-         rr = SQRT(-2.0 * LN(prbx));
+      IF probx < p_low:      # lower region
+         rr = SQRT(-2.0 * LN(probx));
          qq = 1.0;
       ELSE:  # not lower region
-         rr = SQRT(-2.0 * LN(1 - prbx));
+         rr = SQRT(-2.0 * LN(1 - probx));
          qq = -1.0;
       IF_END
       numer = ((((((
-            - 7.78489400243029E-3) * rr
-            - 3.22396458041136E-1) * rr
-            - 2.40075827716184E+0) * rr
-            - 2.54973253934373E+0) * rr
-            + 4.37466414146497E+0) * rr
-            + 2.93816398269878E+0);
+               - 7.78489400243029E-3) * rr
+               - 3.22396458041136E-1) * rr
+               - 2.40075827716184E+0) * rr
+               - 2.54973253934373E+0) * rr
+               + 4.37466414146497E+0) * rr
+               + 2.93816398269878E+0);
 
       denom = (((((
-            + 7.78469570904146E-3) * rr
-            + 3.22467129070040E-1) * rr
-            + 2.44513413714300E+0) * rr
-            + 3.75440866190742E+0) * rr
-            + 1.0);
+               + 7.78469570904146E-3) * rr
+               + 3.22467129070040E-1) * rr
+               + 2.44513413714300E+0) * rr
+               + 3.75440866190742E+0) * rr
+               + 1.00000000000000E+0);
 
       retvalu = qq * numer / denom;
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL uni_pdf(DBL max_x, DBL xx):
+FUNC DBL uni_pdf(DBL max_x, DBL xxp):
    # PDF uniform distribution on [0,MAX_X)
    # MEAN       MAX_X / 2
    # VARIANCE   MAX_X / 12
    # MODE       [0,MAX_X)
-   # MEDIAN     MAX_ / 2
+   # MEDIAN     MAX_X / 2
    DBL retvalu;
 
-   IF max_x <= 0.0 OR xx <= 0.0 OR max_x <= xx:
+   IF max_x <= 0.0 OR xxp <= 0.0 OR max_x <= xxp:
       retvalu = 0.0;
    ELSE:
       retvalu = 1.0 / max_x;
@@ -444,7 +461,7 @@ FUNC DBL uni_pdf(DBL max_x, DBL xx):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL uni_cdf(DBL max_x, DBL xx):
+FUNC DBL uni_cdf(DBL max_x, DBL xxp):
    # CDF uniform distribution on [0,MAX_X)
    # Support: [0,MAX_X)
    # MEAN       MAX_X / 2
@@ -453,27 +470,27 @@ FUNC DBL uni_cdf(DBL max_x, DBL xx):
    # MEDIAN     MAX_X / 2
    DBL retvalu;
 
-   IF max_x <= 0.0 OR xx < 0.0:
+   IF max_x <= 0.0 OR xxp < 0.0:
       retvalu = 0.0;
-   ELSIF max_x < xx:
+   ELSIF max_x < xxp:
       retvalu = 1.0;
    ELSE:
-      retvalu = xx / max_x;
+      retvalu = xxp / max_x;
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL uni_quantile(DBL max_x, DBL prbx):
+FUNC DBL uni_quantile(DBL max_x, DBL probx):
    # Quantile uniform distribution on [0,MAX_X)
    # Support: [0,MAX_X)
    DBL retvalu;
 
-   IF prbx < 0.0 OR max_x <= 0.0:
+   IF probx < 0.0 OR max_x <= 0.0:
       retvalu = 0.0;
-   ELSIF max_x < prbx:
+   ELSIF max_x < probx:
       retvalu = 1.0;
    ELSE:
-      retvalu = prbx * max_x;
+      retvalu = probx * max_x;
    IF_END
    RETURN retvalu;
 FUNC_END
@@ -483,105 +500,99 @@ FUNC DBL uni_rand(DBL max_x):
    # Support: [0,MAX_X)
    RETURN uni_quantile(max_x, randd());
 FUNC_END
-#TEST:rand_init(1.987)==1.987;
-#TEST:uni_rand(1.0)-0.2159134211342970495126070140656793228118;
-#TEST:uni_rand(1.0)-0.9505410465129708504072869601486672763713;
-#TEST:uni_rand(1.0)-0.6972580030927504803756056261931917106267;
+#TEST:rand_init(1.987) == 1.987;
+#TEST:uni_rand(1.0) == 0.215913421134297049512607014065679323;
+#TEST:uni_rand(1.0) == 0.950541046512970850407286960148667276;
+#TEST:uni_rand(1.0) == 0.697258003092750480375605626193191711;
 
-FUNC DBL exp_pdf(DBL scal, DBL xx):
-   # PDF exponential distribution on w/ scaling 0 < SCAL
+FUNC DBL exp_pdf(DBL para_scaling, DBL xxp):
+   # PDF exponential distribution on w/ scaling 0 < PARA_SCALING
    # Support: [0,Inf)
-   # == SCAL * EXP(-SCAL * XX)
-   # MEAN       1 / SCAL
-   # VARIANCE   1 / SCAL**2
+   # == PARA_SCALING * EXP(-PARA_SCALING * XXP)
+   # MEAN       1 / PARA_SCALING
+   # VARIANCE   1 / PARA_SCALING**2
    # MODE       0
-   # MEDIAN     LN(2) / SCAL
+   # MEDIAN     LN(2) / PARA_SCALING
    DBL retvalu;
 
-   IF xx < 0.0 OR scal <= 0.0:
+   IF xxp < 0.0 OR para_scaling <= 0.0:
       retvalu = 0.0;
    ELSE:
-      retvalu = scal * EXP(-scal * xx);
+      retvalu = para_scaling * EXP(-para_scaling * xxp);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL exp_cdf(DBL scal, DBL xx):
-   # CDF exponential distribution w/ scaling 0 < SCAL
+FUNC DBL exp_cdf(DBL para_scaling, DBL xxp):
+   # CDF exponential distribution w/ scaling 0 < PARA_SCALING
    # Support: [0,Inf)
-   # == 1 - EXP(-SCAL * XX)
-   # MEAN       1 / SCAL
-   # VARIANCE   1 / SCAL**2
-   # MODE       0
-   # MEDIAN     LN(2) / SCAL
+   # == 1 - EXP(-PARA_SCALING * XXP)
    DBL retvalu;
 
-   IF xx < 0.0 OR scal <= 0.0:
+   IF xxp < 0.0 OR para_scaling <= 0.0:
       retvalu = 0.0;
    ELSE:
-      retvalu = 1.0 - EXP(-scal * xx);
+      retvalu = 1.0 - EXP(-para_scaling * xxp);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL exp_quantile(DBL scal, DBL prbx):
+FUNC DBL exp_quantile(DBL para_scaling, DBL probx):
    # Quantile exponential ditribution [0,+Inf] to [0,1]
-   # == -LN(1 - PRBX) / SCAL
+   # == -LN(1 - PROBX) / PARA_SCALING
    DBL retvalu;
 
-   IF prbx <= 0.0 OR scal <= 0.0:
+   IF probx <= 0.0 OR para_scaling <= 0.0:
       retvalu = 0.0;
-   ELSIF 1.0 <= prbx:
+   ELSIF 1.0 <= probx:
       retvalu = Kw.DBLMAX;
    ELSE:
-      retvalu = -LN(1.0 - prbx) / scal;
+      retvalu = -LN(1.0 - probx) / para_scaling;
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL exp_rand(DBL scal):
+FUNC DBL exp_rand(DBL para_scaling):
    # Random Exponential Variable
-   RETURN -LN(randd()) / scal;
+   RETURN -LN(randd()) / para_scaling;
 FUNC_END
 
-FUNC DBL poi_pdf(DBL meanx, DBL xx):
+FUNC DBL poi_pdf(DBL meanx, DBL xxp):
    # PDF poisson distribution
    # Support: [0,+Inf)
    # MEAN      MEANX
    # VARIANCE  MEANX
    # MODE      MEANX - 1
+   # MEDIAN    approx FLOOR(MEANX + 1/3 +-0.02 / MEANX)
    DBL kk;
    DBL retvalu;
 
-   IF xx < 0.0 OR meanx <= 0.0:
+   IF xxp < 0.0 OR meanx <= 0.0:
       retvalu = 0.0;
    ELSE:
-      kk = FLOOR(xx);
+      kk = FLOOR(xxp);
       retvalu = POW(meanx, kk) * EXP(-meanx) / factorial(kk);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL poi_cdf(DBL meanx, DBL xx):
+FUNC DBL poi_cdf(DBL meanx, DBL xxp):
    # CDF poisson distribution
    # Support: [0,+Inf)
-   # MEAN      MEANX
-   # VARIANCE  MEANX
-   # MODE      MEANX - 1
    INT ii;
    INT kk;
    DBL sum;
    DBL term;
    DBL retvalu;
 
-   IF xx <= 0.0 OR meanx <= 0.0:
+   IF xxp <= 0.0 OR meanx <= 0.0:
       retvalu = 0.0;
-   ELSIF 1000.0 < xx / meanx:
-      retvalu = 1;#Kw.uigamma(xx, meanx);
+   ELSIF 1000.0 < xxp / meanx:
+      retvalu = 1;#Kw.uigamma(xxp, meanx);
    ELSE:
       term = EXP(-meanx);
       sum = term;
-      kk = FLOORL(xx);
+      kk = FLOORL(xxp);
       FOR ii FROM 1 TO kk:
          term *= meanx / ii;
          sum += term;
@@ -591,7 +602,7 @@ FUNC DBL poi_cdf(DBL meanx, DBL xx):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL poi_quantile(DBL meanx, DBL prbx):
+FUNC DBL poi_quantile(DBL meanx, DBL probx):
    # Quantile poisson distribution
    # MEAN      MEANX
    # VARIANCE  MEANX
@@ -602,22 +613,22 @@ FUNC DBL poi_quantile(DBL meanx, DBL prbx):
    DBL term;
    DBL retvalu;
 
-   IF prbx <= 0.0 OR meanx <= 0.0:
+   IF probx <= 0.0 OR meanx <= 0.0:
       retvalu = 0.0;
-   ELSIF 1.0 <= prbx:
+   ELSIF 1.0 <= probx:
       retvalu = Kw.DBLMAX;
    ELSE:
       prevsum = 0.0;
       term = EXP(-meanx);
       sum = term;
       ii = 0;
-      WHILE sum <= prbx:
+      WHILE sum <= probx:
          ii += 1;
          term *= meanx / ii;
          prevsum = sum;
          sum += term;
       WHILE_END
-      IF sum - prbx < prbx - prevsum:
+      IF sum - probx < probx - prevsum:
          retvalu = ii;
       ELSE:
          retvalu = ii - 1;
@@ -629,7 +640,7 @@ FUNC_END
 FUNC INT poi_rand(DBL meanx):
    # Random Poisson variable w/ mean MEANX
    # Support  NN = 0,1,2,3,...
-   #   PDFPOI(NN)=MEANX**NN*EXP(-NN)/factorial(NN)
+   #   PDFPOI(NN) = MEANX**NN * EXP(-NN) / factorial(NN)
    DBL prob;
    DBL poi;
    DBL sum;
@@ -641,7 +652,7 @@ FUNC INT poi_rand(DBL meanx):
    nn = 0;
    WHILE sum < prob:
       nn += 1;
-      poi *= 1.0 * meanx / nn;
+      poi *= meanx / nn;
       sum += poi;
    WHILE_END
    RETURN nn;
@@ -663,11 +674,12 @@ FUNC DBL geo_pdf(DBL prob, DBL kk):
 FUNC_END
 
 FUNC DBL geo_cdf(DBL prob, DBL kk):
-   # CDF geometric distribution
+   # CDF geometric distribution (0,1),[0,Inf)
    # Support: 0..Inf
    # MEAN      (1 - PROB) / PROB
    # VARIANCE  (1 - PROB) / PROB**2
    # MODE      0
+   # MEDIAN    CEIL(-1 / LG(1 - PROB))
    DBL retvalu;
    IF kk <= -1 OR prob < 0.0:
       retvalu = 0.0;
@@ -679,13 +691,13 @@ FUNC DBL geo_cdf(DBL prob, DBL kk):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL geo_quantile(DBL prob, DBL prbx):
+FUNC DBL geo_quantile(DBL prob, DBL probx):
    # Quantile Geometric Distribution
    DBL retvalu;
-   IF prbx <= 0.0 OR 1.0 <= prbx OR prob <= 0.0 OR 1.0 <= prob:
+   IF probx <= 0.0 OR 1.0 <= probx OR prob <= 0.0 OR 1.0 <= prob:
       retvalu = 0.0;
    ELSE:
-      retvalu = LN(1.0 - prbx) / LN(1.0 - prob) - 1.0;
+      retvalu = LN(1.0 - probx) / LN(1.0 - prob) - 1.0;
    IF_END
    RETURN retvalu;
 FUNC_END
@@ -697,36 +709,42 @@ FUNC INT geo_rand(DBL prob):
    RETURN FLOORL(LN(randd()) / LN(1.0 - prob));
 FUNC_END
 
-FUNC DBL cauchy_pdf(DBL scal, DBL xx):
-   # PDF Cauchy distribution w/ scaling 0 < SCAL
+FUNC DBL cauchy_pdf(DBL para_scaling, DBL xx):
+   # PDF Cauchy distribution w/ scaling 0 < PARA_SCALING
    # Support: (-Inf,0,+Inf) to (0,1/Kw.PI,0)
    # MEAN      NAN  (0 principle value)
    # VARIANCE  NAN
    # MODE      0
+   # MEDIAN    0
    # cauchy_pdf(1,x) == t_pdf(1,x)
-   RETURN 1.0 / (Kw.PI * scal * (1 + (Kw.square(xx / scal))));
+   RETURN 1.0 / (Kw.PI * para_scaling
+            * (1.0 + (Kw.square(xx / para_scaling))));
 FUNC_END
 
-FUNC DBL cauchy_cdf(DBL scal, DBL xx):
+FUNC DBL cauchy_cdf(DBL para_scaling, DBL xx):
    # CDF Cauchy distribution
    # Support: (-Inf,0,+Inf)
-   RETURN taninv(xx / scal) / Kw.PI + 0.5;
+   RETURN taninv(xx / para_scaling) / Kw.PI + 0.5;
 FUNC_END
 
-FUNC DBL cauchy_quantile(DBL scal, DBL prbx):
+FUNC DBL cauchy_quantile(DBL para_scaling, DBL probx):
    # Quantile Cauchy distribution
    #      (0,1) to (-Inf,+Inf)
-   RETURN scal * TAN((prbx - 0.5) * Kw.PI);
+   RETURN para_scaling * TAN((probx - 0.5) * Kw.PI);
 FUNC_END
 
-FUNC DBL cauchy_rand(DBL scal):
+FUNC DBL cauchy_rand(DBL para_scaling):
    # Random Cauchy Variable
-   RETURN cauchy_quantile(scal, randd());
+   RETURN cauchy_quantile(para_scaling, randd());
 FUNC_END
 
 FUNC DBL logistic_pdf(DBL ss, DBL xx):
    # PDF logistic distribution w/ scaling SS
    # Support: (-Inf,+Inf)
+   # MEAN      0
+   # VARIANCE  SS**2 * PI**2 / 3
+   # MODE      0
+   # MEDIAN    0
    DBL exs;
    DBL retvalu;
 
@@ -753,16 +771,16 @@ FUNC DBL logistic_cdf(DBL ss, DBL xx):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL logistic_quantile(DBL ss, DBL prbx):
+FUNC DBL logistic_quantile(DBL ss, DBL probx):
    # Quantile logistic distribution w/ scaling SS
    DBL retvalu;
 
-   IF prbx <= 0.0 OR ss <= 0.0:
+   IF probx <= 0.0 OR ss <= 0.0:
       retvalu = 0.0;
-   ELSIF 1.0 <= prbx:
+   ELSIF 1.0 <= probx:
       retvalu = 1.0;
    ELSE:
-      retvalu = -ss * LN(1.0 / prbx - 1.0);
+      retvalu = -ss * LN(1.0 / probx - 1.0);
    IF_END
    RETURN retvalu;
 FUNC_END
@@ -772,27 +790,32 @@ FUNC DBL logistic_rand(DBL ss):
    RETURN -ss * LN(1.0 / randd() - 1.0);
 FUNC_END
 
-FUNC DBL tri_pdf(DBL pp, DBL xx):
+FUNC DBL tri_pdf(DBL pp, DBL xxp):
    # PDF Triangular distribution w/ 0 <= PP <= 1
    # PDF* is triangle defined by (0,0) (1,0) (pp,2)
    # Support: [0,1]
+   # MEAN      (PP + 1) / 3
+   # VARIANCE  (PP**2 - PP + 1) / 18
+   # MODE      PP
+   # MEDIAN    IF 1 / 2 < PP: SQRT(PP / 2)
+   # MEDIAN    ELSE: 1 - SQRT((1 - PP) / 2)
    DBL retvalu;
 
    IF pp < 0.0 OR 1.0 < pp:
       retvalu = 0.0;
    ELSE:
-      IF xx < 0.0 OR 1.0 < xx:
+      IF xxp < 0.0 OR 1.0 < xxp:
          retvalu = 0.0;
-      ELSIF xx < pp:
-         retvalu = Kw.divi(2.0 * xx, pp, 2.0);
+      ELSIF xxp < pp:
+         retvalu = Kw.divi(2.0 * xxp, pp, 2.0);
       ELSE:
-         retvalu = Kw.divi(2.0 * (1.0 - xx), 1.0 - pp, 2.0);
+         retvalu = Kw.divi(2.0 * (1.0 - xxp), 1.0 - pp, 2.0);
       IF_END
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL tri_cdf(DBL pp, DBL xx):
+FUNC DBL tri_cdf(DBL pp, DBL xxp):
    # CDF Triangular distribution
    # Support: [0,1]
    DBL retvalu;
@@ -800,12 +823,12 @@ FUNC DBL tri_cdf(DBL pp, DBL xx):
    IF pp < 0.0 OR 1.0 < pp:
       retvalu = 0.0;
    ELSE:
-      IF xx <= 0.0:
+      IF xxp <= 0.0:
          retvalu = 0.0;
-      ELSIF xx < pp:
-         retvalu = xx * xx / pp;
-      ELSIF xx < 1.0:
-         retvalu = 1.0 - Kw.square(1.0 - xx) / (1.0 - pp);
+      ELSIF xxp < pp:
+         retvalu = xxp * xxp / pp;
+      ELSIF xxp < 1.0:
+         retvalu = 1.0 - Kw.square(1.0 - xxp) / (1.0 - pp);
       ELSE:
          retvalu = 1.0;
       IF_END
@@ -813,19 +836,19 @@ FUNC DBL tri_cdf(DBL pp, DBL xx):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL tri_quantile(DBL pp, DBL prbx):
+FUNC DBL tri_quantile(DBL pp, DBL probx):
    # Quantile Triangular Variable
    DBL retvalu;
 
    IF pp < 0.0 OR 1.0 < pp:
       retvalu = 0.0;
    ELSE:
-      IF prbx <= 0.0:
+      IF probx <= 0.0:
          retvalu = 0.0;
-      ELSIF prbx < pp:
-         retvalu = SQRT(prbx * pp);
-      ELSIF prbx < 1.0:
-         retvalu = 1.0 - SQRT((1.0 - prbx) * (1.0 - pp));
+      ELSIF probx < pp:
+         retvalu = SQRT(probx * pp);
+      ELSIF probx < 1.0:
+         retvalu = 1.0 - SQRT((1.0 - probx) * (1.0 - pp));
       ELSE:
          retvalu = 1.0;
       IF_END
@@ -837,113 +860,111 @@ FUNC DBL tri_rand(DBL pp):
    # Random Triangular Variable
    # Valid only if 0 <= PP <= 1
    # PDF is triangle (0,0) (1,0) and (PP,2)
-   DBL xx;
+   DBL xxp;
    DBL yy;
 
-   xx = randd();
+   xxp = randd();
    yy = randd();
-   IF xx < pp:
-      IF 2.0 * xx < pp * yy:
-         xx = pp - xx;
+   IF xxp < pp:
+      IF 2.0 * xxp < pp * yy:
+         xxp = pp - xxp;
       IF_END
    ELSE:
-      IF (pp - 1.0) * yy < 2.0 * (xx - 1.0):
-         xx = (pp + 1.0) - xx;
+      IF (pp - 1.0) * yy < 2.0 * (xxp - 1.0):
+         xxp = (pp + 1.0) - xxp;
       IF_END
    IF_END
 
-   RETURN xx;
+   RETURN xxp;
 FUNC_END
 
-FUNC DBL trap_pdf(DBL para, DBL parb, DBL xx):
+FUNC DBL trap_pdf(DBL prob_a, DBL prob_b, DBL xx):
    # PDF Trapezoidal Variable
    # Support: [0,1]
-   # Must have 0 <= PARA <= PARB  <= 1.0
-   # PDF is bounded by (0,0) (1,0), (PARA,HH) and (PARB,HH)
-   #   where HH = 2 / (1 + PARB - PARA)
+   # Must have 0 <= PROB_A <= PROB_B  <= 1.0
+   # PDF is bounded by (0,0) (1,0), (PROB_A,HH) and (PROB_B,HH)
+   #   where HH = 2 / (1 + PROB_B - PROB_A)
    # Support [0,1]
    # trap_pdf(A,A,) = tri_pdf(A,)
    DBL retvalu;
 
-   IF xx < 0.0 OR 1.0 < xx OR para < 0.0
-            OR parb < para OR 1.0 < parb:
+   IF xx < 0.0 OR 1.0 < xx OR prob_a < 0.0
+            OR prob_b < prob_a OR 1.0 < prob_b:
       retvalu = 0.0;
    ELSE:
-      IF xx < para:
-         retvalu = xx / para;
-      ELSIF xx <= parb:
+      IF xx < prob_a:
+         retvalu = xx / prob_a;
+      ELSIF xx <= prob_b:
          retvalu = 1.0;
       ELSE:
-         retvalu = (1.0 - xx) / (1.0 - parb);
+         retvalu = (1.0 - xx) / (1.0 - prob_b);
       IF_END
    IF_END
 
    # scale to force area under PDF == 1.0
-   RETURN retvalu * 2.0 / (1.0 + parb - para);
+   RETURN retvalu * 2.0 / (1.0 + prob_b - prob_a);
 FUNC_END
 
-FUNC DBL trap_cdf(DBL para, DBL parb, DBL xx):
+FUNC DBL trap_cdf(DBL prob_a, DBL prob_b, DBL xx):
    # CDF Trapezoidal Variable
    # Support: [0,1]
-   # Must have 0 <= PARA <= PARB <= 1.0
-   # PDF is bounded by (0,0) (1,0), (PARA,HH) and (PARB,HH)
-   #   where HH = 2 / (1 + PARB - PARA)
+   # Must have 0 <= PROB_A <= PROB_B <= 1.0
+   # PDF is bounded by (0,0) (1,0), (PROB_A,HH) and (PROB_B,HH)
+   #   where HH = 2 / (1 + PROB_B - PROB_A)
    # Support  [0,1]
-   DBL mm;
+   DBL ff;
    DBL retvalu;
 
-   IF para < 0.0 OR parb < para OR 1.0 < parb:
+   IF prob_a < 0.0 OR prob_b < prob_a OR 1.0 < prob_b:
       retvalu = 0.0;
    ELSIF xx <= 0.0:
       retvalu = 0.0;
    ELSIF 1.0 <= xx:
       retvalu = 1.0;
    ELSE:
-      mm = 2.0 / (1.0 + parb - para);
-      IF xx < para:
-         retvalu = mm * xx * xx / (2.0 * para);
-      ELSIF xx < parb:
-         retvalu = mm * (xx - para / 2.0);
+      ff = 2.0 / (1.0 + prob_b - prob_a);
+      IF xx < prob_a:
+         retvalu = ff * xx * xx / (2.0 * prob_a);
+      ELSIF xx < prob_b:
+         retvalu = ff * (xx - prob_a / 2.0);
       ELSE:
-         retvalu = 1.0 - mm * Kw.square(1.0 - xx)
-               / (2.0 * (1.0 - parb));
+         retvalu = 1.0 - ff * Kw.square(1.0 - xx) / (2.0 * (1.0 - prob_b));
       IF_END
    IF_END
 
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL trap_quantile(DBL para, DBL parb, DBL prbx):
+FUNC DBL trap_quantile(DBL prob_a, DBL prob_b, DBL xx):
    # Quantile Trapezoidal Variable
-   # Must have 0 <= PARA <= PARB <= 1.0
-   # PDF is bounded by (0,0) (1,0), (PARA,HH) and (PARB,HH)
-   #    where HH = 2 / (1 + PARB - PARA)
+   # Must have 0 <= PROB_A <= PROB_B <= 1.0
+   # PDF is bounded by (0,0) (1,0), (PROB_A,HH) and (PROB_B,HH)
+   #    where HH = 2 / (1 + PROB_B - PROB_A)
    # Support  [0,1]
-   DBL mm;
+   DBL ff;
    DBL retvalu;
 
-   IF para < 0.0 OR parb < para OR 1.0 < parb:
+   IF prob_a < 0.0 OR prob_b < prob_a OR 1.0 < prob_b:
       retvalu = 0.0;
-   ELSIF prbx <= 0.0:
+   ELSIF xx <= 0.0:
       retvalu = 0.0;
-   ELSIF 1.0 <= prbx:
+   ELSIF 1.0 <= xx:
       retvalu = 1.0;
    ELSE:
-      mm = 2.0 / (1.0 + parb - para);
-      IF prbx < para * mm / 2.0:
-         retvalu = SQRT((2.0 * para * prbx) / mm);
-      ELSIF prbx < 1.0 - mm * (1.0 - parb) / 2.0:
-         retvalu = prbx / mm + para / 2.0;
+      ff = 2.0 / (1.0 + prob_b - prob_a);
+      IF xx < prob_a * ff / 2.0:
+         retvalu = SQRT((2.0 * prob_a * xx) / ff);
+      ELSIF xx < 1.0 - ff * (1.0 - prob_b) / 2.0:
+         retvalu = xx / ff + prob_a / 2.0;
       ELSE:
-         retvalu = 1.0 - Kw.SQRTTWO
-               * SQRT((1.0 - parb) * (1.0 - prbx) / mm);
+         retvalu = 1.0 - SQRT(2.0 * (1.0 - prob_b) * (1.0 - xx) / ff);
       IF_END
    IF_END
 
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL trap_rand(DBL para, DBL parb):
+FUNC DBL trap_rand(DBL prob_a, DBL prob_b):
    # Random Trapezoidal Variable
    # Support  [0,1]
    DBL xx;
@@ -952,14 +973,14 @@ FUNC DBL trap_rand(DBL para, DBL parb):
    retvalu = -1;
    AWAIT 0.0 <= retvalu:
       xx = randd();
-      IF xx < para:
-         IF randd() * para < xx:
+      IF xx < prob_a:
+         IF randd() * prob_a < xx:
             retvalu = xx;
          IF_END
-      ELSIF xx <= parb:
+      ELSIF xx <= prob_b:
          retvalu = xx;
       ELSE:
-         IF randd() * (1.0 - parb) < (1.0 - xx):
+         IF randd() * (1.0 - prob_b) < (1.0 - xx):
             retvalu = xx;
          IF_END
       IF_END
@@ -968,77 +989,72 @@ FUNC DBL trap_rand(DBL para, DBL parb):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL pareto_pdf(DBL shap, DBL scal, DBL xx):
-   # PDF Pareto distribution with shape 0 < SHAP
-   # and scale 0 < SCAL.
+FUNC DBL pareto_pdf(DBL para_shape, DBL para_scaling, DBL xx):
+   # PDF Pareto distribution with shape 0 < PARA_SHAPE
+   # and scale 0 < PARA_SCALING.
    # Support: [0,Inf)
-   # == SHAP * (SCAL / XX) ** SHAP / XX
-   # MEAN       IF SHAP <= 1, INF
-   #            ELSE, SHAP * SCAL / (SHAP - 1)
-   # VARIANCE   IF SHAP <= 2, INF
-   #         ELSE, SHAP**2 * SCAL / ((SHAP - 1)**2 * (SHAP - 2))
-   # MODE       SCAL
-   # MEDIAN     SCAL * POW(2, 1 / SHAP)
-   RETURN shap * POW(scal / xx, shap) / xx;
+   # == PARA_SHAPE * (PARA_SCALING / XX) ** PARA_SHAPE / XX
+   # MEAN       IF PARA_SHAPE <= 1: INF
+   # MEAN       ELSE: PARA_SHAPE * PARA_SCALING / (PARA_SHAPE - 1)
+   # VARIANCE   IF PARA_SHAPE <= 2: INF
+   # VARIANCE   ELSE: PARA_SHAPE**2 * PARA_SCALING
+   # VARIANCE         / ((PARA_SHAPE - 1)**2 * (PARA_SHAPE - 2))
+   # MODE       PARA_SCALING
+   # MEDIAN     PARA_SCALING * POW(2, 1 / PARA_SHAPE)
+   RETURN para_shape * POW(para_scaling / xx, para_shape) / xx;
 FUNC_END
 
-FUNC DBL pareto_cdf(DBL shap, DBL scal, DBL xx):
-   # CDF Pareto distribution with shape 0 < SHAP
-   # and scale 0 < SCAL.
+FUNC DBL pareto_cdf(DBL para_shape, DBL para_scaling, DBL xx):
+   # CDF Pareto distribution with shape 0 < PARA_SHAPE
+   # and scale 0 < PARA_SCALING.
    # Support: [0,Inf)
-   # == 1 - (SCAL / XX) ** SHAP
-   # MEAN       IF SHAP <= 1, INF
-   #            ELSE, SHAP * SCAL / (SHAP - 1)
-   # VARIANCE   IF SHAP <= 2, INF
-   #         ELSE, SHAP**2 * SCAL / ((SHAP - 1)**2 * (SHAP - 2))
-   # MODE       SCAL
-   # MEDIAN     SCAL * POW(2, 1 / SHAP)
-   RETURN 1.0 - POW(scal / xx, shap);
+   # == 1 - (PARA_SCALING / XX) ** PARA_SHAPE
+   RETURN 1.0 - POW(para_scaling / xx, para_shape);
 FUNC_END
 
-FUNC DBL pareto_quantile(DBL shap, DBL scal, DBL prbx):
-   # Quantile Pareto distribution with shape 0 < SHAP
-   # and scale 0 < SCAL.
-   RETURN scal / POW(1.0 - prbx, 1.0 / shap);
+FUNC DBL pareto_quantile(DBL para_shape, DBL para_scaling, DBL probx):
+   # Quantile Pareto distribution with shape 0 < PARA_SHAPE
+   # and scale 0 < PARA_SCALING.
+   RETURN para_scaling / POW(1.0 - probx, 1.0 / para_shape);
 FUNC_END
-#TEST:pareto_quantile(1.3,2.4,pareto_cdf(1.3,2.4, 3.5))==3.5;
+#TEST:pareto_quantile(1.3, 2.4, pareto_cdf(1.3,2.4, 3.5)) == 3.5;
 
-FUNC DBL pareto_rand(DBL shap, DBL scal):
-   # Random Pareto Variable with shape 0 < SHAP
-   # and scale 0 < SCAL.
-   RETURN scal / POW(randd(), 1.0 / shap);
+FUNC DBL pareto_rand(DBL para_shape, DBL para_scaling):
+   # Random Pareto Variable with shape 0 < PARA_SHAPE
+   # and scale 0 < PARA_SCALING.
+   RETURN para_scaling / POW(randd(), 1.0 / para_shape);
 FUNC_END
 
-FUNC DBL gompertz_pdf(DBL shap, DBL scal, DBL xx):
-   # PDF Gompertz distribution with shape 0 < SHAP
-   # and scale 0 < SCAL.
+FUNC DBL gompertz_pdf(DBL para_shape, DBL para_scaling, DBL xx):
+   # PDF Gompertz distribution with shape 0 < PARA_SHAPE
+   # and scale 0 < PARA_SCALING.
    # Support: [0,Inf)
-   # MEAN       EXP(SHAP) * Kw.Ei(-SHAP) / SCAL
-   # MODE       IF SHAP < 1: -LN(SHAP) / SCAL
-   #            ELSE: 0
-   # MEDIAN     LN(LN(0.5) / SHAP + 1) / SCAL
-   RETURN scal * shap * EXP(shap + scal * xx
-            - shap * EXP(scal * xx));
+   # MEAN       EXP(PARA_SHAPE) * Kw.Ei(-PARA_SHAPE) / PARA_SCALING
+   # MODE       IF PARA_SHAPE < 1: -LN(PARA_SHAPE) / PARA_SCALING
+   # MODE       ELSE: 0
+   # MEDIAN     LN(LN(0.5) / PARA_SHAPE + 1) / PARA_SCALING
+   RETURN EXP(para_scaling * xx + para_shape * (1 - EXP(para_scaling * xx)))
+            * para_scaling * para_shape;
 FUNC_END
 
-FUNC DBL gompertz_cdf(DBL shap, DBL scal, DBL xx):
-   # CDF gompertz distribution with shape 0 < SHAP
-   # and scale 0 < SCAL.
+FUNC DBL gompertz_cdf(DBL para_shape, DBL para_scaling, DBL xx):
+   # CDF gompertz distribution with shape 0 < PARA_SHAPE
+   # and scale 0 < PARA_SCALING.
    # Support: [0,Inf)
-   RETURN 1.0 - EXP(-shap * (EXP(scal * xx) - 1));
+   RETURN 1.0 - EXP(para_shape * (1.0 - EXP(para_scaling * xx)));
 FUNC_END
 
-FUNC DBL gompertz_quantile(DBL shap, DBL scal, DBL prbx):
-   # Quantile Gompertz distribution with shape 0 < SHAP
-   # and scale 0 < SCAL.
-   RETURN LN(1 - LN(1.0 - prbx) / shap) / scal;
+FUNC DBL gompertz_quantile(DBL para_shape, DBL para_scaling, DBL probx):
+   # Quantile Gompertz distribution with shape 0 < PARA_SHAPE
+   # and scale 0 < PARA_SCALING.
+   RETURN LN(1 - LN(1.0 - probx) / para_shape) / para_scaling;
 FUNC_END
-#TEST:gompertz_quantile(1.3,2.4,gompertz_cdf(1.3,2.4,0.7))==0.7;
+#TEST:gompertz_quantile(1.3,2.4, gompertz_cdf(1.3,2.4,0.7))-0.7;
 
-FUNC DBL gompertz_rand(DBL shap, DBL scal):
-   # Random Gompertz Variable with shape 0 < SHAP
-   # and scale 0 < SCAL.
-   RETURN gompertz_quantile(shap, scal, randd());
+FUNC DBL gompertz_rand(DBL para_shape, DBL para_scaling):
+   # Random Gompertz Variable with shape 0 < PARA_SHAPE
+   # and scale 0 < PARA_SCALING.
+   RETURN gompertz_quantile(para_shape, para_scaling, randd());
 FUNC_END
 
 FUNC DBL zipf_pdf(DBL ss, INT max_kk, INT kk):
@@ -1067,14 +1083,14 @@ FUNC DBL zipf_cdf(DBL ss, INT max_kk, INT kk):
    RETURN retvalu;
 FUNC_END
 
-FUNC INT zipf_quantile(DBL ss, INT max_kk, DBL prbx):
+FUNC INT zipf_quantile(DBL ss, INT max_kk, DBL probx):
    # Inverse Zipf distribution w/ parameter SS
    #    over integers KK in [1,MAX_KK]
    INT ii;
    DBL summ;
    DBL target;
 
-   target = prbx * Kw.hnm(max_kk, ss);
+   target = probx * Kw.hnm(max_kk, ss);
    summ = 0.0;
    AWAIT target <= summ COUNT ii FROM 1:
       summ += 1.0 / POW(ii, ss);
@@ -1088,90 +1104,90 @@ FUNC INT zipf_rand(DBL ss, INT max_kk):
    RETURN zipf_quantile(ss, max_kk, randd());
 FUNC_END
 
-FUNC DBL beta_pdf(DBL shap_a, DBL shap_b, DBL xx):
-   # PDF Beta distribution w/ shape 0 < SHAP_A,SHAP_B
+FUNC DBL beta_pdf(DBL para_shape_a, DBL para_shape_b, DBL xx):
+   # PDF Beta distribution w/ shape 0 < PARA_SHAPE_A,PARA_SHAPE_B
    # Support: (-Inf,Inf)
-   RETURN POW(xx, shap_a - 1.0) * POW((1.0 - xx), shap_b - 1.0)
-            / beta(shap_a, shap_b);
+   RETURN POW(xx, para_shape_a - 1.0) * POW((1.0 - xx), para_shape_b - 1.0)
+            / beta(para_shape_a, para_shape_b);
 FUNC_END
 
-FUNC DBL beta_cdf(DBL shap_a, DBL shap_b, DBL xx):
+FUNC DBL beta_cdf(DBL para_shape_a, DBL para_shape_b, DBL xx):
    # CDF Beta distribution with shape parameters
-   #    0 < SHAP_A and 0 < SHAP_B
-   RETURN betainc(shap_a, shap_b, xx);
+   #    0 < PARA_SHAPE_A and 0 < PARA_SHAPE_B
+   RETURN betainc(para_shape_a, para_shape_b, xx);
 FUNC_END
 
-FUNC DBL beta_quantile(DBL shap_a, DBL shap_b, DBL prbx):
+FUNC DBL beta_quantile(DBL para_shape_a, DBL para_shape_b, DBL probx):
    # Quantile Beta distribution with shape parameters
-   #    0 < SHAP_A and 0 < SHAP_B
+   #    0 < PARA_SHAPE_A and 0 < PARA_SHAPE_B
    DBL retvalu;
    {SECANT_DECLARATIONS}
 
-   IF prbx <= 0.0:
+   IF probx <= 0.0:
       retvalu = 0.0;
-   ELSIF 1.0 <= prbx:
+   ELSIF 1.0 <= probx:
       retvalu = 1.0;
    ELSE:
       {SECANT_LOOP 0.25 ; 0.50
-            ; prbx - beta_cdf(shap_a, shap_b, scvx_xx) }
+               ; probx - beta_cdf(para_shape_a, para_shape_b, scvx_xx) }
       retvalu = scvx_xx;
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL beta_rand(DBL shap_a, DBL shap_b):
-   # Random Beta Variable w/ shape 0 < SHAP_A,SHAP_B
-   RETURN beta_quantile(shap_a, shap_b, randd());
+FUNC DBL beta_rand(DBL para_shape_a, DBL para_shape_b):
+   # Random Beta Variable w/ shape 0 < PARA_SHAPE_A,PARA_SHAPE_B
+   RETURN beta_quantile(para_shape_a, para_shape_b, randd());
 FUNC_END
 
-FUNC DBL gamma_pdf(DBL shap, DBL xx):
-   # PDF gamma distribution w/ shape SHAP
+FUNC DBL gamma_pdf(DBL para_shape, DBL xxp):
+   # PDF gamma distribution w/ shape PARA_SHAPE
    # Support: (0,Inf)
-   # MEAN       SHAP
-   # VARIANCE   SHAP
-   # MODE       SHAP - 1 for 1 <= SHAP
+   # MEAN       PARA_SHAPE
+   # VARIANCE   PARA_SHAPE
+   # MODE       PARA_SHAPE - 1 for 1 <= PARA_SHAPE
    # MEDIAN     ?
    DBL retvalu;
 
-   IF xx <= 0.0:
+   IF xxp <= 0.0:
       retvalu = 0.0;
    ELSE:
-      retvalu = EXP(LN(xx) * (shap - 1.0) - xx)
-               / Kw.tgamma(shap);
+      retvalu = EXP(LN(xxp) * (para_shape - 1.0) - xxp)
+               / Kw.tgamma(para_shape);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL gamma_cdf(DBL shap, DBL xx):
-   # CDF gamma distribution w/ shape SHAP
+FUNC DBL gamma_cdf(DBL para_shape, DBL xxp):
+   # CDF gamma distribution w/ shape PARA_SHAPE
    # Support: (0,Inf)
-   # MEAN       SHAP
-   # VARIANCE   SHAP
-   # MODE       SHAP - 1 for 1 <= SHAP
+   # MEAN       PARA_SHAPE
+   # VARIANCE   PARA_SHAPE
+   # MODE       PARA_SHAPE - 1 for 1 <= PARA_SHAPE
    # MEDIAN     ?
    DBL retvalu;
    DBL rr;
    INT ii;
    DBL sum;
 
-   IF xx <= 0.0 OR shap <= 0.0:
+   IF xxp <= 0.0 OR para_shape <= 0.0:
       retvalu = 0.0;
-   ELSIF Kw.isint(shap):
+   ELSIF Kw.isint(para_shape):
       sum = 1.0;
       rr = 1.0;
-      FOR ii FROM 1 TO shap - 1:
-         rr *= xx / ii;
+      FOR ii FROM 1 TO para_shape - 1:
+         rr *= xxp / ii;
          sum += rr;
       FOR_END
-      retvalu = 1.0 - EXP(-xx) * sum;
+      retvalu = 1.0 - EXP(-xxp) * sum;
    ELSE:
-      retvalu = Kw.rligamma(shap, xx);
+      retvalu = Kw.rligamma(para_shape, xxp);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL gamma_rand(DBL shap):
-   # Random Gamma Variable w/ shape SHAP
+FUNC DBL gamma_rand(DBL para_shape):
+   # Random Gamma Variable w/ shape PARA_SHAPE
    DBL i_shape;
    DBL f_shape;
    DBL rval;
@@ -1185,14 +1201,14 @@ FUNC DBL gamma_rand(DBL shap):
    DBL qq;
    DBL pp;
 
-   i_shape = FLOOR(shap);
+   i_shape = FLOOR(para_shape);
    rval = 1.0;
-   IF shap < 5:
+   IF para_shape < 5:
       FOR jj FROM 1 TO i_shape:
          rval *= randd();
       FOR_END
       rval = -LN(rval);
-      f_shape = shap - i_shape;
+      f_shape = para_shape - i_shape;
       IF 0.00001 < f_shape:
          # from "The Art of Computer Programming"
          # Volume 2 1997 by Donald Knuth, Page 587
@@ -1212,12 +1228,12 @@ FUNC DBL gamma_rand(DBL shap):
    ELSE:
       # from "The Art of Computer Programming"
       # Volume 2 1997 by Donald Knuth, Page 134
-      ee = shap - 1.0;
-      gg = SQRT(shap + ee);
+      ee = para_shape - 1.0;
+      gg = SQRT(para_shape + ee);
       yy = 0.0;
       ff = 0.0;
-      WHILE rval <= 0.0 OR (1.0 + yy * yy)
-               * EXP(ee * LN(rval / ee) - ff) < randd():
+      WHILE rval <= 0.0 OR (1.0 + yy * yy) * EXP(ee * LN(rval / ee) - ff)
+               < randd():
          xx = Kw.PI * randd();
          yy = SIN(xx) / COS(xx);
          ff = gg * yy;
@@ -1227,7 +1243,7 @@ FUNC DBL gamma_rand(DBL shap):
    RETURN rval;
 FUNC_END
 
-FUNC DBL chisqr_pdf(DBL df, DBL xx):
+FUNC DBL chisqr_pdf(DBL df, DBL xxp):
    # PDF Chi-square distribution
    # Support: (0,Inf)
    # MEAN       DF
@@ -1236,16 +1252,16 @@ FUNC DBL chisqr_pdf(DBL df, DBL xx):
    # MEDIAN     about DF * (1 - 2 / (9 * DF**2))
    DBL retvalu;
 
-   IF xx <= 0.0:
+   IF xxp <= 0.0:
       retvalu = 0.0;
    ELSE:
-      retvalu = (EXP((LN(xx / 2.0) * df - xx) / 2.0)
-         / (xx * Kw.tgamma(df / 2.0)));
+      retvalu = EXP((LN(xxp / 2.0) * df - xxp) / 2.0)
+               / (xxp * Kw.tgamma(df / 2.0));
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL chisqr_cdf(DBL df, DBL xx):
+FUNC DBL chisqr_cdf(DBL df, DBL xxp):
    # CDF Chi-square distribution
    # Support: (0,Inf)
    # MEAN       DF
@@ -1254,10 +1270,10 @@ FUNC DBL chisqr_cdf(DBL df, DBL xx):
    # MEDIAN     about DF * (1 - 2 / (9 * DF**2))
    DBL retvalu;
 
-   IF xx <= 0.0:
+   IF xxp <= 0.0:
       retvalu = 0.0;
    ELSE:
-      retvalu = (1.0 - Kw.ruigamma(df / 2.0, xx / 2.0));
+      retvalu = (1.0 - Kw.ruigamma(df / 2.0, xxp / 2.0));
    IF_END
    RETURN retvalu;
 FUNC_END
@@ -1279,24 +1295,23 @@ FUNC DBL chisqr_rand(DBL df):
    RETURN sum;
 FUNC_END
 
-FUNC DBL binomial_pdf(DBL prob, INT success, INT trial):
+FUNC DBL binomial_pdf(DBL prob_a, INT success, INT trial):
    # PDF binomial distribution
    # Support: 0..SUCCESS
    DBL retvalu;
    IF success < 0 OR trial < success:
       retvalu = 0.0;
    ELSE:
-      retvalu = comb(trial, success)
-         * POW(prob, success)
-         * POW(1.0 - prob, trial - success);
+      retvalu = comb(trial, success) * POW(prob_a, success)
+               * POW(1.0 - prob_a, trial - success);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL binomial_cdf(DBL prob, INT success, INT trial):
+FUNC DBL binomial_cdf(DBL prob_a, INT success, INT trial):
    # CDF binomial distribution
    # Support: 0..SUCCESS
-   # Must have  0 <= PROB <= 1 ; SUCCESS <= TRIAL
+   # Must have  0 <= PROB_A <= 1 ; SUCCESS <= TRIAL
    #  == betainc(TRIAL - SUCCESS, SUCCESS + 1.0, 1.0 - PROB)
    DBL lsum;
    DBL sfactor;
@@ -1304,21 +1319,21 @@ FUNC DBL binomial_cdf(DBL prob, INT success, INT trial):
    DBL mu;
    DBL kk;
 
-   IF prob <= 0.0 OR success < 0:
+   IF prob_a <= 0.0 OR success < 0:
       lsum = 0.0;
-   ELSIF 1.0 <= prob OR trial <= success:
+   ELSIF 1.0 <= prob_a OR trial <= success:
       lsum = 1.0;
    ELSE:
       # Use binomial_cdf(PR,K,N) = binomial_cdf(1-PR,N-K-1,N)
       IF trial <= 2 * success:
          ss = trial - success - 1;
-         prob = 1.0 - prob;
+         prob_a = 1.0 - prob_a;
       ELSE:
          ss = success;
       IF_END
 
-      sfactor = POW(1.0 - prob, trial);
-      mu = prob / (1.0 - prob);
+      sfactor = POW(1.0 - prob_a, trial);
+      mu = prob_a / (1.0 - prob_a);
       lsum = 0.0;
       FOR kk FROM 0 TO ss:
          lsum += sfactor;
@@ -1332,14 +1347,14 @@ FUNC DBL binomial_cdf(DBL prob, INT success, INT trial):
    RETURN lsum;
 FUNC_END
 
-FUNC DBL binomial_rand(DBL prob, DBL rr):
+FUNC DBL binomial_rand(DBL prob_a, DBL rr):
    # Random Binomial Variable
-   # count of successes with probability PROB in RR trials
+   # count of successes with probability PROB_A in RR trials
    DBL successes;
 
    successes = 0.0;
    WHILE 0 < rr:
-      IF randd() < prob:
+      IF randd() < prob_a:
          successes += 1;
       IF_END
       rr -= 1;
@@ -1392,33 +1407,33 @@ FUNC INT benford_rand(INT max_kk):
    RETURN ii;
 FUNC_END
 
-FUNC DBL nbd_pdf(DBL prob, INT rsuccesses, INT kfailures):
+FUNC DBL nbd_pdf(DBL prob_a, INT rsuccesses, INT kfailures):
    # PDF Negative Binomial Distribution with
-   #    success probability PROB, RSUCCESSES successes,
+   #    success probability PROB_A, RSUCCESSES successes,
    #    and KFAILURES failures.
-   # Support: 0..Inf
+   # Support: Z*,Z*
    # return probability that the RSUCCESESth success
    #    is on the (KFAILURES + RSUCCESSES)th trial
-   #    given probability of success == PROB
+   #    given probability of success == PROB_A
    RETURN comb(rsuccesses + kfailures - 1, kfailures)
-         * POW(1.0 - prob, kfailures) * POW(prob, rsuccesses);
+            * POW(prob_a, rsuccesses) * POW(1.0 - prob_a, kfailures);
 FUNC_END
 
-FUNC DBL nbd_cdf(DBL prob, INT rsuccesses, INT kfailures):
+FUNC DBL nbd_cdf(DBL prob_a, INT rsuccesses, INT kfailures):
    # CDF Negative Binomial Distribution with
-   #    success probability PROB, RSUCCESSES successes,
+   #    success probability PROB_A, RSUCCESSES successes,
    #    and KFAILURES failures.
    # Support: 0..Inf
    # return probability that the RSUCCESESth success
    #    occurs before the (KFAILURES + RSUCCESSES + 1 )th trial
-   #    given probability of success == PROB
-   RETURN 1.0 - betainc(kfailures + 1, rsuccesses, 1.0 - prob);
+   #    given probability of success == PROB_A
+   RETURN 1.0 - betainc(kfailures + 1, rsuccesses, 1.0 - prob_a);
 FUNC_END
 
-FUNC INT nbd_rand(DBL prob, INT rsuccesses):
+FUNC INT nbd_rand(DBL prob_a, INT rsuccesses):
    # Random Negative Binomial Variable
    # Return number of failures before the RSUCCESSESth
-   #     success given probability of success == PROB
+   #     success given probability of success == PROB_A
    # support is integers in [0,+Inf)
    INT failures;
    INT rr;
@@ -1426,7 +1441,7 @@ FUNC INT nbd_rand(DBL prob, INT rsuccesses):
    rr = rsuccesses;
    failures = 0;
    WHILE 0 < rr:
-      IF randd() <= prob:
+      IF randd() <= prob_a:
          rr -= 1;   # success
       ELSE:
          failures += 1;   # failure
@@ -1436,67 +1451,67 @@ FUNC INT nbd_rand(DBL prob, INT rsuccesses):
    RETURN failures;
 FUNC_END
 
-FUNC DBL polya_pdf(DBL prob, DBL rsuccesses, DBL kfailures):
+FUNC DBL polya_pdf(DBL prob_a, DBL rsuccesses, DBL kfailures):
    RETURN combx(rsuccesses + kfailures - 1, kfailures)
-         * POW(1.0 - prob, kfailures) * POW(prob, rsuccesses);
+            * POW(1.0 - prob_a, kfailures) * POW(prob_a, rsuccesses);
 FUNC_END
 
-FUNC DBL polya_cdf(DBL prob, DBL rsuccesses, DBL kfailures):
-   RETURN 1.0 - betainc(kfailures + 1, rsuccesses, 1.0 - prob);
+FUNC DBL polya_cdf(DBL prob_a, DBL rsuccesses, DBL kfailures):
+   RETURN 1.0 - betainc(kfailures + 1, rsuccesses, 1.0 - prob_a);
 FUNC_END
 
-FUNC DBL polya_rand(DBL tt, DBL prob):
+FUNC DBL polya_rand(DBL tt, DBL probx):
    # Random Polya Variable
    # a real extension of negative binomial distribution
    DBL nn;
-   DBL mm;
+   DBL ff;
    DBL rr;
    INT uu;
    DBL qq;
 
    nn = 0;
-   mm = tt - 1;
-   qq = EXP(tt * LN(prob));
+   ff = tt - 1;
+   qq = EXP(tt * LN(probx));
    rr = qq;
    uu = randd();
 
    WHILE rr <= uu:
       nn += 1;
-      mm += 1;
-      qq *= (1.0 - prob) * mm / nn;
+      ff += 1;
+      qq *= (1.0 - probx) * ff / nn;
       rr += qq;
    WHILE_END
 
    RETURN nn;
 FUNC_END
 
-FUNC DBL zeta_pdf(DBL ss, INT xx):
+FUNC DBL zeta_pdf(DBL ss, INT ixxp):
    # PDF zeta distribution w/ parameter SS
-   # Support: 0..Inf
+   # Support: Z*
    DBL retvalu;
 
-   IF xx <= 0.0:
+   IF ixxp <= 0.0:
       retvalu = 0.0;
    ELSE:
-      retvalu = 1.0 / (Kw.zeta(ss) * POW(xx, ss));
+      retvalu = 1.0 / (Kw.zeta(ss) * POW(ixxp, ss));
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL zeta_cdf(DBL ss, INT xx):
+FUNC DBL zeta_cdf(DBL ss, INT ixxp):
    # CDF zeta distribution w/ parameter SS
-   # Support: 1..Inf
+   # Support: Z*
    DBL retvalu;
 
-   IF xx <= 0.0:
+   IF ixxp <= 0.0:
       retvalu = 0.0;
    ELSE:
-      retvalu = Kw.hnm(xx, ss) / Kw.zeta(ss);
+      retvalu = Kw.hnm(ixxp, ss) / Kw.zeta(ss);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL ks_cdf(INT nn, DBL xx):
+FUNC DBL ks_cdf(INT para_nn, DBL xx):
    # CDF Kolmogorov-Smirnov distribution
    # from "The Art of Computer Programming" by D. E. Knuth
    # Volume 2 3ed. Pg 58 and 561
@@ -1506,32 +1521,32 @@ FUNC DBL ks_cdf(INT nn, DBL xx):
    DBL sum;
    DBL tt;
 
-   IF nn <= 0 OR xx <= 0.0:
+   IF para_nn <= 0 OR xx <= 0.0:
       retvalu = 0.0;
    ELSE:
-      IF 30 < nn:
+      IF 30 < para_nn:
          tt = xx;
          two_tt_sqr = 2.0 * tt * tt;
-         retvalu = 1.0 - EXP(-two_tt_sqr)
-            * (1.0 - 2.0 * tt / (3.0 * SQRT(nn))
-            - two_tt_sqr * (two_tt_sqr / 9.0 - 1.0 / 3.0) / nn);
+         sum = EXP(-two_tt_sqr) * (1.0 - 2.0 * tt / (3.0 * SQRT(para_nn))
+                  - two_tt_sqr * (two_tt_sqr / 9.0 - 1.0 / 3.0) / para_nn);
+         retvalu = 1.0 - sum;
       ELSE:
-         tt = xx * SQRT(nn);
+         tt = xx * SQRT(para_nn);
          sum = 0.0;
-         kk = nn;
+         kk = para_nn;
          WHILE tt < kk:
-            sum += Kw.comb(nn, kk) * POW(kk - tt, kk)
-                     * POW(tt + nn - kk, nn - kk - 1);
+            sum += Kw.comb(para_nn, kk) * POW(kk - tt, kk)
+                     * POW(tt + para_nn - kk, para_nn - kk - 1);
             kk -= 1;
          WHILE_END
-         retvalu = 1.0 - sum * tt / POW(nn, nn);
+         retvalu = 1.0 - sum * tt / POW(para_nn, para_nn);
       IF_END
    IF_END
    RETURN retvalu;
 FUNC_END
 
 FUNC DBL ks_a_cdf(DBL xx):
-   # from https://en.wikipedia.org/wiki/ Kolmogorov-Smirnov_test
+   # from Wikipedia - Kolmogorov-Smirnov_test
    #      Pr(K <= XX) = ks_a_cdf(XX)
    # where K is a Kolmogorov Distribution
    DBL sum;
@@ -1556,30 +1571,30 @@ FUNC DBL ks_a_cdf(DBL xx):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL ks_b_cdf(INT nn, DBL xx):
-   # from https://en.wikipedia.org/wiki/ Kolmogorov-Smirnov_test
+FUNC DBL ks_b_cdf(INT para_nn, DBL xx):
+   # from Wikipedia - Kolmogorov-Smirnov_test
    # Thin wrapper around ks_a_cdf where XX is replaced with
-   #   XX + 1 / (6 * sqrt(NN)) + (XX - 1) / (4 * NN)
+   #   XX + 1 / (6 * sqrt(PARA_NN)) + (XX - 1) / (4 * PARA_NN)
    DBL retvalu;
    DBL nxx;
 
-   IF xx < 0.0001 OR nn <= 0:
+   IF xx < 0.0001 OR para_nn <= 0:
       retvalu = 0.0;
    ELSE:
-      nxx = xx + (2.0 * SQRT(nn) + 3.0 * xx - 3.0) / (12.0 * nn);
+      nxx = xx + (2.0 * SQRT(para_nn) + 3.0 * xx - 3.0) / (12.0 * para_nn);
       retvalu = ks_a_cdf(nxx);
    IF_END
 
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL ks_quantile(DBL nn, DBL prbx):
+FUNC DBL ks_quantile(DBL para_nn, DBL probx):
    # Quantile Kolmogorov-Smirnov distribution
    {SECANT_DECLARATIONS}
-   IF NOT Kw.isbetween(prbx, 0.0, 1.0):
+   IF NOT Kw.isbetween(probx, 0.0, 1.0):
       scvx_xx = 0.0;
    ELSE:
-      {SECANT_LOOP 0.25 ; 0.5 ; prbx - ks_cdf(nn, scvx_xx) }
+      {SECANT_LOOP 0.25 ; 0.5 ; probx - ks_cdf(para_nn, scvx_xx) }
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -1587,38 +1602,38 @@ FUNC_END
 FUNC DBL t_pdf(DBL dfn, DBL xx):
    # PDF Students T Distribution
    RETURN Kw.tgamma((dfn + 1.0) / 2.0)
-         * POW((1.0 + Kw.square(xx) / dfn), (-(dfn + 1.0) / 2.0))
-         / (SQRT(dfn * Kw.PI) * Kw.tgamma(dfn / 2.0));
+            * POW((1.0 + Kw.square(xx) / dfn), (-(dfn + 1.0) / 2.0))
+            / (SQRT(dfn * Kw.PI) * Kw.tgamma(dfn / 2.0));
 FUNC_END
 
 BLOCK: # define t_cdf
-   BLOCK_DEF FUNC DBL lf_subtprob(DBL nnx, DBL xx):
+   BLOCK_DEF FUNC DBL lf_subtprob(DBL para_nnx, DBL xx):
       DBL aa;
       DBL bb;
       DBL ww;
       DBL zz;
       DBL yy;
       DBL ii;
-      INT nn;
+      INT para_nn;
       DBL retvalu;
 
-      nn = FLOORL(ABS(nnx));
+      para_nn = FLOORL(ABS(para_nnx));
 
-      ww = ATAN2(xx, SQRT(nn));
+      ww = ATAN2(xx, SQRT(para_nn));
       zz = Kw.square(COS(ww));
       yy = 1.0;
 
-      ii = nn - 2.0;
+      ii = para_nn - 2.0;
       WHILE 2.0 <= ii:
          yy = 1.0 + (ii - 1.0) / ii * zz * yy;
          ii -= 2.0;
       WHILE_END
 
-      IF Kw.iseven(nn):
+      IF Kw.iseven(para_nn):
          aa = SIN(ww) / 2.0;
          bb = 0.5;
       ELSE:
-         IF nn == 1:
+         IF para_nn == 1:
             aa = 0.0;
          ELSE:
             aa = SIN(ww) * COS(ww) / Kw.PI;
@@ -1641,7 +1656,7 @@ BLOCK: # define t_cdf
 BLOCK_END # define t_cdf
 
 BLOCK:
-   BLOCK_DEF FUNC DBL lf_t_quantile(INT ndfx, DBL prbx):
+   BLOCK_DEF FUNC DBL lf_t_quantile(INT ndfx, DBL probx):
       # Quantile Students T distribution
       DBL ux;
       DBL uxsq;
@@ -1656,55 +1671,55 @@ BLOCK:
       DBL nn_a;
       DBL out_sign;
 
-      IF prbx < 0.5:
-         prbx = 1.0 - prbx;
+      IF probx < 0.5:
+         probx = 1.0 - probx;
          out_sign = -1;
       ELSE:
          out_sign = 1;
       IF_END
-      ux = normal_quantile(prbx);# 20121022 kdpw lf_subu(prbx);
+      ux = normal_quantile(probx);# 20121022 kdpw lf_subu(probx);
       uxsq = Kw.square(ux);
 
       aa_x = ((
-            + 1.0) * uxsq
-            + 1.0) / 4.0;
+               + 1.0) * uxsq
+               + 1.0) / 4.0;
       bb_x = (((
-            + 5.0) * uxsq
-            + 16.0) * uxsq
-            + 3.0) / 96.0;
+               + 5.0) * uxsq
+               + 16.0) * uxsq
+               + 3.0) / 96.0;
       cc_x = ((((
-            + 3.0) * uxsq
-            + 19.0) * uxsq
-            + 17.0) * uxsq
-            - 15.0) / 384.0;
+               + 3.0) * uxsq
+               + 19.0) * uxsq
+               + 17.0) * uxsq
+               - 15.0) / 384.0;
       dd_x = (((((
-            + 79.0) * uxsq
-            + 776.0) * uxsq
-            + 1482.0) * uxsq
-            - 1920.0) * uxsq
-            - 945.0) / 92160.0;
+               + 79.0) * uxsq
+               + 776.0) * uxsq
+               + 1482.0) * uxsq
+               - 1920.0) * uxsq
+               - 945.0) / 92160.0;
       ee_x = ((((((
-            + 27.0) * uxsq
-            + 339.0) * uxsq
-            + 930.0) * uxsq
-            - 1782.0) * uxsq
-            - 765.0) * uxsq
-            - 17955.0) / 368640.0; # 20200407 kdw  changed sign
+               + 27.0) * uxsq
+               + 339.0) * uxsq
+               + 930.0) * uxsq
+               - 1782.0) * uxsq
+               - 765.0) * uxsq
+               - 17955.0) / 368640.0; # 20200407 kdw  changed sign
 
-      retvalu = ux * (1.0 + (aa_x + (bb_x + (cc_x + (dd_x
-         + ee_x / ndfx) / ndfx) / ndfx) / ndfx) / ndfx);
+      retvalu = ux * (1.0 + (aa_x + (bb_x + (cc_x + (dd_x + ee_x / ndfx)
+               / ndfx) / ndfx) / ndfx) / ndfx);
 
-      IF ndfx <= Kw.square(Kw.log10(prbx)) + 3.0:
+      IF ndfx <= Kw.square(Kw.log10(probx)) + 3.0:
          nn_a = ndfx + 1.0;
          AWAIT Kw.iszero(retvalu) OR aa_x < retvalu:
             pp_a = lf_subtprob(ndfx, retvalu);
             ee_x = (nn_a * LN(nn_a / (ndfx + Kw.square(retvalu)))
-                  + LN(ndfx / nn_a / Kw.TAU) - 1.0
-                  + (1.0 / nn_a - 1.0 / ndfx) / 6.0) / 2.0;
+                     + LN(ndfx / nn_a / Kw.TAU) - 1.0
+                     + (1.0 / nn_a - 1.0 / ndfx) / 6.0) / 2.0;
             IF Kw.DBLMAXLN / 2.0 < ee_x: # prevent exp overflow
                delta = 0.0;
             ELSE:
-               delta = (pp_a - prbx) / EXP(ee_x);
+               delta = (pp_a - probx) / EXP(ee_x);
             IF_END
             retvalu -= delta;
             # reuse aa_x
@@ -1714,21 +1729,21 @@ BLOCK:
       RETURN out_sign * retvalu;
    FUNC_END
 
-   FUNC DBL t_quantile(DBL dfx, DBL prbx):
+   FUNC DBL t_quantile(DBL dfx, DBL probx):
       # Quantile Students T distribution
       INT ndfx;
       DBL retvalu;
 
       ndfx = FLOOR(ABS(dfx));
 
-      IF Kw.iszero(prbx - 0.5):
+      IF Kw.iszero(probx - 0.5):
          retvalu = 0.0;
-      ELSIF prbx <= 0.0:
+      ELSIF probx <= 0.0:
          retvalu = - Kw.DBLMAX;
-      ELSIF 1.0 <= prbx:
+      ELSIF 1.0 <= probx:
          retvalu = Kw.DBLMAX;
       ELSE:
-         retvalu = lf_t_quantile(ndfx, prbx);
+         retvalu = lf_t_quantile(ndfx, probx);
       IF_END
 
       RETURN retvalu;
@@ -1745,13 +1760,13 @@ FUNC DBL t_cdf__1(DBL dfx, DBL xx):
    RETURN Kw.betainc__1(dfx / 2.0, dfx / 2.0, zz);
 FUNC_END
 
-FUNC DBL t_quantile__1(DBL dfx, DBL prbx):
+FUNC DBL t_quantile__1(DBL dfx, DBL probx):
    # Quantile Students T distribution
    {SECANT_DECLARATIONS}
-   IF NOT Kw.isbetween(prbx, 0.0, 1.0):
+   IF NOT Kw.isbetween(probx, 0.0, 1.0):
       scvx_xx = 0.0;
    ELSE:
-      {SECANT_LOOP 0.25 ; 0.5 ; prbx - t_cdf(dfx, scvx_xx) }
+      {SECANT_LOOP 0.25 ; 0.5 ; probx - t_cdf(dfx, scvx_xx) }
    IF_END
    RETURN scvx_xx;
 FUNC_END
@@ -1821,8 +1836,7 @@ BLOCK:
          FOR ix FROM dfn_b - 2 TO 3 BY -2:
             ax = 1.0 + (ix - 1.0) / ix * zx * ax;
          FOR_END
-         retvalu = (pp_a + 1.0
-            - (4.0 / Kw.TAU) * (yx + SIN(yx) * COS(yx) * ax));
+         retvalu = pp_a + 1.0 - 4.0 * (yx + SIN(yx) * COS(yx) * ax) / Kw.TAU;
          IF retvalu < 0.0:
             retvalu = 0.0;
          IF_END
@@ -1830,90 +1844,79 @@ BLOCK:
       RETURN retvalu;
    FUNC_END
 
-   BLOCK_DEF FUNC DBL lf_subf_two(DBL nx, DBL mm, DBL pp):
+   BLOCK_DEF FUNC DBL lf_subf_two(DBL nx, DBL qq, DBL pp):
       DBL uu;
-      DBL nx_sub_two;
+      DBL nxs;
       DBL xx_prev;
       DBL xx;
       DBL zz;
 
       uu = chisqr_cdf(nx, pp);
-      nx_sub_two = nx - 2.0;
-      xx = (uu / nx
-         * (1.0
-         + ((uu - nx_sub_two) / 2.0
-            + (((4.0 * uu - 11.0 * nx_sub_two) * uu
-               + nx_sub_two * (7.0 * nx - 10.0)) / 24.0
-            + (((2.0 * uu - 10.0 * nx_sub_two) * uu
-               + nx_sub_two * (17.0 * nx - 26.0)) * uu
-            - nx_sub_two * nx_sub_two * (9.0 * nx - 6.0)) / 48.0
-         / mm) / mm) / mm));
+      nxs = nx - 2.0;
+      xx = (uu / nx * (1.0 + ((uu - nxs) / 2.0 + (((4.0 * uu - 11.0 * nxs)
+               * uu + nxs * (7.0 * nx - 10.0)) / 24.0 + (((2.0 * uu
+               - 10.0 * nxs) * uu + nxs * (17.0 * nx - 26.0)) * uu
+               - nxs * nxs * (9.0 * nx - 6.0)) / 48.0 / qq) / qq) / qq));
 
       AWAIT Kw.iswithin(xx, xx_prev, 0.00001):
          IF xx <= 0.0:
             AWAIT_EXIT;
          IF_END
-         zz = EXP(
-            ((nx + mm) * LN((nx + mm) / (nx * xx + mm))
-               + (nx - 2.0) * LN(xx)
-               + LN(nx * mm / (nx + mm))
-               - Kw.LNTWO - LN(Kw.TAU)
-               - (1.0 / nx + 1.0 / mm - 1.0 / (nx + mm)) / 6.0
-            ) / 2.0);
+         zz = EXP(((nx + qq) * LN((nx + qq) / (nx * xx + qq))
+                  + (nx - 2.0) * LN(xx) + LN(nx * qq / (nx + qq)) - Kw.TWOLN
+                  - LN(Kw.TAU) - (1.0 / nx + 1.0 / qq - 1.0 / (nx + qq))
+                  / 6.0) / 2.0);
          xx_prev = xx;
-         xx += (lf_subfprob(nx, mm, xx) - pp) / zz;
+         xx += (lf_subfprob(nx, qq, xx) - pp) / zz;
       AWAIT_END
       RETURN xx;
    FUNC_END
 
-   BLOCK_DEF FUNC DBL lf_subfx(INT nx, INT mm, DBL pp):
+   BLOCK_DEF FUNC DBL lf_subfx(INT nx, INT jj, DBL pp):
       DBL retvalu;
       DBL uu;
       DBL aa;
 
       IF Kw.iseq(pp, 1.0):
          retvalu = 0.0;
-      ELSIF mm == 0:
+      ELSIF jj == 0:
          retvalu = 1.0 / Kw.square(t_quantile(nx
-               , 0.5 - pp / 2.0));
+                  , 0.5 - pp / 2.0));
       ELSIF nx == 1:
-         retvalu = Kw.square(t_quantile(mm, pp / 2.0));
-      ELSIF mm == 2:
-         uu = chisqr_cdf(mm, 1.0 - pp);
-         aa = mm - 2.0;
-         retvalu = 1.0 / (uu / mm * (1.0
-            + ((uu - aa) / 2.0
-            + (((4.0 * uu - 11.0 * aa) * uu
-               + aa * (7.0 * mm - 10.0)) / 24.0
-            + (((2.0 * uu - 10.0 * aa) * uu
-               + aa * (17.0 * mm - 26.0)) * uu
-            - aa * aa * (9.0 * mm - 6.0)
-            ) / 48.0 / nx) / nx) / nx));
-      ELSIF mm < nx:
-         retvalu = 1.0 / lf_subf_two(mm, nx, 1.0 - pp);
+         retvalu = Kw.square(t_quantile(jj, pp / 2.0));
+      ELSIF jj == 2:
+         uu = chisqr_cdf(jj, 1.0 - pp);
+         aa = jj - 2.0;
+         retvalu = 1.0 / (uu / jj * (1.0 + ((uu - aa) / 2.0
+                  + (((4.0 * uu - 11.0 * aa) * uu
+                  + aa * (7.0 * jj - 10)) / 24.0
+                  + (((2.0 * uu - 10.0 * aa) * uu
+                  + aa * (17.0 * jj - 26)) * uu
+                  - aa * aa * (9.0 * jj - 6.0)) / 48.0 / nx) / nx) / nx));
+      ELSIF jj < nx:
+         retvalu = 1.0 / lf_subf_two(jj, nx, 1.0 - pp);
       ELSE:
-         retvalu = lf_subf_two(nx, mm, pp);
+         retvalu = lf_subf_two(nx, jj, pp);
       IF_END
       RETURN retvalu;
    FUNC_END
 
-   FUNC DBL f_quantile(INT dfn_a, INT dfn_b, DBL prbx):
+   FUNC DBL f_quantile(INT dfn_a, INT dfn_b, DBL probx):
       # Quantile Fisher-Senecords Distribution
-      RETURN lf_subfx(dfn_a, dfn_b, 1.0 - prbx);
+      RETURN lf_subfx(dfn_a, dfn_b, 1.0 - probx);
    FUNC_END
 BLOCK_END
 
-FUNC DBL f_quantile__1(INT dfn_a, INT dfn_b, DBL prbx):
+FUNC DBL f_quantile__1(INT dfn_a, INT dfn_b, DBL probx):
    DBL retvalu;
    {SECANT_DECLARATIONS}
 
-   IF prbx <= 0.0:
+   IF probx <= 0.0:
       retvalu = 0.0;
-   ELSIF 1.0 <= prbx:
+   ELSIF 1.0 <= probx:
       retvalu = 1.0;
    ELSE:
-      {SECANT_LOOP 0.25 ; 0.50
-            ; prbx - f_cdf(dfn_a, dfn_b, scvx_xx) }
+      {SECANT_LOOP 0.25 ; 0.50 ; probx - f_cdf(dfn_a, dfn_b, scvx_xx) }
       retvalu = scvx_xx;
    IF_END
    RETURN retvalu;
@@ -1923,7 +1926,7 @@ FUNC DBL mb_pdf(DBL aa, DBL xx):
    # PDF Maxwell-Boltzmann distribution
    # distribution of particle speeds in an idealized gas
    RETURN SQRT(4 / Kw.TAU) * xx * xx
-         * EXP(-xx * xx / (2 * aa * aa)) / (aa * aa * aa);
+            * EXP(-xx * xx / (2 * aa * aa)) / (aa * aa * aa);
 FUNC_END
 
 FUNC DBL mb_cdf(DBL aa, DBL xx):
@@ -1933,12 +1936,12 @@ FUNC DBL mb_cdf(DBL aa, DBL xx):
    # VARIANCE = aa * aa * (3 - 16 / TAU)
    # Let aa = SQRT(BOLTZMANN * temperature / mass)
    # or     = SQRT(GAS * temperature / molar-mass)
-   RETURN Kw.erf(xx / (Kw.SQRTTWO * aa)) - SQRT(4 / Kw.TAU) * xx
-         * EXP(-xx * xx / (2 * aa * aa)) / aa;
+   RETURN Kw.erf(xx / (Kw.TWOSQRT * aa)) - SQRT(4 / Kw.TAU) * xx
+            * EXP(-xx * xx / (2 * aa * aa)) / aa;
 FUNC_END
 
 FUNC DBL maxwell_boltzmann_pdf(DBL temperature
-      , DBL molecular_mass, DBL velocity):
+         , DBL molecular_mass, DBL velocity):
    # PDF Maxwell-Boltzmann distribution
    # distribution of particle speeds in an idealized gas
    DBL aa;
@@ -1948,7 +1951,7 @@ FUNC DBL maxwell_boltzmann_pdf(DBL temperature
 FUNC_END
 
 FUNC DBL maxwell_boltzmann_cdf(DBL temperature
-      , DBL molecular_mass, DBL velocity):
+         , DBL molecular_mass, DBL velocity):
    # CDF Maxwell-Boltzmann distribution
    # distribution of particle speeds in an idealized gas
    # Lat AA = sqrt(BOLTZMANN * TEMPERATURE / MASS)
@@ -1962,7 +1965,7 @@ FUNC DBL maxwell_boltzmann_cdf(DBL temperature
 FUNC_END
 
 FUNC DBL maxwell_juttner_pdf(DBL temperature
-      , DBL molecular_mass, DBL velocity):
+         , DBL molecular_mass, DBL velocity):
    # PDF Maxwell-Juttner distribution
    # distribution of speeds of particles in a hypothetical
    #    gas of relativistic particles.
@@ -1972,8 +1975,7 @@ FUNC DBL maxwell_juttner_pdf(DBL temperature
    DBL dn;
    DBL retvalu;
 
-   IF temperature <= 0.0
-            OR velocity <= 0.0 OR Kw.LIGHT <= velocity
+   IF temperature <= 0.0 OR velocity <= 0.0 OR Kw.LIGHT <= velocity
             OR molecular_mass <= 0.0:
       retvalu = 0.0;
    ELSE:
@@ -2018,8 +2020,8 @@ FUNC DBL blackbodyf_pdf(DBL freq):
    RETURN retvalu * 15.0 / POW(Kw.PI, 4.0);
 FUNC_END
 
-FUNC INT ints_rand(INT nn, READONLY DBL prob_arr_pc[]):
-   # random number in [0,NN) with
+FUNC INT ints_rand(INT para_nn, READONLY DBL prob_arr_pc[]):
+   # random number in [0,PARA_NN) with
    #   p(MM) = PROB_ARR_PC[MM] / SUM(PROB_ARR_PC[])
    DBL sum;
    INT p_ind;
@@ -2028,12 +2030,12 @@ FUNC INT ints_rand(INT nn, READONLY DBL prob_arr_pc[]):
 
    sum = 0.0;
 
-   FOR p_ind FROM 0 TO nn - 1:
+   FOR p_ind FROM 0 TO para_nn - 1:
       sum += prob_arr_pc[p_ind];
    FOR_END
    rndm = randd();
    hh = 0.0;
-   FOR p_ind FROM 0 TO nn - 1:
+   FOR p_ind FROM 0 TO para_nn - 1:
       hh += prob_arr_pc[p_ind] / sum;
       IF rndm < hh:
          FOR_EXIT;
@@ -2042,21 +2044,21 @@ FUNC INT ints_rand(INT nn, READONLY DBL prob_arr_pc[]):
    RETURN p_ind;
 FUNC_END
 
-#TEST:normal_pdf(1)==0.2419707245191433497978;
-#TEST:normal_cdf(0)==0.5;
-#TEST:normal_cdf(1)==0.841344746068542948585232545632037922478;
-#TEST:normal_cdf(2)==0.9772498680518207927997;
-#TEST:normal_quantile(normal_cdf(1.34))==1.34;
-#TEST:normal_quantile(0.5)-0.0;
-#TEST:normal_quantile(0.8413447460685429485852)==1.0;
-#TEST:normal_quantile(0.9772498680518207927997)==2.0;
-#TEST:t_cdf(3,1)==0.8044988905221146790445;
-#TEST:t_quantile(3,0.8044988905221146790445)==1;
-#TEST:t_quantile__1(3,0.8044988905221146790445)==1;
-#TEST:f_cdf(2,3,1.4)==0.6280026109165123031128;
-#TEST:f_quantile(2,3,0.6280026109165123031128)==1.4;
-#TEST:pareto_quantile(1.3,2.4,pareto_cdf(1.3,2.4,3.5))==3.5;
-#TEST:geo_pdf(0.2,3)==0.1024;
-#TEST:geo_cdf(0.2,7)==0.83222784;
-#TEST:nbd_pdf(0.6,5,5)==0.1003290624;
-#TEST:nbd_cdf(0.6,5,3)==0.5940864;
+#TEST: normal_pdf(1) == 0.2419707245191433497978;
+#TEST: normal_cdf(0) == 0.5;
+#TEST: normal_cdf(1) == 0.84134474606854294858523254563203792248;
+#TEST: normal_cdf(2) == 0.9772498680518207927997;
+#TEST: normal_quantile(normal_cdf(1.34)) == 1.34;
+#TEST: normal_quantile(0.5)-0.0;
+#TEST: normal_quantile(0.8413447460685429485852) == 1.0;
+#TEST: normal_quantile(0.9772498680518207927997) == 2.0;
+#TEST: t_cdf(3,1) == 0.8044988905221146790445;
+#TEST: t_quantile(3, 0.8044988905221146790445) == 1;
+#TEST: t_quantile__1(3, 0.8044988905221146790445) == 1;
+#TEST: f_cdf(2,3,1.4) == 0.6280026109165123031128;
+#TEST: f_quantile(2, 3, 0.6280026109165123031128) == 1.4;
+#TEST: pareto_quantile(1.3,2.4, pareto_cdf(1.3,2.4,3.5)) == 3.5;
+#TEST: geo_pdf(0.2,3) == 0.1024;
+#TEST: geo_cdf(0.2,7) == 0.83222784;
+#TEST: nbd_pdf(0.6,5,5) == 0.1003290624;
+#TEST: nbd_cdf(0.6,5,3) == 0.5940864;

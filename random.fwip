@@ -1,4 +1,10 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-15 kdw  indent work
+# 2021-04-11 kdw  indent work
+# 2021-04-10 kdw  indent work
+# 2021-03-27 kdw  long lines update
+# 2021-03-14 kdw  const name renam
+# 2021-02-26 kdw  fwip syntax debugging
 # 2020-08-17 kdw  comment change
 # 2020-07-27 kdw  block syntax
 # 2020-07-25 kdw  s/BITWISE/BIT/
@@ -124,24 +130,23 @@
 
 BLOCK: # Random numbers
    BLOCK_DEF CONST LC_KNUTH_MAX 1073741823; # 2**30-1 MUST BE ODD
-   BLOCK_DEF CONST LC_KNUTH_QUALITY_COUNT 1009;
-   BLOCK_DEF CONST LC_KNUTH_KK_COUNT 100;
+   BLOCK_DEF CONST LC_KNUTH_QUALITY_CNT 1009;
+   BLOCK_DEF CONST LC_KNUTH_KK_CNT 100;
    BLOCK_DEF CONST LC_KNUTH_LL 37;
    BLOCK_DEF CONST LC_KNUTH_TT 70;
-   # array size must be greater than LC_KNUTH_QUALITY_COUNT
-   #  AND greater than 2 * LC_KNUTH_KK_COUNT - 1
-   BLOCK_DEF CONST LC_KNUTH_ARRAY_COUNT 1100;
+   # array size must be greater than LC_KNUTH_QUALITY_CNT
+   #  AND greater than 2 * LC_KNUTH_KK_CNT - 1
+   BLOCK_DEF CONST LC_KNUTH_ARRAY_CNT 1100;
 
    BLOCK_DEF INT lv_ranz_ind = -3;
    BLOCK_DEF DBL lv_ranz_magic = 0.0;
-   BLOCK_DEF INT lv_ranz_arr[LC_KNUTH_QUALITY_COUNT];
-   BLOCK_DEF INT lv_ran_a_arr[LC_KNUTH_ARRAY_COUNT];
+   BLOCK_DEF INT lv_ranz_arr[LC_KNUTH_QUALITY_CNT];
+   BLOCK_DEF INT lv_ran_a_arr[LC_KNUTH_ARRAY_CNT];
    # generator state
-   BLOCK_DEF INT lv_ran_x_arr[LC_KNUTH_KK_COUNT];
+   BLOCK_DEF INT lv_ran_x_arr[LC_KNUTH_KK_CNT];
 
-   # cannabalized from D. E. Knuth: "The Art of
-   # Computer Programming" Vol 2, Ed 3, pg 186
-   ## Random Number Generation
+   # cannabalized from D. E. Knuth: "The Art of Computer Programming"
+   #    Vol 2, Ed 3, pg 186 Random Number Generation
    BLOCK_DEF FUNC INT lf_ran_cycle(INT nn):
       BLOCK_USE lv_ran_x_arr[];
       BLOCK_USE lv_ran_a_arr[];
@@ -151,44 +156,44 @@ BLOCK: # Random numbers
       INT mody;
 
       MODE_INTEGER:
-      # must have LC_KNUTH_KK_COUNT < nn
-      aa = 0;
-      WHILE aa < LC_KNUTH_KK_COUNT:
-         lv_ran_a_arr[aa] = lv_ran_x_arr[aa];
-         aa += 1;   # [0..KK)
-      WHILE_END
+         # must have LC_KNUTH_KK_CNT < nn
+         aa = 0;
+         WHILE aa < LC_KNUTH_KK_CNT:
+            lv_ran_a_arr[aa] = lv_ran_x_arr[aa];
+            aa += 1;   # [0..KK)
+         WHILE_END
 
-      bb = 0;
-      cc = (LC_KNUTH_KK_COUNT - LC_KNUTH_LL);
-      # Before each loop:
-      #   aa - bb == LC_KNUTH_KK_COUNT mod nn
-      #   aa - cc == LC_KNUTH_LL       mod nn
+         bb = 0;
+         cc = (LC_KNUTH_KK_CNT - LC_KNUTH_LL);
+         # Before each loop:
+         #   aa - bb == LC_KNUTH_KK_CNT mod nn
+         #   aa - cc == LC_KNUTH_LL       mod nn
 
-      WHILE aa < nn:
-         mody = lv_ran_a_arr[bb] - lv_ran_a_arr[cc];
-         lv_ran_a_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
-         aa += 1;   # [KK   ..nn)
-         bb += 1;   # [0    ..nn-KK)
-         cc += 1;   # [KK-LL..nn-LL)
-      WHILE_END
+         WHILE aa < nn:
+            mody = lv_ran_a_arr[bb] - lv_ran_a_arr[cc];
+            lv_ran_a_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
+            aa += 1;   # [KK   ..nn)
+            bb += 1;   # [0    ..nn-KK)
+            cc += 1;   # [KK-LL..nn-LL)
+         WHILE_END
 
-      aa = 0;
-      WHILE aa < LC_KNUTH_LL:
-         mody = lv_ran_a_arr[bb] - lv_ran_a_arr[cc];
-         lv_ran_x_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
-         aa += 1;   # [0    ..LL)
-         bb += 1;   # [nn-KK..nn-KK+LL)
-         cc += 1;   # [nn-LL..nn)
-      WHILE_END
+         aa = 0;
+         WHILE aa < LC_KNUTH_LL:
+            mody = lv_ran_a_arr[bb] - lv_ran_a_arr[cc];
+            lv_ran_x_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
+            aa += 1;   # [0    ..LL)
+            bb += 1;   # [nn-KK..nn-KK+LL)
+            cc += 1;   # [nn-LL..nn)
+         WHILE_END
 
-      cc = 0;
-      WHILE aa < LC_KNUTH_KK_COUNT:
-         mody = lv_ran_a_arr[bb] - lv_ran_x_arr[cc];
-         lv_ran_x_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
-         aa += 1;   # [LL      ..KK)
-         bb += 1;   # [nn-KK+LL..nn)
-         cc += 1;   # [0       ..KK-LL)
-      WHILE_END
+         cc = 0;
+         WHILE aa < LC_KNUTH_KK_CNT:
+            mody = lv_ran_a_arr[bb] - lv_ran_x_arr[cc];
+            lv_ran_x_arr[aa] = BITAND(LC_KNUTH_MAX, mody);
+            aa += 1;   # [LL      ..KK)
+            bb += 1;   # [nn-KK+LL..nn)
+            cc += 1;   # [0       ..KK-LL)
+         WHILE_END
 
       MODE_INTEGER_END
       RETURN bb;
@@ -201,12 +206,12 @@ BLOCK: # Random numbers
       BLOCK_USE lv_ran_a_arr[];
       INT jj;
 
-      CALL lf_ran_cycle(LC_KNUTH_QUALITY_COUNT);
+      CALL lf_ran_cycle(LC_KNUTH_QUALITY_CNT);
 
-      FOR jj FROM 0 TO LC_KNUTH_QUALITY_COUNT - 1:
+      FOR jj FROM 0 TO LC_KNUTH_QUALITY_CNT - 1:
          lv_ranz_arr[jj] = lv_ran_a_arr[jj];
       FOR_END
-      lv_ranz_arr[LC_KNUTH_KK_COUNT] = -1;
+      lv_ranz_arr[LC_KNUTH_KK_CNT] = -1;
       lv_ranz_ind = 0;
       lv_ranz_magic = Kw.magicset();
       RETURN lv_ranz_arr[0];
@@ -217,8 +222,7 @@ BLOCK: # Random numbers
       BLOCK_USE lv_ranz_ind;
       BLOCK_USE lv_ranz_arr[];
 
-      # if not initialized: initialize;
-      # else if buffer empty: create more
+      # if not initialized: initialize; else if buffer empty: create more
       IF NOT Kw.ismagic(lv_ranz_magic):
          CALL rand_init(Kw.timee());
       ELSIF lv_ranz_arr[lv_ranz_ind] < 0:
@@ -231,16 +235,15 @@ BLOCK: # Random numbers
    FUNC_END
 
    FUNC DBL rand_init_array(INT seed_size
-         , READONLY INT seed_arr_pc[]):
-      # Initialize Random Number generator
-      # with an array of SEED_SIZE longs
-      # (at most LC_KNUTH_KK_COUNT are used)
+            , READONLY INT seed_arr_pc[]):
+      # Initialize Random Number generator with an array of SEED_SIZE longs
+      # (at most LC_KNUTH_KK_CNT are used)
       BLOCK_USE lv_ran_x_arr[];
       INT tt;
       INT jj;
       INT kk;
       INT dd;
-      INT rnd_arr[2 * LC_KNUTH_KK_COUNT];
+      INT rnd_arr[2 * LC_KNUTH_KK_CNT];
       INT rndss;
       INT rndx;
       INT rndff;
@@ -248,109 +251,105 @@ BLOCK: # Random numbers
       INT bitmask;
 
       MODE_INTEGER:
-      rndss = BITAND((seed_arr_pc[0] + 2)
-            , (LC_KNUTH_MAX - 1));
-      # rndss is now even
-      FOR jj FROM 0 TO LC_KNUTH_KK_COUNT - 1:
-         rnd_arr[jj] = rndss;
-         rndss = BITSHIFTL(rndss, 1);
-         IF LC_KNUTH_MAX < rndss:
-            rndss -= (LC_KNUTH_MAX - 1);
-         IF_END
-         # rndss is still even
-      FOR_END
-
-      rndff = 0;
-      seed_ind = 0;
-      bitmask = 0;
-      FOR jj FROM 0 TO LC_KNUTH_KK_COUNT - 1:
-         IF bitmask <= 1:
-            seed_ind += 1;
-            IF seed_size <= seed_ind:
-               FOR_EXIT;
+         rndss = BITAND((seed_arr_pc[0] + 2), (LC_KNUTH_MAX - 1));
+         # rndss is now even
+         FOR jj FROM 0 TO LC_KNUTH_KK_CNT - 1:
+            rnd_arr[jj] = rndss;
+            rndss = BITSHIFTL(rndss, 1);
+            IF LC_KNUTH_MAX < rndss:
+               rndss -= (LC_KNUTH_MAX - 1);
             IF_END
-            rndff = seed_arr_pc[seed_ind];
-            bitmask = BITSHIFTL(1, 30);
-         IF_END
-         IF BITAND(rndff, bitmask) <> 0:
-            # bitmask, rnd_arr[ii] are even, hence so is xor
-            rnd_arr[jj] = BITXOR(bitmask, rnd_arr[jj]);
-         IF_END
-         bitmask = BITSHIFTR(bitmask, 1);
-      FOR_END
-
-      # Back to Knuths code
-      # All numbers in rnd_arr[] are even
-      rnd_arr[1] += 1;
-      # All numbers rnd_arr[] are even EXCEPT rnd_arr[1]
-      rndss = BITAND(seed_arr_pc[0], LC_KNUTH_MAX);
-      tt = LC_KNUTH_TT - 1;
-
-      WHILE 0 < tt:
-         FOR jj FROM LC_KNUTH_KK_COUNT - 1 TO 1 BY -1:
-            rnd_arr[jj + jj] = rnd_arr[jj];
-            rnd_arr[jj + jj - 1] = 0;
+            # rndss is still even
          FOR_END
 
-         jj = LC_KNUTH_KK_COUNT + LC_KNUTH_KK_COUNT - 2;
-         dd = LC_KNUTH_KK_COUNT + LC_KNUTH_LL - 2;
-         kk = LC_KNUTH_KK_COUNT - 2;
-         WHILE 0 <= kk:
-            rndx = rnd_arr[dd] - rnd_arr[jj];
-            rnd_arr[dd] = BITAND(rndx, LC_KNUTH_MAX);
-            rndx = rnd_arr[kk] - rnd_arr[jj];
-            rnd_arr[kk] = BITAND(rndx, LC_KNUTH_MAX);
-            dd -= 1;
-            kk -= 1;
-            jj -= 1;
+         rndff = 0;
+         seed_ind = 0;
+         bitmask = 0;
+         FOR jj FROM 0 TO LC_KNUTH_KK_CNT - 1:
+            IF bitmask <= 1:
+               seed_ind += 1;
+               IF seed_size <= seed_ind:
+                  FOR_EXIT;
+               IF_END
+               rndff = seed_arr_pc[seed_ind];
+               bitmask = BITSHIFTL(1, 30);
+            IF_END
+            IF BITAND(rndff, bitmask) <> 0:
+               # bitmask, rnd_arr[ii] are even, hence so is xor
+               rnd_arr[jj] = BITXOR(bitmask, rnd_arr[jj]);
+            IF_END
+            bitmask = BITSHIFTR(bitmask, 1);
+         FOR_END
+
+         # Back to Knuths code
+         # All numbers in rnd_arr[] are even
+         rnd_arr[1] += 1;
+         # All numbers rnd_arr[] are even EXCEPT rnd_arr[1]
+         rndss = BITAND(seed_arr_pc[0], LC_KNUTH_MAX);
+         tt = LC_KNUTH_TT - 1;
+
+         WHILE 0 < tt:
+            FOR jj FROM LC_KNUTH_KK_CNT - 1 TO 1 BY -1:
+               rnd_arr[jj + jj] = rnd_arr[jj];
+               rnd_arr[jj + jj - 1] = 0;
+            FOR_END
+
+            jj = LC_KNUTH_KK_CNT + LC_KNUTH_KK_CNT - 2;
+            dd = LC_KNUTH_KK_CNT + LC_KNUTH_LL - 2;
+            kk = LC_KNUTH_KK_CNT - 2;
+            WHILE 0 <= kk:
+               rndx = rnd_arr[dd] - rnd_arr[jj];
+               rnd_arr[dd] = BITAND(rndx, LC_KNUTH_MAX);
+               rndx = rnd_arr[kk] - rnd_arr[jj];
+               rnd_arr[kk] = BITAND(rndx, LC_KNUTH_MAX);
+               dd -= 1;
+               kk -= 1;
+               jj -= 1;
+            WHILE_END
+
+            IF Kw.isodd(rndss):
+               FOR jj FROM LC_KNUTH_KK_CNT TO 1 BY -1:
+                  rnd_arr[jj] = rnd_arr[jj - 1];
+               FOR_END
+               rnd_arr[0] = rnd_arr[LC_KNUTH_KK_CNT];
+               jj = rnd_arr[LC_KNUTH_LL] - rnd_arr[0];
+               rnd_arr[LC_KNUTH_LL] = BITAND(LC_KNUTH_MAX, jj);
+               rndss = BITSHIFTR(rndss, 1);
+            ELSIF rndss == 0:
+               tt -= 1;
+            ELSE:
+               rndss = BITSHIFTR(rndss, 1);
+            IF_END
          WHILE_END
 
-         IF Kw.isodd(rndss):
-            FOR jj FROM LC_KNUTH_KK_COUNT TO 1 BY -1:
-               rnd_arr[jj] = rnd_arr[jj - 1];
-            FOR_END
-            rnd_arr[0] = rnd_arr[LC_KNUTH_KK_COUNT];
-            jj = rnd_arr[LC_KNUTH_LL] - rnd_arr[0];
-            rnd_arr[LC_KNUTH_LL] = BITAND(LC_KNUTH_MAX, jj);
-            rndss = BITSHIFTR(rndss, 1);
-         ELSIF rndss == 0:
-            tt -= 1;
-         ELSE:
-            rndss = BITSHIFTR(rndss, 1);
-         IF_END
-      WHILE_END
+         kk = (LC_KNUTH_KK_CNT - LC_KNUTH_LL);
+         jj = 0;
+         # Before each loop: jj - kk = LC_KNUTH_LL mod LC_KNUTH_KK_CNT
 
-      kk = (LC_KNUTH_KK_COUNT - LC_KNUTH_LL);
-      jj = 0;
-      # Before each loop:
-      #   jj - kk = LC_KNUTH_LL mod LC_KNUTH_KK_COUNT
+         WHILE jj < LC_KNUTH_LL:
+            lv_ran_x_arr[kk] = rnd_arr[jj];
+            kk += 1;
+            jj += 1;
+         WHILE_END
 
-      WHILE jj < LC_KNUTH_LL:
-         lv_ran_x_arr[kk] = rnd_arr[jj];
-         kk += 1;
-         jj += 1;
-      WHILE_END
+         # jj == LC_KNUTH_LL; kk == LC_KNUTH_KK_CNT
+         kk = 0;
+         WHILE jj < LC_KNUTH_KK_CNT:
+            lv_ran_x_arr[kk] = rnd_arr[jj];
+            kk += 1;
+            jj += 1;
+         WHILE_END
 
-      # jj == LC_KNUTH_LL; kk == LC_KNUTH_KK_COUNT
-      kk = 0;
-      WHILE jj < LC_KNUTH_KK_COUNT:
-         lv_ran_x_arr[kk] = rnd_arr[jj];
-         kk += 1;
-         jj += 1;
-      WHILE_END
-
-      FOR jj FROM 0 TO 9:
-         CALL lf_ran_cycle(2 * LC_KNUTH_KK_COUNT - 1);
-      FOR_END
-
+         FOR jj FROM 0 TO 9:
+            CALL lf_ran_cycle(2 * LC_KNUTH_KK_CNT - 1);
+         FOR_END
       MODE_INTEGER_END
       CALL lf_fill_ranz();
       RETURN 0;
    FUNC_END
 
    FUNC DBL rand_init(DBL seed):
-      # Initialize Random Number generator
-      # with a single double SEED
+      # Initialize Random Number generator with a single double SEED
       INT sd_arr[2];
 
       sd_arr[0] = FLOOR(seed);
@@ -380,9 +379,8 @@ BLOCK: # Random numbers
 
    FUNC DBL randd(NUL):
       # Return a uniformly distributed number in [0.0,1.0)
-      RETURN (lf_next_ranz()
-            + lf_next_ranz() / (LC_KNUTH_MAX + 1.0))
-         / (LC_KNUTH_MAX + 1.0);
+      RETURN (lf_next_ranz() + lf_next_ranz() / (LC_KNUTH_MAX + 1.0))
+               / (LC_KNUTH_MAX + 1.0);
    FUNC_END
 
 BLOCK_END # Random numbers

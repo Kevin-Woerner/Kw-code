@@ -1,0 +1,71 @@
+#    Copyright (C) 2021 by Kevin D. Woerner
+# 2021-04-15 kdw  indent work
+# 2021-04-11 kdw  indent work
+# 2021-03-13 kdw  line len upped to 77
+# 2021-03-07 kdw  reorg
+# 2021-03-06 kdw  created
+{INSERT_FILE "Macros.fwip" }
+
+FUNC DBL fvoa(DBL payment, DBL rate_per_paymt, DBL num_pays):
+   # Future Value of on Ordinary Annuity with NUM_PAYS PAYMENT with an
+   # interest rate of RATE_PER_PAYMT
+   # Payments are done at the end of each period.
+   DBL ttp;
+
+   ttp = POW(1.0 + rate_per_paymt, num_pays);
+   RETURN payment * (ttp - 1.0) / rate_per_paymt;
+FUNC_END
+
+FUNC DBL fvad(DBL payment, DBL rate_per_paymt, DBL num_pays):
+   # Future Value of an Annuity Due with NUM_PAYS PAYMENT with an
+   # interest rate of RATE_PER_PAYMT
+   # Payments are done at the beginning of each period.
+   RETURN fvoa(payment, rate_per_paymt, num_pays) * (1.0 + rate_per_paymt);
+FUNC_END
+
+FUNC DBL pvoa(DBL payment, DBL rate_per_paymt, DBL num_pays):
+   # Present Value of on Ordinary Annuity with NUM_PAYS PAYMENT with an
+   # interest rate of RATE_PER_PAYMT
+   # Payments are done at the end of each period.
+   DBL ntp;
+
+   ntp = POW(1.0 + rate_per_paymt, -num_pays);
+   RETURN payment * (1.0 - ntp) / rate_per_paymt;
+FUNC_END
+
+FUNC DBL pvad(DBL payment, DBL rate_per_paymt, DBL num_pays):
+   # Present Value of an Annuity Due with NUM_PAYS PAYMENT with an
+   # interest rate of RATE_PER_PAYMT
+   # Payments are done at the beginning of each period.
+   DBL ntp;
+
+   ntp = POW(1.0 + rate_per_paymt, -num_pays);
+   RETURN payment * (1.0 - ntp) / rate_per_paymt * (1.0 + rate_per_paymt);
+FUNC_END
+
+FUNC DBL loanvalue(DBL payment, DBL rate_per_paymt, DBL num_pays):
+   # Loan Value paid off with NUM_PAYS PAYMENT with an
+   # interest rate of RATE_PER_PAYMT
+   # Payments are done at the beginning of each period.
+   RETURN fvad(payment, rate_per_paymt, num_pays);
+FUNC_END
+
+FUNC DBL loanpayment(DBL loan_amt, DBL rate_per_paymt, DBL num_pays):
+   # Payment needed to pay off a loan of LOAN_AMT with
+   # an interest rate of RATE_PER_PAYMT and NUM_PAYS payments
+   # Payments are done at the beginning of each period.
+   DBL ttp;
+
+   ttp = POW(1.0 + rate_per_paymt, num_pays);
+   RETURN loan_amt * rate_per_paymt * ttp / (ttp - 1.0);
+FUNC_END
+
+FUNC DBL loanrate(DBL loan_amt, DBL payment, DBL num_pays):
+   # Interest rate needed to pay off a loan of LOAN_AMT with NUM_PAYS PAYMENT
+   # Payments are done at the beginning of each period.
+   {SECANT_DECLARATIONS}
+
+   {SECANT_LOOP 0.05 ; 0.01
+            ; payment - loanpayment(loan_amt, scvx_xx, num_pays) }
+   RETURN scvx_xx;
+FUNC_END

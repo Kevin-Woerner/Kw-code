@@ -1,4 +1,14 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-05-06 kdw  minor tweak
+# 2021-04-15 kdw  indent work
+# 2021-04-14 kdw  indent work
+# 2021-04-11 kdw  indent work
+# 2021-04-09 kdw  indent work
+# 2021-03-20 kdw  sidereal and stellar const renam
+# 2021-03-18 kdw  const work
+# 2021-03-16 kdw  kwplanet const name change
+# 2021-03-15 kdw  const name
+# 2021-03-13 kdw  line len upped to 77
 # 2020-12-03 kdw  float explicit const work
 # 2020-11-28 kdw  macro syntax overhaul
 # 2020-08-17 kdw  macro syntax changed
@@ -183,8 +193,9 @@
 IMPORT "Kw";
 IMPORT "Kwplanets";
 
-CONST SUNBELOW_RAD 0.5667 * Kw.ARCDEG + Kw.RADIAN
-      * Kwplanets.SUNRADIUS / Kwplanets.EARTHORBIT; # A
+CONST ATMOSREFRACT_RAD 0.5667 * Kw.ARCDEG; # A
+CONST SUNBELOW_RAD ATMOSREFRACT_RAD
+      + Kwplanets.SUN_RADIUS / Kwplanets.EARTH_ORBIT * Kw.RADIAN; # A
 
 FUNC DBL kwsun_obliquity_rad(DBL jtwok):
    # earths obliquity at J2000 day JTWOK
@@ -203,26 +214,25 @@ FUNC DBL kwsun_obliquity_rad(DBL jtwok):
    # "New Formulas for the Precession,
    #       Valid Over 10000 years"
    ob_arcsec = (((((((((((
-         + 2.45) * tmill
-         + 5.79) * tmill
-         + 27.8) * tmill
-         + 7.12) * tmill
-         - 39.05) * tmill
-         - 249.67) * tmill
-         - 51.38) * tmill
-         + 1999.25) * tmill
-         - 1.55) * tmill
-         - 4680.93) * tmill
-         + 84381.448);
-
+            + 2.45     ) * tmill
+            + 5.79     ) * tmill
+            + 27.8     ) * tmill
+            + 7.12     ) * tmill
+            - 39.05    ) * tmill
+            - 249.67   ) * tmill
+            - 51.38    ) * tmill
+            + 1999.25  ) * tmill
+            - 1.55     ) * tmill
+            - 4680.93  ) * tmill
+            + 84381.448);
    RETURN Kw.sec2rad(ob_arcsec);
 FUNC_END
 
 FUNC DBL kwsun_eccentricity(DBL jtwok):
    # earths orbital eccentricity at J2000 day JTWOK
    RETURN ((
-         - 1.2025E-9) * jtwok
-         + Kwplanets.EARTHECCENTRICITY);
+            - 1.2025E-9) * jtwok
+            + Kwplanets.EARTH_ECCENTRICITY);
    # (-1.041478E-9) * jtwok + 0.01671022
    # (-1.5151E-9)   * jtwok + 0.01671123
    # (-1.151E-9)    * jtwok + 0.016709
@@ -232,9 +242,9 @@ FUNC DBL kwsun_perihelion_rad(DBL jtwok):
    # earths longitude of perihelion relative to vernal equinox
    DBL pdeg;
 
-   pdeg = ((
-         + 8.850749897E-6) * jtwok
-      + 282.93768193);
+   pdeg = (
+            + 8.850749897E-6) * jtwok
+            + 282.93768193;
 #   pdeg = Kw.fmod(282.9404 + 4.70935E-5 * jtwok
 #      , Kw.tur2deg(1.0));
 
@@ -256,10 +266,10 @@ FUNC DBL kwsun_mean_anomaly_rad(DBL jtwok):
    #   + 0.9856002585) * jtwoke
    #   +356.047);
    madeg = ((((
-         - 6.84081855587485E-20) * jtwoke
-         - 1.20158105729576E-13) * jtwoke
-         + 0.98560028309377146) * jtwoke
-         + 357.52772);
+            - 6.84081855587485E-20) * jtwoke
+            - 1.20158105729576E-13) * jtwoke
+            + 0.98560028309377146) * jtwoke
+            + 357.52772);
 
    RETURN Kw.deg2rad(Kw.fmodu(madeg, Kw.tur2deg(1.0)));
 FUNC_END
@@ -272,20 +282,20 @@ FUNC DBL kwsun_gmst_rad(DBL jtwok):
    #   + 360.985609102) * jtwok
    #   + 280.46457166);
    gmt_arcdeg = ((((
-         - 5.30159020088E-22) * jtwok
-         + 2.90787862944E-13) * jtwok
-         + Kw.tur2deg(Kw.DAY / Kwplanets.SIDEREALDAY)) * jtwok
-         + Kw.rad2deg(Kwplanets.EARTHTHETA_0));
+            - 5.30159020088E-22) * jtwok
+            + 2.90787862944E-13) * jtwok
+            + Kw.tur2deg(Kw.DAY / Kwplanets.EARTH_SIDEREALDAY)) * jtwok
+            + Kw.rad2deg(Kwplanets.EARTH_THETA_0));
 
    RETURN Kw.fmodu(Kw.deg2rad(gmt_arcdeg), Kw.tur2rad(1.0));
 FUNC_END
 
 FUNC DBL kwsun_lmst_rad(DBL jtwok
-   , DBL geo_longitude_deg):
+         , DBL geo_longitude_deg):
    # earths local mean sidereal time at
    # Longitude GEO_LONGITUDE_DEG and J2000 day JTWOK
    RETURN Kw.fmodu(kwsun_gmst_rad(jtwok)
-         + Kw.deg2rad(geo_longitude_deg), Kw.tur2rad(1.0));
+            + Kw.deg2rad(geo_longitude_deg), Kw.tur2rad(1.0));
 FUNC_END
 
 # tropicalyear_day = 365.2421896698 - 6.15359E-8*T
@@ -328,14 +338,12 @@ BLOCK:    # sunx vars and funcs
 
       lv_x_sun_rad = (ww_rad + mm_rad + Kw.tur2rad(0.5));
       # position of the Sun
-      sun_rad = (mm_rad
-            + ecc * SIN(mm_rad) * (1.0 + ecc * COS(mm_rad)));
+      sun_rad = (mm_rad + ecc * SIN(mm_rad) * (1.0 + ecc * COS(mm_rad)));
       sun_xx_au = COS(sun_rad) - ecc;
       sun_yy_au = Kw.topyh1(ecc) * SIN(sun_rad);
 
       sun_dist_au = Kw.hypot(sun_xx_au, sun_yy_au);
-      lv_x_sun_dist_m = Kw.ASTRONOMICALUNIT
-            * (1.0 - ecc * COS(sun_rad));
+      lv_x_sun_dist_m = Kw.ASTRONOMICALUNIT * (1.0 - ecc * COS(sun_rad));
 
       lonsun_rad = ATAN2(sun_yy_au, sun_xx_au) + ww_rad;
       earth_xx_au = sun_dist_au * COS(lonsun_rad);
@@ -344,14 +352,14 @@ BLOCK:    # sunx vars and funcs
       earth_zz_au = ys * SIN(obl_rad);
 
       lv_x_sun_ra_rad = Kw.fmodu(ATAN2(earth_yy_au, earth_xx_au)
-            , Kw.tur2rad(1.0));
+               , Kw.tur2rad(1.0));
       lv_x_sun_dec_rad = ATAN2(earth_zz_au
-            , Kw.hypot(earth_xx_au, earth_yy_au));
+               , Kw.hypot(earth_xx_au, earth_yy_au));
       RETURN 0.0;
    FUNC_END
 
    FUNC DBL kwsunx_init(DBL jtwok, DBL tz_hr
-         , DBL lon_deg, DBL lat_deg):
+            , DBL lon_deg, DBL lat_deg):
       # Compute the sunrise, sunset, and transit times
       # for the givan location and J2000 day JTWOK
       BLOCK_USE lv_x_loc_transit_tz_day;
@@ -368,14 +376,14 @@ BLOCK:    # sunx vars and funcs
 
       # now use the user specific coordinates
       ut_transit_day = Kw.rad2tur(lv_x_sun_ra_rad - lv_x_sun_rad)
-         - Kw.deg2tur(lon_deg);
+               - Kw.deg2tur(lon_deg);
 
       lv_x_loc_transit_tz_day = Kw.frac(ut_transit_day
-            + tz_hr * Kw.HOUR / Kw.DAY);
+               + tz_hr * Kw.HOUR / Kw.DAY);
 
       lha = (SIN(-Kwsun.SUNBELOW_RAD)
                - Kw.sind(lat_deg) * SIN(lv_x_sun_dec_rad)
-                  / (Kw.cosd(lat_deg) * COS(lv_x_sun_dec_rad)));
+               / (Kw.cosd(lat_deg) * COS(lv_x_sun_dec_rad)));
 
       IF lha <= -0.99999:
          lv_x_loc_transit_tz_day = 0.5;
@@ -384,7 +392,7 @@ BLOCK:    # sunx vars and funcs
          lv_x_loc_halfday_day = 0.0;
       ELSE:
          lv_x_loc_halfday_day = Kw.costinv(lha)
-               + 110.0 * Kw.SECOND / Kw.DAY; # WHY? No idea.
+                  + 110.0 * Kw.SECOND / Kw.DAY; # WHY? No idea.
       IF_END
 
       IF lv_x_loc_transit_tz_day < lv_x_loc_halfday_day:
@@ -436,7 +444,7 @@ BLOCK_END # sunx vars and funcs
 # solve for Eccentric anomaly given eccentricity and
 # mean anomaly via Newtons method
 FUNC DBL kwsun_eccentric_anomaly_rad(DBL ma_deg
-   , DBL eccen):
+         , DBL eccen):
    # compute the eccentric anomlay from the given
    # mean anomany (MA_DEG) and the given orbital
    # eccentricity (ECCEN)
@@ -449,8 +457,8 @@ FUNC DBL kwsun_eccentric_anomaly_rad(DBL ma_deg
 
    AWAIT Kw.iseq(xrad, xrad_prev):
       xrad_prev = xrad;
-      xrad -= ((xrad - eccen * SIN(xrad) - ma_rad)
-            / (1.0 - eccen * COS(xrad)));
+      xrad -= (xrad - eccen * SIN(xrad) - ma_rad)
+               / (1.0 - eccen * COS(xrad));
    AWAIT_END
 
    RETURN xrad;
@@ -488,20 +496,17 @@ BLOCK:    # sun position
       obl_rad = kwsun_obliquity_rad(jtwok);
 
       dl_arcsec = (6893.0 * SIN(mean_anomaly_sun_rad)
-            + 72.0 * SIN(2.0 * mean_anomaly_sun_rad));
+               + 72.0 * SIN(2.0 * mean_anomaly_sun_rad));
 
       # 0.169505818 = 6191.2 / (Kw.JYEAR * 100 / Kw.DAY)
-      mean_longitude_sun_rad = Kw.tur2rad(0.7859453)
-            + mean_anomaly_sun_rad
-            + Kw.sec2rad(0.169505818 * jtwok + dl_arcsec);
+      mean_longitude_sun_rad = Kw.tur2rad(0.7859453) + mean_anomaly_sun_rad
+               + Kw.sec2rad(0.169505818 * jtwok + dl_arcsec);
 
       # solar position
-      sun_rad = (mean_anomaly_sun_rad
-                  + ecc * SIN(mean_anomaly_sun_rad)
-            * (1.0 + ecc * COS(mean_anomaly_sun_rad)));
+      sun_rad = (mean_anomaly_sun_rad + ecc * SIN(mean_anomaly_sun_rad)
+               * (1.0 + ecc * COS(mean_anomaly_sun_rad)));
 
-      lv_sun_dist_m = Kw.ASTRONOMICALUNIT
-            * (1.0 - ecc * COS(sun_rad));
+      lv_sun_dist_m = Kw.ASTRONOMICALUNIT * (1.0 - ecc * COS(sun_rad));
 
       sl = SIN(mean_longitude_sun_rad);
 
@@ -541,37 +546,34 @@ BLOCK_END # sun position
 BLOCK:
    # return the sine of the altitude of the sun
    BLOCK_DEF FUNC DBL lf_sinalt(DBL jtwok
-      , DBL geo_longitude_deg
-      , DBL cos_geo_latitude
-      , DBL sin_geo_latitude):
+            , DBL geo_longitude_deg
+            , DBL cos_geo_latitude
+            , DBL sin_geo_latitude):
       BLOCK_USE lv_sun_ra_rad;
       BLOCK_USE lv_sun_dec_rad;
       DBL tau_rads;
 
       CALL kwsun_sun(jtwok);
       # angle of object
-      tau_rads = (kwsun_lmst_rad(jtwok, geo_longitude_deg)
-            - lv_sun_ra_rad);
+      tau_rads = (kwsun_lmst_rad(jtwok, geo_longitude_deg) - lv_sun_ra_rad);
       # SIN(alt) of object using the conversion formulas
       RETURN sin_geo_latitude * SIN(lv_sun_dec_rad)
-            + cos_geo_latitude * COS(lv_sun_dec_rad)
-               * COS(tau_rads);
+               + cos_geo_latitude * COS(lv_sun_dec_rad) * COS(tau_rads);
    FUNC_END
 
    BLOCK_DEF FUNC DBL lf_parabola_solve(DBL delta_x, DBL ym
-      , DBL yz, DBL yp):
+            , DBL yz, DBL yp):
       # find the parabola through the points
       #   (-delta, ym), (0.0, yz), (delta, yp)
-      RETURN Kw.parabola_solve(-delta_x, ym, 0.0, yz
-            , delta_x, yp);
+      RETURN Kw.parabola_solve(-delta_x, ym, 0.0, yz, delta_x, yp);
    FUNC_END
 
    BLOCK_DEF FUNC DBL lf_sun_event(DBL jtwok
-         , DBL time_zone_in_hours
-         , DBL geo_lon_deg
-         , DBL geo_lat_deg
-         , DBL refraction_rad
-         , INT want_sunrise):
+            , DBL time_zone_in_hours
+            , DBL geo_lon_deg
+            , DBL geo_lat_deg
+            , DBL refraction_rad
+            , INT want_sunrise):
       # The method used is adapted from Montenbruck and Pflegers
       # Astronomy on the Personal Computer, 3rd Ed, section 3.8
       # the arguments for the function are as follows:
@@ -635,8 +637,8 @@ BLOCK:
       sunset_count = 0;
       d_fday = 1.0 * Kw.HOUR / Kw.DAY;
       dd_fday = d_fday / 10.0;
-      altc_rad = Kw.sininv(lf_sinalt(jtwok - d_fday
-            , geo_lon_deg, cos_glat, sin_glat)) - refraction_rad;
+      altc_rad = Kw.sininv(lf_sinalt(jtwok - d_fday, geo_lon_deg, cos_glat
+               , sin_glat)) - refraction_rad;
       orig_altc_rad = altc_rad;
 
       # the while loop finds the SIN(alt) for sets of three
@@ -649,15 +651,12 @@ BLOCK:
          #   set up the search interval
          ctime_jtwok = jtwok + hours * Kw.HOUR / Kw.DAY;
          alta_rad = altc_rad;
-         altb_rad = Kw.sininv(lf_sinalt(ctime_jtwok
-               , geo_lon_deg, cos_glat, sin_glat))
-                     - refraction_rad;
-         altc_rad = Kw.sininv(lf_sinalt(ctime_jtwok + d_fday
-               , geo_lon_deg, cos_glat, sin_glat))
-                     - refraction_rad;
+         altb_rad = Kw.sininv(lf_sinalt(ctime_jtwok, geo_lon_deg, cos_glat
+                  , sin_glat)) - refraction_rad;
+         altc_rad = Kw.sininv(lf_sinalt(ctime_jtwok + d_fday, geo_lon_deg
+                  , cos_glat, sin_glat)) - refraction_rad;
 
-         CALL lf_parabola_solve(d_fday
-               , alta_rad, altb_rad, altc_rad);
+         CALL lf_parabola_solve(d_fday, alta_rad, altb_rad, altc_rad);
 
          nrr = 0;
          rtb = Kw.parabola_roots(0);
@@ -676,18 +675,14 @@ BLOCK:
          IF nrr == 1:
             # refine sun rise/set time
             cctime_jtwok = ctime_jtwok + rta;
-            sa_rad = (Kw.sininv(lf_sinalt(cctime_jtwok - dd_fday
-                  , geo_lon_deg, cos_glat, sin_glat))
-                     - refraction_rad);
-            sb_rad = (Kw.sininv(lf_sinalt(cctime_jtwok
-                  , geo_lon_deg, cos_glat, sin_glat))
-                     - refraction_rad);
-            sc_rad = (Kw.sininv(lf_sinalt(cctime_jtwok + dd_fday
-                  , geo_lon_deg, cos_glat, sin_glat))
-                     - refraction_rad);
+            sa_rad = (Kw.sininv(lf_sinalt(cctime_jtwok - dd_fday, geo_lon_deg
+                     , cos_glat, sin_glat)) - refraction_rad);
+            sb_rad = (Kw.sininv(lf_sinalt(cctime_jtwok, geo_lon_deg, cos_glat
+                     , sin_glat)) - refraction_rad);
+            sc_rad = (Kw.sininv(lf_sinalt(cctime_jtwok + dd_fday, geo_lon_deg
+                     , cos_glat, sin_glat)) - refraction_rad);
 
-            CALL lf_parabola_solve(dd_fday
-                  , sa_rad, sb_rad, sc_rad);
+            CALL lf_parabola_solve(dd_fday, sa_rad, sb_rad, sc_rad);
             rtb = Kw.parabola_roots(0);
             rtc = Kw.parabola_roots(1);
             IF ABS(rtb) < dd_fday:
@@ -745,40 +740,38 @@ BLOCK:
    FUNC_END
 
    FUNC DBL kwsun_sin_altitude_sun(DBL jtwok
-      , DBL time_zone_in_hours
-      , DBL geo_lon_deg
-      , DBL geo_lat_deg):
+            , DBL time_zone_in_hours
+            , DBL geo_lon_deg
+            , DBL geo_lat_deg):
       # given the J2000 date, time zone and location
       # return the SIN of the angle of the altitude of the sun
       DBL jtwoktz;
       DBL salt;
 
       jtwoktz = jtwok - time_zone_in_hours * Kw.HOUR / Kw.DAY;
-      salt = lf_sinalt(jtwoktz, geo_lon_deg
-            , Kw.cosd(geo_lat_deg), Kw.sind(geo_lat_deg));
+      salt = lf_sinalt(jtwoktz, geo_lon_deg, Kw.cosd(geo_lat_deg)
+               , Kw.sind(geo_lat_deg));
       RETURN salt;
    FUNC_END
 
    FUNC DBL kwsun_rise_day(DBL jtwok
-         , DBL time_zone_in_hours
-         , DBL geo_lon_deg
-         , DBL geo_lat_deg):
+            , DBL tz_in_hours
+            , DBL lon_deg
+            , DBL lat_deg):
       # Return the fraction of the day that has passed at sunrise
       #   on the given date, at the given location.
-      RETURN lf_sun_event(jtwok, time_zone_in_hours
-            , geo_lon_deg, geo_lat_deg
-            , -Kwsun.SUNBELOW_RAD, 1);
+      RETURN lf_sun_event(jtwok, tz_in_hours, lon_deg, lat_deg
+               , -Kwsun.SUNBELOW_RAD, 1);
    FUNC_END
 
    FUNC DBL kwsun_set_day(DBL jtwok
-         , DBL time_zone_in_hours
-         , DBL geo_lon_deg
-         , DBL geo_lat_deg):
+            , DBL tz_in_hours
+            , DBL lon_deg
+            , DBL lat_deg):
       # Return the fraction of the day that has passed at sunset
       #   on the given date, at the given location.
-      RETURN lf_sun_event(jtwok, time_zone_in_hours
-         , geo_lon_deg, geo_lat_deg
-         , -Kwsun.SUNBELOW_RAD, 0);
+      RETURN lf_sun_event(jtwok, tz_in_hours, lon_deg, lat_deg
+               , -Kwsun.SUNBELOW_RAD, 0);
    FUNC_END
 BLOCK_END
 
@@ -816,53 +809,50 @@ BLOCK:    # moon position
       DBL obliquity;
       DBL jcen;
 
-      jcen = jtwok * Kw.DAY / Kw.JC;
+      jcen = jtwok * Kw.DAY / Kw.JCENTURY;
       # mean long Moon in revs
       meanlong_moon = Kw.frac(0.606433 + 1336.855225 * jcen);
       # mean anomaly of Moon
-      ma_moon_rad = Kw.tur2rad(
-            Kw.frac(0.374897 + 1325.55241 * jcen));
+      ma_moon_rad = Kw.tur2rad(Kw.frac(0.374897 + 1325.55241 * jcen));
       # mean anomaly of Sun
-      ma_sun_rad = Kw.tur2rad(
-            Kw.frac(0.993133 + 99.997361 * jcen));
+      ma_sun_rad = Kw.tur2rad(Kw.frac(0.993133 + 99.997361 * jcen));
       # diff longitude sun and moon
       d_rad = Kw.tur2rad(Kw.frac(0.827361 + 1236.853086 * jcen));
       #mean arg latitude
-      farg_rad = Kw.tur2rad(
-            Kw.frac(0.259086 + 1342.227825 * jcen));
+      farg_rad = Kw.tur2rad(Kw.frac(0.259086 + 1342.227825 * jcen));
       # longitude correction terms
       fifi_arcsec = (0.0
-            + 22640.0 * SIN(ma_moon_rad)
-            - 4586.0 * SIN(ma_moon_rad - 2.0 * d_rad)
-            + 192.0 * SIN(ma_moon_rad + 2.0 * d_rad)
-            - 110.0 * SIN(ma_moon_rad + ma_sun_rad)
-            + 148.0 * SIN(ma_moon_rad - ma_sun_rad)
-            - 206.0 * SIN(ma_moon_rad + ma_sun_rad - 2.0 * d_rad)
-            - 125.0 * SIN(d_rad)
-            + 2370.0 * SIN(2.0 * d_rad)
-            + 769.0 * SIN(2.0 * ma_moon_rad)
-            - 212.0 * SIN(2.0 * ma_moon_rad - 2.0 * d_rad)
-            - 412.0 * SIN(2.0 * farg_rad)
-            - 55.0 * SIN(2.0 * farg_rad - 2.0 * d_rad)
-            - 668.0 * SIN(ma_sun_rad)
-            - 165.0 * SIN(ma_sun_rad - 2.0 * d_rad)
-            );
+               + 22640.0 * SIN(ma_moon_rad)
+               - 4586.0 * SIN(ma_moon_rad - 2.0 * d_rad)
+               + 192.0 * SIN(ma_moon_rad + 2.0 * d_rad)
+               - 110.0 * SIN(ma_moon_rad + ma_sun_rad)
+               + 148.0 * SIN(ma_moon_rad - ma_sun_rad)
+               - 206.0 * SIN(ma_moon_rad + ma_sun_rad - 2.0 * d_rad)
+               - 125.0 * SIN(d_rad)
+               + 2370.0 * SIN(2.0 * d_rad)
+               + 769.0 * SIN(2.0 * ma_moon_rad)
+               - 212.0 * SIN(2.0 * ma_moon_rad - 2.0 * d_rad)
+               - 412.0 * SIN(2.0 * farg_rad)
+               - 55.0 * SIN(2.0 * farg_rad - 2.0 * d_rad)
+               - 668.0 * SIN(ma_sun_rad)
+               - 165.0 * SIN(ma_sun_rad - 2.0 * d_rad)
+               );
       # latitude arguments
       ss_rad = farg_rad + Kw.sec2rad(fifi_arcsec
-            + 412.0 * SIN(2.0 * farg_rad)
-            + 541.0 * SIN(ma_sun_rad));
+               + 412.0 * SIN(2.0 * farg_rad)
+               + 541.0 * SIN(ma_sun_rad));
       hh_rad = farg_rad - 2.0 * d_rad;
       # latitude correction terms
       lct_arcsec = (-526.0 * SIN(hh_rad)
-            + 44.0 * SIN(hh_rad + ma_moon_rad)
-            - 31.0 * SIN(hh_rad - ma_moon_rad)
-            + 11.0 * SIN(hh_rad - ma_sun_rad)
-            - 23.0 * SIN(ma_sun_rad + hh_rad)
-            - 25.0 * SIN(farg_rad - 2.0 * ma_moon_rad)
-            + 21.0 * SIN(farg_rad - ma_moon_rad));
+               + 44.0 * SIN(hh_rad + ma_moon_rad)
+               - 31.0 * SIN(hh_rad - ma_moon_rad)
+               + 11.0 * SIN(hh_rad - ma_sun_rad)
+               - 23.0 * SIN(ma_sun_rad + hh_rad)
+               - 25.0 * SIN(farg_rad - 2.0 * ma_moon_rad)
+               + 21.0 * SIN(farg_rad - ma_moon_rad));
       #Lat in rads
       lmoon_rad = Kw.tur2rad(Kw.frac(meanlong_moon
-            + Kw.sec2tur(fifi_arcsec)));
+               + Kw.sec2tur(fifi_arcsec)));
       #long in rads
       bmoon_rad = Kw.sec2rad(18520.0 * SIN(ss_rad) + lct_arcsec);
       # convert to equatorial coords using a fixed ecliptic
@@ -877,9 +867,8 @@ BLOCK:    # moon position
       zz = sineps * vv + coseps * ww;
       rho = Kw.topyh1(zz);
       lv_moon_dec_rad = ATAN2(zz, rho);
-      lv_moon_ra_rad = Kw.fmodu(2.0 * ATAN2(yy, xx + rho)
-         , Kw.tur2rad(1.0));
-      RETURN rho * Kwplanets.MOONORBIT;
+      lv_moon_ra_rad = Kw.fmodu(2.0 * ATAN2(yy, xx + rho), Kw.tur2rad(1.0));
+      RETURN rho * Kwplanets.MOON_ORBIT;
    FUNC_END
 
    FUNC DBL kwsun_moon_dec_rad(NUL):
@@ -899,7 +888,7 @@ BLOCK_END # moon position
 
 BLOCK:
    BLOCK_DEF FUNC DBL lf_ra_sunmoon_diff_rad(DBL jtwok
-         , DBL frad):
+            , DBL frad):
       DBL moon_ra;
       DBL sun_ra;
 
@@ -917,10 +906,9 @@ BLOCK:
       DBL jtwokapp;
       DBL frad;
 
-      jtwokapp = 5.00 + nn * Kw.MOONMONTH / Kw.JDAY;
+      jtwokapp = 5.00 + nn * Kw.MOON_MONTH / Kw.JDAY;
       frad = Kw.tur2rad(Kw.frac(nn));
-      {SECANT_LOOP jtwokapp ; 0.5
-            ; lf_ra_sunmoon_diff_rad(scvx_xx, frad) }
+      {SECANT_LOOP jtwokapp ; 0.5; lf_ra_sunmoon_diff_rad(scvx_xx, frad) }
       RETURN scvx_xx;
    FUNC_END
 BLOCK_END

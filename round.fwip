@@ -1,4 +1,5 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-20 kdw  var name change (mainly mm)
 # 2020-08-17 kdw  comment change
 # 2020-07-24 kdw  comment cleanup
 # 2020-04-17 kdw  comment change
@@ -257,38 +258,38 @@ FUNC DBL fmul(DBL xx, DBL pp):
    RETURN EXP(lpp * Kw.frac(LN(xx) / lpp));
 FUNC_END
 
-FUNC DBL dist(DBL xx, DBL mm):
-   # the distance of XX from the nearest multiple of MM:
-   # dist(XX,MM)=ZZ in [0, ABS(MM)/2] ST:
-   #   ABS(XX-NN*MM)=ZZ for integer NN
+FUNC DBL dist(DBL xx, DBL xmoduli):
+   # the distance of XX from the nearest multiple of XMODULI:
+   # dist(XX,XMODULI)=ZZ in [0, ABS(XMODULI)/2] ST:
+   #   ABS(XX-NN*XMODULI)=ZZ for integer NN
    DBL retvalu;
    DBL axx;
-   DBL amm;
+   DBL axmoduli;
 
    axx = ABS(xx);
-   amm = ABS(mm);
-   retvalu = Kw.fmod(axx, amm);
+   axmoduli = ABS(xmoduli);
+   retvalu = Kw.fmod(axx, axmoduli);
 
-   IF amm < 2.0 * retvalu:
-      retvalu = amm - retvalu;
+   IF axmoduli < 2.0 * retvalu:
+      retvalu = axmoduli - retvalu;
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL ddist(DBL xx, DBL mm):
-   # ddist(XX,MM)=ZZ in (-ABS(MM/2), ABS(MM)]
-   #    ST: XX=NN*MM+ZZ for integer NN
+FUNC DBL ddist(DBL xx, DBL xmoduli):
+   # ddist(XX,XMODULI)=ZZ in (-ABS(XMODULI/2), ABS(XMODULI)]
+   #    ST: XX=NN*XMODULI+ZZ for integer NN
    DBL retvalu;
    DBL rema;
-   DBL amm;
+   DBL axmoduli;
 
-   IF Kw.iszero(mm):
+   IF Kw.iszero(xmoduli):
       retvalu = 0.0;
    ELSE:
-      amm = ABS(mm);
-      rema = xx - FLOOR(xx / amm) * amm;
-      IF amm < 2.0 * rema:
-         rema -= amm;
+      axmoduli = ABS(xmoduli);
+      rema = xx - FLOOR(xx / axmoduli) * axmoduli;
+      IF axmoduli < 2.0 * rema:
+         rema -= axmoduli;
       IF_END
       retvalu = rema;
    IF_END

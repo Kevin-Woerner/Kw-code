@@ -1,4 +1,5 @@
-#    Copyright (C) 2016-2020 by Kevin D. Woerner
+#    Copyright (C) 2016-2021 by Kevin D. Woerner
+# 2021-04-15 kdw  indent work
 # 2020-08-05 kdw  minor refactor
 # 2020-07-24 kdw  comment cleanup
 # 2020-04-12 kdw  comment change
@@ -48,7 +49,7 @@ FUNC DBL f21(DBL aa, DBL bb, DBL cc, DBL zz):
       term = 1.0;
       AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
          term *= ((aa + nn) * (bb + nn) * zz
-               / ((cc + nn) * (1  + nn)));
+                  / ((cc + nn) * (1  + nn)));
          sum_prev = sum_curr;
          sum_curr += term;
       AWAIT_END
@@ -70,7 +71,7 @@ FUNC DBL f11(DBL aa, DBL bb, DBL zz):
       term = 1.0;
       AWAIT Kw.iseq(sum_curr, sum_prev) COUNT nn FROM 0:
          term *= ((aa + nn) * zz
-               / ((bb + nn) * (1 + nn)));
+                  / ((bb + nn) * (1 + nn)));
          sum_prev = sum_curr;
          sum_curr += term;
       AWAIT_END

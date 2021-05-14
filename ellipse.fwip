@@ -1,4 +1,7 @@
-#    Copyright (C) 2020 by Kevin D. Woerner
+#    Copyright (C) 2020-2021 by Kevin D. Woerner
+# 2021-04-20 kdw  semi-axis vars renamed
+# 2021-03-25 kdw  upped line length
+# 2021-02-04 kdw  add spaces to test lines
 # 2020-12-08 kdw  explicit module on consts
 # 2020-09-30 kdw  circumference work
 # 2020-09-29 kdw  more comments; third flattening
@@ -13,32 +16,32 @@
 
 # 0 <= m == eccentricity**2 <= 1
 
-FUNC DBL ellipsearea(DBL aa, DBL bb):
-   # area of an ellipse with semi-axes AA and BB
-   RETURN Kw.PI * aa * bb;
+FUNC DBL ellipsearea(DBL semi_axis_a, DBL semi_axis_b):
+   # area of an ellipse with semi-axes SEMI_AXIS_A and SEMI_AXIS_B
+   RETURN Kw.PI * semi_axis_a * semi_axis_b;
 FUNC_END
 
-FUNC DBL ellipseecc(DBL aa, DBL bb):
-   # eccentricity of an ellipse with semi-axes AA and BB
-   RETURN Kw.topyh1(Kw.ratio(aa, bb));
+FUNC DBL ellipseecc(DBL semi_axis_a, DBL semi_axis_b):
+   # eccentricity of an ellipse with semi-axes SEMI_AXIS_A and SEMI_AXIS_B
+   RETURN Kw.topyh1(Kw.ratio(semi_axis_a, semi_axis_b));
 FUNC_END
 
-FUNC DBL ellipsem(DBL aa, DBL bb):
-   # m parameter of an ellipse with semi-axes AA and BB
+FUNC DBL ellipsem(DBL semi_axis_a, DBL semi_axis_b):
+   # m parameter of an ellipse with semi-axes SEMI_AXIS_A and SEMI_AXIS_B
    DBL rati;
 
-   rati = Kw.ratio(aa, bb);
+   rati = Kw.ratio(semi_axis_a, semi_axis_b);
    RETURN 1.0 - rati * rati;
 FUNC_END
 
-FUNC DBL ellipseflatness(DBL aa, DBL bb):
-   # first flattening of an ellipse with semi-axes AA and BB
-   RETURN 1.0 - Kw.ratio(aa, bb);
+FUNC DBL ellipseflatness(DBL semi_axis_a, DBL semi_axis_b):
+   # first flattening of ellipse with semi-axes SEMI_AXIS_A and SEMI_AXIS_B
+   RETURN 1.0 - Kw.ratio(semi_axis_a, semi_axis_b);
 FUNC_END
 
-FUNC DBL ellipsen(DBL aa, DBL bb):
-   # third flattening of an ellipse with semi-axes AA and BB
-   RETURN ABS(aa - bb) / (aa + bb);
+FUNC DBL ellipsen(DBL semi_axis_a, DBL semi_axis_b):
+   # third flattening of ellipse with semi-axes SEMI_AXIS_A and SEMI_AXIS_B
+   RETURN ABS(semi_axis_a - semi_axis_b) / (semi_axis_a + semi_axis_b);
 FUNC_END
 
 FUNC DBL flat2ecc(DBL flt):
@@ -51,60 +54,61 @@ FUNC DBL ecc2flat(DBL ecc):
    RETURN 1.0 - SQRT(1.0 - ecc * ecc);
 FUNC_END
 
-FUNC DBL ellipsecir(DBL aa_orig, DBL bb_orig):
-   # circumference of an ellipse with semi-axes AA and BB
+FUNC DBL ellipsecir(DBL semi_axes_a, DBL semi_axes_b):
+   # circumference of ellipse with semi-axes SEMI_AXIS_A and SEMI_AXIS_B
    DBL aaa;
    DBL bbb;
-   DBL mm;
+   DBL pows_two;
    DBL suma;
    DBL temp;
    INT ii;
    DBL retvalu;
+   DBL axes_sum;
 
-   IF aa_orig < bb_orig:
-      aaa = bb_orig;
-      bbb = aa_orig;
+   IF semi_axes_a < semi_axes_b:
+      aaa = semi_axes_b;
+      bbb = semi_axes_a;
    ELSE:
-      aaa = aa_orig;
-      bbb = bb_orig;
+      aaa = semi_axes_a;
+      bbb = semi_axes_b;
    IF_END
    IF bbb <= SQRT(Kw.DBLEPS) * aaa:
       retvalu = 4.0 * aaa;
    ELSE:
       suma = 0.0;
-      mm = 1.0;
+      axes_sum = aaa + bbb;
+      pows_two = 1.0;
       AWAIT Kw.iseq(aaa, bbb) COUNT ii FROM 0 TO 30:
          temp = (aaa + bbb) / 2.0;
          bbb = SQRT(aaa * bbb);
          aaa = temp;
-         mm += mm;
-         suma += mm * Kw.square(aaa - bbb);
+         pows_two += pows_two;
+         suma += pows_two * Kw.square(aaa - bbb);
       AWAIT_END
 
-      retvalu = Kw.PI * (Kw.square(aa_orig + bb_orig) - suma)
-            / (aaa + bbb);
+      retvalu = Kw.PI * (Kw.square(axes_sum) - suma) / (aaa + bbb);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL ellipsecir__1(DBL aa, DBL bb):
-   # circumference of an ellipse with semi-axes AA and BB
+FUNC DBL ellipsecir__1(DBL semi_axis_a, DBL semi_axis_b):
+   # circumference of an ellipse with semi-axes SEMI_AXIS_A and SEMI_AXIS_B
    # via the elliptic integral of the 2th kind
    DBL major_axis;
    DBL minor_axis;
    DBL rati;
 
-   IF aa < bb:
-      major_axis = bb;
-      minor_axis = aa;
+   IF semi_axis_a < semi_axis_b:
+      major_axis = semi_axis_b;
+      minor_axis = semi_axis_a;
    ELSE:
-      major_axis = aa;
-      minor_axis = bb;
+      major_axis = semi_axis_a;
+      minor_axis = semi_axis_b;
    IF_END
    rati = minor_axis / major_axis;
-   # now major_axis = max(AA, BB)
+   # now major_axis = max(SEMI_AXIS_A, SEMI_AXIS_B)
    RETURN 4.0 * major_axis * Kw.elliptic2m(1.0 - rati * rati);
 FUNC_END
 
-#TEST:ellipsecir(1,10)==40.639741801008957425577931011816563791;
-#TEST:ellipsearea(1,10)==31.41592653589793238462643383279502884;
+#TEST:ellipsecir(1,10) == 40.63974180100895742557793101181656379;
+#TEST:ellipsearea(1,10) == 31.4159265358979323846264338327950288;

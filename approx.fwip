@@ -1,4 +1,11 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-20 kdw  var name change (mainly mm)
+# 2021-04-15 kdw  indent work
+# 2021-04-06 kdw  long lines
+# 2021-03-15 kdw  lx_.* const names
+# 2021-03-13 kdw  line len upped to 77
+# 2021-02-05 kdw  wikipedia refs
+# 2021-02-04 kdw  add spaces to test lines
 # 2020-12-03 kdw  float explicit const work
 # 2020-11-28 kdw  macro syntax overhaul
 # 2020-11-22 kdw  language comments changed
@@ -135,8 +142,7 @@
 ## only with elementary operations (+, -, *, /)
 
 FUNC DBL sqrt__1(DBL xx):
-   # calculate the YY=sqrt(XX) via
-   #     Newtons method on f(x) = x**2 - XX
+   # calculate the YY=sqrt(XX) via Newtons method on f(x) = x**2 - XX
    #      x__n+1_ = x__n_ - f(x__n_) / df(x__n_)
    # Step A) Find ZZ in [1,4), and integer NN such that
    #           sqrt(XX) = 2**NN * sqrt(ZZ * 4**-NN)
@@ -152,8 +158,7 @@ FUNC DBL sqrt__1(DBL xx):
    IF xx <= 0.0:
       yy_curr = 0.0;
    ELSE:
-      # Use SQRT(XX) = 2**n * SQRT(XX / 4**n)
-      # to reduce arg to [1.0, 4.0)
+      # Use SQRT(XX) = 2**n * SQRT(XX / 4**n) to reduce arg to [1.0, 4.0)
       power_of_two = 1.0;
       zz = xx;
       WHILE 4.0 <= zz:
@@ -165,12 +170,12 @@ FUNC DBL sqrt__1(DBL xx):
          power_of_two /= 2.0;
       WHILE_END
 
-      # init guess via Least squares quadratic
-      # on data (x, sqrt(x)) with x = 1 to 4 step 0.01
+      # init guess via Least squares quadratic on data (x, sqrt(x))
+      # with x = 1 to 4 step 0.01
       yy_curr = (((
-            - 0.0353026277858345) * zz
-            + 0.502513025246083) * zz
-            + 0.546382637992462);
+               - 0.0353026277858345) * zz
+               + 0.502513025246083) * zz
+               + 0.546382637992462);
       AWAIT Kw.iseq(yy_prev, yy_curr): # Newton loop
          yy_prev = yy_curr;
          yy_curr = (yy_curr + zz / yy_curr) / 2.0;
@@ -182,8 +187,7 @@ FUNC DBL sqrt__1(DBL xx):
 FUNC_END
 
 FUNC DBL sqrt__2(DBL xx):
-   # calculate the YY=sqrt(XX) via explicitly
-   # inverting the function XX=YY**2
+   # calculate the YY=sqrt(XX) via explicitly inverting the function XX=YY**2
    {SECANT_DECLARATIONS}
    DBL ini;
 
@@ -202,8 +206,7 @@ FUNC DBL sqrt__2(DBL xx):
 FUNC_END
 
 FUNC DBL sqrt__3(DBL yy):
-   # calculate the XX=sqrt(YY) via
-   # finding the zero of F(XX) = XX * XX - YY
+   # calculate the XX=sqrt(YY) via finding the zero of F(XX) = XX * XX - YY
    {RAPHSON_DECLARATIONS}
    DBL ini;
 
@@ -216,21 +219,17 @@ FUNC DBL sqrt__3(DBL yy):
          ini = 2.0 * yy;
       IF_END
 
-      {RAPHSON_LOOP ini
-            ; nrvx_xx * nrvx_xx - yy
-            ; 2.0 * nrvx_xx }
+      {RAPHSON_LOOP ini ; nrvx_xx * nrvx_xx - yy ; 2.0 * nrvx_xx }
    IF_END
    RETURN nrvx_xx;
 FUNC_END
 
 FUNC DBL nthroot__1(DBL xx, INT kk):
-   # calculate the YY=(XX)**(1/KK) via
-   #     Newtons method on f(x) = x**KK - XX
+   # calculate the YY=(XX)**(1/KK) via Newtons method on f(x) = x**KK - XX
    #      x__n+1_ = x__n_ - f(x__n_) / df(x__n_)
    # Step A) find YY_0 such that 0 about YY_0**KK - XX
    # Step B) iterate Newtons method on F(YY) = YY ** KK - XX
-   #      YY__n+1_ = (YY__n_ * (KK - 1)
-   #               + XX / YY__n_ ** (KK - 1)) / KK
+   #      YY__n+1_ = (YY__n_ * (KK - 1) + XX / YY__n_ ** (KK - 1)) / KK
    # Step C) return YY_n+1
    DBL yy_curr;
    DBL yy_prev;
@@ -253,77 +252,72 @@ FUNC DBL nthroot__1(DBL xx, INT kk):
    RETURN yy_curr;
 FUNC_END
 
-BLOCK:
-   BLOCK_DEF CONST LC_EPS Kw.DBLEPS / 16.0;
+FUNC DBL cossin_ev(INT init_ii, DBL xx_rad, BOL addone_mult):
+   #         +INF   (-1)**N * XX_RAD**(2*N+INIT_II)
+   #          SUM ---------------------------------
+   # N=init_ii+1      factorial(2*N+INIT_II)
+   DBL cval;
+   INT ii;
+   DBL trig_sum;
+   DBL xr_rad;
+   DBL xr_sqr;
 
-   FUNC DBL cossin_ev(INT init_ii, DBL xx_rad, BOL addone_mult):
-      #         +INF   (-1)**N * XX_RAD**(2*N+INIT_II)
-      #          SUM ---------------------------------
-      # N=init_ii+1      factorial(2*N+INIT_II)
-      DBL cval;
-      INT ii;
-      DBL trig_sum;
-      DBL xr_rad;
-      DBL xr_sqr;
-
-      IF Kw.iszero(xx_rad):
-         trig_sum = 0.0;
-      ELSE:
-         xr_rad = Kw.fmods(xx_rad, Kw.TAU);
-         xr_sqr = - xr_rad * xr_rad;
-         cval = 1.0;
-         ii = init_ii;
-         WHILE LC_EPS < ABS(cval):
-            ii += 2;
-            cval *= xr_sqr / (ii * (ii - 1.0));
-         WHILE_END
-         # use Horners method
-         trig_sum = 1.0 / (ii * (ii + 1.0));
-         WHILE 1 < ii:
-            trig_sum += 1.0;
-            trig_sum *= xr_sqr / (ii * (ii - 1.0));
-            ii -= 2;
-         WHILE_END
-         IF addone_mult:
-            trig_sum += 1.0;
-            trig_sum *= xr_rad;
-         IF_END
+   IF Kw.iszero(xx_rad):
+      trig_sum = 0.0;
+   ELSE:
+      xr_rad = Kw.fmods(xx_rad, Kw.TAU);
+      xr_sqr = - xr_rad * xr_rad;
+      cval = 1.0;
+      ii = init_ii;
+      WHILE Kw.DBLEPS / 16.0 < ABS(cval):
+         ii += 2;
+         cval *= xr_sqr / (ii * (ii - 1.0));
+      WHILE_END
+      # use Horners method
+      trig_sum = 1.0 / (ii * (ii + 1.0));
+      WHILE 1 < ii:
+         trig_sum += 1.0;
+         trig_sum *= xr_sqr / (ii * (ii - 1.0));
+         ii -= 2;
+      WHILE_END
+      IF addone_mult:
+         trig_sum += 1.0;
+         trig_sum *= xr_rad;
       IF_END
-      RETURN trig_sum;
-   FUNC_END
+   IF_END
+   RETURN trig_sum;
+FUNC_END
 
-   FUNC DBL cos__1(DBL xx_rad):
-      # calculate COS(XX) via Taylor series
-      RETURN cossin_ev(0, xx_rad, FALSE) + 1.0;
-   FUNC_END
+FUNC DBL cos__1(DBL xx_rad):
+   # calculate COS(XX) via Taylor series
+   RETURN cossin_ev(0, xx_rad, FALSE) + 1.0;
+FUNC_END
 
-   FUNC DBL cosm1__1(DBL xx_rad):
-      # calculate COS(XX) via Taylor series
-      RETURN cossin_ev(0, xx_rad, FALSE);
-   FUNC_END
+FUNC DBL cosm1__1(DBL xx_rad):
+   # calculate COS(XX) via Taylor series
+   RETURN cossin_ev(0, xx_rad, FALSE);
+FUNC_END
 
-   FUNC DBL sin__1(DBL xx_rad):
-      # calculate SIN(XX) via Taylor series
-      RETURN cossin_ev(1, xx_rad, TRUE);
-   FUNC_END
+FUNC DBL sin__1(DBL xx_rad):
+   # calculate SIN(XX) via Taylor series
+   RETURN cossin_ev(1, xx_rad, TRUE);
+FUNC_END
 
-   FUNC DBL sinc__1(DBL xx_rad):
-      # calculate SINC(XX) via Taylor series
-      DBL retvalu;
+FUNC DBL sinc__1(DBL xx_rad):
+   # calculate SINC(XX) via Taylor series
+   DBL retvalu;
 
-      IF Kw.iszero(xx_rad):
-         retvalu = 1.0;
+   IF Kw.iszero(xx_rad):
+      retvalu = 1.0;
+   ELSE:
+      IF Kw.TAU / 2.0 < ABS(xx_rad):
+         retvalu = cossin_ev(1, xx_rad, TRUE) / xx_rad;
       ELSE:
-         IF Kw.TAU / 2.0 < ABS(xx_rad):
-            retvalu = cossin_ev(1, xx_rad, TRUE);
-            retvalu /= xx_rad;
-         ELSE:
-            retvalu = cossin_ev(1, xx_rad, FALSE) + 1.0;
-         IF_END
+         retvalu = cossin_ev(1, xx_rad, FALSE) + 1.0;
       IF_END
-      RETURN retvalu;
-   FUNC_END
-BLOCK_END
+   IF_END
+   RETURN retvalu;
+FUNC_END
 
 FUNC DBL exp__1(DBL xx):
    # calculate the YY=EXP(XX) via Taylor series
@@ -342,8 +336,7 @@ FUNC DBL exp__1(DBL xx):
       axx = xx;
    IF_END
 
-   # Now 0 <= XX; Use the fact that exp(2*x) = exp(x)**2
-   # to reduce AXX to < 1
+   # Now 0 <= XX; Use the fact that exp(2*x) = exp(x)**2 to reduce AXX to < 1
    squaring_count = 0;
    WHILE 1.0 < axx:
       axx /= 2.0;
@@ -396,9 +389,8 @@ FUNC DBL exp__2(DBL xx):
       axx /= 2.0;
       squaring_count += 1;
    WHILE_END
-   # Now 0 <= AXX < 1
-   # figure out how many term of the Taylor series of exp(axx)
-   # we need to get the desired precision
+   # Now 0 <= AXX < 1; figure out how many term of the Taylor series
+   # of exp(axx) we need to get the desired precision
    vale = 1.0;
    term_count = 1;
    WHILE Kw.DBLEPS / 4.0 < vale:
@@ -423,36 +415,35 @@ FUNC DBL exp__2(DBL xx):
 FUNC_END
 
 FUNC DBL ln__1(DBL xx):
-   # Wikipedia/Logarithm/Arithmetic-geometric mean
-   # approximation
+   # Wikipedia - Logarithm - Arithmetic-geometric mean approximation
    DBL yy_curr;
    DBL logshift;
    DBL retvalu;
    DBL tmp;
 
-LANGUAGE LANG_BC:                        # BC extended resolution
-   scale *= 2;                           # BC extended resolution
-LANGUAGE_END                             # BC extended resolution
+   LANGUAGE LANG_BC:                                 # BC extended resolution
+      scale *= 2;                                    # BC extended resolution
+   LANGUAGE_END                                      # BC extended resolution
 
    logshift = 0.0;
    yy_curr = 8.0 / xx; # YY_CURR = 2**(3 - LOGSTEP) / XX
    tmp = (Kw.DBLEPS);
    WHILE tmp < yy_curr:
-      logshift -= 16.0 * Kw.LNTWO;
+      logshift -= 16.0 * Kw.TWOLN;
       yy_curr /= 65536.0;  # YY_CURR /= 2**(LOGSTEPINC)
    WHILE_END
 
    retvalu = (Kw.PI / Kw.agmean(2.0, yy_curr) + logshift);
 
-LANGUAGE LANG_BC:                        # BC extended resolution
-   scale /= 2;                           # BC extended resolution
-LANGUAGE_END                             # BC extended resolution
+   LANGUAGE LANG_BC:                                 # BC extended resolution
+      scale /= 2;                                    # BC extended resolution
+   LANGUAGE_END                                      # BC extended resolution
 
    RETURN retvalu;
 FUNC_END
 
 FUNC DBL ln__2(DBL xx):
-   # Wikipedia/Logarithm
+   # Wikipedia::Logarithm
    DBL yy_curr;
    DBL ptwo;
    DBL term;
@@ -463,17 +454,16 @@ FUNC DBL ln__2(DBL xx):
 
    yy_curr = xx;
    ptwo = 0.0;
-   WHILE Kw.SQRTTWO < yy_curr:
+   WHILE Kw.TWOSQRT < yy_curr:
       ptwo += 1.0;
       yy_curr /= 2.0;
    WHILE_END
-   WHILE yy_curr < 1.0 / Kw.SQRTTWO:
+   WHILE yy_curr < 1.0 / Kw.TWOSQRT:
       ptwo -= 1.0;
       yy_curr *= 2.0;
    WHILE_END
 
-   # Now YY_CURR is in [1 / SQRTTWO,SQRTTWO],
-   #      and XX = YY_CURR * 2 ** PTWO
+   # Now YY_CURR is in [1 / TWOSQRT,TWOSQRT], and XX = YY_CURR * 2 ** PTWO
    mant = (yy_curr - 1.0) / (yy_curr + 1.0);
    sum_curr = 2.0 * mant;
    term = sum_curr;
@@ -484,41 +474,41 @@ FUNC DBL ln__2(DBL xx):
       sum_curr += term / nn;
    AWAIT_END
 
-   RETURN ptwo * Kw.LNTWO + sum_curr;
+   RETURN ptwo * Kw.TWOLN + sum_curr;
 FUNC_END
 
 FUNC DBL euler__1(NUL):
    # approximate the Euler constant
    DBL twon;
    DBL exptwon;
-   INT nn;
+   INT ii;
+   INT jj;
    DBL term;
    DBL subsum;
    DBL sum_curr;
    DBL sum_prev;
-   INT mm;
 
    twon = 1.0;
    exptwon = Kw.E;
-   AWAIT 0.1 < Kw.DBLEPS * exptwon COUNT nn FROM 0:
+   AWAIT 0.1 < Kw.DBLEPS * exptwon COUNT ii FROM 0:
       twon *= 2.0;
       exptwon *= exptwon;
    AWAIT_END
    term = 1.0 / twon;
    subsum = 0.0;
    sum_curr = 0.0;
-   AWAIT Kw.iseq(sum_prev, sum_curr) COUNT mm FROM 1:
-      subsum += 1.0 / mm;
-      term *= twon / mm;
+   AWAIT Kw.iseq(sum_prev, sum_curr) COUNT jj FROM 1:
+      subsum += 1.0 / jj;
+      term *= twon / jj;
       sum_prev = sum_curr;
       sum_curr += term * subsum;
    AWAIT_END
-   RETURN twon * sum_curr / exptwon - (nn + 1.0) * Kw.LNTWO;
+   RETURN twon * sum_curr / exptwon - (ii + 1.0) * Kw.TWOLN;
 FUNC_END
 
-#TEST:ln__1(exp__1(8.6))==8.6;
-#TEST:exp__1(ln__1(8.6))==8.6;
-#TEST:cos__1(1.0)==0.54030230586813971740093660744297660373231;
-#TEST:sin__1(1.0)==0.84147098480789650665250232163029899962256;
-#TEST:exp__1(2.0)==7.38905609893065022723042746057500781318032;
-#TEST:euler__1()==0.5772156649015328606065120900824024310422;
+#TEST:ln__1(exp__1(8.6)) == 8.6;
+#TEST:exp__1(ln__1(8.6)) == 8.6;
+#TEST:cos__1(1.0) == 0.54030230586813971740093660744297660373231;
+#TEST:sin__1(1.0) == 0.84147098480789650665250232163029899962256;
+#TEST:exp__1(2.0) == 7.38905609893065022723042746057500781318032;
+#TEST:euler__1() == 0.5772156649015328606065120900824024310422;

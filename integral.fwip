@@ -1,4 +1,5 @@
-#    Copyright (C) 2020 by Kevin D. Woerner
+#    Copyright (C) 2020-2021 by Kevin D. Woerner
+# 2021-02-05 kdw  test comments
 # 2020-12-08 kdw  minor rearrange
 # 2020-07-07 kdw  tests changed II
 # 2020-06-30 kdw  tests changed
@@ -59,7 +60,7 @@ FUNC DBL cosintegral(DBL xx):
    IF_END
    RETURN sum_curr;
 FUNC_END
-#TEST:cosintegral(3.38418042255118642639785114640206045);
+#TEST: cosintegral(3.38418042255118642639785114640206045);
 
 FUNC DBL Ein(DBL xx):
    #        xx  1 - EXP(-t)
@@ -92,7 +93,7 @@ FUNC DBL expintegrali(DBL xx):
 
    RETURN retvalu;
 FUNC_END
-#TEST:expintegrali(0.37250741078136663446199186658012);
+#TEST: expintegrali(0.37250741078136663446199186658012);
 
 FUNC DBL expintegral1(DBL xx):
    #       INF  EXP(-t)
@@ -166,9 +167,9 @@ FUNC DBL carlsonRF(DBL xx, DBL yy, DBL zz):
 
    RETURN 1.0 / SQRT(xx);
 FUNC_END
-#TEST:carlsonRF(2,1,1)==coshinv(sqrt(2));
-#TEST:carlsonRF(3,3,3)==1.0/sqrt(3);
-#TEST:carlsonRF(2,4,4)==cosinv(sqrt(0.5))/sqrt(2);
+#TEST: carlsonRF(2,1,1) == coshinv(sqrt(2));
+#TEST: carlsonRF(3,3,3) == 1.0/sqrt(3);
+#TEST: carlsonRF(2,4,4) == cosinv(sqrt(0.5))/sqrt(2);
 
 FUNC DBL carlsonRC(DBL xx, DBL yy):
    #       INF        0.5

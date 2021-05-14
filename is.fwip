@@ -1,4 +1,5 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-11 kdw  indent work
 # 2020-12-15 kdw  rmed macros
 # 2020-11-28 kdw  macro syntax overhaul
 # 2020-08-20 kdw  boolean checks changed
@@ -127,11 +128,11 @@ FUNC BOL ismultl(INT xx, INT mult):
    BOL retvalu_bol;
 
    MODE_INTEGER:
-   IF xx % mult == 0:
-      retvalu_bol = TRUE;
-   ELSE:
-      retvalu_bol = FALSE;
-   IF_END
+      IF xx % mult == 0:
+         retvalu_bol = TRUE;
+      ELSE:
+         retvalu_bol = FALSE;
+      IF_END
    MODE_INTEGER_END
    RETURN retvalu_bol;
 FUNC_END

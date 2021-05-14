@@ -1,4 +1,7 @@
-#    Copyright (C) 2017-2020 by Kevin D. Woerner
+#    Copyright (C) 2017-2021 by Kevin D. Woerner
+# 2021-03-15 kdw  lx_.* const names
+# 2021-03-13 kdw  line len upped to 77
+# 2021-02-13 kdw  localize consts
 # 2020-11-23 kdw  local consts
 # 2020-07-24 kdw  comment cleanup
 # 2020-04-12 kdw  comment change
@@ -19,9 +22,6 @@
 # 2018-04-03 kdw  rm () from return
 # 2018-01-27 kdw  majopr refactor; poles=5
 # 2017-12-13 kdw  created
-
-CONST LC_SHC_SHIFTSHIFT  3.85514; #1
-CONST LC_SHC_STEPSHIFT  8.5; #1
 
 FUNC DBL shc_shftpoles2steps(INT shft, INT poles):
    DBL step_arr[20];
@@ -149,13 +149,18 @@ FUNC DBL shc_shftpoles2steps(INT shft, INT poles):
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL shc_steps2shft(DBL steps):
-   RETURN Kw.lg(steps + LC_SHC_STEPSHIFT) - LC_SHC_SHIFTSHIFT;
-FUNC_END
+BLOCK:
+   BLOCK_DEF CONST LX_SHC_SHIFTSHIFT  3.85514; #1
+   BLOCK_DEF CONST LX_SHC_STEPSHIFT   8.5; #1
 
-FUNC DBL shc_steps2shftinv(DBL shft):
-   RETURN POW(2.0, shft + LC_SHC_SHIFTSHIFT) - LC_SHC_STEPSHIFT;
-FUNC_END
+   FUNC DBL shc_steps2shft(DBL steps):
+      RETURN Kw.lg(steps + LX_SHC_STEPSHIFT) - LX_SHC_SHIFTSHIFT;
+   FUNC_END
+
+   FUNC DBL shc_steps2shftinv(DBL shft):
+      RETURN POW(2.0, shft + LX_SHC_SHIFTSHIFT) - LX_SHC_STEPSHIFT;
+   FUNC_END
+BLOCK_END
 
 FUNC DBL shc_shft2steps(INT shft):
    RETURN shc_shftpoles2steps(shft, 4);

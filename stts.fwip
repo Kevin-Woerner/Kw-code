@@ -1,4 +1,9 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-15 kdw  indent work
+# 2021-04-11 kdw  indent work
+# 2021-04-09 kdw  indent work
+# 2021-03-14 kdw  const name renam
+# 2021-03-08 kdw  upped line length allowed
 # 2020-12-04 kdw  float explicit const work
 # 2020-11-28 kdw  macro syntax overhaul
 # 2020-08-29 kdw  _a[r]r changed to _mt[r]x
@@ -125,6 +130,15 @@
 # 2015-09-22 kdw  _[_]* format changed
 # 2015-09-20 kdw  created
 
+{MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> {
+   FUNC DBL <STFUNC>(INT ix_hndl):
+      # <STDESC> of LC_HNDLth stts calc
+      BLOCK_USE lv_sttx_mtrx[];
+
+      RETURN lv_sttx_mtrx[ix_hndl][<STIND>];
+   FUNC_END
+}}
+
 BLOCK: # Statistics block
    BLOCK_DEF CONST LC_STTS_NUM 0;
    BLOCK_DEF CONST LC_STTS_MEAN 1;
@@ -132,9 +146,9 @@ BLOCK: # Statistics block
    BLOCK_DEF CONST LC_STTS_MAX 3;
    BLOCK_DEF CONST LC_STTS_MIN 4;
    BLOCK_DEF CONST LC_STTS_MAGIC 5;
-   BLOCK_DEF CONST LC_STTS_COUNT 6;
-   BLOCK_DEF CONST LC_STTS_MAX_KEY 100;
-   BLOCK_DEF DBL lv_sttx_mtrx[LC_STTS_MAX_KEY][LC_STTS_COUNT];
+   BLOCK_DEF CONST LC_STTS_CNT 6;
+   BLOCK_DEF CONST LC_STTS_KEY_CNT 100;
+   BLOCK_DEF DBL lv_sttx_mtrx[LC_STTS_KEY_CNT][LC_STTS_CNT];
 
    BLOCK_DEF FUNC BOL lf_stts_is_inited(INT ix_hndl):
       BLOCK_USE lv_sttx_mtrx[];
@@ -145,7 +159,7 @@ BLOCK: # Statistics block
 
       vll = lv_sttx_mtrx[0][LC_STTS_MAGIC];
       IF vll <> Kw.magicset() AND vll <> Kw.magicnot():
-         FOR ii FROM 0 TO LC_STTS_MAX_KEY - 1:
+         FOR ii FROM 0 TO LC_STTS_KEY_CNT - 1:
             FOR jj FROM 0 TO LC_STTS_MAGIC - 1:
                lv_sttx_mtrx[ii][jj] = 0.0;
             FOR_END
@@ -153,7 +167,7 @@ BLOCK: # Statistics block
          FOR_END
       IF_END
 
-      IF LC_STTS_MAX_KEY <= ix_hndl:
+      IF LC_STTS_KEY_CNT <= ix_hndl:
          retvalu_bol = FALSE;
       ELSE:
          vll = lv_sttx_mtrx[ix_hndl][LC_STTS_MAGIC];
@@ -170,15 +184,14 @@ BLOCK: # Statistics block
          ix_hndl += 1;
       WHILE_END
 
-      IF LC_STTS_MAX_KEY <= ix_hndl:
+      IF LC_STTS_KEY_CNT <= ix_hndl:
          DIE "STTS-Bad-handle";
       IF_END
       RETURN ix_hndl;
    FUNC_END
 
-   FUNC INT stts_init(INT ix_hndl, DBL n_count
-      , DBL meanx, DBL var
-      , DBL minim, DBL maxim):
+   FUNC INT stts_init(INT ix_hndl, DBL n_count, DBL meanx, DBL var
+            , DBL minim, DBL maxim):
       # init STTS LC_HNDL w/ given parameters; return handle
       BLOCK_USE lv_sttx_mtrx[];
 
@@ -192,9 +205,8 @@ BLOCK: # Statistics block
       RETURN ix_hndl;
    FUNC_END
 
-   FUNC INT stts_initx(INT ix_hndl, DBL num_count
-      , DBL meanx, DBL msq
-      , DBL minim, DBL maxim):
+   FUNC INT stts_initx(INT ix_hndl, DBL num_count, DBL meanx, DBL msq
+            , DBL minim, DBL maxim):
       # init STTS LC_HNDL w/ given parameters; return handle
       BLOCK_USE lv_sttx_mtrx[];
 
@@ -228,15 +240,6 @@ BLOCK: # Statistics block
       RETURN ix_hndl;
    FUNC_END
 
-   {MACRO STTSFUNC <STFUNC> ; <STIND> ; <STDESC> {
-   FUNC DBL <STFUNC>(INT ix_hndl):
-      # <STDESC> of LC_HNDLth stts calc
-      BLOCK_USE lv_sttx_mtrx[];
-
-      RETURN lv_sttx_mtrx[ix_hndl][<STIND>];
-   FUNC_END
-   }}
-
    {STTSFUNC sttscount ; LC_STTS_NUM   ; count }
    {STTSFUNC sttsmean  ; LC_STTS_MEAN  ; mean }
    {STTSFUNC sttsmsq   ; LC_STTS_MSQ   ; msq }
@@ -256,8 +259,7 @@ BLOCK: # Statistics block
       IF ABS(sttscount(ix_hndl)) <= 1.0:
          retvalu = 0.0;
       ELSE:
-         retvalu = (sttsmsq(ix_hndl)
-            / (ABS(sttscount(ix_hndl) - 1.0)));
+         retvalu = (sttsmsq(ix_hndl) / (ABS(sttscount(ix_hndl) - 1.0)));
       IF_END
       RETURN retvalu;
    FUNC_END
@@ -269,8 +271,7 @@ BLOCK: # Statistics block
       IF sttscount(ix_hndl) <= 1.0:
          retvalu = 0.0;
       ELSE:
-         retvalu = (SQRT(sttsmsq(ix_hndl)
-            / (sttscount(ix_hndl) - 1.0)));
+         retvalu = (SQRT(sttsmsq(ix_hndl) / (sttscount(ix_hndl) - 1.0)));
       IF_END
       RETURN retvalu;
    FUNC_END
@@ -282,8 +283,7 @@ BLOCK: # Statistics block
       IF sttscount(ix_hndl) <= 1.0 OR sttsmsq(ix_hndl) <= 0.0:
          retvalu = 0.0;
       ELSE:
-         retvalu = (SQRT(sttsmsq(ix_hndl))
-            / (sttscount(ix_hndl) - 1.0));
+         retvalu = (SQRT(sttsmsq(ix_hndl)) / (sttscount(ix_hndl) - 1.0));
       IF_END
       RETURN retvalu;
    FUNC_END
@@ -310,7 +310,7 @@ BLOCK: # Statistics block
       numy = lv_sttx_mtrx[ix_hndl][LC_STTS_NUM];
       lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] += (delta / numy);
       lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] += (delta
-            * (new_data - lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN]));
+               * (new_data - lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN]));
 
       # update max / mins
       IF (numy < 2.0 OR sttsspread(ix_hndl) < 0.0):
@@ -328,8 +328,7 @@ BLOCK: # Statistics block
       RETURN delta;
    FUNC_END
 
-   FUNC DBL stts_downdate(INT ix_hndl
-         , DBL old_data):
+   FUNC DBL stts_downdate(INT ix_hndl, DBL old_data):
       DBL delt;
       DBL men;
 
@@ -343,8 +342,7 @@ BLOCK: # Statistics block
          IF 0.0 < lv_sttx_mtrx[ix_hndl][LC_STTS_NUM]:
             men -= delt / lv_sttx_mtrx[ix_hndl][LC_STTS_NUM];
             lv_sttx_mtrx[ix_hndl][LC_STTS_MEAN] = men;
-            lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] -=
-                  delt * (old_data - men);
+            lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] -= delt * (old_data - men);
             IF lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] < 0.0:
                lv_sttx_mtrx[ix_hndl][LC_STTS_MSQ] = 0.0;
             IF_END
@@ -356,8 +354,7 @@ BLOCK: # Statistics block
       RETURN delt;
    FUNC_END
 
-   FUNC DBL stts_updatex(INT ix_hndl, INT nn
-            , READONLY DBL data_arr_pc[]):
+   FUNC DBL stts_updatex(INT ix_hndl, INT nn, READONLY DBL data_arr_pc[]):
       # update STTS w/ handle LC_HNDL w/ data DATA_ARR_PC[]
       INT ii;
       DBL retvalu;
@@ -369,8 +366,7 @@ BLOCK: # Statistics block
       RETURN retvalu;
    FUNC_END
 
-   FUNC INT stts_newx(INT nn
-            , READONLY DBL data_arr_pc[]):
+   FUNC INT stts_newx(INT nn, READONLY DBL data_arr_pc[]):
       # create a new STTS w/ data DATA_ARR_PC[]; return handle
       INT ihndl;
       INT ii;
@@ -420,7 +416,7 @@ BLOCK: # Statistics block
       BLOCK_USE lv_sttx_mtrx[];
       INT ii;
 
-      FOR ii FROM 0 TO LC_STTS_COUNT - 1:
+      FOR ii FROM 0 TO LC_STTS_CNT - 1:
          lv_sttx_mtrx[hto][ii] = lv_sttx_mtrx[hfrom][ii];
       FOR_END
 
@@ -432,6 +428,7 @@ BLOCK: # Statistics block
       # update STTS w/ handle LC_HNDA w/ STTS w/ handle LC_HNDB
       DBL delta;
       DBL ncount;
+      DBL nb;
       DBL nmean;
       DBL nmsqr;
       DBL bmin;
@@ -442,8 +439,8 @@ BLOCK: # Statistics block
       IF NOT lf_stts_is_inited(ix_hndb):
          DIE "STTS-Bad-hndb";
       IF_END
-
-      IF NOT Kw.iszero(sttscount(ix_hndb)):
+      nb = sttscount(ix_hndb);
+      IF NOT Kw.iszero(nb):
          IF NOT lf_stts_is_inited(ix_hnda):
             DIE "STTS-Bad-hnda";
          IF_END
@@ -452,15 +449,12 @@ BLOCK: # Statistics block
          ELSE:
             delta = sttsmean(ix_hndb) - sttsmean(ix_hnda);
 
-            ncount = sttscount(ix_hndb) + sttscount(ix_hnda);
+            ncount = nb + sttscount(ix_hnda);
 
-            nmean = (sttsmean(ix_hnda)
-               + delta * (sttscount(ix_hndb) / ncount));
+            nmean = sttsmean(ix_hnda) + delta * nb / ncount;
 
             nmsqr = (sttsmsq(ix_hnda) + sttsmsq(ix_hndb)
-               + delta * delta
-                  * (sttscount(ix_hnda) * sttscount(ix_hndb))
-                     / ncount);
+                     + delta * delta * sttscount(ix_hnda) * nb / ncount);
 
             # update max / mins
             amin = sttsmin(ix_hnda);
@@ -479,8 +473,8 @@ BLOCK: # Statistics block
                   amax = bmax;
                IF_END
             IF_END
-            CALL stts_init(ix_hnda, ncount, nmean
-                  , nmsqr / (ncount - 1.0), amin, amax);
+            CALL stts_init(ix_hnda, ncount, nmean, nmsqr / (ncount - 1.0)
+                     , amin, amax);
          IF_END
       IF_END
 
@@ -492,15 +486,15 @@ BLOCK: # Statistics block
       BLOCK_DEF CONST LC_STTSC_YY 1;
       BLOCK_DEF CONST LC_STTSC_COVAR 2;
       BLOCK_DEF CONST LC_STTSC_MAGIC 3;
-      BLOCK_DEF CONST LC_STTSC_COUNT 4;
-      BLOCK_DEF DBL lv_crx_mtrx[LC_STTS_MAX_KEY][LC_STTSC_COUNT];
+      BLOCK_DEF CONST LC_STTSC_CNT 4;
+      BLOCK_DEF DBL lv_crx_mtrx[LC_STTS_KEY_CNT][LC_STTSC_CNT];
 
       BLOCK_DEF FUNC BOL lf_corr_is_init(INT ix_chnd):
          BLOCK_USE lv_crx_mtrx[];
          BOL retvalu_bol;
          DBL vll;
 
-         IF LC_STTS_MAX_KEY <= ix_chnd:
+         IF LC_STTS_KEY_CNT <= ix_chnd:
             retvalu_bol = FALSE;
          ELSE:
             vll = lv_crx_mtrx[ix_chnd][LC_STTSC_MAGIC];
@@ -517,7 +511,7 @@ BLOCK: # Statistics block
             ix_chnd += 1;
          WHILE_END
 
-         IF LC_STTS_MAX_KEY <= ix_chnd:
+         IF LC_STTS_KEY_CNT <= ix_chnd:
             DIE "STTS-No-empty-handle";
          IF_END
          RETURN ix_chnd;
@@ -575,7 +569,7 @@ BLOCK: # Statistics block
          ddxx = stts_update(xxhnd, xx);
          ddyy = stts_update(yyhnd, yy);
          lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR] += (
-               ddxx * ddyy * num / (num + 1.0));
+                  ddxx * ddyy * num / (num + 1.0));
          RETURN lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR];
       FUNC_END
 
@@ -608,8 +602,7 @@ BLOCK: # Statistics block
          yyhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_YY];
          xxhnd = lv_crx_mtrx[ix_chnd][LC_STTSC_XX];
 
-         retvalu = (sttsmean(yyhnd)
-               - corrslope(ix_chnd) * sttsmean(xxhnd));
+         retvalu = (sttsmean(yyhnd) - corrslope(ix_chnd) * sttsmean(xxhnd));
 
          RETURN retvalu;
       FUNC_END
@@ -628,8 +621,7 @@ BLOCK: # Statistics block
          IF Kw.iszero(den):
             retvalu = 0.0;
          ELSE:
-            retvalu = (lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR]
-                  / SQRT(den));
+            retvalu = (lv_crx_mtrx[ix_chnd][LC_STTSC_COVAR] / SQRT(den));
          IF_END
 
          RETURN retvalu;

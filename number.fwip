@@ -1,4 +1,16 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-05-11 kdw  recursion removal
+# 2021-04-21 kdw  var name change
+# 2021-04-20 kdw  var name change (mainly mm)
+# 2021-04-15 kdw  indent work
+# 2021-04-10 kdw  indent work
+# 2021-03-25 kdw  upped line length
+# 2021-03-14 kdw  const name renam
+# 2021-02-26 kdw  fwip syntax debugging
+# 2021-02-13 kdw  minor change
+# 2021-02-04 kdw  add spaces to test lines
+# 2021-02-01 kdw  bool syntax debugging
+# 2021-01-15 kdw  const renamd
 # 2020-12-08 kdw  explicit module on consts
 # 2020-11-28 kdw  macro syntax overhaul
 # 2020-11-10 kdw  n2[p]rimish II
@@ -188,7 +200,7 @@
 # 2016-11-23 kdw  C[N]ST to REA[D]ONLY
 # 2016-11-22 kdw  fixed [l]i
 # 2016-11-21 kdw  D[F]to FU[N]C
-# 2016-11-20 kdw  laanguage change
+# 2016-11-20 kdw  language change
 # 2016-11-19 kdw  isp[r]ime
 # 2016-11-15 kdw  M[O]D/B[I]T* syntax change
 # 2016-11-14 kdw  comment cleanup
@@ -236,23 +248,23 @@
 FUNC INT powi(INT xx, INT nn):
    # XX**NN (assumes 0 < nn)
    INT pp;
-   INT sqx;
+   INT xsq;
 
    pp = 1;
-   sqx = xx;
+   xsq = xx;
    WHILE 0 < nn:
       IF Kw.isodd(nn):
-         pp *= sqx;
+         pp *= xsq;
       IF_END
-      sqx *= sqx;
+      xsq *= xsq;
       nn = BITSHIFTR(nn, 1);
    WHILE_END
    RETURN pp;
 FUNC_END
-#TEST:powi(3,5)-243;
+#TEST:powi(3,5) - 243;
 
-FUNC INT atothenmodp(INT aa, INT nn, INT pp):
-   # AA to NN modulo PP
+FUNC INT atothenmodp(INT naa, INT nn, INT pp):
+   # NAA to NN modulo PP
    INT retvalu;
    INT cc;
 
@@ -270,7 +282,7 @@ FUNC INT atothenmodp(INT aa, INT nn, INT pp):
             IF_END
          IF_END
          retvalu = 1;
-         cc = aa % pp;
+         cc = naa % pp;
          WHILE 0 < nn:
             IF Kw.isodd(nn):
                retvalu = (retvalu * cc) % pp;
@@ -285,160 +297,158 @@ FUNC INT atothenmodp(INT aa, INT nn, INT pp):
 
    RETURN retvalu;
 FUNC_END
-#TEST:atothenmodp(2,10,100)-24;
+#TEST:atothenmodp(2,10,100) - 24;
 
-FUNC DBL atothenmodx(DBL aa, DBL nn, DBL pp):
-   # AA**NN mod PP
-   RETURN Kw.frac(EXP(nn * LN(aa) - LN(pp))) * pp;
+FUNC DBL atothenmodx(DBL xaa, DBL xnn, DBL xpp):
+   # xAA**xNN mod xPP
+   RETURN Kw.frac(EXP(xnn * LN(xaa) - LN(xpp))) * xpp;
 FUNC_END
-#TEST:atothenmodx(3.14,10,10)==4.37338664347031806976;
-#TEST:atothenmodx(TAU,10,10)==0.6155090134770858907493574099313;
+#TEST:atothenmodx(3.14,10,10) == 4.37338664347031806976;
+#TEST:atothenmodx(TAU,10,10) == 0.61550901347708589074935740993;
 
 FUNC INT ctz(INT nn):
    # Number of trailing 0s in binary expansion of NN
-   #    or number of 2s in factorization of NN
-   INT ii;
-   ii = 0;
+   #    OR number of 2s in factorization of NN
+   INT zero_count;
+   zero_count = 0;
    WHILE 0 == BITAND(nn, 1):
-      ii += 1;
+      zero_count += 1;
       nn = BITSHIFTR(nn, 1);
    WHILE_END
-   RETURN ii;
+   RETURN zero_count;
 FUNC_END
-#TEST:ctz(24)-3;
+#TEST:ctz(24) - 3;
 
-FUNC INT gcd(INT aa, INT bb):
-   # GCD of AA and BB
+FUNC INT gcd(INT naa, INT nbb):
+   # GCD of NAA and NBB
    INT cc;
 
    MODE_INTEGER:
-      aa = ABSL(aa);
-      bb = ABSL(bb);
-      IF bb <= 0:
-         bb = aa;
+      naa = ABSL(naa);
+      nbb = ABSL(nbb);
+      IF nbb <= 0:
+         nbb = naa;
       ELSE:
-         WHILE 0 < aa:
-            cc = aa;
-            aa = bb % aa;
-            bb = cc;
+         WHILE 0 < naa:
+            cc = naa;
+            naa = nbb % naa;
+            nbb = cc;
          WHILE_END
       IF_END
    MODE_INTEGER_END
-   RETURN bb;
+   RETURN nbb;
 FUNC_END
-#TEST:gcd(70,168)-14;
+#TEST:gcd(70,168) - 14;
 
-FUNC INT gcda(INT nn, READONLY INT num_arr_pc[]):
-   # GCD of all numbers in AA_PC
+FUNC INT gcda(INT array_count, READONLY INT num_arr_pc[]):
+   # GCD of all numbers in NUM_ARR_PC
    INT ind;
    INT gc;
 
    gc = num_arr_pc[0];
-   FOR ind FROM 1 TO nn - 1:
+   FOR ind FROM 1 TO array_count - 1:
       gc = gcd(gc, num_arr_pc[ind]);
    FOR_END
    RETURN gc;
 FUNC_END
 
-FUNC INT lcm(INT aa, INT bb):
-   # LCM of AA and BB
-   RETURN aa * bb / gcd(aa, bb);
+FUNC INT lcm(INT naa, INT nbb):
+   # LCM of NAA and NBB
+   RETURN naa * nbb / gcd(naa, nbb);
 FUNC_END
-#TEST:lcm(20,24)-120;
+#TEST:lcm(20,24) - 120;
 
-FUNC INT lcam(INT aa, INT bb):
-   # LC Almost M of AA and BB
-   # I.E. smallest integer JJ greater then 1 such that
-   #    JJ mod AA = -1, 0, or 1 AND
-   #    JJ mod BB = -1, 0, or 1.
+FUNC INT lcam(INT naa, INT nbb):
+   # LC Almost M of NAA and NBB I.E. minimal integer JJ > 1 such that
+   #    JJ mod NAA = -1, 0, or 1 AND
+   #    JJ mod NBB = -1, 0, or 1.
    INT ii;
-   INT mm;
+   INT jj;
 
-   IF bb < aa:
-      ii = aa;
-      aa = bb;
-      bb = ii;
+   IF nbb < naa:
+      ii = naa;
+      naa = nbb;
+      nbb = ii;
    IF_END
 
-   AWAIT -2 <= mm AND mm <= 2 COUNT ii FROM bb BY bb:
-      mm = mods(ii, aa);
+   AWAIT -2 <= jj AND jj <= 2 COUNT ii FROM nbb BY nbb:
+      jj = mods(ii, naa);
    AWAIT_END
 
-   IF mm == -2:
+   IF jj == -2:
       ii += 1;
-   ELSIF 0 <= mm:
+   ELSIF 0 <= jj:
       ii -= 1;
    IF_END
 
    RETURN ii;
 FUNC_END
 
-FUNC INT lcams(INT aa, INT bb):
-   # strict LC Almost M of AA and BB
-   # I.E. smallest integer JJ such that
-   #    MAX(AA,BB) < JJ
-   #    JJ mod AA = -1, 0, or 1 AND
-   #    JJ mod BB = -1, 0, or 1
+FUNC INT lcams(INT naa, INT nbb):
+   # strict LC Almost M of NAA and NBB I.E. minimal integer JJ such that
+   #    MAX(NAA,NBB) < JJ
+   #    JJ mod NAA = -1, 0, or 1 AND
+   #    JJ mod NBB = -1, 0, or 1
    INT ii;
-   INT mm;
+   INT jj;
 
-   IF bb < aa:
-      ii = aa;
-      aa = bb;
-      bb = ii;
+   IF nbb < naa:
+      ii = naa;
+      naa = nbb;
+      nbb = ii;
    IF_END
 
-   AWAIT -2 <= mm AND mm <= 2 COUNT ii FROM 2 * bb BY bb:
-      mm = mods(ii, aa);
+   AWAIT -2 <= jj AND jj <= 2 COUNT ii FROM 2 * nbb BY nbb:
+      jj = mods(ii, naa);
    AWAIT_END
 
-   IF mm == -2:
+   IF jj == -2:
       ii += 1;
-   ELSIF 0 <= mm:
+   ELSIF 0 <= jj:
       ii -= 1;
    IF_END
 
    RETURN ii;
 FUNC_END
 
-FUNC INT lcantim(INT aa, INT bb):
-   # LC Anti M of odd numbers AA and BB
-   INT haa;
-   INT hbb;
+FUNC INT lcantim(INT naa, INT nbb):
+   # LC Anti M of odd numbers NAA and NBB
+   INT hnaa;
+   INT hnbb;
    INT ii;
    INT rema;
    INT odd_mask;
 
-   IF Kw.isposint(aa) AND Kw.isposint(bb):
+   IF Kw.isposint(naa) AND Kw.isposint(nbb):
       odd_mask = 0;
-      IF Kw.isodd(aa):
+      IF Kw.isodd(naa):
          odd_mask = 1;
       IF_END
-      IF Kw.isodd(bb):
+      IF Kw.isodd(nbb):
          odd_mask += 2;
       IF_END
 
-      IF 2 == odd_mask OR (bb < aa AND odd_mask <> 1):
-         ii = bb;
-         bb = aa;
-         aa = ii;
+      IF 2 == odd_mask OR (nbb < naa AND odd_mask <> 1):
+         ii = nbb;
+         nbb = naa;
+         naa = ii;
       IF_END
 
-      haa = FLOORL(aa / 2);
-      hbb = FLOORL(bb / 2);
-      ii = hbb;
-      AWAIT aa * bb <= ii:
-         rema = Kw.dist(ii, aa);
-         IF rema == haa:
+      hnaa = FLOORL(naa / 2);
+      hnbb = FLOORL(nbb / 2);
+      ii = hnbb;
+      AWAIT naa * nbb <= ii:
+         rema = Kw.dist(ii, naa);
+         IF rema == hnaa:
             AWAIT_EXIT;
-         ELSIF odd_mask == 3 AND rema == haa + 1:
+         ELSIF odd_mask == 3 AND rema == hnaa + 1:
             AWAIT_EXIT;
          IF_END
 
-         ii += bb;
+         ii += nbb;
       AWAIT_END
 
-      IF aa * bb <= ii:
+      IF naa * nbb <= ii:
          ii = 0;
       IF_END
    ELSE:
@@ -447,8 +457,8 @@ FUNC INT lcantim(INT aa, INT bb):
    RETURN ii;
 FUNC_END
 
-FUNC INT factor(INT nn, WRITEONLY INT ret_fctr_arr_p[]):
-   # factorize NN into RET_FCTR_ARR_P[]
+FUNC INT factor(INT number_to_factor, WRITEONLY INT ret_fctr_arr_p[]):
+   # factorize NUMBER_TO_FACTOR into RET_FCTR_ARR_P[]
    # return NPF, number of prime factors
    # places 0 into RET_FCTR_ARR_P[NPF]
    INT pp;
@@ -457,32 +467,32 @@ FUNC INT factor(INT nn, WRITEONLY INT ret_fctr_arr_p[]):
 
    MODE_INTEGER:
       fctr_ind = 0;
-      nn = ABSL(nn);
-      IF nn <= 3:
-         ret_fctr_arr_p[fctr_ind] = nn;
+      number_to_factor = ABSL(number_to_factor);
+      IF number_to_factor <= 3:
+         ret_fctr_arr_p[fctr_ind] = number_to_factor;
          fctr_ind = 1;
       ELSE:
          FOR pp FROM 2 TO 3:
-            WHILE 0 == nn % pp:
+            WHILE 0 == number_to_factor % pp:
                ret_fctr_arr_p[fctr_ind] = pp;
                fctr_ind += 1;
-               nn /= pp;
+               number_to_factor /= pp;
             WHILE_END
          FOR_END
 
          pp = 1;
          inc = 4;
-         AWAIT nn < pp * pp:
+         AWAIT number_to_factor < pp * pp:
             pp += inc;
             inc = 6 - inc;
-            WHILE 0 == nn % pp:
+            WHILE 0 == number_to_factor % pp:
                ret_fctr_arr_p[fctr_ind] = pp;
                fctr_ind += 1;
-               nn /= pp;
+               number_to_factor /= pp;
             WHILE_END
          AWAIT_END
-         IF 1 < nn:
-            ret_fctr_arr_p[fctr_ind] = nn;
+         IF 1 < number_to_factor:
+            ret_fctr_arr_p[fctr_ind] = number_to_factor;
             fctr_ind += 1;
          IF_END
       IF_END
@@ -492,41 +502,40 @@ FUNC INT factor(INT nn, WRITEONLY INT ret_fctr_arr_p[]):
    RETURN fctr_ind;
 FUNC_END
 
-FUNC INT modulo(INT xxn, INT yymod):
-   # return ZZ in [0,ABS(YYMOD)) such that ZZ = XXN mod YYMOD
+FUNC INT modulo(INT nxx, INT modyy):
+   # return ZZ in [0,ABS(MODYY)) such that ZZ = NXX mod MODYY
    INT retvalu;
 
    MODE_INTEGER:
-      retvalu = xxn % yymod;
+      retvalu = nxx % modyy;
       IF retvalu < 0:
-         retvalu += ABSL(yymod);
+         retvalu += ABSL(modyy);
       IF_END
    MODE_INTEGER_END
    RETURN retvalu;
 FUNC_END
 
-FUNC INT mods(INT xxn, INT yymod):
-   # return ZZ in [-ABS(YYMOD)/2,ABS(YYMOD)/2]
-   # such that ZZ = XXN mod YYMOD
+FUNC INT mods(INT nxx, INT modyy):
+   # return ZZ in [-ABS(MODYY)/2,ABS(MODYY)/2] such that ZZ = NXX mod MODYY
    INT retvalu;
-   INT ayy;
-   INT axx;
+   INT amodyy;
+   INT anxx;
 
    MODE_INTEGER:
-   ayy = FLOORL(ABSL(yymod));
-   axx = ABSL(xxn);
+      amodyy = FLOORL(ABSL(modyy));
+      anxx = ABSL(nxx);
 
-   retvalu = axx % ayy;
+      retvalu = anxx % amodyy;
 
-   IF 0 < retvalu:
-      WHILE ayy < 2 * retvalu:
-         retvalu -= ayy;
-      WHILE_END
-   ELSIF retvalu < 0:
-      WHILE 2 * retvalu < -ayy:
-         retvalu += ayy;
-      WHILE_END
-   IF_END
+      IF 0 < retvalu:
+         WHILE amodyy < 2 * retvalu:
+            retvalu -= amodyy;
+         WHILE_END
+      ELSIF retvalu < 0:
+         WHILE 2 * retvalu < -amodyy:
+            retvalu += amodyy;
+         WHILE_END
+      IF_END
    MODE_INTEGER_END
 
    RETURN retvalu;
@@ -538,51 +547,51 @@ FUNC INT pfl(INT nn):
    INT lim;
    INT divid;
    MODE_INTEGER:
-   IF nn < 2:
-      small_factor = 1;
-   ELSIF nn % 2 == 0:
-      small_factor = 2;
-   ELSIF nn % 3 == 0:
-      small_factor = 3;
-   ELSIF nn % 5 == 0:
-      small_factor = 5;
-   ELSIF nn % 7 == 0:
-      small_factor = 7;
-   ELSE:  # NN has no factors < 11
-      lim = FLOORL(SQRT(nn));
-      divid = 11;
-      small_factor = nn;
-      WHILE divid <= lim:
-         IF nn % divid == 0:
-            small_factor = divid;
-            WHILE_EXIT;
-         IF_END
-         divid += 2;
-         IF nn % divid == 0:
-            small_factor = divid;
-            WHILE_EXIT;
-         IF_END
-         divid += 4;
-      WHILE_END
-   IF_END
+      IF nn < 2:
+         small_factor = 1;
+      ELSIF nn % 2 == 0:
+         small_factor = 2;
+      ELSIF nn % 3 == 0:
+         small_factor = 3;
+      ELSIF nn % 5 == 0:
+         small_factor = 5;
+      ELSIF nn % 7 == 0:
+         small_factor = 7;
+      ELSE:  # NN has no factors < 11
+         lim = FLOORL(SQRT(nn));
+         divid = 11;
+         small_factor = nn;
+         WHILE divid <= lim:
+            IF nn % divid == 0:
+               small_factor = divid;
+               WHILE_EXIT;
+            IF_END
+            divid += 2;
+            IF nn % divid == 0:
+               small_factor = divid;
+               WHILE_EXIT;
+            IF_END
+            divid += 4;
+         WHILE_END
+      IF_END
    MODE_INTEGER_END
    RETURN small_factor;
 FUNC_END
-#TEST:pfl(11*17*23)-11;
+#TEST:pfl(11 * 17 * 23) - 11;
 
 FUNC INT pfg(INT nn):
    # Greatest prime factor
-   INT mm;
-   INT ff;
+   INT jj;
+   INT ii;
 
-   mm = nn;
-   AWAIT mm == 1:
-      ff = pfl(mm);
-      mm /= ff;
+   jj = nn;
+   AWAIT jj == 1:
+      ii = pfl(jj);
+      jj /= ii;
    AWAIT_END
-   RETURN ff;
+   RETURN ii;
 FUNC_END
-#TEST:pfg(11*17*23)-23;
+#TEST:pfg(11 * 17 * 23) - 23;
 
 FUNC BOL isprime(INT nn):
    # True iff ABS(NN) is prime
@@ -600,97 +609,118 @@ FUNC BOL isprime(INT nn):
    ELSE:
       retvalu_bol = FALSE; # 11 <= NN and not prime
    IF_END
-   RETURN (retvalu_bol);
+   RETURN retvalu_bol;
 FUNC_END
 
-FUNC INT primeprev(INT pp):
-   # largest prime less than PP
-   INT retvalu;
-   INT rema;
-   INT inc;
-   INT qq;
+BLOCK:   # Prime next / prev funcs
+   BLOCK_DEF FUNC INT lf_primeprev(INT pp):
+      # largest prime less than PP for non-negative PP
+      INT retvalu;
+      INT rema;
+      INT inc;
+      INT qq;
 
-   MODE_INTEGER:
-   IF pp <= 7:
-      IF pp < 0:
-         retvalu = -primenext(-pp);
-      ELSIF 5 < pp:
-         retvalu = 5;
-      ELSIF 3 < pp:
-         retvalu = 3;
-      ELSIF 2 < pp:
-         retvalu = 2;
-      ELSE:
-         retvalu = -2;
-      IF_END
-   ELSE:
-      rema = pp % 6;
-      qq = pp - rema; # qq <= pp
-      IF rema <= 1:
-         qq -= 1; # now qq == 5 mod 6
-         inc = 4;
-      ELSE:
-         qq += 1; # now qq == 1 mod 6
-         inc = 2;
-      IF_END
-      WHILE NOT Kw.isprime(qq):
-         qq -= inc;
-         inc = 6 - inc;
-      WHILE_END
-      retvalu = qq;
-   IF_END
-   MODE_INTEGER_END
-   RETURN retvalu;
-FUNC_END
-#TEST:primeprev(37)-31;
+      MODE_INTEGER:
+         IF pp <= 7:
+            IF 5 < pp:
+               retvalu = 5;
+            ELSIF 3 < pp:
+               retvalu = 3;
+            ELSIF 2 < pp:
+               retvalu = 2;
+            ELSE:
+               retvalu = -2;
+            IF_END
+         ELSE:
+            rema = pp % 6;
+            qq = pp - rema; # qq <= pp
+            IF rema <= 1:
+               qq -= 1; # now qq == 5 mod 6
+               inc = 4;
+            ELSE:
+               qq += 1; # now qq == 1 mod 6
+               inc = 2;
+            IF_END
+            WHILE NOT Kw.isprime(qq):
+               qq -= inc;
+               inc = 6 - inc;
+            WHILE_END
+            retvalu = qq;
+         IF_END
+      MODE_INTEGER_END
+      RETURN retvalu;
+   FUNC_END
 
-FUNC INT primenext(INT pp):
-   # smallest prime more than PP
-   INT retvalu;
-   INT rema;
-   INT inc;
-   INT qq;
+   BLOCK_DEF FUNC INT lf_primenext(INT pp):
+      # smallest prime more than PP for non-negative PP
+      INT retvalu;
+      INT rema;
+      INT inc;
+      INT qq;
 
-   MODE_INTEGER:
-   IF pp < 7:
-      IF pp < 0:
-         retvalu = -primeprev(-pp);
-      ELSIF pp < 2:
-         retvalu = 2;
-      ELSIF pp < 3:
-         retvalu = 3;
-      ELSIF pp < 5:
-         retvalu = 5;
+      MODE_INTEGER:
+         IF pp < 7:
+            IF pp < 2:
+               retvalu = 2;
+            ELSIF pp < 3:
+               retvalu = 3;
+            ELSIF pp < 5:
+               retvalu = 5;
+            ELSE:
+               retvalu = 7;
+            IF_END
+         ELSE:
+            rema = (pp + 1) % 6;
+            qq = (pp + 1) - rema;
+            IF rema <= 1:
+               qq += 1; # Now qq == 1 mod 6
+               inc = 4;
+            ELSE:
+               qq += 5; # Now qq == 5 mod 6
+               inc = 2;
+            IF_END
+            WHILE NOT Kw.isprime(qq):
+               qq += inc;
+               inc = 6 - inc;
+            WHILE_END
+            retvalu = qq;
+         IF_END
+      MODE_INTEGER_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC INT primeprev(INT pp):
+      # largest prime less than PP
+      INT retvalu;
+
+      IF 0 <= pp:
+         retvalu = lf_primeprev(pp);
       ELSE:
-         retvalu = 7;
+         retvalu = -lf_primenext(-pp);
       IF_END
-   ELSE:
-      rema = (pp + 1) % 6;
-      qq = (pp + 1) - rema;
-      IF rema <= 1:
-         qq += 1; # Now qq == 1 mod 6
-         inc = 4;
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC INT primenext(INT pp):
+      # smallest prime greater than PP
+      INT retvalu;
+
+      IF 0 <= pp:
+         retvalu = lf_primenext(pp);
       ELSE:
-         qq += 5; # Now qq == 5 mod 6
-         inc = 2;
+         retvalu = -lf_primeprev(-pp);
       IF_END
-      WHILE NOT Kw.isprime(qq):
-         qq += inc;
-         inc = 6 - inc;
-      WHILE_END
-      retvalu = qq;
-   IF_END
-   MODE_INTEGER_END
-   RETURN retvalu;
-FUNC_END
-#TEST:primenext(24)-29;
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END   # Prime next / prev funcs
+#TEST:primeprev(37) - 31;
+#TEST:primenext(24) - 29;
 
 BLOCK: # Prime count
    BLOCK_DEF INT lv_pcf_end = 0;
    BLOCK_DEF DBL lv_pcf_arr[0];
    FUNC INT primecount(DBL xx):
-      # Prime Counting Function == number of primes <= XX
-      # using memoization
+      # Prime Counting Function == number of primes <= XX using memoization
       BLOCK_USE lv_pcf_arr[];
       BLOCK_USE lv_pcf_end;
       INT retvalu;
@@ -700,66 +730,66 @@ BLOCK: # Prime count
       INT pcf_val;
 
       MODE_INTEGER:
-      IF xx < 7:
-         IF xx < 3:
-            IF xx < 2:
-               retvalu = 0;
-            ELSE:
-               retvalu = 1;
-            IF_END
-         ELSE:
-            IF xx < 5:
-               retvalu = 2;
-            ELSE:
-               retvalu = 3;
-            IF_END
-         IF_END
-      ELSE:  # 7 <= xx
-         s_ind = FLOORL((xx - 5) / 2) - FLOORL((xx - 3) / 6);
-         # 5 <= XX forces 0 <= S_IND
-         IF lv_pcf_end <= s_ind:
-            # LV_PCF_END should be even, but lets be safe
-            ps_ind = lv_pcf_end;
-            IF lv_pcf_end <= 0:
-               pcf_val = 2;
-            ELSE:
-               pcf_val = lv_pcf_arr[lv_pcf_end - 1];
-            IF_END
-            lv_pcf_end = Kw.ceil2(s_ind + 1, 2);
-            REDIM lv_pcf_arr[], lv_pcf_end;
-            # LV_PCF_END should be even, hence so will PS_IND,
-            # but lets be safe
-            poss_prime = 3 * ps_ind - (ps_ind % 2) + 5;
-            WHILE ps_ind <= s_ind:
-               IF Kw.isprime(poss_prime): # 5 mod 6
-                  pcf_val += 1;
+         IF xx < 7:
+            IF xx < 3:
+               IF xx < 2:
+                  retvalu = 0;
+               ELSE:
+                  retvalu = 1;
                IF_END
-               lv_pcf_arr[ps_ind] = pcf_val;
-               poss_prime += 2;
-               ps_ind += 1;
-               # PS_IND is now odd
-               IF Kw.isprime(poss_prime): # 1 mod 6
-                  pcf_val += 1;
+            ELSE:
+               IF xx < 5:
+                  retvalu = 2;
+               ELSE:
+                  retvalu = 3;
                IF_END
-               lv_pcf_arr[ps_ind] = pcf_val;
-               poss_prime += 4;
-               ps_ind += 1;
-               # PS_IND is now even
-            WHILE_END
+            IF_END
+         ELSE:  # 7 <= xx
+            s_ind = FLOORL((xx - 5) / 2) - FLOORL((xx - 3) / 6);
+            # 5 <= XX forces 0 <= S_IND
+            IF lv_pcf_end <= s_ind:
+               # LV_PCF_END should be even, but lets be safe
+               ps_ind = lv_pcf_end;
+               IF lv_pcf_end <= 0:
+                  pcf_val = 2;
+               ELSE:
+                  pcf_val = lv_pcf_arr[lv_pcf_end - 1];
+               IF_END
+               lv_pcf_end = Kw.ceil2(s_ind + 1, 2);
+               REDIM lv_pcf_arr[], lv_pcf_end;
+               # LV_PCF_END should be even, hence so will PS_IND,
+               # but lets be safe
+               poss_prime = 3 * ps_ind - (ps_ind % 2) + 5;
+               WHILE ps_ind <= s_ind:
+                  IF Kw.isprime(poss_prime): # 5 mod 6
+                     pcf_val += 1;
+                  IF_END
+                  lv_pcf_arr[ps_ind] = pcf_val;
+                  poss_prime += 2;
+                  ps_ind += 1;
+                  # PS_IND is now odd
+                  IF Kw.isprime(poss_prime): # 1 mod 6
+                     pcf_val += 1;
+                  IF_END
+                  lv_pcf_arr[ps_ind] = pcf_val;
+                  poss_prime += 4;
+                  ps_ind += 1;
+                  # PS_IND is now even
+               WHILE_END
+            IF_END
+            retvalu = lv_pcf_arr[s_ind];
          IF_END
-         retvalu = lv_pcf_arr[s_ind];
-      IF_END
       MODE_INTEGER_END
       RETURN retvalu;
    FUNC_END
 BLOCK_END # Prime count
-#TEST:primecount(10000)-1229;
+#TEST:primecount(10000) - 1229;
 
 FUNC INT pcf(DBL xx):
    # another name for prime counting function
    RETURN primecount(xx);
 FUNC_END
-#TEST:pcf(1000)-168;
+#TEST:pcf(1000) - 168;
 
 FUNC INT primecountx(DBL xx):
    # Prime Counting Function == number of primes <= XX
@@ -801,7 +831,7 @@ FUNC_END
 
 FUNC DBL eta(DBL xx):
    # Dirichlets eta function (alternating zeta) for real args
-   # 1/1**XX - 1/2**XX + 1/3**XX - 1/4**XX + 1/5**XX ...
+   #    1/1**XX - 1/2**XX + 1/3**XX - 1/4**XX + 1/5**XX ...
    DBL sum;
    DBL sump;
    INT tt;
@@ -840,20 +870,17 @@ FUNC DBL eta(DBL xx):
          temp_arr[0] = ps_arr[0];
          AWAIT Kw.iseq(sump, sum) COUNT nn FROM 1 TO 400:
             pm_one = -pm_one;
-            ps_arr[nn] = ps_arr[nn - 1]
-                  + pm_one * POW(nn + 2, -xx);
+            ps_arr[nn] = ps_arr[nn - 1] + pm_one * POW(nn + 2, -xx);
             tt += 1;
             temp_arr[nn] = ps_arr[nn];
             FOR kk FROM nn - 1 TO 0 BY -1:
-               temp_arr[kk] = (temp_arr[kk]
-                     + temp_arr[kk + 1]) / 2.0;
+               temp_arr[kk] = (temp_arr[kk] + temp_arr[kk + 1]) / 2.0;
             FOR_END
             sump = sum;
             sum = temp_arr[0];
          AWAIT_END
          s_ind = FLOORL(nn / 3);
-         sum = (4 * temp_arr[s_ind]
-               + 3 * temp_arr[s_ind + 1]) / 7;
+         sum = (4 * temp_arr[s_ind] + 3 * temp_arr[s_ind + 1]) / 7;
          REDIM temp_arr[];
          REDIM ps_arr[];
          retvalu = sum + 1.0;
@@ -865,17 +892,17 @@ FUNC DBL eta(DBL xx):
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:eta(2)      ==PI*PI/12;
-#TEST:eta(4)      ==pow(PI,4)*7/720;
-#TEST:eta(6)      ==pow(PI,6)*31/30240;
-#TEST:eta(8)      ==pow(PI,8)*127/1209600;
-#TEST:eta(10)     ==pow(PI,10)*73/6842880;
-#TEST:eta(12)     ==pow(PI,12)*1414477/1307674368000;
-#TEST:eta(1)      ==ln(2);
+#TEST:eta(2)    == PI*PI/12;
+#TEST:eta(4)    == pow(PI,4)*7/720;
+#TEST:eta(6)    == pow(PI,6)*31/30240;
+#TEST:eta(8)    == pow(PI,8)*127/1209600;
+#TEST:eta(10)   == pow(PI,10)*73/6842880;
+#TEST:eta(12)   == pow(PI,12)*1414477/1307674368000;
+#TEST:eta(1)    == ln(2);
 
 FUNC DBL zeta(DBL xx):
    # Reimanns zeta function for real args
-   # 1/1**XX + 1/2**XX + 1/3**XX + 1/4**XX + 1/5**XX ...
+   #    1/1**XX + 1/2**XX + 1/3**XX + 1/4**XX + 1/5**XX ...
    DBL retvalu;
 
    IF 1 < xx:
@@ -885,13 +912,12 @@ FUNC DBL zeta(DBL xx):
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:zeta(2)      ==PI*PI/6;
-#TEST:zeta(3)      ==APERY;
-#TEST:zeta(4)      ==PI*PI*PI*PI/90;
+#TEST:zeta(2)      == PI*PI/6;
+#TEST:zeta(3)      == APERY;
+#TEST:zeta(4)      == PI*PI*PI*PI/90;
 
 FUNC DBL fibo3(INT nn, DBL fib_a, DBL fib_b):
-   # NNth Fibonacci-like number
-   # starting with FIB_A and FIB_B
+   # NNth Fibonacci-like number starting with FIB_A and FIB_B
    # OGF(fibo3(,a,b);x) = (x * (a - b) - a) / (x * x - x + 1)
    INT ii;
    DBL tt;
@@ -909,14 +935,14 @@ FUNC DBL fibo3(INT nn, DBL fib_a, DBL fib_b):
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:fibo3(10,2,1)/123-1;
+#TEST:fibo3(10, 2, 1) - 123;
 
 FUNC DBL fibo(INT nn):
    # NNth Fibonacci number
    # OGF(fibo();x) = -x / (x * x + x - 1)
    RETURN fibo3(nn, 0, 1);
 FUNC_END
-#TEST:fibo(10)/55-1;
+#TEST:fibo(10) - 55;
 
 FUNC DBL fibox(DBL xx):
    # NNth Fibonacci-like number, interpolated
@@ -939,9 +965,9 @@ FUNC DBL fiboxinv(DBL yy):
    #    (1.094576105145116, 1.009824331847821) local MAX
    #    (1.676688372662104, 0.896946387424606) local MIN
    #    (2.014889804296742, 1.009824331847821)
-   # SO, between 0.896946387424606 and 1.009824331847821
-   #    fiboxinv is not uniquely defined.  This function
-   #    tries to deliver smallest positive value; i.e
+   # SO, between 0.896946387424606 and 1.009824331847821 fiboxinv is not
+   #    uniquely defined.  This function tries to deliver smallest positive
+   #    value; i.e
    #       fiboxinv(X) < 1.094576105145116
    #          for all X < 1.009824331847821
    {SECANT_DECLARATIONS}
@@ -986,27 +1012,26 @@ FUNC DBL lucasx(DBL xx):
 FUNC_END
 
 FUNC INT fusc(INT nn):
-   # Stern-Brocot sequence
-   # defined recursively by
+   # Stern-Brocot sequence, defined recursively by
    #    fusc(1) = 1,
    #    fusc(2 * n) = fusc(n), and
    #    fusc(2 * n + 1) = fusc(n) + fusc(n + 1)
-   INT aa;
-   INT bb;
+   INT naa;
+   INT nbb;
 
-   aa = 1;
-   bb = 0;
+   naa = 1;
+   nbb = 0;
    WHILE 0 < nn:
       IF Kw.isodd(nn):
-         bb += aa;
+         nbb += naa;
       ELSE:
-         aa += bb;
+         naa += nbb;
       IF_END
       nn = BITSHIFTR(nn, 1);
    WHILE_END
-   RETURN bb;
+   RETURN nbb;
 FUNC_END
-#TEST:fusc(10000)/43-1;
+#TEST:fusc(10000) - 43;
 
 FUNC DBL Tn(INT nn, DBL xx):
    # evaluate NNth Chebyshev polynomial at XX
@@ -1040,7 +1065,7 @@ FUNC DBL Tn(INT nn, DBL xx):
 
    RETURN retvalu;
 FUNC_END
-#TEST:Tn(6,0.4)==0.782272;
+#TEST:Tn(6,0.4) == 0.782272;
 
 FUNC DBL Un(INT nn, DBL xx):
    # evaluate NNth Chebyshev polynomial of type 2 at XX
@@ -1072,14 +1097,14 @@ FUNC DBL Un(INT nn, DBL xx):
 
    RETURN retvalu;
 FUNC_END
-#TEST:Un(6,0.4)==1.054144;
+#TEST:Un(6,0.4) == 1.054144;
 
 FUNC DBL tri(DBL nn):
    # NNth triangular number
    # OGF(tri();x) = x / (1 - x)**3
    RETURN nn * (nn + 1) / 2;
 FUNC_END
-#TEST:tri(10)/55-1;
+#TEST:tri(10) - 55;
 
 FUNC DBL triinv(DBL nn):
    # NNth triangular number inverse
@@ -1092,19 +1117,19 @@ FUNC DBL triinv(DBL nn):
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:triinv(55)/10-1;
+#TEST:triinv(55) - 10;
 
 FUNC DBL polynum(DBL ss, DBL nn):
    # NNth polygonal number with SS sides;
    RETURN (ss - 2) * nn * (nn - 1) / 2 + nn;
 FUNC_END
-#TEST:polynum(7,5)/55-1;
+#TEST:polynum(7,5) - 55;
 
 FUNC DBL polycnum(DBL ss, DBL nn):
    # NNth central polygonal number with SS sides
    RETURN ss * nn * (nn - 1) / 2 + 1;
 FUNC_END
-#TEST:polycnum(7,5)/71-1;
+#TEST:polycnum(7,5) - 71;
 
 FUNC DBL tetranum(DBL ss, DBL nn):
    # NNth tetrahedral number
@@ -1119,16 +1144,15 @@ FUNC_END
 FUNC DBL minkowski(DBL xx):
    # Minkowski question-mark function ?(XX)
    # d?(XX)/dXX == 0 at rationals
-   # If pp/qq and rr/ss are rational
-   #       with ABS(pp*ss-rr*qq) == 1 Then
+   # If pp/qq and rr/ss are rational with ABS(pp*ss-rr*qq) == 1 Then
    #   ?((pp + rr) / (qq + ss)) = (?(pp/qq) + ?(rr/ss)) / 2
    # ?(0) = 0 and ?(1) = 1
    DBL pp;
    DBL qq;
    DBL rr;
    DBL ss;
-   DBL mm;
-   DBL nn;
+   DBL ff;
+   DBL gg;
    DBL dd;
    DBL yy;
 
@@ -1140,33 +1164,33 @@ FUNC DBL minkowski(DBL xx):
    yy = pp;
    AWAIT Kw.iseq(yy + dd, yy):
       dd /= 2.0;
-      mm = pp + rr;
-      nn = qq + ss;
+      ff = pp + rr;
+      gg = qq + ss;
 
-      IF xx < mm / nn:
-         rr = mm;
-         ss = nn;
+      IF xx < ff / gg:
+         rr = ff;
+         ss = gg;
       ELSE:
          yy += dd;
-         pp = mm;
-         qq = nn;
+         pp = ff;
+         qq = gg;
       IF_END
    AWAIT_END
    RETURN yy;
 FUNC_END
 
-FUNC DBL cantorxx(DBL bb, DBL ee, DBL xx):
+FUNC DBL cantorxx(DBL nbb, DBL ee, DBL xx):
    # Cantor ternary function / Devil Staircase
    DBL yy;
    DBL rest;
    DBL dd;
    DBL ulmt;
 
-   IF ee < 0.0 OR bb < 0.0 OR 1.0 < ee + bb:
+   IF ee < 0.0 OR nbb < 0.0 OR 1.0 < ee + nbb:
       yy = xx;
    ELSE:
       ulmt = 1.0 - ee;       # in (0,1]
-      # point (BB**N,0.5**N) and (BB**N*(1-EE),0.5**N)
+      # point (NBB**N,0.5**N) and (NBB**N*(1-EE),0.5**N)
       #    are on the devil staircase for N = 0,1,2,3,4...
       yy = FLOOR(xx);
       rest = (xx - yy);
@@ -1175,11 +1199,11 @@ FUNC DBL cantorxx(DBL bb, DBL ee, DBL xx):
          IF ulmt <= rest:
             yy += dd;
             rest = Kw.frac((rest - ulmt) / ee);
-         ELSIF bb <= rest:
+         ELSIF nbb <= rest:
             yy += dd;
             AWAIT_EXIT;
          ELSE:
-            rest = Kw.frac(rest / bb);
+            rest = Kw.frac(rest / nbb);
          IF_END
          dd /= 2.0;
       AWAIT_END
@@ -1193,7 +1217,7 @@ FUNC DBL cantor(DBL xx):
    # cantor(XX) == cantorxx(1/3, 1/3, XX)
    RETURN cantorxx(1.0 / 3.0, 1.0 / 3.0, xx);
 FUNC_END
-#TEST:cantor(0.5)/0.5-1;
+#TEST:cantor(0.5) - 0.5;
 
 FUNC DBL cantorul(DBL bb, DBL ee, DBL xx):
    # upper limit for Devil staircase
@@ -1209,33 +1233,33 @@ FUNC DBL cantorll(DBL bb, DBL ee, DBL xx):
    RETURN POW(0.5, LN(xx / (1.0 - ee)) / LN(bb) + 1.0);
 FUNC_END
 
-FUNC INT dlogx(INT aa, INT bb, INT nn):
+FUNC INT dlogx(INT naa, INT nbb, INT nn):
    # Brute-force discrete logarithm
-   # return 0 < KK where AA**KK = BB mod NN
+   # return 0 < KK where NAA**KK = NBB mod NN
    # return -1 if none found
    INT ii;
    INT pp;
    INT retvalu;
 
    MODE_INTEGER:
-   pp = aa;
-   retvalu = -1;
-   FOR ii FROM 1 TO nn:
-      IF pp == bb:
-         retvalu = ii;
-         FOR_EXIT;
-      IF_END
-      pp = (pp * aa) % nn;
-   FOR_END
+      pp = naa;
+      retvalu = -1;
+      FOR ii FROM 1 TO nn:
+         IF pp == nbb:
+            retvalu = ii;
+            FOR_EXIT;
+         IF_END
+         pp = (pp * naa) % nn;
+      FOR_END
    MODE_INTEGER_END
 
    RETURN retvalu;
 FUNC_END
 
-FUNC INT dlog(INT aa, INT bb, INT nn):
-   # find KK such that AA**KK=BB mod NN
-   # THIS ASSUMES AA IS A GENERATOR OF THE
-   # MULTIPLICATIVE GROUP OF INTEGER MODULO MM
+FUNC INT dlog(INT naa, INT nbb, INT nn):
+   # find KK such that NAA**KK=NBB mod NN
+   # THIS ASSUMES NAA IS A GENERATOR OF THE MULTIPLICATIVE GROUP OF INTEGER
+   #    MODULO MM
    INT sqnn;
    INT cur;
    INT atothesqnn;
@@ -1245,57 +1269,58 @@ FUNC INT dlog(INT aa, INT bb, INT nn):
    INT retvalu;
 
    MODE_INTEGER:
-   IF aa == bb:
-      retvalu = 1;
-   ELSIF aa <= 0 OR bb <= 0 OR nn <= 0:
-      retvalu = -1;
-   ELSIF 1 < gcd(aa, nn) OR (NOT isprimitiveroot(aa, nn)):
-      retvalu = dlogx(aa, bb, nn);
-   ELSE:
-      sqnn = CEILL(SQRT(nn));
+      IF naa == nbb:
+         retvalu = 1;
+      ELSIF naa <= 0 OR nbb <= 0 OR nn <= 0:
+         retvalu = -1;
+      ELSIF 1 < gcd(naa, nn):
+         retvalu = dlogx(naa, nbb, nn);
+      ELSIF NOT isprimitiveroot(naa, nn):
+         retvalu = dlogx(naa, nbb, nn);
+      ELSE:
+         sqnn = CEILL(SQRT(nn));
 
-      REDIM log_arr[], nn;
-      FOR ii FROM 0 TO nn - 1:
-         log_arr[ii] = 0;
-      FOR_END
+         REDIM log_arr[], nn;
+         FOR ii FROM 0 TO nn - 1:
+            log_arr[ii] = 0;
+         FOR_END
 
-      atothesqnn = atothenmodp(aa, sqnn, nn);
+         atothesqnn = atothenmodp(naa, sqnn, nn);
 
-      # Store all values of aa**(sqnn*ii) of LHS
-      cur = atothesqnn;
-      FOR ii FROM 1 TO sqnn:
-         IF log_arr[cur] == 0:
-            log_arr[cur] = ii;
-         IF_END
-         cur = (cur * atothesqnn) % nn;
-      FOR_END
-
-      cur = bb % nn;
-      retvalu = -1;
-      FOR ii FROM 0 TO sqnn:
-         # Calculate (aa ** ii) * bb and check
-         # for collision
-         IF 0 < log_arr[cur]:
-            atothens = log_arr[cur] * sqnn - ii;
-            IF atothens < nn:
-               retvalu = atothens;
-               FOR_EXIT;
+         # Store all values of naa**(sqnn*ii) of LHS
+         cur = atothesqnn;
+         FOR ii FROM 1 TO sqnn:
+            IF log_arr[cur] == 0:
+               log_arr[cur] = ii;
             IF_END
-         IF_END
-         cur = (cur * aa) % nn;
-      FOR_END
-      REDIM log_arr[];
-   IF_END
+            cur = (cur * atothesqnn) % nn;
+         FOR_END
+
+         cur = nbb % nn;
+         retvalu = -1;
+         FOR ii FROM 0 TO sqnn:
+            # Calculate (naa ** ii) * nbb and check for collision
+            IF 0 < log_arr[cur]:
+               atothens = log_arr[cur] * sqnn - ii;
+               IF atothens < nn:
+                  retvalu = atothens;
+                  FOR_EXIT;
+               IF_END
+            IF_END
+            cur = (cur * naa) % nn;
+         FOR_END
+         REDIM log_arr[];
+      IF_END
    MODE_INTEGER_END
 
    RETURN retvalu;
 FUNC_END
-#TEST:dlog(6,2,11)-9;
-#TEST:dlog(5,2,11)+1;
+#TEST:dlog(6, 2, 11) - 9;
+#TEST:dlog(5, 2, 11) + 1;
 
-FUNC INT dlog1(INT aa, INT nn):
-   # return KK such that AA**KK = 1 mod NN
-   RETURN dlog(aa, 1, nn);
+FUNC INT dlog1(INT naa, INT nn):
+   # return KK such that NAA**KK = 1 mod NN
+   RETURN dlog(naa, 1, nn);
 FUNC_END
 
 BLOCK: # Mertens function
@@ -1303,9 +1328,8 @@ BLOCK: # Mertens function
    BLOCK_DEF INT lv_mertens_arr[0];
    FUNC INT mertens(INT nn):
       # sum of mobius function from 0 to NN
-      # I.E. count of square-free integers up to NN
-      #    that have an even number of prime factors,
-      #    minus count of those that have an odd number
+      # I.E. count of square-free integers up to NN that have an even number
+      #    of prime factors minus count of those that have an odd number
       BLOCK_USE lv_mertens_arr[];
       BLOCK_USE lv_mertens_end;
       INT retvalu;
@@ -1327,8 +1351,7 @@ BLOCK: # Mertens function
             lv_mertens_end = nn + 1;
             REDIM lv_mertens_arr[], lv_mertens_end;
             WHILE kk < lv_mertens_end:
-               lv_mertens_arr[kk] = lv_mertens_arr[kk - 1]
-                     + mobius(kk);
+               lv_mertens_arr[kk] = lv_mertens_arr[kk - 1] + mobius(kk);
                kk += 1;
             WHILE_END
          IF_END
@@ -1337,22 +1360,21 @@ BLOCK: # Mertens function
       RETURN retvalu;
    FUNC_END
 BLOCK_END
-#TEST:mertens(114)+6;
+#TEST:mertens(114) + 6;
 
-FUNC BOL has_primitiveroot_f(INT nf, READONLY INT fac_arr_pc[]):
-   # number  previously factored into FAC_ARR_P[0..(NF - 1)]
-   #    has a primitive root iff
+FUNC BOL has_primitiveroot_f(INT array_size, READONLY INT fac_arr_pc[]):
+   # factorization FAC_ARR_P[0..(ARRAY_SIZE - 1)] has a primitive root iff
    #          it is a power of a odd prime
    #       or twice a power of a odd prime
    INT ind;
 
    ind = 0;
-   IF 1 < nf:
+   IF 1 < array_size:
       IF fac_arr_pc[0] == 2:
          ind += 1;
       IF_END
       IF 2 < fac_arr_pc[ind]:
-         WHILE ind < nf - 1:
+         WHILE ind < array_size - 1:
             IF fac_arr_pc[ind] < fac_arr_pc[ind + 1]:
                WHILE_EXIT;
             IF_END
@@ -1360,21 +1382,20 @@ FUNC BOL has_primitiveroot_f(INT nf, READONLY INT fac_arr_pc[]):
          WHILE_END
       IF_END
    IF_END
-   RETURN ind == (nf - 1);
+   RETURN ind == (array_size - 1);
 FUNC_END
-#TEST:has_primitiveroot(4)-iseven(4)
-#TEST:has_primitiveroot(8)-isodd(8)
+#TEST:has_primitiveroot(4) - iseven(4)
+#TEST:has_primitiveroot(8) - isodd(8)
 
-FUNC INT sigma0_f(INT nf, READONLY INT fac_arr_pc[]):
-   # count of divisors of number previously factored into
-   #   FAC_ARR_P[0..(NF - 1)]
+FUNC INT sigma0_f(INT array_size, READONLY INT fac_arr_pc[]):
+   # count of divisors of factorization FAC_ARR_P[0..(ARRAY_SIZE - 1)]
    INT ind;
    INT retvalu;
    INT exp_i;
 
    retvalu = 1;
    exp_i = 2;
-   FOR ind FROM 0 TO nf - 2:
+   FOR ind FROM 0 TO array_size - 2:
       IF fac_arr_pc[ind] == fac_arr_pc[ind + 1]:
          exp_i += 1;
       ELSE:
@@ -1385,9 +1406,8 @@ FUNC INT sigma0_f(INT nf, READONLY INT fac_arr_pc[]):
    RETURN retvalu * exp_i;
 FUNC_END
 
-FUNC INT sigma1_f(INT nf, READONLY INT fac_arr_pc[]):
-   # sum of divisors of number previously factored into
-   #   FAC_ARR_P[0..(NF - 1)]
+FUNC INT sigma1_f(INT array_size, READONLY INT fac_arr_pc[]):
+   # sum of divisors of factorization FAC_ARR_P[0..(ARRAY_SIZE - 1)]
    INT ind;
    INT retvalu;
    INT exp_i;
@@ -1397,24 +1417,21 @@ FUNC INT sigma1_f(INT nf, READONLY INT fac_arr_pc[]):
    retvalu = 1;
    exp_i = 2;
    prm_prev = fac_arr_pc[0];
-   FOR ind FROM 1 TO nf - 1:
+   FOR ind FROM 1 TO array_size - 1:
       prm_curr = fac_arr_pc[ind];
       IF prm_prev == prm_curr:
          exp_i += 1;
       ELSE:
-         retvalu *= (powi(prm_prev, exp_i) - 1)
-               / (prm_prev - 1);
+         retvalu *= (powi(prm_prev, exp_i) - 1) / (prm_prev - 1);
          exp_i = 2;
          prm_prev = prm_curr;
       IF_END
    FOR_END
-   RETURN retvalu * (powi(prm_prev, exp_i) - 1)
-               / (prm_prev - 1);
+   RETURN retvalu * (powi(prm_prev, exp_i) - 1) / (prm_prev - 1);
 FUNC_END
 
-FUNC INT sigma_f(INT powy, INT nf, READONLY INT fac_arr_pc[]):
-   # sum of POWYth power of divisors of NN
-   #    previously factored into FAC_ARR_P[0..(NF - 1)]
+FUNC INT sigma_f(INT powy, INT array_size, READONLY INT fac_arr_pc[]):
+   # sum of POWYth power of factorization FAC_ARR_P[0..(ARRAY_SIZE - 1)]
    INT ind;
    INT retvalu;
    INT exp_i;
@@ -1423,14 +1440,14 @@ FUNC INT sigma_f(INT powy, INT nf, READONLY INT fac_arr_pc[]):
    INT pw;
 
    IF powy == 0:
-      retvalu = sigma0_f(nf, fac_arr_pc[]);
+      retvalu = sigma0_f(array_size, fac_arr_pc[]);
    ELSIF powy == 1:
-      retvalu = sigma1_f(nf, fac_arr_pc[]);
+      retvalu = sigma1_f(array_size, fac_arr_pc[]);
    ELSE:
       retvalu = 1;
       exp_i = 2;
       prm_prev = fac_arr_pc[0];
-      FOR ind FROM 1 TO nf - 1:
+      FOR ind FROM 1 TO array_size - 1:
          prm_curr = fac_arr_pc[ind];
          IF prm_prev == prm_curr:
             exp_i += 1;
@@ -1447,11 +1464,10 @@ FUNC INT sigma_f(INT powy, INT nf, READONLY INT fac_arr_pc[]):
    RETURN retvalu;
 FUNC_END
 
-FUNC BOL ispractical_f(INT nf, READONLY INT fac_arr_pc[]):
-   # test if number previously factored into
-   #      FAC_ARR_P[0..(NF - 1)] is practical
-   # I.E. all positive integers <= NN can be represented
-   #      as sums of distinct factors of NN
+FUNC BOL ispractical_f(INT array_size, READONLY INT fac_arr_pc[]):
+   # test if factorization FAC_ARR_P[0..(ARRAY_SIZE - 1)] is practical
+   #    I.E. all positive integers <= NN can be represented
+   #       as sums of distinct factors of NN
    INT ind;
    INT sgma;
    INT exp_i;
@@ -1466,7 +1482,7 @@ FUNC BOL ispractical_f(INT nf, READONLY INT fac_arr_pc[]):
       sgma = 1;
       exp_i = 2;
       prm_prev = fac_arr_pc[0];
-      FOR ind FROM 1 TO nf - 1:
+      FOR ind FROM 1 TO array_size - 1:
          prm_curr = fac_arr_pc[ind];
          IF prm_prev == prm_curr:
             exp_i += 1;
@@ -1484,14 +1500,13 @@ FUNC BOL ispractical_f(INT nf, READONLY INT fac_arr_pc[]):
    RETURN retvalu_bol;
 FUNC_END
 
-FUNC BOL issquarefree_f(INT nf, READONLY INT fac_arr_pc[]):
-   # test if NN is squarefree that was
-   #    previously factored into FAC_ARR_P[0..(NF - 1)]
+FUNC BOL issquarefree_f(INT array_size, READONLY INT fac_arr_pc[]):
+   # test if factorization FAC_ARR_P[0..(ARRAY_SIZE - 1)] is squarefree
    INT ind;
    BOL retvalu_bol;
 
    retvalu_bol = TRUE;
-   FOR ind FROM 1 TO nf - 1:
+   FOR ind FROM 1 TO array_size - 1:
       IF fac_arr_pc[ind - 1] == fac_arr_pc[ind]:
          retvalu_bol = FALSE;
          FOR_EXIT;
@@ -1500,42 +1515,41 @@ FUNC BOL issquarefree_f(INT nf, READONLY INT fac_arr_pc[]):
    RETURN retvalu_bol;
 FUNC_END
 
-FUNC INT totient_f(INT nf, READONLY INT fac_arr_pc[]):
+FUNC INT totient_f(INT array_size, READONLY INT fac_arr_pc[]):
    # count of numbers < NN and relatively prime to NN
    #    where NN is number previously factored
-   #    into FAC_ARR_P[0..(NF - 1)]
+   #    into FAC_ARR_P[0..(ARRAY_SIZE - 1)]
    INT ind;
    INT retvalu;
 
    MODE_INTEGER:
       retvalu = 1;
-      FOR ind FROM 0 TO nf - 2:
+      FOR ind FROM 0 TO array_size - 2:
          IF fac_arr_pc[ind] == fac_arr_pc[ind + 1]:
             retvalu *= fac_arr_pc[ind];
          ELSE:
             retvalu *= (fac_arr_pc[ind] - 1);
          IF_END
       FOR_END
-      retvalu *= (fac_arr_pc[nf - 1] - 1);
+      retvalu *= (fac_arr_pc[array_size - 1] - 1);
    MODE_INTEGER_END
    RETURN retvalu;
 FUNC_END
 
-FUNC INT mobius_f(INT nf, READONLY INT fac_arr_pc[]):
-   # MOBIUS function of NN
-   #    previously factored into FAC_ARR_P[0..(NF - 1)]
-   # if NN has a squared prime factor, 0;
-   # else if NN has an even number of factors, 1
+FUNC INT mobius_f(INT array_size, READONLY INT fac_arr_pc[]):
+   # MOBIUS function of  factorization FAC_ARR_P[0..(ARRAY_SIZE - 1)]
+   # if  factorization has a squared prime factor, 0;
+   # else if  factorization has an even number of factors, 1
    # else -1
    INT retvalu;
    INT ind;
 
-   IF Kw.iseven(nf):
+   IF Kw.iseven(array_size):
       retvalu = 1;
    ELSE:
       retvalu = -1;
    IF_END
-   FOR ind FROM 1 TO nf - 1:
+   FOR ind FROM 1 TO array_size - 1:
       IF fac_arr_pc[ind - 1] == fac_arr_pc[ind]:
          retvalu = 0;
          FOR_EXIT;
@@ -1544,9 +1558,9 @@ FUNC INT mobius_f(INT nf, READONLY INT fac_arr_pc[]):
    RETURN retvalu;
 FUNC_END
 
-FUNC INT prime0_f(INT nf, READONLY INT fac_arr_pc[]):
-   # count of distinct prime factors of NN
-   #    previously factored into FAC_ARR_P[0..(NF - 1)]
+FUNC INT prime0_f(INT array_size, READONLY INT fac_arr_pc[]):
+   # count of distinct prime factors of factorization
+   #      FAC_ARR_P[0..(ARRAY_SIZE - 1)]
    INT ind;
    INT prm_curr;
    INT prm_prev;
@@ -1554,7 +1568,7 @@ FUNC INT prime0_f(INT nf, READONLY INT fac_arr_pc[]):
 
    retvalu = 1;
    prm_prev = fac_arr_pc[0];
-   FOR ind FROM 1 TO nf - 1:
+   FOR ind FROM 1 TO array_size - 1:
       prm_curr = fac_arr_pc[ind];
       IF prm_prev < prm_curr:
          retvalu += 1;
@@ -1565,23 +1579,23 @@ FUNC INT prime0_f(INT nf, READONLY INT fac_arr_pc[]):
 FUNC_END
 
 BLOCK: # Prime factors
-   BLOCK_DEF CONST LC_MAX_FACTORS 65; # 1
+   BLOCK_DEF CONST LC_FACTORS_CNT 65; # 1
 
    FUNC INT factor_print(INT nn):
       # Print out all prime factors of number NN
       INT ind;
-      INT fac_arr[LC_MAX_FACTORS];
-      INT nf;
+      INT fac_arr[LC_FACTORS_CNT];
+      INT array_size;
 
-      nf = factor(nn, fac_arr[]);
+      array_size = factor(nn, fac_arr[]);
       PRINTVAL(nn);
       PRINTSTR(" :");
-      FOR ind FROM 0 TO nf - 1:
+      FOR ind FROM 0 TO array_size - 1:
          PRINTSTR(" ");
          PRINTVAL(fac_arr[ind]);
       FOR_END
       PRINTSTR(STRING_NL);
-      RETURN nf;
+      RETURN array_size;
    FUNC_END
 
    FUNC INT mobius(INT nn):
@@ -1589,40 +1603,40 @@ BLOCK: # Prime factors
       #    if NN has a squared prime factor, 0;
       #    else if NN has an even number of factors, 1
       #    else -1
-      INT nf;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT array_size;
+      INT fac_arr[LC_FACTORS_CNT];
 
-      nf = factor(nn, fac_arr[]);
-      RETURN mobius_f(nf, fac_arr[]);
+      array_size = factor(nn, fac_arr[]);
+      RETURN mobius_f(array_size, fac_arr[]);
    FUNC_END
-   #TEST:mobius(19)+1;
-   #TEST:mobius(20)-0;
-   #TEST:mobius(21)-1;
+   #TEST:mobius(19) + 1;
+   #TEST:mobius(20) - 0;
+   #TEST:mobius(21) - 1;
 
-   FUNC BOL isprimitiveroot(INT aa, INT nn):
-      # test if AA is a primitive root of NN
+   FUNC BOL isprimitiveroot(INT naa, INT nn):
+      # test if NAA is a primitive root of NN
       INT toti;
-      INT nf_toti;
+      INT array_size_toti;
       INT ind;
       INT prm;
       BOL retvalu_bol;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT fac_arr[LC_FACTORS_CNT];
 
-      IF aa <= 1 OR 1 < gcd(aa, nn):
+      IF naa <= 1 OR 1 < gcd(naa, nn):
          retvalu_bol = FALSE;
-      ELSIF aa == 2:
+      ELSIF naa == 2:
          retvalu_bol = Kw.isodd(nn);
       ELSE:
          toti = totient(nn);
-         nf_toti = factor(toti, fac_arr[]);
-         IF atothenmodp(aa, toti / fac_arr[0], nn) == 1:
+         array_size_toti = factor(toti, fac_arr[]);
+         IF atothenmodp(naa, toti / fac_arr[0], nn) == 1:
             retvalu_bol = FALSE;
          ELSE:
             retvalu_bol = TRUE;
-            FOR ind FROM 1 TO nf_toti - 1:
+            FOR ind FROM 1 TO array_size_toti - 1:
                IF fac_arr[ind - 1] <> fac_arr[ind]:
                   prm = fac_arr[ind];
-                  IF atothenmodp(aa, toti / prm, nn) == 1:
+                  IF atothenmodp(naa, toti / prm, nn) == 1:
                      retvalu_bol = FALSE;
                      FOR_EXIT;
                   IF_END
@@ -1632,56 +1646,56 @@ BLOCK: # Prime factors
       IF_END
       RETURN retvalu_bol;
    FUNC_END
-   #TEST:isprimitiveroot(5,11)-isodd(4);
-   #TEST:isprimitiveroot(6,11)-iseven(4);
+   #TEST:isprimitiveroot(5,11) - isodd(4);
+   #TEST:isprimitiveroot(6,11) - iseven(4);
 
    FUNC INT prime0(INT nn):
       # count of distinct prime factors of NN
-      INT nf;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT array_size;
+      INT fac_arr[LC_FACTORS_CNT];
 
-      nf = factor(nn, fac_arr[]);
-      RETURN prime0_f(nf, fac_arr[]);
+      array_size = factor(nn, fac_arr[]);
+      RETURN prime0_f(array_size, fac_arr[]);
    FUNC_END
-   #TEST:prime0(240)-3;
-   #TEST:prime0(241)-1;
-   #TEST:prime0(243)-1;
+   #TEST:prime0(240) - 3;
+   #TEST:prime0(241) - 1;
+   #TEST:prime0(243) - 1;
 
    FUNC INT prime1(INT nn):
       # count prime factors of NN, including multiplicities
-      INT fac_arr[LC_MAX_FACTORS];
+      INT fac_arr[LC_FACTORS_CNT];
       RETURN factor(nn, fac_arr[]);
    FUNC_END
-   #TEST:prime1(240)-6;
-   #TEST:prime1(241)-1;
-   #TEST:prime1(243)-5;
+   #TEST:prime1(240) - 6;
+   #TEST:prime1(241) - 1;
+   #TEST:prime1(243) - 5;
 
    FUNC INT sigma0(INT nn):
       # count of divisors of NN
-      INT nf;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT array_size;
+      INT fac_arr[LC_FACTORS_CNT];
 
-      nf = factor(nn, fac_arr[]);
-      RETURN sigma0_f(nf, fac_arr[]);
+      array_size = factor(nn, fac_arr[]);
+      RETURN sigma0_f(array_size, fac_arr[]);
    FUNC_END
-   #TEST:sigma0(12)-6;
+   #TEST:sigma0(12) - 6;
 
    FUNC INT sigma1(INT nn):
       # sum of divisors of NN
-      INT nf;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT array_size;
+      INT fac_arr[LC_FACTORS_CNT];
 
-      nf = factor(nn, fac_arr[]);
-      RETURN sigma1_f(nf, fac_arr[]);
+      array_size = factor(nn, fac_arr[]);
+      RETURN sigma1_f(array_size, fac_arr[]);
    FUNC_END
-   #TEST:sigma1(28)-56;
-   #TEST:sigma1(29)-30;
-   #TEST:sigma1(30)-72;
+   #TEST:sigma1(28) - 56;
+   #TEST:sigma1(29) - 30;
+   #TEST:sigma1(30) - 72;
 
    FUNC INT sigma(INT powy, INT nn):
       # sum of POWYth power of divisors of NN
-      INT nf;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT array_size;
+      INT fac_arr[LC_FACTORS_CNT];
       INT retvalu;
 
       IF nn <= 1:
@@ -1691,48 +1705,48 @@ BLOCK: # Prime factors
       ELSIF powy == 1:
          retvalu = sigma1(nn);
       ELSE:
-         nf = factor(nn, fac_arr[]);
-         retvalu = sigma_f(powy, nf, fac_arr[]);
+         array_size = factor(nn, fac_arr[]);
+         retvalu = sigma_f(powy, array_size, fac_arr[]);
       IF_END
       RETURN retvalu;
    FUNC_END
 
    FUNC INT totient(INT nn):
       # count of numbers < NN and relatively prime to NN
-      INT fac_arr[LC_MAX_FACTORS];
-      INT nf;
+      INT fac_arr[LC_FACTORS_CNT];
+      INT array_size;
 
-      nf = factor(nn, fac_arr[]);
-      RETURN totient_f(nf, fac_arr[]);
+      array_size = factor(nn, fac_arr[]);
+      RETURN totient_f(array_size, fac_arr[]);
    FUNC_END
-   #TEST:totient(141)-92;
-   #TEST:totient(142)-70;
-   #TEST:totient(143)-120;
+   #TEST:totient(141) - 92;
+   #TEST:totient(142) - 70;
+   #TEST:totient(143) - 120;
 
    FUNC BOL has_primitiveroot(INT nn):
       # number has a primitive root iff
       #    it is a power of a odd prime
       #    or twice a power of a odd prime
-      INT nf;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT array_size;
+      INT fac_arr[LC_FACTORS_CNT];
       BOL retvalu_bol;
 
       IF nn < 2:
          retvalu_bol = FALSE;
       ELSE:
-         nf = factor(nn, fac_arr[]);
-         retvalu_bol = has_primitiveroot_f(nf, fac_arr[]);
+         array_size = factor(nn, fac_arr[]);
+         retvalu_bol = has_primitiveroot_f(array_size, fac_arr[]);
       IF_END
       RETURN retvalu_bol;
    FUNC_END
-   #TEST:has_primitiveroot(191)-isprime(191);
-   #TEST:has_primitiveroot(250)-iseven(250);
+   #TEST:has_primitiveroot(191) - isprime(191);
+   #TEST:has_primitiveroot(250) - iseven(250);
    #TEST:has_primitiveroot(8);
 
    FUNC BOL issquarefree(INT nn):
       # test if NN is squarefree
-      INT nf;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT array_size;
+      INT fac_arr[LC_FACTORS_CNT];
       BOL retvalu_bol;
 
       IF nn < 1:
@@ -1740,18 +1754,17 @@ BLOCK: # Prime factors
       ELSIF nn < 3:
          retvalu_bol = TRUE;
       ELSE:
-         nf = factor(nn, fac_arr[]);
-         retvalu_bol = issquarefree_f(nf, fac_arr[]);
+         array_size = factor(nn, fac_arr[]);
+         retvalu_bol = issquarefree_f(array_size, fac_arr[]);
       IF_END
       RETURN retvalu_bol;
    FUNC_END
 
    FUNC BOL ispractical(INT nn):
-      # test if NN is practical
-      # I.E. all positive integers <= NN can be represented
-      #      as sums of distinct factors of NN
-      INT nf;
-      INT fac_arr[LC_MAX_FACTORS];
+      # test if NN is practical I.E. all positive integers <= NN can be
+      #    represented as sums of distinct factors of NN
+      INT array_size;
+      INT fac_arr[LC_FACTORS_CNT];
       BOL retvalu_bol;
 
       IF nn < 1:
@@ -1759,20 +1772,20 @@ BLOCK: # Prime factors
       ELSIF nn < 3:
          retvalu_bol = TRUE;
       ELSE:
-         nf = factor(nn, fac_arr[]);
-         retvalu_bol = ispractical_f(nf, fac_arr[]);
+         array_size = factor(nn, fac_arr[]);
+         retvalu_bol = ispractical_f(array_size, fac_arr[]);
       IF_END
       RETURN retvalu_bol;
    FUNC_END
 
    FUNC INT primitiveroot(INT nn):
-      # smallest primitive root of multiplicative group
-      #    modulo NN, if it exists. 0 otherwise.
+      # smallest primitive root of multiplicative group modulo NN, if it
+      #    exists. 0 otherwise.
       INT ind;
-      INT nf_toti;
+      INT array_size_toti;
       INT toti;
-      INT mm;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT ii;
+      INT fac_arr[LC_FACTORS_CNT];
       INT prm;
       INT retvalu;
 
@@ -1785,50 +1798,49 @@ BLOCK: # Prime factors
             retvalu = 0;
          ELSE:
             toti = totient(nn);
-            nf_toti = factor(toti, fac_arr[]);
-            mm = 2;
+            array_size_toti = factor(toti, fac_arr[]);
+            ii = 2;
             retvalu = 0;
-            WHILE mm < nn AND retvalu <= 0:
-               IF gcd(mm, nn) == 1:
-                  retvalu = mm;
+            WHILE ii < nn AND retvalu <= 0:
+               IF gcd(ii, nn) == 1:
+                  retvalu = ii;
                   prm = 0;
-                  FOR ind FROM 0 TO nf_toti - 1:
+                  FOR ind FROM 0 TO array_size_toti - 1:
                      IF prm <> fac_arr[ind]:
                         prm = fac_arr[ind];
-                        IF atothenmodp(mm, toti / prm, nn) == 1:
+                        IF atothenmodp(ii, toti / prm, nn) == 1:
                            retvalu = 0;
                            FOR_EXIT;
                         IF_END
                      IF_END
                   FOR_END
                IF_END
-               mm += 1;
+               ii += 1;
             WHILE_END
          IF_END
       MODE_INTEGER_END
       RETURN retvalu;
    FUNC_END
-   #TEST:primitiveroot(191)-19;
+   #TEST:primitiveroot(191) - 19;
    #TEST:primitiveroot(8);
 
    FUNC INT carmichael(INT nn):
-      # Carmichael lambda function
-      # smallest MM such that AA**MM = 1 mod NN
-      #      for all AA coprime to NN
+      # Carmichael lambda function: smallest MM such that NAA**MM = 1 mod NN
+      #      for all NAA coprime to NN
       INT ind;
-      INT nf;
+      INT array_size;
       INT lmbd;
       INT prm;
       INT pk;
-      INT fac_arr[LC_MAX_FACTORS];
+      INT fac_arr[LC_FACTORS_CNT];
 
       MODE_INTEGER:
          IF nn < 8:
             lmbd = totient(nn);
          ELSE:
-            nf = factor(nn, fac_arr[]);
+            array_size = factor(nn, fac_arr[]);
             ind = 0;
-            WHILE ind < nf AND fac_arr[ind] == 2:
+            WHILE ind < array_size AND fac_arr[ind] == 2:
                ind += 1;
             WHILE_END
             IF 2 < ind:
@@ -1836,10 +1848,10 @@ BLOCK: # Prime factors
             ELSE:
                lmbd = 1;
             IF_END
-            WHILE ind < nf:
+            WHILE ind < array_size:
                prm = fac_arr[ind];
                pk = prm - 1;
-               WHILE ind < nf - 1 AND prm == fac_arr[ind + 1]:
+               WHILE ind < array_size - 1 AND prm == fac_arr[ind + 1]:
                   ind += 1;
                   pk *= prm;
                WHILE_END
@@ -1850,16 +1862,15 @@ BLOCK: # Prime factors
       MODE_INTEGER_END
       RETURN lmbd;
    FUNC_END
-   #TEST:carmichael(35)-12;
-   #TEST:carmichael(24)-2;
+   #TEST:carmichael(35) - 12;
+   #TEST:carmichael(24) - 2;
 
-   FUNC INT znorder(INT aa, INT nn):
-      # smallest positive integer PP such that
-      #   AA ** PP == 1 mod NN
+   FUNC INT znorder(INT naa, INT nn):
+      # smallest positive integer PP such that NAA ** PP == 1 mod NN
       # 0 if none exist
       INT ind;
-      INT fac_arr[LC_MAX_FACTORS];
-      INT nfkk;
+      INT fac_arr[LC_FACTORS_CNT];
+      INT array_sizekk;
       INT kk;
       INT ab;
       INT ek;
@@ -1867,54 +1878,54 @@ BLOCK: # Prime factors
       INT exp_i;
 
       MODE_INTEGER:
-      IF nn == 0 OR aa == 0:
-         kk = 0;
-      ELSE:
-         IF nn < 0:
-            nn = -nn;
-         IF_END
-         WHILE aa < 0:
-            aa += nn;
-         WHILE_END
-         IF nn <= 1:
-            # znorder(aa,0) = 0, znorder(aa,1) = 1
-            kk = nn;
-         ELSIF aa <= 1:
-            # znorder(0,nn) = 0, znorder(1,nn) = 1  (nn > 1)
-            kk = aa;
-         ELSIF 1 < gcd(aa, nn):
+         IF nn == 0 OR naa == 0:
             kk = 0;
-         ELSE:   # Cohen 1.4.3 using Carmichael Lambda function
-            kk = carmichael(nn);
-            nfkk = factor(kk, fac_arr[]);
-            exp_i = 1;
-            FOR ind FROM 0 TO nfkk - 1:
-               prm_i = fac_arr[ind];
-               kk /= prm_i;
-               IF ind + 1 < nfkk AND prm_i == fac_arr[ind + 1]:
-                  exp_i += 1;
-               ELSE:
-                  ab = atothenmodp(aa, kk, nn);
-                  FOR ek FROM 0 TO exp_i:
-                     IF ab == 1:
+         ELSE:
+            IF nn < 0:
+               nn = -nn;
+            IF_END
+            WHILE naa < 0:
+               naa += nn;
+            WHILE_END
+            IF nn <= 1:
+               # znorder(naa,0) = 0, znorder(naa,1) = 1
+               kk = nn;
+            ELSIF naa <= 1:
+               # znorder(0,nn) = 0, znorder(1,nn) = 1  (nn > 1)
+               kk = naa;
+            ELSIF 1 < gcd(naa, nn):
+               kk = 0;
+            ELSE:   # Cohen 1.4.3 using Carmichael Lambda function
+               kk = carmichael(nn);
+               array_sizekk = factor(kk, fac_arr[]);
+               exp_i = 1;
+               FOR ind FROM 0 TO array_sizekk - 1:
+                  prm_i = fac_arr[ind];
+                  kk /= prm_i;
+                  IF ind + 1 < array_sizekk AND prm_i == fac_arr[ind + 1]:
+                     exp_i += 1;
+                  ELSE:
+                     ab = atothenmodp(naa, kk, nn);
+                     FOR ek FROM 0 TO exp_i:
+                        IF ab == 1:
+                           FOR_EXIT;
+                        IF_END
+                        kk *= prm_i;
+                        ab = atothenmodp(ab, prm_i, nn);
+                     FOR_END
+                     IF exp_i < ek:
+                        kk = 0;
                         FOR_EXIT;
                      IF_END
-                     kk *= prm_i;
-                     ab = atothenmodp(ab, prm_i, nn);
-                  FOR_END
-                  IF exp_i < ek:
-                     kk = 0;
-                     FOR_EXIT;
+                     exp_i = 1;
                   IF_END
-                  exp_i = 1;
-               IF_END
-            FOR_END
+               FOR_END
+            IF_END
          IF_END
-      IF_END
       MODE_INTEGER_END
       RETURN kk;
    FUNC_END
-   #TEST:znorder(37,1000)-100;
+   #TEST:znorder(37,1000) - 100;
 BLOCK_END
 
 FUNC INT repetendlen(INT denm, INT basee):
@@ -1936,9 +1947,8 @@ FUNC INT repetendlen(INT denm, INT basee):
 FUNC_END
 
 FUNC INT kevy_print(INT den, INT start, INT basee):
-   # print out number in base BASEE, starting with START
-   #    such that to divide number by DEN you move START from
-   #    the beginning of the number to the end
+   # print out number in base BASEE, starting with START such that to divide
+   #    number by DEN move START from the beginning of the number to the end
    # I.E. Given DEN, START, and BASEE:
    #    Let KK = CEIL((LN(START) + 0.01) / LN(BASE)), and
    #        NN = dlog(BASEE, DEN, BASEE**KK * DEN - 1)
@@ -1951,26 +1961,25 @@ FUNC INT kevy_print(INT den, INT start, INT basee):
    INT rema;
    INT overall_len;
    INT baseek;
-   INT digits_in_start;
+   INT log_start;
 
-   digits_in_start = FLOORL(LN(start) / LN(basee) + 1);
-   baseek = POW(basee, digits_in_start);
-   overall_len = (Kw.dlog(basee, den, den * baseek - 1) + 3)
-         * digits_in_start;
+   log_start = FLOORL(LN(start) / LN(basee) + 1);
+   baseek = POW(basee, log_start);
+   overall_len = (Kw.dlog(basee, den, den * baseek - 1) + 3) * log_start;
    MODE_INTEGER:
-   leny = 0;
-   numer = start;
-   valu = start;
-   AWAIT 2 * overall_len < leny:
-      CALL base_out_fix_print(valu, basee, digits_in_start);
-      leny += digits_in_start;
-      valu = FLOORL(numer / den);
-      rema = numer % den;
-      numer = rema * baseek + valu;
-      IF numer == start:
-         AWAIT_EXIT;
-      IF_END
-   AWAIT_END
+      leny = 0;
+      numer = start;
+      valu = start;
+      AWAIT 2 * overall_len < leny:
+         CALL base_out_fix_print(valu, basee, log_start);
+         leny += log_start;
+         valu = FLOORL(numer / den);
+         rema = numer % den;
+         numer = rema * baseek + valu;
+         IF numer == start:
+            AWAIT_EXIT;
+         IF_END
+      AWAIT_END
    MODE_INTEGER_END
    RETURN leny;
 FUNC_END
@@ -1980,40 +1989,40 @@ FUNC INT eulerphi(INT nn):
    RETURN totient(nn);
 FUNC_END
 
-FUNC INT znorder__1(INT bb, INT mdls):
-   # return NN where BB**NN = 1 mod MDLS
+FUNC INT znorder__1(INT nbb, INT mdls):
+   # return NN where NBB**NN = 1 mod MDLS
    INT nn;
    INT pp;
 
    MODE_INTEGER:
-   IF 1 < gcd(bb, mdls):
-      nn = 0;
-   ELSE:
-      pp = 1;
-      AWAIT pp == 1 COUNT nn FROM 1 TO mdls:
-         pp = (pp * bb) % mdls;
-      AWAIT_END
-   IF_END
+      IF 1 < gcd(nbb, mdls):
+         nn = 0;
+      ELSE:
+         pp = 1;
+         AWAIT pp == 1 COUNT nn FROM 1 TO mdls:
+            pp = (pp * nbb) % mdls;
+         AWAIT_END
+      IF_END
    MODE_INTEGER_END
    RETURN nn;
 FUNC_END
 
-FUNC INT bkn(INT bb, INT kk):
-   # return NN where BB**NN - 1 = 0 mod (KK * BB - 1)
-   RETURN znorder(bb, kk * bb - 1);
+FUNC INT bkn(INT nbb, INT kk):
+   # return NN where NBB**NN - 1 = 0 mod (KK * NBB - 1)
+   RETURN znorder(nbb, kk * nbb - 1);
 FUNC_END
 
-FUNC INT bkbn(INT bb, INT kk, INT cc):
-   # return NN where KK*CC*(BB**NN - 1) = 0 mod (KK * BB - 1)
+FUNC INT bkbn(INT nbb, INT kk, INT cc):
+   # return NN where KK*CC*(NBB**NN - 1) = 0 mod (KK * NBB - 1)
    INT mdls;
 
    MODE_INTEGER:
-      mdls = kk * bb - 1;
+      mdls = kk * nbb - 1;
       IF mdls % cc == 0:
          mdls /= cc;
       IF_END
    MODE_INTEGER_END
-   RETURN znorder(bb, mdls);
+   RETURN znorder(nbb, mdls);
 FUNC_END
 
 BLOCK: # Li, Lix variables
@@ -2039,25 +2048,37 @@ BLOCK: # Li, Lix variables
       RETURN scvx_xx;
    FUNC_END
 BLOCK_END
-#TEST:lix(0)==-1.04516378011749278484458888919461313652261557815;
-#TEST:lix(3)==1.11842481454969918803233347815310823001950063430;
-#TEST:lix(0)==lix(1.451369234883381050283968485892027449493032);
+#TEST:lix(0) == -1.045163780117492784844588889194613136522615578;
+#TEST:lix(3) == 1.1184248145496991880323334781531082300195006343;
+#TEST:lix(0) == lix(1.45136923488338105028396848589202744949303);
+BLOCK:  # Primish
+   BLOCK_DEF FUNC INT lf_n2primish(INT nn):
+      # primish for non-negative nn
+      INT retvalu;
 
-FUNC INT n2primish(INT nn):
-   INT retvalu;
-   IF nn < 0:
-      retvalu = -n2primish(-nn);
-   ELSIF nn == 0:
-      retvalu = 0;
-   ELSIF nn < 3:
-      retvalu = nn + 1;
-   ELSIF Kw.isodd(nn):
-      retvalu = 3 * nn - 4;
-   ELSE:
-      retvalu = 3 * nn - 5;
-   IF_END
-   RETURN retvalu;
-FUNC_END
+      IF nn == 0:
+         retvalu = 0;
+      ELSIF nn < 3:
+         retvalu = nn + 1;
+      ELSIF Kw.isodd(nn):
+         retvalu = 3 * nn - 4;
+      ELSE:
+         retvalu = 3 * nn - 5;
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+
+   FUNC INT n2primish(INT nn):
+      INT retvalu;
+
+      IF 0 < nn:
+         retvalu = lf_n2primish(nn);
+      ELSE:
+         retvalu = -lf_n2primish(-nn);
+      IF_END
+      RETURN retvalu;
+   FUNC_END
+BLOCK_END  # Primish
 
 FUNC DBL primenth__1(DBL nn):
    # an approximation of NNth prime
@@ -2072,11 +2093,9 @@ FUNC DBL primenth__1(DBL nn):
    ELSE:
       logn = LN(nn);
       loglogn = LN(logn);
-      retvalu = nn * (logn + loglogn - 1.0
-         + (loglogn - 2.0) / logn
-         - ((loglogn - 6.0) * loglogn + 11.0)
-               / (2.0 * logn * logn))
-         + 3.5 * SQRT(nn) + 10;
+      retvalu = nn * (logn + loglogn - 1.0 + (loglogn - 2.0) / logn
+               - ((loglogn - 6.0) * loglogn + 11.0) / (2.0 * logn * logn))
+               + 3.5 * SQRT(nn) + 10;
    IF_END
    RETURN retvalu;
 FUNC_END

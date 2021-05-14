@@ -1,4 +1,7 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-15 kdw  indent work
+# 2021-03-23 kdw  minor refactor
+# 2021-03-13 kdw  line len upped to 77
 # 2020-12-03 kdw  float explicit const work
 # 2020-11-28 kdw  macro syntax overhaul
 # 2020-11-23 kdw  replace 1.0E0 with 1.0
@@ -105,8 +108,7 @@ BLOCK:
       # Should have XX about NEARW_ZERO * EXP(NEARW_ZERO)
       wjj = nearw_zero;
       # refine result using Halleys method
-      AWAIT Kw.iseq(wjj, wjj_prev) COUNT ii FROM 0
-               TO {LOOP_LIMIT}:
+      AWAIT Kw.iseq(wjj, wjj_prev) COUNT ii FROM 0 TO {LOOP_LIMIT}:
          eww = EXP(wjj);
          tnn = wjj * eww - xx;
          snn = (wjj + 2.0) / (2.0 * (wjj + 1.0));
@@ -165,31 +167,28 @@ BLOCK:
          IF xx < -0.303: # (-1/E,-0.303)
             tnn = -SQRT(2.0 * (1.0 + Kw.E * xx));
             near_w = ((((((((((
-                  + 226287557.0 / 37623398400.0) * tnn
-                  - 1963.0 / 204120.0) * tnn
-                  + 680863.0 / 43545600.0) * tnn
-                  - 221.0 / 8505.0) * tnn
-                  + 769.0 / 17280.0) * tnn
-                  - 43.0 / 540.0) * tnn
-                  + 11.0 / 72.0) * tnn
-                  - 1.0 / 3.0) * tnn
-                  + 1.0) * tnn
-                  - 1.0);
-
+                     + 226287557.0 / 37623398400.0) * tnn
+                     - 1963.0 / 204120.0          ) * tnn
+                     + 680863.0 / 43545600.0      ) * tnn
+                     - 221.0 / 8505.0             ) * tnn
+                     + 769.0 / 17280.0            ) * tnn
+                     - 43.0 / 540.0               ) * tnn
+                     + 11.0 / 72.0                ) * tnn
+                     - 1.0 / 3.0                  ) * tnn
+                     + 1.0                        ) * tnn
+                     - 1.0                        );
          ELSIF xx < -0.0510129:  # [-0.303,-0.0510129)
             numer = (((
-                  + 6.5794931769023040E+2) * xx
-                  + 2.5388810188892484E+2) * xx
-                  - 7.8141767239074400E+0);
-
+                     + 6.5794931769023040E+2) * xx
+                     + 2.5388810188892484E+2) * xx
+                     - 7.8141767239074400E+0);
             denom = ((((((
-                  + 1.4779341280760887E+3) * xx
-                  + 9.6217849696986600E+2) * xx
-                  + 6.8260739999094280E+2) * xx
-                  + 9.9985670831076100E+1) * xx
-                  - 6.0439587136908080E+1) * xx
-                  + 1.0);
-
+                     + 1.4779341280760887E+3) * xx
+                     + 9.6217849696986600E+2) * xx
+                     + 6.8260739999094280E+2) * xx
+                     + 9.9985670831076100E+1) * xx
+                     - 6.0439587136908080E+1) * xx
+                     + 1.0                  );
             near_w = numer / denom;
          ELSIF xx < 0.0:   # [-0.0510129,0)
             near_w = LN(-xx);
@@ -210,13 +209,13 @@ BLOCK_END
 
 FUNC DBL wpinv(DBL zz):
    # inverse lambert function == x*exp(x):
-   # (-Inf,-1/E,+Inf)  to (0,-1,+Inf)
+   # (-Inf,-1/E,+Inf) to (0,-1,+Inf)
    RETURN zz * EXP(zz);
 FUNC_END
 
 FUNC DBL wminv(DBL zz):
    # inverse lambert function == x*exp(x):
-   # (-Inf,-1/E,+Inf)  to (0,-1,+Inf)
+   # (-Inf,-1/E,+Inf) to (0,-1,+Inf)
    RETURN zz * EXP(zz);
 FUNC_END
 #TEST:wpinv(wp(1.56))-1.56;

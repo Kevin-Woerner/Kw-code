@@ -1,4 +1,10 @@
-#    Copyright (C) 2016-2020 by Kevin D. Woerner
+#    Copyright (C) 2016-2021 by Kevin D. Woerner
+# 2021-04-20 kdw  var renam
+# 2021-04-15 kdw  indent work
+# 2021-04-06 kdw  indent work
+# 2021-03-27 kdw  long lines update
+# 2021-03-13 kdw  line len upped to 77
+# 2021-02-05 kdw  wikipedia refs
 # 2020-12-08 kdw  explicit modules on constants
 # 2020-12-04 kdw  float explicit const work
 # 2020-09-29 kdw  comments; var renam
@@ -67,11 +73,11 @@
 # 2016-12-26 kdw  created
 
 FUNC DBL sphere_d(DBL lata_rad
-      , DBL lona_rad
-      , DBL latb_rad
-      , DBL lonb_rad):
+         , DBL lona_rad
+         , DBL latb_rad
+         , DBL lonb_rad):
    # great circle distance on a sphere of radius 1
-   # from https://en.wikipedia.org/wiki/Great-circle_distance
+   # See Wikipedia - Great-circle distance
    DBL xc;
    DBL xd;
    DBL xe;
@@ -100,24 +106,23 @@ FUNC DBL sphere_d(DBL lata_rad
 FUNC_END
 
 FUNC DBL great_circle_distance(DBL lata_rad
-   , DBL lona_rad
-   , DBL latb_rad
-   , DBL lonb_rad):
+         , DBL lona_rad
+         , DBL latb_rad
+         , DBL lonb_rad):
    # great circle distance on the unit sphere
    # between the two sets of latitude and longitude
    RETURN sphere_d(lata_rad, lona_rad, latb_rad, lonb_rad);
 FUNC_END
 
 FUNC DBL sphere_distance(DBL lata_rad
-   , DBL lona_rad
-   , DBL latb_rad
-   , DBL lonb_rad
-   , WRITEONLY DBL ret_dirs_arr_p[]):
-   # distance on an sphere with radius 1,
-   # between the two given points
+         , DBL lona_rad
+         , DBL latb_rad
+         , DBL lonb_rad
+         , WRITEONLY DBL ret_dirs_arr_p[]):
+   # distance on an sphere with radius 1, between the two given points
    # RET_DIRS_ARR_P[0] = direction from A to B
    # RET_DIRS_ARR_P[1] = direction from B to A
-   # See https://en.wikipedia.org/wiki/Vincentys_formulae
+   # See Wikipedia - Vincentys formulae
    DBL xc;
    DBL xd;
    DBL xe;
@@ -176,16 +181,16 @@ BLOCK: # ellipsiod funcitons
    FUNC_END
 
    FUNC DBL ellipsoid_distance(DBL flat
-      , DBL lata_rad
-      , DBL lona_rad
-      , DBL latb_rad
-      , DBL lonb_rad
-      , WRITEONLY DBL ret_dirs_arr_p[]):
+            , DBL lata_rad
+            , DBL lona_rad
+            , DBL latb_rad
+            , DBL lonb_rad
+            , WRITEONLY DBL ret_dirs_arr_p[]):
       # distance on an ellipsoid with radius 1,
       # flattening FLAT between the two given points
       # RET_DIRS_ARR_P[0] = direction from A to B
       # RET_DIRS_ARR_P[1] = direction from B to A
-      # See https://en.wikipedia.org/wiki/Vincentys_formulae
+      # See Wikipedia - Vincentys formulae
       DBL iflat;
       DBL cap_ua;
       DBL cap_ub;
@@ -203,8 +208,8 @@ BLOCK: # ellipsiod funcitons
       DBL c_sig;
       DBL s_sig;
       DBL sig;
-      DBL s_alpha;
-      DBL c_alpha_sq;
+      DBL s_a;
+      DBL c_asq;
       DBL cbsigm;
       DBL cap_c;
       DBL usq;
@@ -230,38 +235,32 @@ BLOCK: # ellipsiod funcitons
          s_xx = SIN(xx_curr);
          c_xx = COS(xx_curr);
          s_sig = Kw.hypot(c_cap_ub * s_xx
-            , c_cap_ua * s_cap_ub - s_cap_ua * c_cap_ub * c_xx);
-         c_sig = s_cap_ua * s_cap_ub
-               + c_cap_ua * c_cap_ub * c_xx;
+                  , c_cap_ua * s_cap_ub - s_cap_ua * c_cap_ub * c_xx);
+         c_sig = s_cap_ua * s_cap_ub + c_cap_ua * c_cap_ub * c_xx;
          sig = ATAN2(s_sig, c_sig);
-         s_alpha = c_cap_ua * c_cap_ub * s_xx / s_sig;
-         c_alpha_sq = 1.0 - Kw.square(s_alpha);
-         cbsigm = c_sig - Kw.divi(2.0 * s_cap_ua * s_cap_ub
-               , c_alpha_sq, 0.0);
-         cap_c = ((flat / 16.0) * c_alpha_sq
-            * (4.0 + flat * (4.0 - 3.0 * c_alpha_sq)));
+         s_a = c_cap_ua * c_cap_ub * s_xx / s_sig;
+         c_asq = 1.0 - Kw.square(s_a);
+         cbsigm = c_sig - Kw.divi(2 * s_cap_ua * s_cap_ub, c_asq, 0.0);
+         cap_c = ((flat / 16) * c_asq * (4.0 + flat * (4.0 - 3.0 * c_asq)));
          xx_prev = xx_curr;
-         xx_curr = (lon_diff + (1.0 - cap_c) * flat * s_alpha
-            * (sig + cap_c * s_sig * (cbsigm
-               + cap_c * c_sig
-                     * (2.0 * Kw.square(cbsigm) - 1.0))));
+         xx_curr = (lon_diff + (1.0 - cap_c) * flat * s_a * (sig
+                  + cap_c * s_sig * (cbsigm + cap_c * c_sig * (2.0
+                  * Kw.square(cbsigm) - 1.0))));
          IF 10 < ii AND Kw.iseq(ABS(xx_prev + xx_curr), Kw.TAU):
             xx_curr = Kw.TAU / 2.0;
             AWAIT_EXIT;
          IF_END
       AWAIT_END
 
-      usq = c_alpha_sq * (1.0 / Kw.square(iflat) - 1.0);
+      usq = c_asq * (1.0 / Kw.square(iflat) - 1.0);
 
       cap_a = iflat * lf_cap_a(usq);
 
       cap_b = lf_cap_b(usq);
 
-      deltasig = cap_b * s_sig * (cbsigm
-         + 0.25 * cap_b * (c_sig
-                  * (-1.0 + 2.0 * Kw.square(cbsigm))
-            - (1.0 / 6.0) * cap_b * cbsigm
-               * (3.0 + 4.0 * Kw.square(s_sig))
+      deltasig = cap_b * s_sig * (cbsigm + 0.25 * cap_b * (c_sig
+               * (-1.0 + 2.0 * Kw.square(cbsigm)) - (1.0 / 6.0) * cap_b
+               * cbsigm * (3.0 + 4.0 * Kw.square(s_sig))
                * (-3.0 + 4.0 * Kw.square(cbsigm))));
 
       dist = cap_a * (sig - deltasig);
@@ -280,16 +279,16 @@ BLOCK: # ellipsiod funcitons
    FUNC_END
 
    FUNC DBL ellipsoid_destination(DBL flat
-      , DBL lata_rad
-      , DBL lona_rad
-      , DBL heading_rad
-      , DBL distance
-      , WRITEONLY DBL ret_loc_arr_p[]):
+            , DBL lata_rad
+            , DBL lona_rad
+            , DBL heading_rad
+            , DBL distance
+            , WRITEONLY DBL ret_loc_arr_p[]):
       # calculate the endpoint (and bearing) of a geodesic
       #    on an ellipsoid with radius 1, and flattening FLAT:
       #    starting at (LAT_A, LON_A) w/ heading HEADING
       #    and going distance DISTANCE
-      # See https://en.wikipedia.org/wiki/Vincentys_formulae
+      # See Wikipedia - Vincentys formulae
       DBL iflat;
       DBL cap_ua;
       DBL c_cap_ua;
@@ -302,11 +301,11 @@ BLOCK: # ellipsiod funcitons
       DBL aa;
       DBL bb;
       DBL sig_b_rad;
-      DBL s_alpha;
-      DBL c_alpha_sq;
+      DBL s_a;
+      DBL c_asq;
       DBL twosigm_rad;
       DBL c_twosigm;
-      DBL c_twosigm_sq;
+      DBL c_twosigmsq;
       DBL cap_c;
       DBL usq;
       DBL cap_a;
@@ -330,11 +329,11 @@ BLOCK: # ellipsiod funcitons
       s_heading = SIN(heading_rad);
       sig_b_rad = ATAN2(s_cap_ua, c_cap_ua * c_heading);
 
-      s_alpha = COS(cap_ua) * SIN(heading_rad);
+      s_a = COS(cap_ua) * SIN(heading_rad);
 
-      c_alpha_sq = 1.0 - Kw.square(s_alpha);
+      c_asq = 1.0 - Kw.square(s_a);
 
-      usq = c_alpha_sq * (Kw.square(aa / bb) - 1.0);
+      usq = c_asq * (Kw.square(aa / bb) - 1.0);
 
       cap_a = lf_cap_a(usq);
 
@@ -350,54 +349,50 @@ BLOCK: # ellipsiod funcitons
          c_sig = COS(sig_rad);
          twosigm_rad = 2.0 * sig_b_rad + sig_rad;
          c_twosigm = COS(twosigm_rad);
-         c_twosigm_sq = Kw.square(c_twosigm);
-         sig_rad_delta = cap_b * s_sig * (
-            c_twosigm + 0.25 * cap_b * (
-               c_sig * (2.0 * c_twosigm_sq - 1.0)
-                  - (cap_b / 6.0) * c_twosigm
-                     * (4.0 * Kw.square(s_sig) - 3.0)
-                     * (4.0 * c_twosigm_sq - 3.0)));
+         c_twosigmsq = Kw.square(c_twosigm);
+         sig_rad_delta = cap_b * s_sig * (c_twosigm + 0.25 * cap_b
+                  * (c_sig * (2.0 * c_twosigmsq - 1.0) - (cap_b / 6.0)
+                  * c_twosigm * (4.0 * s_sig * s_sig - 3.0)
+                  * (4.0 * c_twosigmsq - 3.0)));
       AWAIT_END
 
       xd = s_cap_ua * c_sig + c_cap_ua * s_sig * c_heading;
-      xc = iflat * Kw.hypot(s_alpha
-            , s_cap_ua * s_sig - c_cap_ua * c_sig * c_heading);
+      xc = iflat * Kw.hypot(s_a
+               , s_cap_ua * s_sig - c_cap_ua * c_sig * c_heading);
       ret_loc_arr_p[0] = ATAN2(xd, xc);
 
       xd = s_sig * s_heading;
       xc = c_cap_ua * c_sig - s_cap_ua * s_sig * c_heading;
       lamda = ATAN2(xd, xc);
-      cap_c = ((flat / 16.0) * c_alpha_sq
-            * (4.0 + flat * (4.0 - 3.0 * c_alpha_sq)));
+      cap_c = ((flat / 16.0) * c_asq * (4.0 + flat * (4.0 - 3.0 * c_asq)));
 
-      cap_l = lamda - (1.0 - cap_c) * flat * s_alpha
-            * (sig_rad + cap_c * s_sig * (c_twosigm
-               + cap_c * c_sig * (2.0 * c_twosigm_sq - 1.0)));
+      cap_l = lamda - (1.0 - cap_c) * flat * s_a * (sig_rad + cap_c
+               * s_sig * (c_twosigm + cap_c * c_sig
+               * (2 * c_twosigmsq - 1.0)));
 
       ret_loc_arr_p[1] = cap_l + lona_rad;
 
-      alpha_rad = Kw.fmodu(Kw.PI + ATAN2(s_alpha
-            , c_cap_ua * c_sig * c_heading
-                  - s_cap_ua * s_sig), Kw.TAU);
+      alpha_rad = Kw.fmodu(Kw.PI + ATAN2(s_a
+               , c_cap_ua * c_sig * c_heading - s_cap_ua * s_sig), Kw.TAU);
 
       RETURN alpha_rad;
    FUNC_END
 BLOCK_END   # ellipsiod funcitons
 
-FUNC DBL ellipsoid_surface(DBL aa, DBL bb, DBL cc):
+FUNC DBL ellipsoid_surface(DBL axis_a, DBL axis_b, DBL axis_c):
    # surface area of a tri-axial ellipsoid
    DBL absaa;
    DBL absbb;
    DBL abscc;
-   DBL phi;
+   DBL phi_rad;
    DBL sinphi;
    DBL cosphi;
    DBL kk;
    DBL retvalu;
 
-   absaa = ABS(aa);
-   absbb = ABS(bb);
-   abscc = ABS(cc);
+   absaa = ABS(axis_a);
+   absbb = ABS(axis_b);
+   abscc = ABS(axis_c);
    # sort into abscc <= absbb <= absaa
    IF absaa < absbb:
       kk = absaa;
@@ -418,21 +413,20 @@ FUNC DBL ellipsoid_surface(DBL aa, DBL bb, DBL cc):
    IF abscc < absaa:
       # general case
       cosphi = (abscc / absaa);
-      phi = Kw.cosinv(cosphi);
-      sinphi = SIN(phi);
+      phi_rad = Kw.cosinv(cosphi);
+      sinphi = SIN(phi_rad);
       kk = SQRT((1.0 - abscc * abscc / (absbb * absbb))
-                  / (1.0 - abscc * abscc / (absaa * absaa)));
+               / (1.0 - abscc * abscc / (absaa * absaa)));
       retvalu = Kw.TAU * (abscc * abscc + absaa * absbb / sinphi
-            * (sinphi * sinphi * Kw.elliptic2ik(kk, phi)
-            + cosphi * cosphi * Kw.elliptic1ik(kk, phi)));
-   ELSE:
-      # regular sphere: abscc == absbb == absaa
+               * (sinphi * sinphi * Kw.elliptic2ik(kk, phi_rad)
+               + cosphi * cosphi * Kw.elliptic1ik(kk, phi_rad)));
+   ELSE: # regular sphere: abscc == absbb == absaa
       retvalu = 2.0 * Kw.TAU * absaa * absaa;
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL ellipsoid_volume(DBL aa, DBL bb, DBL cc):
+FUNC DBL ellipsoid_volume(DBL axis_a, DBL axis_b, DBL axis_c):
    # volume of a tri-axial ellipsoid
-   RETURN 2.0 * Kw.TAU * aa * bb * cc / 3.0;
+   RETURN 2.0 * Kw.TAU * axis_a * axis_b * axis_c / 3.0;
 FUNC_END

@@ -1,0 +1,385 @@
+#    Copyright (C) 2021 by Kevin D. Woerner
+# 2021-04-20 kdw  print_array func
+# 2021-04-15 kdw  indent work
+# 2021-04-10 kdw  indent work
+# 2021-03-07 kdw  created
+
+FUNC INT print_array(INT arr_size, READONLY INT data_arr_pc[]):
+   INT ii;
+
+   FOR ii FROM 0 TO arr_size - 1:
+      PRINTVAL(data_arr_pc[ii]);
+      PRINTSTR(" ");
+   FOR_END
+   RETURN arr_size;
+FUNC_END
+
+BLOCK: # continued fraction
+   BLOCK_DEF FUNC INT lf_continued_fraction(DBL orig
+            , INT show_diff):
+      INT whole;
+      DBL xx;
+      DBL epsilon;
+      INT den_a;
+      INT den_b;
+      INT den_c;
+      INT num_a;
+      INT num_b;
+      INT num_c;
+      DBL diff;
+      INT steps;
+      DBL appr;
+
+      steps = 0;
+      xx = orig;
+      den_b = 0;
+      num_b = 1;
+      den_a = 1;
+      num_a = 0;
+      epsilon = Kw.DBLEPS / 2.0;
+      AWAIT ABS(diff) < epsilon:   # DBLEPS * 2**n
+         whole = FLOORL(xx);
+
+         den_c = den_b * whole + den_a;
+         num_c = num_b * whole + num_a;
+         den_a = den_b;
+         num_a = num_b;
+         den_b = den_c;
+         num_b = num_c;
+         steps += 1;
+         appr = (1.0 * num_b / den_b);
+         diff = orig - appr;
+
+         PRINTSTR("");
+         PRINTVAL(whole);
+         IF 0 <= show_diff:
+            PRINTSTR(STRING_TAB);
+            PRINTVAL(num_b);
+            PRINTSTR(" / ");
+            PRINTVAL(den_b);
+            PRINTSTR(STRING_TAB);
+            PRINTVAL(appr);
+            IF 0 < show_diff:
+               PRINTSTR(STRING_TAB);
+               PRINTVAL(diff);
+            IF_END
+            PRINTSTR(STRING_NL);
+         ELSE:
+            PRINTSTR(" ");
+         IF_END
+
+         IF Kw.iseq(xx, whole):
+            AWAIT_EXIT;
+         IF_END
+
+         xx = 1.0 / (xx - whole);
+         epsilon *= 2.0;
+      AWAIT_END
+
+      RETURN steps;
+   FUNC_END
+
+   FUNC INT contfra_print(DBL orig):
+      # Print continued fraction coeffs of ORIG
+      RETURN lf_continued_fraction(orig, -1);
+   FUNC_END
+
+   FUNC INT contfrac_print(DBL orig):
+      # Print continued fraction of ORIG
+      RETURN lf_continued_fraction(orig, 0);
+   FUNC_END
+
+   FUNC INT contfracd_print(DBL orig):
+      # Print continued fraction of ORIG w/ diffs
+      RETURN lf_continued_fraction(orig, 1);
+   FUNC_END
+BLOCK_END # continued fraction
+
+FUNC INT num2char_print(INT num):
+   # print NUM as a character 0-9a-zA-Z_?
+   IF num < 32:
+      IF num < 16:
+         IF num < 8:
+            IF num < 4:
+               IF num < 2:
+                  IF num < 1:
+                     PRINTSTR("0");
+                  ELSE:
+                     PRINTSTR("1");
+                  IF_END
+               ELSIF num < 3:
+                  PRINTSTR("2");
+               ELSE:
+                  PRINTSTR("3");
+               IF_END
+            ELSIF num < 6:
+               IF num < 5:
+                  PRINTSTR("4");
+               ELSE:
+                  PRINTSTR("5");
+               IF_END
+            ELSIF num < 7:
+               PRINTSTR("6");
+            ELSE:
+               PRINTSTR("7");
+            IF_END
+         ELSIF num < 12:
+            IF num < 10:
+               IF num < 9:
+                  PRINTSTR("8");
+               ELSE:
+                  PRINTSTR("9");
+               IF_END
+            ELSIF num < 11:
+               PRINTSTR("a");
+            ELSE:
+               PRINTSTR("b");
+            IF_END
+         ELSIF num < 14:
+            IF num < 13:
+               PRINTSTR("c");
+            ELSE:
+               PRINTSTR("d");
+            IF_END
+         ELSIF num < 15:
+            PRINTSTR("e");
+         ELSE:
+            PRINTSTR("f");
+         IF_END
+      ELSIF num < 24:
+         IF num < 20:
+            IF num < 18:
+               IF num < 17:
+                  PRINTSTR("g");
+               ELSE:
+                  PRINTSTR("h");
+               IF_END
+            ELSIF num < 19:
+               PRINTSTR("i");
+            ELSE:
+               PRINTSTR("j");
+            IF_END
+         ELSIF num < 22:
+            IF num < 21:
+               PRINTSTR("k");
+            ELSE:
+               PRINTSTR("l");
+            IF_END
+         ELSIF num < 23:
+            PRINTSTR("m");
+         ELSE:
+            PRINTSTR("n");
+         IF_END
+      ELSIF num < 28:
+         IF num < 26:
+            IF num < 25:
+               PRINTSTR("o");
+            ELSE:
+               PRINTSTR("p");
+            IF_END
+         ELSIF num < 27:
+            PRINTSTR("q");
+         ELSE:
+            PRINTSTR("r");
+         IF_END
+      ELSIF num < 30:
+         IF num < 29:
+            PRINTSTR("s");
+         ELSE:
+            PRINTSTR("t");
+         IF_END
+      ELSIF num < 31:
+         PRINTSTR("u");
+      ELSE:
+         PRINTSTR("v");
+      IF_END
+   ELSIF num < 48:
+      IF num < 40:
+         IF num < 36:
+            IF num < 34:
+               IF num < 33:
+                  PRINTSTR("w");
+               ELSE:
+                  PRINTSTR("x");
+               IF_END
+            ELSIF num < 35:
+               PRINTSTR("y");
+            ELSE:
+               PRINTSTR("z");
+            IF_END
+         ELSIF num < 38:
+            IF num < 37:
+               PRINTSTR("A");
+            ELSE:
+               PRINTSTR("B");
+            IF_END
+         ELSIF num < 39:
+            PRINTSTR("C");
+         ELSE:
+            PRINTSTR("D");
+         IF_END
+      ELSIF num < 44:
+         IF num < 42:
+            IF num < 41:
+               PRINTSTR("E");
+            ELSE:
+               PRINTSTR("F");
+            IF_END
+         ELSIF num < 43:
+            PRINTSTR("G");
+         ELSE:
+            PRINTSTR("H");
+         IF_END
+      ELSIF num < 46:
+         IF num < 45:
+            PRINTSTR("I");
+         ELSE:
+            PRINTSTR("J");
+         IF_END
+      ELSIF num < 47:
+         PRINTSTR("K");
+      ELSE:
+         PRINTSTR("L");
+      IF_END
+   ELSIF num < 56:
+      IF num < 52:
+         IF num < 50:
+            IF num < 49:
+               PRINTSTR("M");
+            ELSE:
+               PRINTSTR("N");
+            IF_END
+         ELSIF num < 51:
+            PRINTSTR("O");
+         ELSE:
+            PRINTSTR("P");
+         IF_END
+      ELSIF num < 54:
+         IF num < 53:
+            PRINTSTR("Q");
+         ELSE:
+            PRINTSTR("R");
+         IF_END
+      ELSIF num < 55:
+         PRINTSTR("S");
+      ELSE:
+         PRINTSTR("T");
+      IF_END
+   ELSIF num < 60:
+      IF num < 58:
+         IF num < 57:
+            PRINTSTR("U");
+         ELSE:
+            PRINTSTR("V");
+         IF_END
+      ELSIF num < 59:
+         PRINTSTR("W");
+      ELSE:
+         PRINTSTR("X");
+      IF_END
+   ELSIF num < 62:
+      IF num < 61:
+         PRINTSTR("Y");
+      ELSE:
+         PRINTSTR("Z");
+      IF_END
+   ELSIF num < 63:
+      PRINTSTR("_");
+   ELSIF num < 64:
+      PRINTSTR("?");
+   ELSE:
+      PRINTSTR("(");
+      PRINTVAL(num);
+      PRINTSTR(")");
+   IF_END
+
+   RETURN num;
+FUNC_END
+
+FUNC INT base_out_print(INT num, INT baset):
+   # print NUM out in base BASET
+   # return number of characters printed
+   INT digits_arr[65];
+   INT dig_count;
+   INT ii;
+
+   MODE_INTEGER:
+      IF num < 0:
+         PRINTSTR("-");
+         num = -num;
+      IF_END
+
+      dig_count = 0;
+      AWAIT num == 0:
+         digits_arr[dig_count] = num % baset;
+         dig_count += 1;
+         num = FLOORL(num / baset);
+      AWAIT_END
+      FOR ii FROM dig_count - 1 TO 0 BY -1:
+         CALL num2char_print(digits_arr[ii]);
+      FOR_END
+   MODE_INTEGER_END
+
+   RETURN dig_count;
+FUNC_END
+
+FUNC INT base_out_fix_print(INT num, INT baset, INT min_sz):
+   # print NUM out in base BASET
+   # return number of characters printed
+   INT digits_arr[65];
+   INT dig_count;
+   INT ii;
+
+   MODE_INTEGER:
+      IF num < 0:
+         num = -num;
+      IF_END
+
+      dig_count = 0;
+      AWAIT num == 0:
+         digits_arr[dig_count] = num % baset;
+         dig_count += 1;
+         num = FLOORL(num / baset);
+      AWAIT_END
+      FOR ii FROM dig_count TO min_sz - 1:
+         CALL num2char_print(0);
+      FOR_END
+      FOR ii FROM dig_count - 1 TO 0 BY -1:
+         CALL num2char_print(digits_arr[ii]);
+      FOR_END
+   MODE_INTEGER_END
+
+   RETURN min_sz;
+FUNC_END
+
+FUNC INT base_outf_print(DBL num, INT baset):
+   # print NUM out in base BASET
+   # return number of characters printed
+   INT dig_count;
+   INT ii;
+   DBL frc;
+   INT dig;
+   INT lim;
+
+   dig_count = 0;
+   IF num < 0.0:
+      PRINTSTR("-");
+      num = -num;
+      dig_count += 1;
+   IF_END
+
+   dig_count += base_out_print(FLOORL(num), baset) + 1;
+   PRINTSTR(".");
+   lim = CEILL(-lg(DBLEPS) / lg(baset));
+   frc = frac(num) * baset;
+   ii = 1;
+   WHILE ii <= lim AND NOT Kw.iszero(frc):
+      dig = FLOORL(frc);
+      CALL num2char_print(dig);
+      frc -= dig;
+      frc *= baset;
+      ii += 1;
+   WHILE_END
+
+   RETURN dig_count + lim;
+FUNC_END

@@ -1,4 +1,6 @@
-#    Copyright (C) 2018-2020 by Kevin D. Woerner
+#    Copyright (C) 2018-2021 by Kevin D. Woerner
+# 2021-05-11 kdw  secant loop simplified
+# 2021-04-14 kdw  macro reformat
 # 2020-11-28 kdw  macro syntax overhaul
 # 2020-08-17 kdw  macro syntax changed
 # 2020-07-24 kdw  comment cleanup
@@ -35,7 +37,9 @@
 # 2018-12-20 kdw  work on module specific functions
 # 2018-12-12 kdw  created
 
-{MACRO LOOP_LIMIT { 20 }}   # limit for loops
+{MACRO LOOP_LIMIT {
+   20
+}}   # limit for loops
 
 {MACRO SECANT_DECLARATIONS {
    DBL scvx_xp;
@@ -43,7 +47,6 @@
    DBL scvx_yp;
    DBL scvx_yy;
    DBL scvx_dx;
-   DBL scvx_dy;
    INT scvx_ii;
 }}
 
@@ -62,11 +65,10 @@
          FOR_EXIT;
       IF_END
       scvx_yy = <FUNCTION>;
-      scvx_dy = (scvx_yy - scvx_yp);
-      IF Kw.iszero(scvx_dy):
+      IF Kw.iseq(scvx_yy, scvx_yp):
          FOR_EXIT;
       IF_END
-      scvx_dx *= -scvx_yy / scvx_dy;
+      scvx_dx *= -scvx_yy / (scvx_yy - scvx_yp);
    FOR_END
    # END Secant Calculation
 }}

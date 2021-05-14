@@ -1,4 +1,23 @@
-#    Copyright (C) 2018-2020 by Kevin D. Woerner
+#    Copyright (C) 2018-2021 by Kevin D. Woerner
+# 2021-05-02 kdw  minor formatting issue; sig figs
+# 2021-04-15 kdw  indent work
+# 2021-04-11 kdw  indent work
+# 2021-04-09 kdw  indent work
+# 2021-04-02 kdw  comments changed
+# 2021-03-22 kdw  water functions renamd
+# 2021-03-21 kdw  const renam
+# 2021-03-20 kdw  const name change
+# 2021-03-13 kdw  line len upped to 77
+# 2021-03-08 kdw  upped line length allowed
+# 2021-02-08 kdw  gas densities changed
+# 2021-02-05 kdw  spacing
+# 2021-02-04 kdw  wavenumber rmed
+# 2021-02-03 kdw  comments changed
+# 2021-02-02 kdw  temper var rename; quark charge fixed
+# 2021-02-01 kdw  macro work
+# 2021-01-30 kdw  atomic stuff
+# 2021-01-12 kdw  water density work
+# 2021-01-08 kdw  water enthalpy work
 # 2020-12-22 kdw  Hf and Hc work II
 # 2020-12-18 kdw  Hf and Hc work
 # 2020-12-16 kdw  hco rework
@@ -57,452 +76,498 @@
 # 2018-11-25 kdw  created
 IMPORT "Kw";
 
-{MACRO ELMASS <SY> ; <WEIGHT> {
-   CONST <SY>_WEIGHT <WEIGHT>;   #1
-   CONST <SY>_MASS <WEIGHT> * Kw.MOLARMASS;   #MN-1
-   CONST <SY>MASS <SY>_MASS / Kw.AVOGADRO; #M
+{MACRO ELMASX <SY>; <AMUWEIGHT> {
+   CONST <SY>_WEIGHT <AMUWEIGHT>; #1
+   CONST <SY>_MASS   <AMUWEIGHT> * Kw.MOLARMASS; #MN-1
+   CONST <SY>MASS    <SY>_MASS / Kw.AVOGADRO; #M
 }}
 
-{MACRO EL <NAME> ; <NUM> ; <SY> ; <WEIGHT> ; <DENSITY> ;
-      <MELT> ; <BOIL> ; <HEAT> ; <EN> {
-   CONST <NAME>_Z <NUM>;                    #1
-   CONST <NAME> <WEIGHT>;                   #1
-   CONST <SY>_Z <NAME>_Z;                   #1
-   {ELMASS <SY> ; <NAME> }
-   CONST <SY>_DENSITY <DENSITY> * Kw.DENSITY;   #ML-3
-   CONST <SY>_MELT <MELT> * Kw.KELVIN;       #K
-   CONST <SY>_BOIL <BOIL> * Kw.KELVIN;       #K
-   CONST <SY>_Cp <HEAT> * Kw.SPECIFICHEAT; #L2K-1T-2
+{MACRO ELMASS <NAME>; <NUM>; <SY>; <AMUWEIGHT> {
+   CONST <NAME>_Z <NUM>;                   #1
+   CONST <NAME> <AMUWEIGHT>;               #1
+   CONST <SY>_Z <NAME>_Z;                  #1
+   {ELMASX <SY>; <AMUWEIGHT> }
+}}
+
+{MACRO EL <NAM>; <NUM>; <SY>; <AMU>; <DEN>  ; <MEL>; <BOI>; <HEA>; <EN> {
+   {ELMASS <NAM>; <NUM>; <SY>; <AMU> }
+   CONST <SY>_DENSITY <DEN> * Kw.DENSITY; #ML-3
+   CONST <SY>_MELT <MEL> * Kw.KELVIN;      #K
+   CONST <SY>_BOIL <BOI> * Kw.KELVIN;      #K
+   CONST <SY>_Cp <HEA> * Kw.SPECIFICHEAT; #L2K-1T-2
    CONST <SY>_En <EN>; #1
 }}
 
-# from https://en.wikipedia.org/wiki/List_of_chemical_elements
+# from Wikipedia::List_of_chemical_elements
 #      on 2019-05-13
-# NAME;NUMBER;SYMBOL;WEIGHT;DENSITY;MELT;BOIL;SPECIFICHEAT;En
-# -   ;-     ;-     ;AMU   ;kg/m**3;K   ;K   ;J/kgK        ;X
-{EL HYDROGEN;1;H;1.008;0.08988;14.01;20.28;14304;2.20 }
-{EL HELIUM;2;He;4.002602;0.1785;-1;4.22;5193;-1 }
-{EL LITHIUM;3;Li;6.94;534;453.69;1560;3582;0.98 }
-{EL BERYLLIUM;4;Be;9.0121831;1850;1560;2742;1825;1.57 }
-{EL BORON;5;B;10.81;2340;2349;4200;1026;2.04 }
-{EL CARBON;6;C;12.011;2267;3800;4300;709;2.55 }
-{EL NITROGEN;7;N;14.007;1.2506;63.15;77.36;1040;3.04 }
-{EL OXYGEN;8;O;15.999;1.429;54.36;90.20;918;3.44 }
-{EL FLUORINE;9;F;18.998403163;1.696;53.53;85.03;824;3.98 }
-{EL NEON;10;Ne;20.1797;0.8999;24.56;27.07;1030;-1 }
-{EL SODIUM;11;Na;22.98976928;971;370.87;1156;1228;0.93 }
-{EL MAGNESIUM;12;Mg;24.305;1738;923;1363;1023;1.31 }
-{EL ALUMINIUM;13;Al;26.9815384;2698;933.47;2792;897;1.61 }
-{EL SILICON;14;Si;28.085;2329.6;1687;3538;705;1.9 }
-{EL PHOSPHORUS;15;P;30.973761998;1820;317.30;550;769;2.19 }
-{EL SULFUR;16;S;32.06;2067;388.36;717.87;710;2.58 }
-{EL CHLORINE;17;Cl;35.45;3.214;171.6;239.11;479;3.16 }
-{EL ARGON;18;Ar;39.948;1.7837;83.80;87.30;520;-1 }
-{EL POTASSIUM;19;K;39.0983;862;336.53;1032;757;0.82 }
-{EL CALCIUM;20;Ca;40.078;1540;1115;1757;647;1 }
-{EL SCANDIUM;21;Sc;44.955908;2989;1814;3109;568;1.36 }
-{EL TITANIUM;22;Ti;47.867;4540;1941;3560;523;1.54 }
-{EL VANADIUM;23;V;50.9415;6110;2183;3680;489;1.63 }
-{EL CHROMIUM;24;Cr;51.9961;7150;2180;2944;449;1.66 }
-{EL MANGANESE;25;Mn;54.938043;7440;1519;2334;479;1.55 }
-{EL IRON;26;Fe;55.845;7874;1811;3134;449;1.83 }
-{EL COBALT;27;Co;58.933194;8860;1768;3200;421;1.88 }
-{EL NICKEL;28;Ni;58.6934;8912;1728;3186;444;1.91 }
-{EL COPPER;29;Cu;63.546;8960;1357.77;2835;385;1.9 }
-{EL ZINC;30;Zn;65.38;7134;692.88;1180;388;1.65 }
-{EL GALLIUM;31;Ga;69.723;5907;302.9146;2673;371;1.81 }
-{EL GERMANIUM;32;Ge;72.630;5323;1211.40;3106;320;2.01 }
-{EL ARSENIC;33;As;74.921595;5776;1090;887;329;2.18 }
-{EL SELENIUM;34;Se;78.971;4809;453;958;321;2.55 }
-{EL BROMINE;35;Br;79.904;3122;265.8;332.0;474;2.96 }
-{EL KRYPTON;36;Kr;83.798;3.733;115.79;119.93;248;3 }
-{EL RUBIDIUM;37;Rb;85.4678;1532;312.46;961;363;0.82 }
-{EL STRONTIUM;38;Sr;87.62;2640;1050;1655;301;0.95 }
-{EL YTTRIUM;39;Y;88.90584;4469;1799;3609;298;1.22 }
-{EL ZIRCONIUM;40;Zr;91.224;6506;2128;4682;278;1.33 }
-{EL NIOBIUM;41;Nb;92.90637;8570;2750;5017;265;1.6 }
-{EL MOLYBDENUM;42;Mo;95.95;10220;2896;4912;251;2.16 }
-{EL TECHNETIUM;43;Tc;98;11500;2430;4538;-1;1.9 }
-{EL RUTHENIUM;44;Ru;101.07;12370;2607;4423;238;2.2 }
-{EL RHODIUM;45;Rh;102.90549;12410;2237;3968;243;2.28 }
-{EL PALLADIUM;46;Pd;106.42;12020;1828.05;3236;244;2.2 }
-{EL SILVER;47;Ag;107.8682;10501;1234.93;2435;235;1.93 }
-{EL CADMIUM;48;Cd;112.414;8690;594.22;1040;232;1.69 }
-{EL INDIUM;49;In;114.818;7310;429.75;2345;233;1.78 }
-{EL TIN;50;Sn;118.710;7287;505.08;2875;228;1.96 }
-{EL ANTIMONY;51;Sb;121.760;6685;903.78;1860;207;2.05 }
-{EL TELLURIUM;52;Te;127.60;6232;722.66;1261;202;2.1 }
-{EL IODINE;53;I;126.90447;4930;386.85;457.4;214;2.66 }
-{EL XENON;54;Xe;131.293;5.887;161.4;165.03;158;2.6 }
-{EL CAESIUM;55;Cs;132.90545196;1873;301.59;944;242;0.79 }
-{EL BARIUM;56;Ba;137.327;3594;1000;2170;204;0.89 }
-{EL LANTHANUM;57;La;138.90547;6145;1193;3737;195;1.1 }
-{EL CERIUM;58;Ce;140.116;6770;1068;3716;192;1.12 }
-{EL PRASEODYMIUM;59;Pr;140.90766;6773;1208;3793;193;1.13 }
-{EL NEODYMIUM;60;Nd;144.242;7007;1297;3347;190;1.14 }
-{EL PROMETHIUM;61;Pm;145;7260;1315;3273;-1;1.13 }
-{EL SAMARIUM;62;Sm;150.36;7520;1345;2067;197;1.17 }
-{EL EUROPIUM;63;Eu;151.964;5243;1099;1802;182;1.2 }
-{EL GADOLINIUM;64;Gd;157.25;7895;1585;3546;236;1.2 }
-{EL TERBIUM;65;Tb;158.925354;8229;1629;3503;182;1.2 }
-{EL DYSPROSIUM;66;Dy;162.500;8550;1680;2840;170;1.22 }
-{EL HOLMIUM;67;Ho;164.930328;8795;1734;2993;165;1.23 }
-{EL ERBIUM;68;Er;167.259;9066;1802;3141;168;1.24 }
-{EL THULIUM;69;Tm;168.934218;9321;1818;2223;160;1.25 }
-{EL YTTERBIUM;70;Yb;173.045;6965;1097;1469;155;1.1 }
-{EL LUTETIUM;71;Lu;174.9668;9840;1925;3675;154;1.27 }
-{EL HAFNIUM;72;Hf;178.49;13310;2506;4876;144;1.3 }
-{EL TANTALUM;73;Ta;180.94788;16654;3290;5731;140;1.5 }
-{EL TUNGSTEN;74;W;183.84;19250;3695;5828;132;2.36 }
-{EL RHENIUM;75;Re;186.207;21020;3459;5869;137;1.9 }
-{EL OSMIUM;76;Os;190.23;22610;3306;5285;130;2.2 }
-{EL IRIDIUM;77;Ir;192.217;22560;2719;4701;131;2.2 }
-{EL PLATINUM;78;Pt;195.084;21460;2041.4;4098;133;2.28 }
-{EL GOLD;79;Au;196.966570;19282;1337.33;3129;129;2.54 }
-{EL MERCURY;80;Hg;200.592;13533.6;234.43;629.88;140;2 }
-{EL THALLIUM;81;Tl;204.38;11850;577;1746;129;1.62 }
-{EL LEAD;82;Pb;207.2;11342;600.61;2022;129;1.87 }
-{EL BISMUTH;83;Bi;208.98040;9807;544.7;1837;122;2.02 }
-{EL POLONIUM;84;Po;209;9320;527;1235;-1;2.0 }
-{EL ASTATINE;85;At;210;7000;575;610;-1;2.2 }
-{EL RADON;86;Rn;222;9.73;202;211.3;94;2.2 }
-{EL FRANCIUM;87;Fr;223;1870;300;950;-1;0.7 }
-{EL RADIUM;88;Ra;226;5500;973;2010;94;0.9 }
-{EL ACTINIUM;89;Ac;227;10070;1323;3471;120;1.1 }
-{EL THORIUM;90;Th;232.0377;11720;2115;5061;113;1.3 }
-{EL PROTACTINIUM;91;Pa;231.03588;15370;1841;4300;-1;1.5 }
-{EL URANIUM;92;U;238.02891;18950;1405.3;4404;116;1.38 }
-{EL NEPTUNIUM;93;Np;237;20450;917;4273;-1;1.36 }
-{EL PLUTONIUM;94;Pu;244;19840;912.5;3501;-1;1.28 }
-{EL AMERICIUM;95;Am;243;13690;1449;2880;-1;1.13 }
-{EL CURIUM;96;Cm;247;13510;1613;3383;-1;1.28 }
-{EL BERKELIUM;97;Bk;247;14790;1259;2900;-1;1.3 }
-{EL CALIFORNIUM;98;Cf;251;15100;1173;-1;-1;1.3 }
-{EL EINSTEINIUM;99;Es;252;8840;1133;-1;-1;1.3 }
-{EL FERMIUM;100;Fm;257;-1;-1;-1;-1;1.3 }
-{EL MENDELEVIUM;101;Md;258;-1;-1;-1;-1;1.3 }
-{EL NOBELIUM;102;No;259;-1;-1;-1;-1;1.3 }
-{EL LAWRENCIUM;103;Lr;266;-1;-1;-1;-1;1.3 }
-{EL RUTHERFORDIUM;104;Rf;267;-1;-1;-1;-1;-1 }
-{EL DUBNIUM;105;Db;268;-1;-1;-1;-1;-1 }
-{EL SEABORGIUM;106;Sg;269;-1;-1;-1;-1;-1 }
-{EL BOHRIUM;107;Bh;270;-1;-1;-1;-1;-1 }
-{EL HASSIUM;108;Hs;270;-1;-1;-1;-1;-1 }
-{EL MEITNERIUM;109;Mt;278;-1;-1;-1;-1;-1 }
-{EL DARMSTADTIUM;110;Ds;281;-1;-1;-1;-1;-1 }
-{EL ROENTGENIUM;111;Rg;282;-1;-1;-1;-1;-1 }
-{EL COPERNICIUM;112;Cn;285;-1;-1;357;-1;-1 }
-{EL NIHONIUM;113;Nh;286;-1;-1;-1;-1;-1 }
-{EL FLEROVIUM;114;Fl;289;-1;-1;210;-1;-1 }
-{EL MOSCOVIUM;115;Mc;290;-1;-1;-1;-1;-1 }
-{EL LIVERMORIUM;116;Lv;293;-1;-1;-1;-1;-1 }
-{EL TENNESSINE;117;Ts;294;-1;-1;-1;-1;-1 }
-{EL OGANESSON;118;Og;294;-1;-1;-1;-1;-1 }
+# STP = 1ATM, 273.15 K = 0 degC (?)
+# NAME;NUMBER;SYMBOL;WEIGHT; DENSITY;MELT;BOIL; SPECIFICHEAT;En
+# -           ;-     ;-     ;AMU   ; kg/m**3;K   ;K   ; J/kgK       ; X
+{EL HYDROGEN;       1; H;    1.008; 0.08988; 14.01; 20.28; 14304; 2.20 }
+{EL HELIUM;         2; He;   4.002602; 0.1785; -1; 4.22; 5193; -1 }
+{EL LITHIUM;        3; Li;   6.94; 534; 453.69; 1560; 3582; 0.98 }
+{EL BERYLLIUM;      4; Be;   9.0121831; 1850; 1560; 2742; 1825; 1.57 }
+{EL BORON;          5; B;   10.81; 2340; 2349; 4200; 1026; 2.04 }
+{EL CARBON;         6; C;   12.011; 2267; 3800; 4300; 709; 2.55 }
+{EL NITROGEN;       7; N;   14.007; 1.2506; 63.15; 77.36; 1040; 3.04 }
+{EL OXYGEN;         8; O;   15.999; 1.429; 54.36; 90.20; 918; 3.44 }
+{EL FLUORINE;       9; F;   18.998403163; 1.696; 53.53; 85.03; 824; 3.98}
+{EL NEON;          10; Ne;  20.1797; 0.8999; 24.56; 27.07; 1030; -1 }
+{EL SODIUM;        11; Na;  22.98976928; 971; 370.87; 1156; 1228; 0.93 }
+{EL MAGNESIUM;     12; Mg;  24.305; 1738; 923; 1363; 1023; 1.31 }
+{EL ALUMINIUM;     13; Al;  26.9815384; 2698; 933.47; 2792; 897; 1.61}
+{EL SILICON;       14; Si;  28.085; 2329.6; 1687; 3538; 705; 1.90 }
+{EL PHOSPHORUS;    15; P;   30.973761998; 1820; 317.30; 550; 769;2.19}
+{EL SULFUR;        16; S;   32.06; 2067; 388.36; 717.87; 710; 2.58 }
+{EL CHLORINE;      17; Cl;  35.45; 3.214; 171.6; 239.11; 479; 3.16 }
+{EL ARGON;         18; Ar;  39.948; 1.7837; 83.80; 87.30; 520; -1 }
+{EL POTASSIUM;     19; K;   39.0983; 862; 336.53; 1032; 757; 0.82 }
+{EL CALCIUM;       20; Ca;  40.078; 1540; 1115; 1757; 647; 1.00 }
+{EL SCANDIUM;      21; Sc;  44.955908; 2989; 1814; 3109; 568; 1.36 }
+{EL TITANIUM;      22; Ti;  47.867; 4540; 1941; 3560; 523; 1.54 }
+{EL VANADIUM;      23; V;   50.9415; 6110; 2183; 3680; 489; 1.63 }
+{EL CHROMIUM;      24; Cr;  51.9961; 7150; 2180; 2944; 449; 1.66 }
+{EL MANGANESE;     25; Mn;  54.938043; 7440; 1519; 2334; 479; 1.55 }
+{EL IRON;          26; Fe;  55.845; 7874; 1811; 3134; 449; 1.83 }
+{EL COBALT;        27; Co;  58.933194; 8860; 1768; 3200; 421; 1.88 }
+{EL NICKEL;        28; Ni;  58.6934; 8912; 1728; 3186; 444; 1.91 }
+{EL COPPER;        29; Cu;  63.546; 8960; 1357.77; 2835; 385; 1.90 }
+{EL ZINC;          30; Zn;  65.38; 7134; 692.88; 1180; 388; 1.65 }
+{EL GALLIUM;       31; Ga;  69.723; 5907; 302.9146; 2673; 371; 1.81 }
+{EL GERMANIUM;     32; Ge;  72.630; 5323; 1211.40; 3106; 320; 2.01 }
+{EL ARSENIC;       33; As;  74.921595; 5776; 1090; 887; 329; 2.18 }
+{EL SELENIUM;      34; Se;  78.971; 4809; 453; 958; 321; 2.55 }
+{EL BROMINE;       35; Br;  79.904; 3122; 265.8; 332.0; 474; 2.96 }
+{EL KRYPTON;       36; Kr;  83.798; 3.733; 115.79; 119.93; 248; 3.00 }
+{EL RUBIDIUM;      37; Rb;  85.4678; 1532; 312.46; 961; 363; 0.82 }
+{EL STRONTIUM;     38; Sr;  87.62; 2640; 1050; 1655; 301; 0.95 }
+{EL YTTRIUM;       39; Y;   88.90584; 4469; 1799; 3609; 298; 1.22 }
+{EL ZIRCONIUM;     40; Zr;  91.224; 6506; 2128; 4682; 278; 1.33 }
+{EL NIOBIUM;       41; Nb;  92.90637; 8570; 2750; 5017; 265; 1.6 }
+{EL MOLYBDENUM;    42; Mo;  95.95; 10220; 2896; 4912; 251; 2.16 }
+{EL TECHNETIUM;    43; Tc;  98; 11500; 2430; 4538; -1; 1.9 }
+{EL RUTHENIUM;     44; Ru; 101.07; 12370; 2607; 4423; 238; 2.2 }
+{EL RHODIUM;       45; Rh; 102.90549; 12410; 2237; 3968; 243; 2.28 }
+{EL PALLADIUM;     46; Pd; 106.42; 12020; 1828.05; 3236; 244; 2.20 }
+{EL SILVER;        47; Ag; 107.8682; 10501; 1234.93; 2435; 235; 1.93 }
+{EL CADMIUM;       48; Cd; 112.414; 8690; 594.22; 1040; 232; 1.69 }
+{EL INDIUM;        49; In; 114.818; 7310; 429.75; 2345; 233; 1.78 }
+{EL TIN;           50; Sn; 118.710; 7287; 505.08; 2875; 228; 1.96 }
+{EL ANTIMONY;      51; Sb; 121.760; 6685; 903.78; 1860; 207; 2.05 }
+{EL TELLURIUM;     52; Te; 127.60; 6232; 722.66; 1261; 202; 2.1 }
+{EL IODINE;        53; I;  126.90447; 4930; 386.85; 457.4; 214; 2.66 }
+{EL XENON;         54; Xe; 131.293; 5.887; 161.4; 165.03; 158; 2.60 }
+{EL CAESIUM;       55; Cs; 132.90545196; 1873; 301.59; 944; 242; 0.79 }
+{EL BARIUM;        56; Ba; 137.327; 3594; 1000; 2170; 204; 0.89 }
+{EL LANTHANUM;     57; La; 138.90547; 6145; 1193; 3737; 195; 1.1 }
+{EL CERIUM;        58; Ce; 140.116; 6770; 1068; 3716; 192; 1.12 }
+{EL PRASEODYMIUM;  59; Pr; 140.90766; 6773; 1208; 3793; 193; 1.13}
+{EL NEODYMIUM;     60; Nd; 144.242; 7007; 1297; 3347; 190; 1.14 }
+{EL PROMETHIUM;    61; Pm; 145; 7260; 1315; 3273; -1; 1.13 }
+{EL SAMARIUM;      62; Sm; 150.36; 7520; 1345; 2067; 197; 1.17 }
+{EL EUROPIUM;      63; Eu; 151.964; 5243; 1099; 1802; 182; 1.2 }
+{EL GADOLINIUM;    64; Gd; 157.25; 7895; 1585; 3546; 236; 1.2 }
+{EL TERBIUM;       65; Tb; 158.925354; 8229; 1629; 3503; 182; 1.2 }
+{EL DYSPROSIUM;    66; Dy; 162.500; 8550; 1680; 2840; 170; 1.22 }
+{EL HOLMIUM;       67; Ho; 164.930328; 8795; 1734; 2993; 165; 1.23 }
+{EL ERBIUM;        68; Er; 167.259; 9066; 1802; 3141; 168; 1.24 }
+{EL THULIUM;       69; Tm; 168.934218; 9321; 1818; 2223; 160; 1.25 }
+{EL YTTERBIUM;     70; Yb; 173.045; 6965; 1097; 1469; 155; 1.1 }
+{EL LUTETIUM;      71; Lu; 174.9668; 9840; 1925; 3675; 154; 1.27 }
+{EL HAFNIUM;       72; Hf; 178.49; 13310; 2506; 4876; 144; 1.3 }
+{EL TANTALUM;      73; Ta; 180.94788; 16654; 3290; 5731; 140; 1.5 }
+{EL TUNGSTEN;      74; W;  183.84; 19250; 3695; 5828; 132; 2.36 }
+{EL RHENIUM;       75; Re; 186.207; 21020; 3459; 5869; 137; 1.9 }
+{EL OSMIUM;        76; Os; 190.23; 22610; 3306; 5285; 130; 2.2 }
+{EL IRIDIUM;       77; Ir; 192.217; 22560; 2719; 4701; 131; 2.2 }
+{EL PLATINUM;      78; Pt; 195.084; 21460; 2041.4; 4098; 133; 2.28 }
+{EL GOLD;          79; Au; 196.966570; 19282; 1337.33; 3129; 129; 2.54 }
+{EL MERCURY;       80; Hg; 200.592; 13533.6; 234.43; 629.88; 140; 2.00 }
+{EL THALLIUM;      81; Tl; 204.38; 11850; 577; 1746; 129; 1.62 }
+{EL LEAD;          82; Pb; 207.2; 11342; 600.61; 2022; 129; 1.87 }
+{EL BISMUTH;       83; Bi; 208.98040; 9807; 544.7; 1837; 122; 2.02 }
+{EL POLONIUM;      84; Po; 209; 9320; 527; 1235; -1; 2.0 }
+{EL ASTATINE;      85; At; 210; 7000; 575; 610; -1; 2.2 }
+{EL RADON;         86; Rn; 222; 9.73; 202; 211.3; 94; 2.2 }
+{EL FRANCIUM;      87; Fr; 223; 1870; 300; 950; -1; 0.7 }
+{EL RADIUM;        88; Ra; 226; 5500; 973; 2010; 94; 0.9 }
+{EL ACTINIUM;      89; Ac; 227; 10070; 1323; 3471; 120; 1.1 }
+{EL THORIUM;       90; Th; 232.0377; 11720; 2115; 5061; 113; 1.3 }
+{EL PROTACTINIUM;  91; Pa; 231.03588; 15370; 1841; 4300; -1; 1.5 }
+{EL URANIUM;       92; U;  238.02891; 18950; 1405.3; 4404; 116; 1.38 }
+{EL NEPTUNIUM;     93; Np; 237; 20450; 917; 4273; -1; 1.36 }
+{EL PLUTONIUM;     94; Pu; 244; 19840; 912.5; 3501; -1; 1.28 }
+{EL AMERICIUM;     95; Am; 243; 13690; 1449; 2880; -1; 1.13 }
+{EL CURIUM;        96; Cm; 247; 13510; 1613; 3383; -1; 1.28 }
+{EL BERKELIUM;     97; Bk; 247; 14790; 1259; 2900; -1; 1.3 }
+{EL CALIFORNIUM;   98; Cf; 251; 15100; 1173; -1; -1; 1.3 }
+{EL EINSTEINIUM;   99; Es; 252; 8840; 1133; -1; -1; 1.3 }
+{EL FERMIUM;      100; Fm; 257; -1; -1; -1; -1; 1.3 }
+{EL MENDELEVIUM ; 101; Md; 258; -1; -1; -1; -1; 1.3 }
+{EL NOBELIUM;     102; No; 259; -1; -1; -1; -1; 1.3 }
+{EL LAWRENCIUM;   103; Lr; 266; -1; -1; -1; -1; 1.3 }
+{EL RUTHERFORDIUM;104; Rf; 267; -1; -1; -1; -1; -1 }
+{EL DUBNIUM;      105; Db; 268; -1; -1; -1; -1; -1 }
+{EL SEABORGIUM;   106; Sg; 269; -1; -1; -1; -1; -1 }
+{EL BOHRIUM;      107; Bh; 270; -1; -1; -1; -1; -1 }
+{EL HASSIUM;      108; Hs; 270; -1; -1; -1; -1; -1 }
+{EL MEITNERIUM;   109; Mt; 278; -1; -1; -1; -1; -1 }
+{EL DARMSTADTIUM; 110; Ds; 281; -1; -1; -1; -1; -1 }
+{EL ROENTGENIUM;  111; Rg; 282; -1; -1; -1; -1; -1 }
+{EL COPERNICIUM;  112; Cn; 285; -1; -1; 357; -1; -1 }
+{EL NIHONIUM;     113; Nh; 286; -1; -1; -1; -1; -1 }
+{EL FLEROVIUM;    114; Fl; 289; -1; -1; 210; -1; -1 }
+{EL MOSCOVIUM;    115; Mc; 290; -1; -1; -1; -1; -1 }
+{EL LIVERMORIUM;  116; Lv; 293; -1; -1; -1; -1; -1 }
+{EL TENNESSINE;   117; Ts; 294; -1; -1; -1; -1; -1 }
+{EL OGANESSON;    118; Og; 294; -1; -1; -1; -1; -1 }
 
-{ELMASS H1    ; 1.007825032241  }
-{ELMASS H2    ; 2.01410177811   }
-{ELMASS H3    ; 3.01604928199   }
-{ELMASS He3   ; 3.01602932265   }
-{ELMASS He4   ; 4.002603254130  }
-{ELMASS C12   ; 12.0            }
-{ELMASS C13   ; 13.00335483521  }
-{ELMASS C14   ; 14.003241988    }
-{ELMASS O16   ; 15.99491461960  }
-{ELMASS O17   ; 16.9991317566   }
-{ELMASS O18   ; 17.9991596128   }
+{ELMASX H1    ; 1.007825032241 }
+{ELMASS DEUTERIUM ; 1 ; D ; 2.01410177811 }
+{ELMASS TRITIUM   ; 1 ; T ; 3.01604928199 }
+{ELMASX H2    ; D_WEIGHT }
+{ELMASX H3    ; T_WEIGHT }
+{ELMASX He3   ; 3.01602932265  }
+{ELMASX He4   ; 4.002603254130 }
+{ELMASX C12   ; 12.0           }
+{ELMASX C13   ; 13.00335483521 }
+{ELMASX C14   ; 14.003241988   }
+{ELMASX O16   ; 15.99491461960 }
+{ELMASX O17   ; 16.9991317566  }
+{ELMASX O18   ; 17.9991596128  }
+
+{MACRO CNSTMASS <NM>; <AMUWEIGHT>; <ERR> {
+   {ELMASX <NM>; <AMUWEIGHT> }
+   CONST <NM>MASS_ERR <ERR>; #1
+   CONST <NM>ENERGY <NM>MASS * (Kw.LIGHT * Kw.LIGHT); #ML-2T-2
+}}
+
+{CNSTMASS DEUTERON ; 2.013553212745  ; 2.0E-11 }
+{CNSTMASS HELION   ; 3.0149322467175 ; 3.2E-11 }
+{CNSTMASS TRITON   ; 3.01550071621   ; 4.0E-11 }
+{CNSTMASS ALPHA    ; 4.001506179127  ; 1.6E-11 }
+
+{MACRO CNSTSM <NM>; <EVMASS>; <EVERR> {
+   CONST <NM>_ENERGY     <EVMASS> * Kw.eV; #ML2T-2
+   CONST <NM>MASS       <NM>_ENERGY / (Kw.LIGHT * Kw.LIGHT); #M
+   CONST <NM>_MASS      <NM>MASS * Kw.AVOGADRO; #MN-1
+   CONST <NM>MASS_ERR   <EVERR> / <EVMASS>; #1
+   CONST <NM>_Hz         <NM>_ENERGY / Kw.PLANCK; #T-1
+   CONST <NM>_WAVELENGTH Kw.LIGHT / <NM>_Hz; #L
+}}
+
+{MACRO CNSTQ <NM>; <EVMASS>; <EVERR>; <Q> {
+   {CNSTSM <NM>QUARK ; <EVMASS>; <EVERR> }
+   CONST <NM>QUARK_CHARGE <Q> * Kw.ELEMENTARYCHARGE; #TI
+}}
+{CNSTQ UP      ; 2.3E+6    ; 0.7E+6 ; 2.0 / 3.0 }
+{CNSTQ DOWN    ; 4.8E+6    ; 0.5E+6 ; -1.0 / 3.0 }
+{CNSTQ CHARM   ; 1275E+6   ; 25E+6  ; 2.0 / 3.0 }
+{CNSTQ STRANGE ; 95E+6     ; 5E+6   ; -1.0 / 3.0 }
+{CNSTQ TOP     ; 173210E+6 ; 710E+6 ; 2.0 / 3.0 }
+{CNSTQ BOTTOM  ; 4180E+6   ; 30E+6  ; -1.0 / 3.0 }
+
+{CNSTSM HIGGSBOSON ; 125.1E+9   ; 0.14E+9 }
+{CNSTSM WBOSON     ; 80.379E+9  ; 0.012E+9 }
+{CNSTSM ZBOSON     ; 91.1876E+9 ; 0.0023E+9 }
+{CNSTSM TAU        ; 1776.86E+6 ; 0.12E+6 }
+{CNSTSM MUON       ; 105.6583755E+6 ; 0.0000023E+6 }
+{CNSTSM ELECTRON   ; 0.51099895000E+6 ; 0.00000000015E+6 }
+{CNSTSM PROTON     ; 938.27208816E+6 ; 0.00000029E+6 }
+{CNSTSM NEUTRON    ; 939.56542052E+6 ; 0.00000054E+6 }
+
+CONST HYDROGEN_RADIUS  (Kw.HBAR / (ELECTRON_MASS * Kw.LIGHT * Kw.ALPHA)) ; #L
+CONST HYDROGEN_RADIUS_ERR Kw.ALPHA_ERR; #1
+CONST BOHRRADIUS        HYDROGEN_RADIUS; #L
+CONST BOHRRADIUS_ERR    HYDROGEN_RADIUS_ERR; #1
 
 # The ratios have been adjusted to have CO2
 #   be 410 ppm from a value of 330 ppm
 CONST AIR_MASS Kw.PPM * (
-   7.80781E+5 * (2.0 * N_MASS)
-   + 2.09444E+5 * (2.0 * O_MASS)
-   +   9.339E+3 * (Ar_MASS)
-   +     4.1E+2 * (C_MASS + 2.0 * O_MASS)
-   +   1.818E+1 * (Ne_MASS)
-   +      5.24 * (He_MASS)
-   +      1.79 * (C_MASS + 4.0 * H_MASS)
-   +      1.14 * (Kr_MASS)
-   +      0.55 * (2.0 * H_MASS)); #MN-1
+         7.80781E+5 * (2.0 * N_MASS)
+         + 2.09444E+5 * (2.0 * O_MASS)
+         +   9.339E+3 * (Ar_MASS)
+         +     4.1E+2 * (C_MASS + 2.0 * O_MASS)
+         +   1.818E+1 * (Ne_MASS)
+         +       5.24 * (He_MASS)
+         +       1.79 * (C_MASS + 4.0 * H_MASS)
+         +       1.14 * (Kr_MASS)
+         +       0.55 * (2.0 * H_MASS)); #MN-1
 CONST AIRMASS    AIR_MASS / Kw.AVOGADRO; #M
 
-{MACRO EL_HCO_MASS <NME> ; <HS> ; <CS> ; <OS> {
-   CONST <NME>_MASS (<HS>) * H_MASS
-      + (<CS>) * C_MASS
-      + (<OS>) * O_MASS; #MN-1
+{MACRO EL_HCO_MASS <NME>; <HS>; <CS>; <OS> {
+   CONST <NME>_MASS (<HS>)*H_MASS + (<CS>)*C_MASS + (<OS>)*O_MASS; #MN-1
    CONST <NME>MASS <NME>_MASS / Kw.AVOGADRO; #M
 }}
 
-{MACRO EL_HCO_REST <NME> ; <HS> ; <CS> ; <OS> ; <DEN> {
-   CONST <NME>DENSITY <DEN> * Kw.DENSITY; #ML-3
-   CONST <NME>_JPL <NME>_JPKG * <NME>DENSITY * Kw.LITER; #ML-1T-2
+{MACRO EL_HCO_REST <NME>; <HS>; <CS>; <OS>; <DEN> {
+   CONST <NME>_DENSITY <DEN> * Kw.DENSITY; #ML-3
+   CONST <NME>_JPL <NME>_JPKG * <NME>_DENSITY * Kw.LITER; #ML-1T-2
 }}
 
-{MACRO EL_HJC <NME> ; <HS> ; <CS> ; <OS> ; <DEN> ; <HF> {
-   {EL_HCO_MASS <NME> ; <HS> ; <CS> ; <OS> }
+{MACRO EL_HJC <NME>; <HS>; <CS>; <OS>; <DEN>; <HF> {
+   {EL_HCO_MASS <NME>; <HS>; <CS>; <OS> }
    CONST <NME>_HF <HF> * Kw.JOULE / Kw.MOLE; #ML2N-1T-2
    CONST <NME>_HC 0.0 * Kw.JOULE / Kw.MOLE; #ML2N-1T-2
    CONST <NME>_JPKG  -<NME>_HC / <NME>_MASS; #L2N-1T-2
-   {EL_HCO_REST  <NME> ; <HS> ; <CS> ; <OS> ; <DEN> }
+   {EL_HCO_REST <NME>; <HS>; <CS>; <OS>; <DEN> }
 }}
 
-{MACRO EL_HJM <NME> ; <HS> ; <CS> ; <OS> ; <DEN> ; <HF> ; <HCC> {
-   {EL_HCO_MASS <NME> ; <HS> ; <CS> ; <OS> }
+# STP = 1ATM, 298.15 K = 25 degC
+#            NAME    ; H ; C ; O ; kg/m3  ; Hf
+{EL_HJC STEAM        ; 2 ; 0 ; 1 ; 0.7363; -241826 }
+{EL_HJC H2O          ; 2 ; 0 ; 1 ; 999   ; -285830 }
+{EL_HJC WATER        ; 2 ; 0 ; 1 ; 999   ; -285830 }
+{EL_HJC CO2          ; 0 ; 1 ; 2 ; 1.7988; -393510 }
+{EL_HJC CARBONDIOXIDE; 0 ; 1 ; 2 ; 1.7988; -393510 }
+{EL_HJC O2           ; 0 ; 0 ; 2 ; 1.3079; 0 }
+
+{MACRO EL_HJM <NME>; <HS>; <CS>; <OS>; <DEN>; <HF>; <HCC> {
+   {EL_HCO_MASS <NME>; <HS>; <CS>; <OS> }
    CONST <NME>_HF <HF> * Kw.JOULE / Kw.MOLE; #ML2N-1T-2
-   CONST <NME>_HC (CO2_HF * <CS> + H2O_HF * (<HS> / 2.0)
-         + <NME>_HF); #ML2N-1T-2
+   CONST <NME>_HC (CO2_HF*<CS> + H2O_HF*(<HS> / 2.0) + <NME>_HF); #ML2N-1T-2
    CONST <NME>_HCC  <HCC> * Kw.JOULE / Kw.MOLE; #ML2N-1T-2
    CONST <NME>_JPKG  -<NME>_HC / <NME>_MASS; #ML2N-1T-2
-   {EL_HCO_REST  <NME> ; <HS> ; <CS> ; <OS> ; <DEN> }
+   {EL_HCO_REST  <NME>; <HS>; <CS>; <OS>; <DEN> }
 }}
 
-{MACRO EL_HJKG <NME> ; <HS> ; <CS> ; <OS> ; <DEN> ; <JPKG> {
-   {EL_HCO_MASS <NME> ; <HS> ; <CS> ; <OS> }
-   CONST <NME>_JPKG   <JPKG> * (Kw.JOULE / Kw.KG); #ML2N-1T-2
-   {EL_HCO_REST  <NME> ; <HS> ; <CS> ; <OS> ; <DEN> }
-}}
-
-{EL_HJC STEAM        ; 2.0; 0.0; 1.0; 0.7367 ; -241826 }
-{EL_HJC H2O          ; 2.0; 0.0; 1.0; 999    ; -285830 }
-{EL_HJC WATER        ; 2.0; 0.0; 1.0; 999    ; -285830 }
-{EL_HJC CO2          ; 0.0; 1.0; 2.0; 1.7997 ; -393510 }
-{EL_HJC CARBONDIOXIDE; 0.0; 1.0; 2.0; 1.7997 ; -393510 }
-
+# STP = 1ATM, 298.15 K = 25 degC
 # Simple molecules / hydrocarbons
-#       NAME    ;  H ;  C ; O  ; kg/m3  ; Hf       ; Hc
-{EL_HJM HYDROGEN; 2.0; 0.0; 0.0; 0.08988; 0        ;-2.86E+5 }
-{EL_HJM METHANE ; 4.0; 1.0; 0.0; 0.657  ; -74870   ;-8.907E+5 }
-{EL_HJM ETHANE  ; 6.0; 2.0; 0.0; 1.3562 ; -84000   ;-1.5607E+6 }
-{EL_HJM PROPANE ; 8.0; 3.0; 0.0; 2.0048 ; -104700  ;-2.2192E+6 }
-{EL_HJM BUTANE  ;10.0; 4.0; 0.0; 2.48   ; -125600  ;-2.8775E+6 }
-{EL_HJM PENTANE ;12.0; 5.0; 0.0; 626    ; -173500  ;-3.509E+6 }
-{EL_HJM HEXANE  ;14.0; 6.0; 0.0; 655    ; -198700  ;-4.163E+6 }
-{EL_HJM ETHANOL ; 6.0; 2.0; 1.0; 789.45 ; -276000  ;-1.3676E+6 }
-{EL_HJM ETHANOL_G;6.0; 2.0; 1.0; 789.45 ; -234000  ;-1.3663E+6 }
-{EL_HJM SUCROSE ;22.0;12.0;11.0; 1587   ; -2221200 ;-5.6434E+6 }
-{EL_HJM SUGAR   ;22.0;12.0;11.0; 845    ; -2221200 ;-5.6434E+6 }
-
+#       NAME    ; H ; C ; O ; kg/m3  ; Hf       ; Hc
+{EL_HJM HYDROGEN; 2 ; 0 ; 0 ; 0.08240; 0        ; -2.86E+5 }
+{EL_HJM METHANE ; 4 ; 1 ; 0 ; 0.6557 ; -74870   ; -8.907E+5 }
+{EL_HJM ETHANE  ; 6 ; 2 ; 0 ; 1.229  ; -84000   ; -1.5607E+6 }
+{EL_HJM PROPANE ; 8 ; 3 ; 0 ; 1.8028 ; -104700  ; -2.2192E+6 }
+{EL_HJM BUTANE  ;10 ; 4 ; 0 ; 2.3757 ; -125600  ; -2.8775E+6 }
+{EL_HJM PENTANE ;12 ; 5 ; 0 ; 626    ; -173500  ; -3.509E+6 }
+{EL_HJM HEXANE  ;14 ; 6 ; 0 ; 655    ; -198700  ; -4.163E+6 }
+{EL_HJM ETHANOL ; 6 ; 2 ; 1 ; 789.45 ; -276000  ; -1.3676E+6 }
+{EL_HJM ETHANOL_G;6 ; 2 ; 1 ; 789.45 ; -234000  ; -1.3663E+6 }
+{EL_HJM SUCROSE ;22 ;12 ;11 ; 1587   ; -2221200 ; -5.6434E+6 }
+{EL_HJM SUGAR   ;22 ;12 ;11 ; 845    ; -2221200 ; -5.6434E+6 }
+{MACRO EL_HJKG <NME>; <HS>; <CS>; <OS>; <DEN>; <JPKG> {
+   {EL_HCO_MASS <NME>; <HS>; <CS>; <OS> }
+   CONST <NME>_JPKG   <JPKG> * (Kw.JOULE / Kw.KG); #ML2N-1T-2
+   {EL_HCO_REST <NME>; <HS>; <CS>; <OS>; <DEN> }
+}}
 # Hydrocarbon mixtures
-#        NAME     ;   H  ;  C  ; O  ; kg/m3 ; J/kg
-{EL_HJKG COAL     ;   0.0;  1.0; 0.0; 1300  ; 2.9307E+7 }
-{EL_HJKG PARAFFIN ;  62.0; 30.0; 0.0;  900  ; 4.6E+7 }
-{EL_HJKG FAT      ; 104.0; 55.0; 6.0;  900  ; 3.7E+7 }
-{EL_HJKG DIESEL   ;  26.0; 12.0; 0.0;  832  ; 4.48E+7 }
-{EL_HJKG GASOLINE ;  18.0;  8.0; 0.0;  748.9; 4.64E+7 }
-{EL_HJKG KEROSENE ;  28.0; 13.0; 0.0;  800  ; 4.62E+7 }
+#        NAME     ;  H ;  C ; O ; kg/m3 ; J/kg
+{EL_HJKG COAL     ;  0 ;  1 ; 0 ; 1300  ; 2.9307E+7 }
+{EL_HJKG PARAFFIN ; 62 ; 30 ; 0 ;  900  ; 4.6E+7 }
+{EL_HJKG FAT      ;104 ; 55 ; 6 ;  900  ; 3.7E+7 }
+{EL_HJKG DIESEL   ; 26 ; 12 ; 0 ;  832  ; 4.48E+7 }
+{EL_HJKG GASOLINE ; 18 ;  8 ; 0 ;  748.9; 4.64E+7 }
+{EL_HJKG KEROSENE ; 28 ; 13 ; 0 ;  800  ; 4.62E+7 }
 
 CONST C13_RATIO 1.07E-2; #1
 CONST C14_RATIO 1.0E-12; #1
 CONST C12_RATIO 1.0 - C13_RATIO - C14_RATIO; #1
 CONST C_MEAN_MASS C12_MASS * C12_RATIO
-   + C13_MASS * C13_RATIO
-   + C14_MASS * C14_RATIO; #MN-1
+         + C13_MASS * C13_RATIO
+         + C14_MASS * C14_RATIO; #MN-1
 
 CONST WATER_Cp 4184.0 * Kw.SPECIFICHEAT; #L2T-2K-1
 CONST ICE_Cp   2108.0 * Kw.SPECIFICHEAT; #L2T-2K-1
 CONST STEAM_Cp 1996.0 * Kw.SPECIFICHEAT; #L2T-2K-1
 
-{MACRO EL_WTR <NME> ; <JPMOLE> {
-   CONST WATER_<NME>_JPMOLE  <JPMOLE> * Kw.JOULE
-      / Kw.MOLE; #M2T-2
-   CONST WATER_<NME>_JPKG WATER_<NME>_JPMOLE
-      / WATER_MASS; #ML2N-1T-2
+{MACRO EL_WTR <NME>; <JPMOLE> {
+   CONST WATER_<NME>_JPMOLE  <JPMOLE> * Kw.JOULE / Kw.MOLE; #M2T-2
+   CONST WATER_<NME>_JPKG WATER_<NME>_JPMOLE / WATER_MASS; #ML2N-1T-2
 }}
 
-{EL_WTR FUSION ; 6.010E+3 }
-{EL_WTR VAPORIZATION ; 4.0680E+4 }
+{EL_WTR FUSION ; 6.0089E+3 }
+{EL_WTR VAPORIZATION ; 4.0660E+4 }
 CONST WATER_CRITICAL 647.096 * Kw.KELVIN; #K
 
 # VSMOW
-CONST VSMOW_H3_RATIO 1.85E-17;  #1
-CONST VSMOW_H2_RATIO 1.5576E-4;  #1
-CONST VSMOW_H1_RATIO 1.0 - VSMOW_H2_RATIO - VSMOW_H3_RATIO;#1
+CONST VSMOW_H3_RATIO 1.85E-17; #1
+CONST VSMOW_H2_RATIO 1.5576E-4; #1
+CONST VSMOW_H1_RATIO 1.0 - VSMOW_H2_RATIO - VSMOW_H3_RATIO; #1
 
 CONST VSMOW_H_MASS (H1_MASS * VSMOW_H1_RATIO
-      + H2_MASS * VSMOW_H2_RATIO
-      + H3_MASS * VSMOW_H3_RATIO); #MN-1
+         + H2_MASS * VSMOW_H2_RATIO
+         + H3_MASS * VSMOW_H3_RATIO); #MN-1
 
-CONST VSMOW_O18_RATIO 2.00520E-3;  #1
-CONST VSMOW_O17_RATIO 3.799E-4;  #1
-CONST VSMOW_O16_RATIO 1.0 - VSMOW_O17_RATIO
-   - VSMOW_O18_RATIO; #1
+CONST VSMOW_O18_RATIO 2.00520E-3; #1
+CONST VSMOW_O17_RATIO 3.799E-4; #1
+CONST VSMOW_O16_RATIO 1.0 - VSMOW_O17_RATIO - VSMOW_O18_RATIO; #1
 
 CONST VSMOW_O_MASS O16_MASS * VSMOW_O16_RATIO
-      + O17_MASS * VSMOW_O17_RATIO
-      + O18_MASS * VSMOW_O18_RATIO; #MN-1
+         + O17_MASS * VSMOW_O17_RATIO
+         + O18_MASS * VSMOW_O18_RATIO; #MN-1
 
 CONST VSMOW_MASS 2.0 * VSMOW_H_MASS + VSMOW_O_MASS; #MN-1
 
-##    ENERGY-CONTENT ---- ----- ----- ----- ----- ----- ----- ---
+##    ENERGY-CONTENT -- ----- ----- ----- ----- ----- ----- ----- ----- -----
 CONST TNTJPKG 4.184E+6  * Kw.JOULE / Kw.KILOGRAM; #L2T-2
 
-FUNC DBL water_vapor_pressure(DBL tempk):
-   # Vapor Pressure of Water at temperature TEMPK
+FUNC DBL watervapor_pressure(DBL temp_k):
+   # Vapor Pressure of Water at temperature TEMP_K
    # via The Buck equation.
-   # https://en.wikipedia.org/wiki/Arden_Buck_equation
-   # https://en.wikipedia.org/wiki/Vapour_pressure_of_water
+   # Wikipedia::Arden_Buck_equation
+   # Wikipedia::Vapour_pressure_of_water
    DBL retvalu;
-   DBL tempc;
+   DBL temp_c;
 
-   IF tempk <= 16.1 OR WATER_CRITICAL <= tempk:
+   IF temp_k <= 16.1 OR WATER_CRITICAL <= temp_k:
       retvalu = 0.0;
    ELSE:
-      tempc = Kw.k2tempc(tempk);
-      IF 0.0 <= tempc:
-         retvalu = 611.21 * EXP((18.678 - tempc / 234.5)
-               * (tempc / (257.14 + tempc)));
+      temp_c = Kw.k2tempc(temp_k);
+      IF 0.0 <= temp_c:
+         retvalu = 611.21 * EXP((18.678 - temp_c / 234.5)
+                  * (temp_c / (257.14 + temp_c)));
       ELSE:
-         retvalu = 611.15 * EXP((23.036 - tempc / 333.7)
-               * (tempc / (279.82 + tempc)));
+         retvalu = 611.15 * EXP((23.036 - temp_c / 333.7)
+                  * (temp_c / (279.82 + temp_c)));
       IF_END
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL water_vaporization(DBL tempk):
-   # Enthalpy of vaporization of water at temperature TEMPK
+FUNC DBL watervaporization(DBL temp_k):
+   # Enthalpy of vaporization of water at temperature TEMP_K
    # in units of JOULE / MOLE
    DBL retvalu;
 
-   IF WATER_CRITICAL <= tempk:
+   IF WATER_CRITICAL <= temp_k:
       retvalu = 0.0;
    ELSE:
-      retvalu = POW((WATER_CRITICAL - tempk)
-               / (WATER_CRITICAL - 373.15), 0.37)
-         * WATER_VAPORIZATION_JPMOLE;
+      retvalu = POW((WATER_CRITICAL - temp_k) / (WATER_CRITICAL - 373.15)
+               , 0.37) * WATER_VAPORIZATION_JPMOLE;
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL water_boiling(DBL pressure_pa):
-   # Temperature in Kelvin of Boiling water at
-   # atmospheric pressure PRESSURE_PA
-   # via the Clausius-Clapeyron equation
-   # https://en.wikipedia.org/wiki/Boiling_point
+FUNC DBL waterboiling(DBL pressure_pa):
+   # Temperature in Kelvin of Boiling water at atmospheric pressure
+   # PRESSURE_PA via the Clausius-Clapeyron equation
+   # Wikipedia::Boiling_point
    DBL retvalu;
 
    IF pressure_pa <= 0.0:
       retvalu = 0.0;
    ELSE:
       retvalu = 1.0 / (1.0 / 373.15 - LN(pressure_pa / Kw.ATM)
-            * Kw.GAS / WATER_VAPORIZATION_JPMOLE);
+               * Kw.GAS / WATER_VAPORIZATION_JPMOLE);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL water_density_air_free(DBL tempk):
-   # density of air-free water at TEMPK between
-   # 273.15 K and 373.15 K.
-   # see https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4909168/
-   DBL tempc;
+FUNC DBL waterdensity_airfree(DBL temp_k):
+   # density of air-free water at TEMP_K between 273.15 K and 373.15 K.
+   # see https://www.ncbi.nlm.nih.gov /pmc/articles/PMC4909168/
+   DBL temp_c;
    DBL retvalu;
 
-   tempc = Kw.k2tempc(tempk);
-#   tempc = 0.0005 + 0.9997333 * tempc;
-   IF tempc < 5.0 OR 40.0 < tempc:
+   temp_c = Kw.k2tempc(temp_k);
+#   temp_c = 0.0005 + 0.9997333 * temp_c;
+   IF temp_c < 5.0 OR 40.0 < temp_c:
       retvalu = ((((((
-            - 2.8054253E-10) * tempc
-            + 1.0556302E-7) * tempc
-            - 4.6170461E-5) * tempc
-            - 7.9870401E-3) * tempc
-            + 1.6945176E+1) * tempc
-            + 9.9983952E+2);
-#      IF tempc < 5.0:
-#         retvalu += 0.0909;
-#      IF_END
-      retvalu /= (1.6897850E-2 * tempc + 1.0);
+               - 2.8054253E-10) * temp_c
+               + 1.0556302E-7) * temp_c
+               - 4.6170461E-5) * temp_c
+               - 7.9870401E-3) * temp_c
+               + 1.6945176E+1) * temp_c
+               + 9.9983952E+2);
+      retvalu /= (1.6897850E-2 * temp_c + 1.0);
    ELSE:
       retvalu = (((((
-            - 3.821216E-7) * tempc
-            + 6.943248E-5) * tempc
-            - 8.523829E-3) * tempc
-            + 6.32693E-2) * tempc
-            + 9.9985308E+2);
+               - 3.821216E-7) * temp_c
+               + 6.943248E-5) * temp_c
+               - 8.523829E-3) * temp_c
+               + 6.32693E-2) * temp_c
+               + 9.9985308E+2);
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL water_density(DBL tempk):
-   # density of air saturated water at TEMPK between
-   # 273.15 K and 373.15 K.
-   # see https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4909168/
-   DBL tempc;
+FUNC DBL waterdensity(DBL temp_k):
+   # density of air saturated water at TEMP_K between 273.15 K and 373.15 K.
+   # see https://www.ncbi.nlm.nih.gov /pmc/articles/PMC4909168/
+   #   for 5 C to 40 C
+   DBL temp_c;
    DBL retvalu;
 
-   tempc = Kw.k2tempc(tempk);
-   IF tempc < 5.0 OR 40.0 < tempc:
-      retvalu = ((((((
-            - 2.8054253E-10) * tempc
-            + 1.0556302E-7) * tempc
-            - 4.6170461E-5) * tempc
-            - 7.9870401E-3) * tempc
-            + 1.6945176E+1) * tempc
-            + 9.9983952E+2);
-#      IF tempc < 5.0:
-#         retvalu += 0.0909;
-#      IF_END
-      retvalu /= (1.6897850E-2 * tempc + 1.0);
-   ELSE:
-      retvalu = (((((
-            - 3.821216E-7) * tempc
-            + 6.943248E-5) * tempc
-            - 8.523829E-3) * tempc
-            + 6.337563E-2) * tempc
-            + 9.9984847E+2);
-   IF_END
-   RETURN retvalu;
-FUNC_END
-
-FUNC DBL water_density_air_free__1(DBL tempk):
-   # density of air-free water at TEMPK between
-   # 273.15 K and 373.15 K.
-   # see
-   #   http://www.personal.psu.edu/users/m/r/mrh318
-   #         /water-properties/Tanaka-etal-M-2001.pdf
-   # and
-   #   https://www.engineeringtoolbox.com
-   #         /water-density-specific-weight-d_595.html
-   DBL tempc;
-   DBL retvalu;
-
-   tempc = Kw.k2tempc(tempk);
-   IF tempc <= 5.0:
+   temp_c = Kw.k2tempc(temp_k);
+   IF temp_c < 0.0:
+      retvalu = 917 - 0.13 * temp_c;
+   ELSIF temp_c <= 5.0:
+      retvalu = (((
+               + 8.7191684845109E-5) * temp_c
+               - 9.0329747829960E-3) * temp_c
+               + 6.7771627919989E-2) * temp_c
+               + 9.9984281840963E+2;
+   ELSIF temp_c <= 40.0:
       retvalu = ((((
-            + 9.6308327803439E-05) * tempc
-            - 9.0973473048107E-03) * tempc
-            + 6.7877518213033E-02) * tempc
-            + 9.9984280358288E+02);
-   ELSIF tempc <= 40.0:
+               - 3.821216E-7) * temp_c
+               + 6.943248E-5) * temp_c
+               - 8.523829E-3) * temp_c
+               + 6.337563E-2) * temp_c
+               + 9.9984847E+2 + 0.0059; # 2021-01-12 kdw  correction
+   ELSE:
+      retvalu = ((((
+               - 6.5202248732325E-8) * temp_c
+               + 2.5745673934090E-5) * temp_c
+               - 6.1868849581972E-3) * temp_c
+               + 6.0164627537211E-3) * temp_c
+               + 1.0003918667215E+3;
+   IF_END
+   RETURN retvalu;
+FUNC_END
+
+FUNC DBL waterdensity_airfree__1(DBL temp_k):
+   # density of air-free water at TEMP_K between 273.15 K and 373.15 K.
+   # see http://www.personal.psu.edu/users /m/r/mrh318
+   #         /water-properties /Tanaka-etal-M-2001.pdf
+   # and https://www.engineeringtoolbox.com
+   #         /water-density-specific-weight-d_595.html
+   DBL temp_c;
+   DBL retvalu;
+
+   temp_c = Kw.k2tempc(temp_k);
+   IF temp_c <= 5.0:
+      retvalu = ((((
+               + 9.6308327803439E-05) * temp_c
+               - 9.0973473048107E-03) * temp_c
+               + 6.7877518213033E-02) * temp_c
+               + 9.9984280358288E+02);
+   ELSIF temp_c <= 40.0:
       retvalu = (((((((
-            - 4.6205682267935E-11) * tempc
-            + 1.0474115539454E-08) * tempc
-            - 1.1933226216922E-06) * tempc
-            + 9.8476793645150E-05) * tempc
-            - 9.0387372512241E-03) * tempc
-            + 6.7575261493264E-02) * tempc
-            + 9.9984328159055E+02);
-   ELSIF tempc <= 100:
+               - 4.6205682267935E-11) * temp_c
+               + 1.0474115539454E-08) * temp_c
+               - 1.1933226216922E-06) * temp_c
+               + 9.8476793645150E-05) * temp_c
+               - 9.0387372512241E-03) * temp_c
+               + 6.7575261493264E-02) * temp_c
+               + 9.9984328159055E+02);
+   ELSIF temp_c <= 100:
       retvalu = (((((
-            - 6.5202248732325E-08) * tempc
-            + 2.5745673934090E-05) * tempc
-            - 6.1868849581972E-03) * tempc
-            + 6.0164627537211E-03) * tempc
-            + 1.0003918667215E+03);
+               - 6.5202248732325E-08) * temp_c
+               + 2.5745673934090E-05) * temp_c
+               - 6.1868849581972E-03) * temp_c
+               + 6.0164627537211E-03) * temp_c
+               + 1.0003918667215E+03);
    ELSE:
       retvalu = ((((((((((
-            - 5.4752717629528E-17) * tempc
-            + 1.1052954300641E-13) * tempc
-            - 9.7190466446857E-11) * tempc
-            + 4.8801821861028E-08) * tempc
-            - 1.5403658215495E-05) * tempc
-            + 3.1660515368531E-03) * tempc
-            - 4.2335200290825E-01) * tempc
-            + 3.5482000718216E+01) * tempc
-            - 1.6909944548890E+03) * tempc
-            + 3.5888296998420E+04);
+               - 5.4752717629528E-17) * temp_c
+               + 1.1052954300641E-13) * temp_c
+               - 9.7190466446857E-11) * temp_c
+               + 4.8801821861028E-08) * temp_c
+               - 1.5403658215495E-05) * temp_c
+               + 3.1660515368531E-03) * temp_c
+               - 4.2335200290825E-01) * temp_c
+               + 3.5482000718216E+01) * temp_c
+               - 1.6909944548890E+03) * temp_c
+               + 3.5888296998420E+04);
    IF_END
    RETURN retvalu;
 FUNC_END
-#             TempC   TempK   kg/m3
+# from http://www.personal.psu.edu /users/m/r/mrh318
+#      /water-properties /Tanaka-etal-M-2001.pdf
+# and
+#   https://www.engineeringtoolbox.com
+#      /water-density-specific-weight-d_595.html
+#             Temp_C  Temp_K   kg/m3
 # H2O-Density 0       273.15  999.8428
 # H2O-Density 0.1     273.25  999.8495
 # H2O-Density 1       274.15  999.9017

@@ -1,4 +1,7 @@
-#    Copyright (C) 2019-2020 by Kevin D. Woerner
+#    Copyright (C) 2019-2021 by Kevin D. Woerner
+# 2021-04-20 kdw  array size vars renam
+# 2021-04-15 kdw  indent work
+# 2021-03-27 kdw  long lines update
 # 2020-12-04 kdw  float explicit const work
 # 2020-09-30 kdw  writeonly work
 # 2020-06-03 kdw  writeonly keyword
@@ -12,32 +15,32 @@
 # 2019-08-12 kdw  created
 
 FUNC DBL epdf(DBL minvalx, DBL maxvalx
-      , INT nn, READONLY DBL data_arr_pc[]
-      , INT mm, WRITEONLY DBL ret_pdf_arr_p[]):
-   # compute the Empirical PDF of DATA_ARR_PC[] over the
-   # interval MINVALX to MAXVALX in MM steps
-   # I.E. let LEN = (MAXVALX - MINVALX) / MM
-   #    RET_PDF_ARR_P[0] = (# of DATA_ARR_PC[] < MINVALX) / nn
-   # IF 0 < II < MM:
+         , INT data_num, READONLY DBL data_arr_pc[]
+         , INT pdf_num, WRITEONLY DBL ret_pdf_arr_p[]):
+   # compute the Empirical PDF of DATA_ARR_PC[] over the interval MINVALX
+   #    to MAXVALX in PDF_NUM steps
+   # I.E. let LEN = (MAXVALX - MINVALX) / PDF_NUM
+   #    RET_PDF_ARR_P[0] = (# of DATA_ARR_PC[] < MINVALX) / data_num
+   # IF 0 < II < PDF_NUM:
    #    RET_PDF_ARR_P[II] = (# of DATA_ARR_PC[] in the interval
-   #         [MINVALX + (II - 1) * LEN, MINVALX + II * LEN)) / NN
+   #         [MINVALX + (II - 1) * LEN, MINVALX + II * LEN)) / DATA_NUM
    # ELSIF II == 0
-   #    RET_PDF_ARR_P[0] = (# of DATA_ARR_PC[] < MINVAL) / NN
-   # returns (# of DATA_ARR_PC[] >= MAXVALX) / NN
+   #    RET_PDF_ARR_P[0] = (# of DATA_ARR_PC[] < MINVAL) / DATA_NUM
+   # returns (# of DATA_ARR_PC[] >= MAXVALX) / DATA_NUM
    INT ii;
    INT indi;
    DBL gap_size;
    DBL retvalu;
    DBL inc;
 
-   FOR ii FROM 0 TO mm - 1:
+   FOR ii FROM 0 TO pdf_num - 1:
       ret_pdf_arr_p[ii] = 0.0;
    FOR_END
 
-   inc = 1.0 / nn;
-   gap_size = (maxvalx - minvalx) / (mm - 1.0);
+   inc = 1.0 / data_num;
+   gap_size = (maxvalx - minvalx) / (pdf_num - 1.0);
    retvalu = 0.0;
-   FOR ii FROM 0 TO nn - 1:
+   FOR ii FROM 0 TO data_num - 1:
       IF data_arr_pc[ii] < minvalx:
          ret_pdf_arr_p[0] += inc;
       ELSIF data_arr_pc[ii] < maxvalx:
@@ -52,34 +55,34 @@ FUNC DBL epdf(DBL minvalx, DBL maxvalx
 FUNC_END
 
 FUNC DBL ecdf(DBL minvalx, DBL maxvalx
-      , INT nn, READONLY DBL data_arr_pc[]
-      , INT mm, WRITEABLE DBL ret_cdf_arr_p[]):
-   # compute the Empirical CDF of DATA_ARR_PC[] over the
-   # interval MINVALX to MAXVALX in MM steps
-   # Let LEN = (MAXVALX - MINVALX) / MM
+         , INT data_num, READONLY DBL data_arr_pc[]
+         , INT pdf_num, WRITEABLE DBL ret_cdf_arr_p[]):
+   # compute the Empirical CDF of DATA_ARR_PC[] over the interval MINVALX
+   #    to MAXVALX in PDF_NUM steps
+   # Let LEN = (MAXVALX - MINVALX) / PDF_NUM
    #    RET_CDF_ARR_P[II] = (# of DATA_ARR_PC[]
-   #         < MINVALX + II * LEN)) / NN
+   #         < MINVALX + II * LEN)) / DATA_NUM
    INT ii;
    DBL sumcurr;
 
-   CALL epdf(minvalx, maxvalx, nn, data_arr_pc[]
-         , mm, ret_cdf_arr_p[]);
+   CALL epdf(minvalx, maxvalx, data_num, data_arr_pc[]
+            , pdf_num, ret_cdf_arr_p[]);
    sumcurr = ret_cdf_arr_p[0];
-   FOR ii FROM 1 TO mm - 1:
+   FOR ii FROM 1 TO pdf_num - 1:
       sumcurr += ret_cdf_arr_p[ii];
       ret_cdf_arr_p[ii] = sumcurr;
    FOR_END
    RETURN sumcurr;
 FUNC_END
 
-FUNC DBL epdf2cdf(INT nn, READONLY DBL pdf_arr_pc[]
-      , WRITEONLY DBL ret_cdf_arr_p[]):
+FUNC DBL epdf2cdf(INT data_num, READONLY DBL pdf_arr_pc[]
+         , WRITEONLY DBL ret_cdf_arr_p[]):
    # convert an Empirical PDF into a CDF
    INT ii;
    DBL sumcurr;
 
    sumcurr = 0.0;
-   FOR ii FROM 0 TO nn - 1:
+   FOR ii FROM 0 TO data_num - 1:
       sumcurr += pdf_arr_pc[ii];
       ret_cdf_arr_p[ii] = sumcurr;
    FOR_END

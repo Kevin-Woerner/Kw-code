@@ -1,4 +1,7 @@
-#    Copyright (C) 2017-2020 by Kevin D. Woerner
+#    Copyright (C) 2017-2021 by Kevin D. Woerner
+# 2021-04-20 kdw  var name change (mainly mm)
+# 2021-03-27 kdw  long lines update
+# 2021-03-05 kdw  test lines reworked
 # 2020-12-04 kdw  float explicit const work
 # 2020-07-27 kdw  block syntax
 # 2020-07-24 kdw  comment cleanup
@@ -52,7 +55,7 @@ BLOCK: # partition function
       BLOCK_USE lv_partitionr_end;
       DBL retvalu;
       INT jj;
-      INT mm;
+      INT ii;
       INT kk;
       DBL sum;
       DBL ssign;
@@ -72,14 +75,14 @@ BLOCK: # partition function
          IF_END
 
          IF lv_partitionr_end <= nn:
-            mm = lv_partitionr_end;
+            ii = lv_partitionr_end;
             lv_partitionr_end = nn + 1;
             REDIM lv_partitionr_arr[], lv_partitionr_end;
-            WHILE mm < lv_partitionr_end:
+            WHILE ii < lv_partitionr_end:
                sum = 0.0;
                ssign = 1.0;
                kk = 1;
-               jj = mm - 1;
+               jj = ii - 1;
                WHILE 0 <= jj:
                   sum += ssign * lv_partitionr_arr[jj];
                   jj -= kk;
@@ -91,8 +94,8 @@ BLOCK: # partition function
                   kk += 1;
                   jj -= (2 * kk - 1);
                WHILE_END
-               lv_partitionr_arr[mm] = sum;
-               mm += 1;
+               lv_partitionr_arr[ii] = sum;
+               ii += 1;
             WHILE_END
          IF_END
          retvalu = lv_partitionr_arr[nn];
@@ -101,7 +104,7 @@ BLOCK: # partition function
       RETURN retvalu;
    FUNC_END
 BLOCK_END # partition function
-#TEST:partition(30)-5604
+#TEST:partition(30) == 5604
 
 BLOCK: # partitionq function
    BLOCK_DEF DBL lv_partitionq_arr[0];
@@ -120,7 +123,7 @@ BLOCK: # partitionq function
       BLOCK_USE lv_partitionq_end;
       DBL retvalu;
       INT jj;
-      INT mm;
+      INT ii;
       INT kk;
       DBL sum;
       DBL ssign;
@@ -141,14 +144,14 @@ BLOCK: # partitionq function
          IF_END
 
          IF lv_partitionq_end <= nn:
-            mm = lv_partitionq_end;
+            ii = lv_partitionq_end;
             lv_partitionq_end = nn + 1;
             REDIM lv_partitionq_arr[], lv_partitionq_end;
-            WHILE mm < lv_partitionq_end:
+            WHILE ii < lv_partitionq_end:
                sum = 0.0;
                ssign = 1.0;
                kk = 1;
-               jj = mm - 1;
+               jj = ii - 1;
                WHILE 0 <= jj:
                   sum += ssign * lv_partitionq_arr[jj];
                   jj -= kk;
@@ -160,17 +163,16 @@ BLOCK: # partitionq function
                   kk += 1;
                   jj -= (2 * kk - 1);
                WHILE_END
-               ee = Kw.round(SQRT(1.0 + 12.0 * mm) / 6.0);
-               IF mm == (3 * ee * ee - ee)
-                        OR mm == (3 * ee * ee + ee):
+               ee = Kw.round(SQRT(1.0 + 12.0 * ii) / 6.0);
+               IF ii == (3 * ee * ee - ee) OR ii == (3 * ee * ee + ee):
                   IF Kw.isodd(ee):
                      sum -= 1.0;
                   ELSE:
                      sum += 1.0;
                   IF_END
                IF_END
-               lv_partitionq_arr[mm] = sum;
-               mm += 1;
+               lv_partitionq_arr[ii] = sum;
+               ii += 1;
             WHILE_END
          IF_END
          retvalu = lv_partitionq_arr[nn];
@@ -179,4 +181,4 @@ BLOCK: # partitionq function
       RETURN retvalu;
    FUNC_END
 BLOCK_END # partitionq function
-#TEST:partitionq(30)-296
+#TEST:partitionq(30) == 296

@@ -1,4 +1,24 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-05-10 kdw  temp conversion work
+# 2021-04-25 kdw  music cent funcs
+# 2021-04-20 kdw  var name change (mainly mm)
+# 2021-04-15 kdw  indent work
+# 2021-04-13 kdw  temp func work
+# 2021-04-11 kdw  indent work
+# 2021-04-06 kdw  func sqr[t]xp1m1
+# 2021-04-04 kdw  time-[gv] mas[s]-v funcs
+# 2021-04-03 kdw  comment change
+# 2021-03-28 kdw  upped line length work
+# 2021-03-15 kdw  lx_.* const names
+# 2021-03-13 kdw  line len upped to 77
+# 2021-03-07 kdw  print.fwip
+# 2021-03-06 kdw  financial stuff
+# 2021-03-05 kdw  long lines
+# 2021-02-05 kdw  test lines
+# 2021-02-04 kdw  add spaces to test lines
+# 2021-02-02 kdw  var renam (temperature vars)
+# 2021-01-29 kdw  loan.* comments
+# 2021-01-20 kdw  loan payment
 # 2020-12-27 kdw  black hole work
 # 2020-12-26 kdw  black-hole stuff
 # 2020-12-15 kdw  comment cleanup
@@ -387,27 +407,27 @@
 # 2015-07-13 kdw  created
 
 IMPORT_MASTER; # insert master functions before other code
-#TEST:atan2(-1,1)==-PI/4;
-#TEST:atan2(-1,-1)==-3*PI/4;
-#TEST:atan2(1,-1)==3*PI/4;
-#TEST:atan2(0,-18)==PI;
-#TEST:atan2(0,18)-0;
-#TEST:atan2(-18,0)==-PI/2;
-#TEST:atan2(18,0)==PI/2;
-#TEST:cbrt(3)==1.44224957030740838232163831078010958839186925;
-#TEST:ln(3)==1.09861228866810969139524523692252570464749055782;
-#TEST:exp(2)==7.38905609893065022723042746057500781318031557055;
-#TEST:sin(1)==0.84147098480789650665250232163029899962256306080;
-#TEST:cos(1)==0.54030230586813971740093660744297660373231042062;
-#TEST:log(exp(4.7))==4.7;
-#TEST:cbrt(pow(2.73,3))==2.73;
-#TEST:pow(frac(sqrt(17))+floor(sqrt(17)),2)==17;
+#TEST: atan2(-1, 1) == -PI/4;
+#TEST: atan2(-1, -1) == -3*PI/4;
+#TEST: atan2(1, -1) == 3*PI/4;
+#TEST: atan2(0, -18) == PI;
+#TEST: atan2(0, 18)-0;
+#TEST: atan2(-18, 0) == -PI/2;
+#TEST: atan2(18, 0) == PI/2;
+#TEST: cbrt(3) == 1.44224957030740838232163831078010958839186925;
+#TEST: ln(3) == 1.0986122886681096913952452369225257046474905578;
+#TEST: exp(2) == 7.389056098930650227230427460575007813180315571;
+#TEST: sin(1) == 0.841470984807896506652502321630298999622563061;
+#TEST: cos(1) == 0.540302305868139717400936607442976603732310421;
+#TEST: log(exp(4.7)) == 4.7;
+#TEST: cbrt(pow(2.73, 3)) == 2.73;
+#TEST: pow(frac(sqrt(17)) + floor(sqrt(17)), 2) == 17;
 
 # Start doing things, ..
 {INSERT_FILE "Macros.fwip" }
 
 {INSERT_FILE "constants.fwip" }
-#TEST:EULER==0.57721566490153286060651209008240243104215933594;
+#TEST: EULER == 0.5772156649015328606065120900824024310421593359;
 {INSERT_FILE "simple.fwip" }
 
 ## Exponential related functions
@@ -417,7 +437,7 @@ FUNC DBL ln(DBL xx):
 FUNC_END
 FUNC DBL lg(DBL xx):
    # logarithm base 2 of XX
-   RETURN LN(xx) / LNTWO;
+   RETURN LN(xx) / TWOLN;
 FUNC_END
 FUNC DBL log10(DBL xx):
    # logarithm base 10 of XX
@@ -431,16 +451,16 @@ FUNC DBL l10(DBL xx):
    # logarithm base 10 of XX
    RETURN LN(xx) / LN(10.0);
 FUNC_END
-#TEST:l10(100)==2;
+#TEST: l10(100) == 2;
 
-LANGUAGE_NOT LANG_C:                                 # C has log2
+LANGUAGE_NOT LANG_C:                                             # C has log2
    FUNC DBL log2(DBL xx):
       # logarithm base 2 of XX
-      RETURN LN(xx) / Kw.LNTWO;
+      RETURN LN(xx) / Kw.TWOLN;
    FUNC_END
-LANGUAGE_END                                         # C has log2
+LANGUAGE_END                                                     # C has log2
 
-LANGUAGE_NOT LANG_C LANG_PYTHON:            # C, PYTHON have fmod
+LANGUAGE_NOT LANG_C LANG_PYTHON:                        # C, PYTHON have fmod
    FUNC DBL fmod(DBL xx, DBL yymodulus):
       #    == XX - RTOZ(XX / YYMODULUS) * YYMODULUS
       # return value has same sign as XX
@@ -461,7 +481,7 @@ LANGUAGE_NOT LANG_C LANG_PYTHON:            # C, PYTHON have fmod
    FUNC_END
    FUNC DBL modf(DBL xx, WRITEONLY DBL ret_int_arr_p[]):
       # Split xx into a integer part returned in RET_INT_ARR_P,
-      #   and an fractional part which is returned
+      #    and an fractional part which is returned
       DBL retvalu;
       DBL int_part;
 
@@ -475,7 +495,7 @@ LANGUAGE_NOT LANG_C LANG_PYTHON:            # C, PYTHON have fmod
       ret_int_arr_p[0] = xx - int_part;
       RETURN retvalu;
    FUNC_END
-LANGUAGE_END                                # C, PYTHON have fmod
+LANGUAGE_END                                            # C, PYTHON have fmod
 
 FUNC DBL fmody(DBL xx, DBL yymodulus):
    #    == XX - FLOOR(XX / YYMODULUS) * YYMODULUS
@@ -507,12 +527,12 @@ FUNC DBL fmodu(DBL xx, DBL yymodulus):
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:fmodu(-5.7,-2)==0.3;
-#TEST:fmodu(5.7,-2)==1.7;
+#TEST: fmodu(-5.7,-2) == 0.3;
+#TEST: fmodu(5.7,-2) == 1.7;
 
 FUNC DBL remquou(DBL xx
-      , DBL yymodulus
-      , WRITEONLY DBL ret_int_arr_p[]):
+         , DBL yymodulus
+         , WRITEONLY DBL ret_int_arr_p[]):
    # return value is remainder of XX / YYMODULUS
    # RET_INT_ARR_P[0] is always positive
    DBL retvalu;
@@ -553,8 +573,8 @@ FUNC DBL fmods(DBL xx, DBL yymodulus):
    RETURN retvalu;
 FUNC_END
 
-#TEST:pow(5,3)==125;
-#TEST:pow(5,-3)==0.008;
+#TEST: pow(5, 3) == 125;
+#TEST: pow(5, -3) == 0.008;
 
 FUNC DBL pow2(DBL expo):
    # 2**EXPO
@@ -577,10 +597,10 @@ FUNC DBL sigmoidinv(DBL xx):
 FUNC_END
 
 FUNC DBL sigmoid3(DBL aa
-      , DBL bb
-      , DBL xx):
+         , DBL bb
+         , DBL xx):
    # An infinitely differential function (-Inf,Inf) to (0,1)
-   # going thru points (0, AA) and (1,BB)
+   #   going thru (0, AA) and (1,BB)
    # sigmoid(xx) = sigmoid3(0.5, E / (E + 1), xx);
    DBL retvalu;
    DBL alfa;
@@ -599,10 +619,9 @@ FUNC DBL sigmoid3(DBL aa
 FUNC_END
 
 FUNC DBL taninv3(DBL aa
-      , DBL bb
-      , DBL xx):
-   # a function in arctan family passing through points
-   #   (0,AA) and (1,BB)
+         , DBL bb
+         , DBL xx):
+   # a function in arctan family passing through points (0,AA) and (1,BB)
    DBL retvalu;
    DBL alfa;
    DBL taa;
@@ -618,8 +637,8 @@ FUNC DBL taninv3(DBL aa
 FUNC_END
 
 FUNC DBL sigmoid3d(DBL aa
-      , DBL bb
-      , DBL xx):
+         , DBL bb
+         , DBL xx):
    # derivative of sigmoid3()
    DBL retvalu;
    DBL alfa;
@@ -640,7 +659,7 @@ FUNC DBL sigmoid3d(DBL aa
 FUNC_END
 
 FUNC DBL sqrtx(DBL xx):
-   # a real-valued extension of the square root functions
+   # a real-valued extension of square root functions
    DBL retvalu;
    IF xx < 0.0:
       retvalu = -SQRT(-xx);
@@ -665,8 +684,7 @@ FUNC DBL smooth(DBL xx):
 FUNC_END
 
 FUNC DBL hypot(DBL xx, DBL yy):
-   # length of hypotenuse of a right triangle
-   #      with legs XX and YY
+   # length of hypotenuse of a right triangle with legs XX and YY
    # sqrt(XX*XX+YY*YY), avoiding round off error
    DBL retvalu;
    DBL axx;
@@ -692,33 +710,30 @@ FUNC DBL hypot(DBL xx, DBL yy):
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:hypot(3.0,4.0)==5.0;
+#TEST: hypot(3.0, 4.0) == 5.0;
 
 FUNC DBL hypot1(DBL xx):
-   # length of hypotenuse of a right triangle
-   #    with legs XX and 1.0
+   # length of hypotenuse of a right triangle with legs XX and 1.0
    # sqrt(1 + XX*XX), avoiding round off error
    RETURN hypot(1.0, xx);
 FUNC_END
-#TEST:square(hypot1(2))==5.0;
+#TEST: square(hypot1(2)) == 5.0;
 
 FUNC DBL hypot1inv(DBL xx):
-   # length of aleg of a right triangle
-   # with hypotenuse 1.0 and other leg XX
+   # length of aleg of a right triangle with hypotenuse 1.0 and other leg XX
    # sqrt(XX * XX - 1); i.e. HYPOT1INV(HYPOT1(XX))==XX
    RETURN SQRT(xx * xx - 1.0);
 FUNC_END
-#TEST:hypot1inv(sqrt(5))==2.0;
+#TEST: hypot1inv(sqrt(5)) == 2.0;
 
 FUNC DBL hypot3(DBL xx, DBL yy, DBL zz):
    # distance from (XX,YY,ZZ) to (0,0,0)
    RETURN SQRT(xx * xx + yy * yy + zz * zz);
 FUNC_END
-#TEST:hypot3(1,2,3)==sqrt(14);
+#TEST: hypot3(1,2,3) == sqrt(14);
 
 FUNC DBL topyh(DBL xx, DBL yy):
-   # length of a leg of a right triangle with
-   # hypotenuse XX and other leg YY
+   # length of a leg of a right triangle with hypotenuse XX and other leg YY
    # sqrt(abs(XX*XX-YY*YY))
    DBL retvalu;
    DBL xsq;
@@ -740,7 +755,7 @@ FUNC DBL topyh(DBL xx, DBL yy):
 
    RETURN retvalu;
 FUNC_END
-#TEST:topyh(13.0,12.0)==5.0;
+#TEST: topyh(13.0,12.0) == 5.0;
 
 FUNC DBL topyh1(DBL xx):
    # length of leg of a right triangle with
@@ -756,7 +771,7 @@ FUNC DBL topyh1(DBL xx):
 
    RETURN retvalu;
 FUNC_END
-#TEST:topyh1(0.5)==sqrt(3)/2;
+#TEST: topyh1(0.5) == sqrt(3.0) / 2.0;
 
 FUNC INT cnv_dbl2si16(DBL xx):
    # (safely) convert a DOUBLE to an 16-bit signed INTEGER
@@ -774,18 +789,14 @@ FUNC INT cnv_dbl2si16(DBL xx):
 FUNC_END
 
 {MACRO TEMP_CONVERSION <NM> ; <LC> ; <UC> {
-FUNC DBL k2temp<LC>(DBL temp_k):
-   # Kelvin to a <NM> temperature
-   RETURN (temp_k - Kw.K_AT_0TEMP<UC>) * Kw.KELVIN / Kw.DEG<UC>;
-FUNC_END
-FUNC DBL temp<LC>2k(DBL temp_<LC>):
-   # <NM> temperature to Kelvin
-   RETURN temp_<LC> * Kw.DEG<UC> / Kw.KELVIN + Kw.K_AT_0TEMP<UC>;
-FUNC_END
-FUNC DBL temp<LC>(DBL temp_<LC>):
-   # <NM> temperature to Kelvin
-   RETURN temp<LC>2k(temp_<LC>);
-FUNC_END
+   FUNC DBL k2temp<LC>(DBL temp_k):
+      # Kelvin to a <NM> temperature
+      RETURN (temp_k - Kw.K_AT_0TEMP<UC>) * Kw.KELVIN / Kw.DEG<UC>;
+   FUNC_END
+   FUNC DBL temp<LC>2k(DBL temp_<LC>):
+      # <NM> temperature to Kelvin
+      RETURN temp_<LC> * Kw.DEG<UC> / Kw.KELVIN + Kw.K_AT_0TEMP<UC>;
+   FUNC_END
 }}
 
 {TEMP_CONVERSION Celsius    ; c ; C }
@@ -794,17 +805,18 @@ FUNC_END
 
 FUNC DBL tempf2tempc(DBL temp_f):
    # Fahrenheit temperature to a Celsius temperature
-   RETURN k2tempc(tempf2k(temp_f));
+   RETURN (temp_f - TEMPF_AT_0TEMPC) * DEGF;
 FUNC_END
 
 FUNC DBL tempc2tempf(DBL temp_c):
    # Celsius temperature to a Fahrenheit temperature
-   RETURN k2tempf(tempc2k(temp_c));
+   RETURN temp_c / DEGF + TEMPF_AT_0TEMPC;
 FUNC_END
-#TEST:tempf2k(212)==373.15;
-#TEST:tempf2tempc(185)==85;
-#TEST:tempc2tempf(37)==98.6;
-#TEST:tempf2tempc(tempc2tempf(3.2))==3.2;
+
+#TEST: tempf2k(212) == 373.15;
+#TEST: tempf2tempc(185) == 85;
+#TEST: tempc2tempf(37) == 98.6;
+#TEST: tempf2tempc(tempc2tempf(3.2)) == 3.2;
 
 {INSERT_FILE "is.fwip" }
 
@@ -828,6 +840,26 @@ FUNC_END
 
 {INSERT_FILE "round.fwip" }
 {INSERT_FILE "trig.fwip" }
+
+FUNC DBL sqrtxp1m1(DBL xx):
+   # SQRT(1+XX)-1 via
+   DBL retvalu;
+
+   IF ABS(xx) < 0.01:
+      retvalu = ((((((((
+               - 429.0 / 32768.0) * xx
+               + 33.0 / 2048.0) * xx
+               - 21.0 / 1024.0) * xx
+               + 7.0 / 256.0) * xx
+               - 5.0 / 128.0) * xx
+               + 1.0 / 16.0) * xx
+               - 1.0 / 8.0) * xx
+               + 1.0 / 2.0) * xx;
+   ELSE:
+      retvalu = SQRT(1.0 + xx) - 1.0;
+   IF_END
+   RETURN retvalu;
+FUNC_END
 
 FUNC DBL ln1p(DBL xx):
    # ln(1 + XX) accurately via
@@ -951,10 +983,9 @@ FUNC_END
 
 BLOCK: # cube root
    BLOCK_DEF FUNC DBL lf_cbrtx_gt_zero(DBL xx):
-      # power of 2 closest to cuberoot of ABS(XX)
-      # only call this with a positive (0) argument
-      # if XX in [27/64,64/27) then
-      #    ZZ in [1,8) and YY == 1
+      # Power of 2 closest to cuberoot of ABS(XX).
+      # Only call this with a positive (0<) argument
+      # if XX in [27/64,64/27) then ZZ in [1,8) and YY == 1
       DBL yy;
       DBL zz;
 
@@ -974,8 +1005,8 @@ BLOCK: # cube root
    FUNC_END
 
    FUNC DBL cbrt(DBL yy):
-      # cube root of YY sans logarithms or exponentials
-      # using Newton-Raphson method on  F(XX) = XX * XX * XX - YY
+      # cube root of YY sans logarithms or exponentials using Newton-Raphson
+      #    method on  F(XX) = XX * XX * XX - YY
       DBL ayy;
       DBL init_xx;
       {RAPHSON_DECLARATIONS}
@@ -990,8 +1021,8 @@ BLOCK: # cube root
          # refine approximation using NR method on
          #       nrvx_xx**3 - YY = 0
          {RAPHSON_LOOP init_xx
-               ; nrvx_xx * nrvx_xx * nrvx_xx - yy
-               ; 3.0 * nrvx_xx * nrvx_xx }
+                  ; nrvx_xx * nrvx_xx * nrvx_xx - yy
+                  ; 3.0 * nrvx_xx * nrvx_xx }
       ELSE:
          nrvx_xx = 0.0;
       IF_END
@@ -1009,376 +1040,8 @@ FUNC DBL squareroot(DBL xx):
    RETURN SQRT(xx);
 FUNC_END
 
-BLOCK: # continued fraction
-   BLOCK_DEF FUNC INT lf_continued_fraction(DBL orig
-         , INT show_diff):
-      INT whole;
-      DBL xx;
-      DBL epsilon;
-      INT den_a;
-      INT den_b;
-      INT den_c;
-      INT num_a;
-      INT num_b;
-      INT num_c;
-      DBL diff;
-      INT steps;
-      DBL appr;
-
-      steps = 0;
-      xx = orig;
-      den_b = 0;
-      num_b = 1;
-      den_a = 1;
-      num_a = 0;
-      epsilon = Kw.DBLEPS / 2.0;
-      AWAIT ABS(diff) < epsilon:   # DBLEPS * 2**n
-         whole = FLOORL(xx);
-
-         den_c = den_b * whole + den_a;
-         num_c = num_b * whole + num_a;
-         den_a = den_b;
-         num_a = num_b;
-         den_b = den_c;
-         num_b = num_c;
-         steps += 1;
-         appr = (1.0 * num_b / den_b);
-         diff = orig - appr;
-
-         PRINTSTR("");
-         PRINTVAL(whole);
-         IF 0 <= show_diff:
-            PRINTSTR(STRING_TAB);
-            PRINTVAL(num_b);
-            PRINTSTR(" / ");
-            PRINTVAL(den_b);
-            PRINTSTR(STRING_TAB);
-            PRINTVAL(appr);
-            IF 0 < show_diff:
-               PRINTSTR(STRING_TAB);
-               PRINTVAL(diff);
-            IF_END
-            PRINTSTR(STRING_NL);
-         ELSE:
-            PRINTSTR(" ");
-         IF_END
-
-         IF Kw.iseq(xx, whole):
-            AWAIT_EXIT;
-         IF_END
-
-         xx = 1.0 / (xx - whole);
-         epsilon *= 2.0;
-      AWAIT_END
-
-      RETURN steps;
-   FUNC_END
-
-   FUNC INT contfra_print(DBL orig):
-      # Print continued fraction coeffs of ORIG
-      RETURN lf_continued_fraction(orig, -1);
-   FUNC_END
-
-   FUNC INT contfrac_print(DBL orig):
-      # Print continued fraction of ORIG
-      RETURN lf_continued_fraction(orig, 0);
-   FUNC_END
-
-   FUNC INT contfracd_print(DBL orig):
-      # Print continued fraction of ORIG w/ diffs
-      RETURN lf_continued_fraction(orig, 1);
-   FUNC_END
-BLOCK_END # continued fraction
-
-FUNC INT num2char_print(INT num):
-   # print NUM as a character 0-9a-zA-Z_?
-   IF num < 32:
-      IF num < 16:
-         IF num < 8:
-            IF num < 4:
-               IF num < 2:
-                  IF num < 1:
-                     PRINTSTR("0");
-                  ELSE:
-                     PRINTSTR("1");
-                  IF_END
-               ELSIF num < 3:
-                  PRINTSTR("2");
-               ELSE:
-                  PRINTSTR("3");
-               IF_END
-            ELSIF num < 6:
-               IF num < 5:
-                  PRINTSTR("4");
-               ELSE:
-                  PRINTSTR("5");
-               IF_END
-            ELSIF num < 7:
-               PRINTSTR("6");
-            ELSE:
-               PRINTSTR("7");
-            IF_END
-         ELSIF num < 12:
-            IF num < 10:
-               IF num < 9:
-                  PRINTSTR("8");
-               ELSE:
-                  PRINTSTR("9");
-               IF_END
-            ELSIF num < 11:
-               PRINTSTR("a");
-            ELSE:
-               PRINTSTR("b");
-            IF_END
-         ELSIF num < 14:
-            IF num < 13:
-               PRINTSTR("c");
-            ELSE:
-               PRINTSTR("d");
-            IF_END
-         ELSIF num < 15:
-            PRINTSTR("e");
-         ELSE:
-            PRINTSTR("f");
-         IF_END
-      ELSIF num < 24:
-         IF num < 20:
-            IF num < 18:
-               IF num < 17:
-                  PRINTSTR("g");
-               ELSE:
-                  PRINTSTR("h");
-               IF_END
-            ELSIF num < 19:
-               PRINTSTR("i");
-            ELSE:
-               PRINTSTR("j");
-            IF_END
-         ELSIF num < 22:
-            IF num < 21:
-               PRINTSTR("k");
-            ELSE:
-               PRINTSTR("l");
-            IF_END
-         ELSIF num < 23:
-            PRINTSTR("m");
-         ELSE:
-            PRINTSTR("n");
-         IF_END
-      ELSIF num < 28:
-         IF num < 26:
-            IF num < 25:
-               PRINTSTR("o");
-            ELSE:
-               PRINTSTR("p");
-            IF_END
-         ELSIF num < 27:
-            PRINTSTR("q");
-         ELSE:
-            PRINTSTR("r");
-         IF_END
-      ELSIF num < 30:
-         IF num < 29:
-            PRINTSTR("s");
-         ELSE:
-            PRINTSTR("t");
-         IF_END
-      ELSIF num < 31:
-         PRINTSTR("u");
-      ELSE:
-         PRINTSTR("v");
-      IF_END
-   ELSIF num < 48:
-      IF num < 40:
-         IF num < 36:
-            IF num < 34:
-               IF num < 33:
-                  PRINTSTR("w");
-               ELSE:
-                  PRINTSTR("x");
-               IF_END
-            ELSIF num < 35:
-               PRINTSTR("y");
-            ELSE:
-               PRINTSTR("z");
-            IF_END
-         ELSIF num < 38:
-            IF num < 37:
-               PRINTSTR("A");
-            ELSE:
-               PRINTSTR("B");
-            IF_END
-         ELSIF num < 39:
-            PRINTSTR("C");
-         ELSE:
-            PRINTSTR("D");
-         IF_END
-      ELSIF num < 44:
-         IF num < 42:
-            IF num < 41:
-               PRINTSTR("E");
-            ELSE:
-               PRINTSTR("F");
-            IF_END
-         ELSIF num < 43:
-            PRINTSTR("G");
-         ELSE:
-            PRINTSTR("H");
-         IF_END
-      ELSIF num < 46:
-         IF num < 45:
-            PRINTSTR("I");
-         ELSE:
-            PRINTSTR("J");
-         IF_END
-      ELSIF num < 47:
-         PRINTSTR("K");
-      ELSE:
-         PRINTSTR("L");
-      IF_END
-   ELSIF num < 56:
-      IF num < 52:
-         IF num < 50:
-            IF num < 49:
-               PRINTSTR("M");
-            ELSE:
-               PRINTSTR("N");
-            IF_END
-         ELSIF num < 51:
-            PRINTSTR("O");
-         ELSE:
-            PRINTSTR("P");
-         IF_END
-      ELSIF num < 54:
-         IF num < 53:
-            PRINTSTR("Q");
-         ELSE:
-            PRINTSTR("R");
-         IF_END
-      ELSIF num < 55:
-         PRINTSTR("S");
-      ELSE:
-         PRINTSTR("T");
-      IF_END
-   ELSIF num < 60:
-      IF num < 58:
-         IF num < 57:
-            PRINTSTR("U");
-         ELSE:
-            PRINTSTR("V");
-         IF_END
-      ELSIF num < 59:
-         PRINTSTR("W");
-      ELSE:
-         PRINTSTR("X");
-      IF_END
-   ELSIF num < 62:
-      IF num < 61:
-         PRINTSTR("Y");
-      ELSE:
-         PRINTSTR("Z");
-      IF_END
-   ELSIF num < 63:
-      PRINTSTR("_");
-   ELSIF num < 64:
-      PRINTSTR("?");
-   ELSE:
-      PRINTSTR("(");
-      PRINTVAL(num);
-      PRINTSTR(")");
-   IF_END
-
-   RETURN num;
-FUNC_END
-
-FUNC INT base_out_print(INT num, INT baset):
-   # print NUM out in base BASET
-   # return number of characters printed
-   INT digits_arr[65];
-   INT dig_count;
-   INT ii;
-
-   MODE_INTEGER:
-   IF num < 0:
-      PRINTSTR("-");
-      num = -num;
-   IF_END
-
-   dig_count = 0;
-   AWAIT num == 0:
-      digits_arr[dig_count] = num % baset;
-      dig_count += 1;
-      num = FLOORL(num / baset);
-   AWAIT_END
-   FOR ii FROM dig_count - 1 TO 0 BY -1:
-      CALL num2char_print(digits_arr[ii]);
-   FOR_END
-   MODE_INTEGER_END
-
-   RETURN dig_count;
-FUNC_END
-
-FUNC INT base_out_fix_print(INT num, INT baset, INT min_sz):
-   # print NUM out in base BASET
-   # return number of characters printed
-   INT digits_arr[65];
-   INT dig_count;
-   INT ii;
-
-   MODE_INTEGER:
-   IF num < 0:
-      num = -num;
-   IF_END
-
-   dig_count = 0;
-   AWAIT num == 0:
-      digits_arr[dig_count] = num % baset;
-      dig_count += 1;
-      num = FLOORL(num / baset);
-   AWAIT_END
-   FOR ii FROM dig_count TO min_sz - 1:
-      CALL num2char_print(0);
-   FOR_END
-   FOR ii FROM dig_count - 1 TO 0 BY -1:
-      CALL num2char_print(digits_arr[ii]);
-   FOR_END
-   MODE_INTEGER_END
-
-   RETURN min_sz;
-FUNC_END
-
-FUNC INT base_outf_print(DBL num, INT baset):
-   # print NUM out in base BASET
-   # return number of characters printed
-   INT dig_count;
-   INT ii;
-   DBL frc;
-   INT dig;
-   INT lim;
-
-   dig_count = 0;
-   IF num < 0.0:
-      PRINTSTR("-");
-      num = -num;
-      dig_count += 1;
-   IF_END
-
-   dig_count += base_out_print(FLOORL(num), baset) + 1;
-   PRINTSTR(".");
-   lim = CEILL(-lg(DBLEPS) / lg(baset));
-   frc = frac(num) * baset;
-   ii = 1;
-   WHILE ii <= lim AND NOT Kw.iszero(frc):
-      dig = FLOORL(frc);
-      CALL num2char_print(dig);
-      frc -= dig;
-      frc *= baset;
-      ii += 1;
-   WHILE_END
-
-   RETURN dig_count + lim;
-FUNC_END
-
+{INSERT_FILE "print.fwip" }
+{INSERT_FILE "financial.fwip" }
 {INSERT_FILE "hyper.fwip" }
 {INSERT_FILE "lambert.fwip" }
 {INSERT_FILE "integral.fwip" }
@@ -1404,121 +1067,190 @@ FUNC_END
 {INSERT_FILE "cdf.fwip" }
 {INSERT_FILE "search.fwip" }
 
-FUNC DBL blackbodyl(DBL wavelen, DBL temperk):
-   # blackbody spectral radiance at WAVELENGTH and TEMPERK
+FUNC DBL blackbodyl(DBL wavelen, DBL temp_k):
+   # blackbody spectral radiance at WAVELENGTH and TEMP_K
    # returns WATT / (STERADIAN METER**3)
    DBL hc;
    DBL hc_kt;
    DBL retvalu;
 
-   IF wavelen <= 0.0 OR temperk <= 0.0:
+   IF wavelen <= 0.0 OR temp_k <= 0.0:
       retvalu = 0.0;
    ELSE:
       hc = Kw.PLANCK * Kw.LIGHT;
-      hc_kt = hc / (Kw.BOLTZMANN * temperk);
+      hc_kt = hc / (Kw.BOLTZMANN * temp_k);
       retvalu = 2.0 * hc * Kw.LIGHT
-            / (POW(wavelen, 5) * (EXP(hc_kt / wavelen) - 1.0));
+               / (POW(wavelen, 5) * (EXP(hc_kt / wavelen) - 1.0));
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL blackbodyf(DBL wavefreq, DBL temperk):
-   # blackbody spectral radiance at WAVEFREQ and TEMPERK
+FUNC DBL blackbodyf(DBL wavefreq, DBL temp_k):
+   # blackbody spectral radiance at WAVEFREQ and TEMP_K
    # returns WATT / (STERADIAN METER**3)
    DBL h_kt;
    DBL retvalu;
 
-   IF wavefreq <= 0.0 OR temperk <= 0.0:
+   IF wavefreq <= 0.0 OR temp_k <= 0.0:
       retvalu = 0.0;
    ELSE:
-      h_kt =  Kw.PLANCK / (Kw.BOLTZMANN * temperk);
+      h_kt =  Kw.PLANCK / (Kw.BOLTZMANN * temp_k);
       retvalu = 2.0 * Kw.PLANCK * POW(wavefreq, 3)
-            / (POW(Kw.LIGHT, 2) * (EXP(h_kt * wavefreq) - 1.0));
+               / (POW(Kw.LIGHT, 2) * (EXP(h_kt * wavefreq) - 1.0));
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL blackbodymode(DBL temperk):
+FUNC DBL blackbodymode(DBL temp_k):
    # Wavelength at mode of blackbody spectral radiance
-   # at TEMPERK
+   # at TEMP_K
    DBL hc_kt;
    DBL retvalu;
 
-   IF temperk <= 0.0:
+   IF temp_k <= 0.0:
       retvalu = 0.0;
    ELSE:
-      hc_kt = Kw.PLANCK * Kw.LIGHT / (Kw.BOLTZMANN * temperk);
+      hc_kt = Kw.PLANCK * Kw.LIGHT / (Kw.BOLTZMANN * temp_k);
       retvalu = hc_kt / (5.0 + Kw.wp(-5.0 * EXP(-5.0)));
    IF_END
    RETURN retvalu;
 FUNC_END
 
-FUNC DBL blackbodypower(DBL temperk):
-   # power output of a blackbody at temperature TEMPERK
+FUNC DBL blackbodypower(DBL temp_k):
+   # power output of a blackbody at temperature TEMP_K
    # Also known as Stefan-Boltzmann Law
-   RETURN Kw.STEFAN * POW(temperk, 4.0);
+   RETURN Kw.STEFAN * POW(temp_k, 4.0);
 FUNC_END
 
-FUNC DBL bhmass_to_temp(DBL bhmass):
-   RETURN BHMASSTEMP / bhmass;
+FUNC DBL bhmass_to_tempk(DBL bhmass_kg):
+   # Temperature of a blackhole with mass BHMASS_KG
+   RETURN BHMASSTEMP / bhmass_kg;
 FUNC_END
 
-FUNC DBL bhtemp_to_mass(DBL bhtempk):
-   RETURN BHMASSTEMP / bhtempk;
+FUNC DBL bhtempk_to_mass(DBL bhtemp_k):
+   # Mass of a blackhole with temperature BHTEMP_K
+   RETURN BHMASSTEMP / bhtemp_k;
 FUNC_END
 
-FUNC DBL bhmass_to_radius(DBL bhmass):
-   RETURN bhmass / BHMASS_RADIUS;
+FUNC DBL bhmass_to_radius(DBL bhmass_kg):
+   # Radius of a blackhole with mass BHMASS_KG
+   RETURN bhmass_kg / BHMASS_RADIUS;
 FUNC_END
 
-FUNC DBL bhradius_to_mass(DBL bhradius):
-   RETURN BHMASS_RADIUS * bhradius;
+FUNC DBL bhradius_to_mass(DBL bhradius_m):
+   # Mass of a blackhole with radius BHRADIUS_M
+   RETURN BHMASS_RADIUS * bhradius_m;
 FUNC_END
 
-FUNC DBL bhmass_to_entropy(DBL bhmass):
-   RETURN {POW2 bhmass } / BHMASS2_ENTROPY;
+FUNC DBL bhmass_to_entropy(DBL bhmass_kg):
+   # Entropy of a blackhole with mass BHMASS_KG
+   RETURN bhmass_kg * bhmass_kg / BHMASS2_ENTROPY;
 FUNC_END
 
 FUNC DBL bhentropy_to_mass(DBL bhentropy):
+   # Mass of a blackhole with entropy BHENTROPY
    RETURN SQRT(bhentropy * BHMASS2_ENTROPY);
 FUNC_END
 
-FUNC DBL bhmass_to_power(DBL bhmass):
-   RETURN BHMASS2POWER / {POW2 bhmass };
+FUNC DBL bhmass_to_power(DBL bhmass_kg):
+   # Power output of a blackhole with mass BHMASS_KG
+   RETURN BHMASS2POWER / (bhmass_kg * bhmass_kg);
 FUNC_END
 
-FUNC DBL bhpower_to_mass(DBL bhpower):
-   RETURN SQRT(BHMASS2POWER / bhpower);
+FUNC DBL bhpower_to_mass(DBL bhpower_w):
+   # Mass of a blackhole outputting BHPOWER_W
+   RETURN SQRT(BHMASS2POWER / bhpower_w);
 FUNC_END
 
-FUNC DBL bhmass_to_area(DBL bhmass):
-   RETURN {POW2 bhmass } / BHMASS2_AREA;
+FUNC DBL bhmass_to_area(DBL bhmass_kg):
+   # surface area of a blackhole with mass BHMASS_KG
+   RETURN bhmass_kg * bhmass_kg / BHMASS2_AREA;
 FUNC_END
 
 FUNC DBL bharea_to_mass(DBL bharea):
+   # Mass of a blackhole with surface area BHAREA
    RETURN SQRT(BHMASS2_AREA * bharea);
 FUNC_END
 
-FUNC DBL bhmass_to_lifetime(DBL bhmass):
-   RETURN {POW3 bhmass } / BHMASS3_LIFETIME;
+FUNC DBL bhlifetime_to_mass(DBL bhlifetime_s):
+   # Mass of a blackhole with a lifetime of BHLIFETIME_S
+   RETURN cbrt(BHMASS3_LIFETIME * bhlifetime_s);
 FUNC_END
 
-FUNC DBL bhlifetime_to_mass(DBL bhlifetime):
-   RETURN cbrt(BHMASS3_LIFETIME * bhlifetime);
+FUNC DBL bhmass_to_lifetime(DBL bhmass_kg):
+   # Lifetime of a blackhole of mass BHMASS_KG
+   RETURN bhmass_kg * bhmass_kg * bhmass_kg / BHMASS3_LIFETIME;
 FUNC_END
 
-FUNC DBL bhmass_to_density(DBL bhmass):
-   RETURN {POW2 bhmass } / BHMASS2_DENSITY;
+FUNC DBL bhmass_to_density(DBL bhmass_kg):
+   # Density of a blackhole of mass BHMASS_KG
+   RETURN bhmass_kg * bhmass_kg / BHMASS2_DENSITY;
 FUNC_END
 
 FUNC DBL bhdensity_to_mass(DBL bhdensity):
+   # Mass of a blackhole with density BHDENSITY
    RETURN SQRT(bhdensity * BHMASS2_DENSITY);
 FUNC_END
 
 FUNC DBL pendulum(DBL len_m, DBL ang_offset_rad, DBL grav):
-   # Period of a pendulum of length LEN_M,
-   #      initial angle offset ANG_OFFSET_RAD,
+   # Period of pendulum of length LEN_M, initial angle offset ANG_OFFSET_RAD,
    #      and acceleration due to gravity GRAV.
    RETURN Kw.TAU * SQRT(len_m / grav)
-         / Kw.agmean(1.0, COS(ang_offset_rad / 2.0));
+            / Kw.agmean(1.0, COS(ang_offset_rad / 2.0));
+FUNC_END
+
+## Special Relativistic functions - ----- ----- ----- ----- ----- ----- -----
+FUNC DBL sr_mass(DBL velo_mps):
+   # relativistic mass increase at velocity VELO_MPS m/s
+   RETURN 1.0 / Kw.sqrtxp1m1(-Kw.square(velo_mps / Kw.LIGHT));
+FUNC_END
+
+FUNC DBL sr_time(DBL velo_mps):
+   # relativistic time dilation at velocity VELO_MPS m/s
+   RETURN Kw.sqrtxp1m1(-Kw.square(velo_mps / Kw.LIGHT));
+FUNC_END
+
+## General Relativistic functions - ----- ----- ----- ----- ----- ----- -----
+FUNC DBL gr_massgm(DBL gm_gm, DBL radius_m):
+   # relativistic gravitational mass change at a distance RADIUS_M meters
+   # from a mass with gravitational parameter GM_GM, via E=mc**2
+   RETURN gm_gm / (radius_m * Kw.LIGHT * Kw.LIGHT);
+FUNC_END
+
+FUNC DBL gr_mass(DBL mass_kg, DBL radius_m):
+   # relativistic gravitational mass change at a distance RADIUS_M meters
+   # from a mass MASS_KG
+   RETURN gr_massgm(Kw.GRAVITATION * mass_kg, radius_m);
+FUNC_END
+
+FUNC DBL gr_timegm(DBL gm_gm, DBL radius_m):
+   # relativistic gravitational time dilation at a distance RADIUS_M meters
+   # from a mass with gravitational parameter GM_GM
+   DBL con;
+
+   con = 2 * gm_gm / (Kw.LIGHT * Kw.LIGHT);
+   RETURN Kw.sqrtxp1m1(-con / radius_m);
+FUNC_END
+
+FUNC DBL gr_time(DBL mass_kg, DBL radius_m):
+   # relativistic gravitational time dilation at a distance RADIUS_M meters
+   # from a mass MASS_KG
+   RETURN gr_timegm(Kw.GRAVITATION * mass_kg, radius_m);
+FUNC_END
+
+FUNC DBL gr_timegm_dr(DBL gm_gm, DBL radius_m):
+   # derivative of relativistic gravitational time dilation at a distance
+   #   RADIUS_M meters from a mass with gravitational parameter GM_GM
+   DBL con;
+
+   con = 2 * gm_gm / (Kw.LIGHT * Kw.LIGHT);
+   RETURN con / ( 2 * radius_m * radius_m * SQRT(1.0 - con / radius_m));
+FUNC_END
+
+FUNC DBL cent2ratio(DBL cnt):
+   RETURN pow2(cnt / 1200.0);
+FUNC_END
+
+FUNC DBL ratio2cent(DBL rat):
+   RETURN lg(rat) * 1200.0;
 FUNC_END

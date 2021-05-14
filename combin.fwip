@@ -1,4 +1,11 @@
-#    Copyright (C) 2015-2020 by Kevin D. Woerner
+#    Copyright (C) 2015-2021 by Kevin D. Woerner
+# 2021-04-20 kdw  var name change (mainly mm)
+# 2021-04-15 kdw  indent work
+# 2021-04-10 kdw  indent work
+# 2021-03-15 kdw  lx_.* const names
+# 2021-03-13 kdw  line len upped to 77
+# 2021-02-05 kdw  add spaces to comments
+# 2021-02-04 kdw  add spaces to test lines
 # 2020-10-03 kdw  s/print_.*/.*_print/
 # 2020-08-20 kdw  boolean checks changed
 # 2020-08-17 kdw  comment change
@@ -170,7 +177,7 @@ BLOCK: # factorial
       # EGF(factorial();x) = 1 / (1 - x)
       BLOCK_USE lv_factorial_end;
       BLOCK_USE lv_factorial_arr[];
-      INT mm;
+      INT ii;
       DBL retvalu;
 
       IF nn < 0:
@@ -185,13 +192,12 @@ BLOCK: # factorial
          IF_END
 
          IF lv_factorial_end <= nn:
-            mm = lv_factorial_end;
+            ii = lv_factorial_end;
             lv_factorial_end = nn + 1;
             REDIM lv_factorial_arr[], lv_factorial_end;
-            WHILE mm < lv_factorial_end:
-               lv_factorial_arr[mm] = (mm
-                     * lv_factorial_arr[mm - 1]);
-               mm += 1;
+            WHILE ii < lv_factorial_end:
+               lv_factorial_arr[ii] = (ii * lv_factorial_arr[ii - 1]);
+               ii += 1;
             WHILE_END
          IF_END
          retvalu = lv_factorial_arr[nn];
@@ -199,7 +205,7 @@ BLOCK: # factorial
       RETURN retvalu;
    FUNC_END
 BLOCK_END
-#TEST:factorial(7)-5040;
+#TEST:factorial(7) - 5040;
 
 BLOCK: # factorialdouble
    BLOCK_DEF DBL lv_factorial_b_arr[0];
@@ -213,7 +219,7 @@ BLOCK: # factorialdouble
       BLOCK_USE lv_factorial_b_end;
       BLOCK_USE lv_factorial_b_arr[];
       DBL retvalu;
-      INT mm;
+      INT ii;
 
       IF nn < 0:
          retvalu = 0;
@@ -226,13 +232,12 @@ BLOCK: # factorialdouble
             ARRAY_END
          IF_END
          IF lv_factorial_b_end <= nn:
-            mm = lv_factorial_b_end;
+            ii = lv_factorial_b_end;
             lv_factorial_b_end = nn + 1;
             REDIM lv_factorial_b_arr[], lv_factorial_b_end;
-            WHILE mm < lv_factorial_b_end:
-               lv_factorial_b_arr[mm] =
-                     mm * lv_factorial_b_arr[mm - 2];
-               mm += 1;
+            WHILE ii < lv_factorial_b_end:
+               lv_factorial_b_arr[ii] = ii * lv_factorial_b_arr[ii - 2];
+               ii += 1;
             WHILE_END
          IF_END
          retvalu = lv_factorial_b_arr[nn];
@@ -240,8 +245,8 @@ BLOCK: # factorialdouble
       RETURN retvalu;
    FUNC_END
 BLOCK_END
-#TEST:factorialdouble(10)-3840;
-#TEST:factorialdouble(11)-10395;
+#TEST:factorialdouble(10) - 3840;
+#TEST:factorialdouble(11) - 10395;
 
 FUNC DBL fac(INT nn):
    # alias for factorial
@@ -282,14 +287,14 @@ FUNC DBL comb(INT n_things, INT r_each):
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:comb(10,4)-210;
+#TEST:comb(10,4) - 210;
 
 FUNC DBL perm(INT n_things, INT r_each):
    # number of ways to choose R_EACH things from N_THINGS things
    # factorial(N) / factorial(N - R)
    RETURN factorialt(n_things, n_things - r_each);
 FUNC_END
-#TEST:perm(10,4)-5040;
+#TEST:perm(10,4) - 5040;
 
 FUNC DBL combination(INT n_things, INT r_each):
    # number of sets of R_EACH things selected
@@ -331,8 +336,8 @@ BLOCK: # Catalan numbers
             lv_catalan_end = nn + 1;
             REDIM lv_catalan_arr[], lv_catalan_end;
             WHILE kk < lv_catalan_end:
-               lv_catalan_arr[kk] = (2 * (2.0 * kk - 1)
-                  * lv_catalan_arr[kk - 1] / (kk + 1.0));
+               lv_catalan_arr[kk] = (2.0 * (2.0 * kk - 1.0)
+                        * lv_catalan_arr[kk - 1] / (kk + 1.0));
                kk += 1;
             WHILE_END
          IF_END
@@ -379,9 +384,8 @@ BLOCK: # Supercatalan numbers
             REDIM lv_supercatalan_arr[], lv_supercatalan_end;
             WHILE kk < lv_supercatalan_end:
                lv_supercatalan_arr[kk] = (
-                     ((6 * kk - 9) * lv_supercatalan_arr[kk - 1]
-                        - (kk - 3) * lv_supercatalan_arr[kk - 2])
-                  / kk);
+                        ((6 * kk - 9) * lv_supercatalan_arr[kk - 1]
+                        - (kk - 3) * lv_supercatalan_arr[kk - 2]) / kk);
                kk += 1;
             WHILE_END
          IF_END
@@ -390,7 +394,7 @@ BLOCK: # Supercatalan numbers
       RETURN retvalu;
    FUNC_END
 BLOCK_END
-#TEST:supercatalan(10)-103049
+#TEST:supercatalan(10) - 103049
 
 BLOCK: # Bell numbers
    BLOCK_DEF DBL lv_bell_arr[0];
@@ -454,7 +458,7 @@ BLOCK: # Bell numbers
       RETURN retvalu;
    FUNC_END
 BLOCK_END
-#TEST:bell(14)-190899322;
+#TEST:bell(14) - 190899322;
 
 FUNC DBL bellx(DBL xxn):
    # a real valued extension of the Bell numbers 1 <= XXn
@@ -488,7 +492,7 @@ FUNC DBL fubini(INT nn):
    # Approximately factorial(NN) / (2*log(2)**(NN+1))
    # Also known as the ordered Bell numbers
    # EGF(fubini();x) = 1 / (2 - EXP(x))
-   INT mm;
+   INT ii;
    DBL sum;
    DBL retvalu;
 
@@ -497,21 +501,21 @@ FUNC DBL fubini(INT nn):
    ELSIF nn == 0:
       retvalu = 1;
    ELSE:
-      sum = 1.0 / (2.0 * Kw.LNTWO * Kw.LNTWO);
-      FOR mm FROM 2 TO nn:
-         sum *= mm / Kw.LNTWO;
+      sum = 1.0 / (2.0 * Kw.TWOLN * Kw.TWOLN);
+      FOR ii FROM 2 TO nn:
+         sum *= ii / Kw.TWOLN;
       FOR_END
       retvalu = Kw.round(sum);
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:fubini(10)-102247563;
+#TEST:fubini(10) - 102247563;
 
 FUNC INT d2lt_d1(INT xx, INT yy):
    # Convert a 2D triangular coordinates into 1D coordinate
    # If YY < 0 OR XX < YY: return -1
    # r/c   -1  0  1  2  3  4  5 ...
-   #   --------------------------
+   #    -- -- -- -- -- -- -- -- --
    #   .    .  .  .  .  .  .  . ...
    #   5   -1 -1 -1 -1 -1 -1 20 ...
    #   4   -1 -1 -1 -1 -1 14 19 ...
@@ -534,7 +538,7 @@ FUNC INT d1lt_d2(INT nn, WRITEONLY INT ret_arr_p[]):
    # Convert a 1D triangular coordinates into 2D coordinate
    # If YY < 0 OR XX < YY: return -1
    # r/c   -1  0  1  2  3  4  5 ...
-   #   --------------------------
+   #    -- -- -- -- -- -- -- -- --
    #   .    .  .  .  .  .  .  . ...
    #   5   -1 -1 -1 -1 -1 -1 20 ...
    #   4   -1 -1 -1 -1 -1 14 19 ...
@@ -559,7 +563,7 @@ FUNC_END
 FUNC INT d2ur_d1(INT xx, INT yy):
    # Convert a 2D square coordinates into 1D coordinate
    # r/c   -1  0  1  2  3  4  5  6 ...
-   #   --------------------------
+   #    -- -- -- -- -- -- -- -- --
    #   .   -1  .  .  .  .  .  .  . ...
    #   5   -1 20 26 33 41 50 60 71 ...
    #   4   -1 14 19 25 32 40 49 59 ...
@@ -583,7 +587,7 @@ FUNC_END
 FUNC INT d1ur_d2(INT nn, WRITEONLY INT ret_arr_p[]):
    # Convert a 1D square coordinates into 2D coordinate
    # r/c   -1  0  1  2  3  4  5  6 ...
-   #   --------------------------
+   #    -- -- -- -- -- -- -- -- --
    #   .   -1  .  .  .  .  .  .  . ...
    #   5   -1 20 26 33 41 50 60 71 ...
    #   4   -1 14 19 25 32 40 49 59 ...
@@ -610,7 +614,7 @@ FUNC_END
 FUNC INT d2diamond_d1(INT xx, INT yy):
    # Convert a 2D square coordinates into 1D coordinate
    # r/c   ... -3 -2 -1  0  1  2  3 ...
-   #   --------------------------------
+   #  -- -- -- -- -- -- -- -- -- -- --
    #   .   ...  .  .  .  .  .  .  . ...
    #   3   ... 75 52 33 18 31 48 69 ...
    #   2   ... 53 34 19 8  17 30 47 ...
@@ -641,7 +645,7 @@ FUNC_END
 FUNC INT d1diamond_d2(INT nn, WRITEONLY INT ret_arr_p[]):
    # Convert a 1D diamond coordinates into 2D coordinate
    # r/c   ... -3 -2 -1  0  1  2  3 ...
-   #   --------------------------------
+   #  -- -- -- -- -- -- -- -- -- -- --
    #   .   ...  .  .  .  .  .  .  . ...
    #   3   ... 75 52 33 18 31 48 69 ...
    #   2   ... 53 34 19 8  17 30 47 ...
@@ -659,7 +663,7 @@ FUNC INT d1diamond_d2(INT nn, WRITEONLY INT ret_arr_p[]):
       x_coord = 0;
       ret_arr_p[1] = 0;
    ELSE:
-      ss = FLOORL(SQRT(nn) / Kw.SQRTTWO);
+      ss = FLOORL(SQRT(nn) / Kw.TWOSQRT);
       ssq = 2 * ss * ss;
       # now ssq <= nn
       IF nn <= ssq + 2 * ss:
@@ -683,7 +687,7 @@ FUNC_END
 FUNC INT d2spiral_d1(INT xx, INT yy):
    # Convert a 2D square coordinates into 1D coordinate
    # r/c   ... -3 -2 -1  0  1  2  3 ...
-   #   --------------------------------
+   #  -- -- -- -- -- -- -- -- -- -- --
    #   .   ...  .  .  .  .  .  .  . ...
    #   3   ... 36 35 34 33 32 31 30 ...
    #   2   ... 37 16 15 14 13 12 29 ...
@@ -714,7 +718,7 @@ FUNC_END
 FUNC INT d1spiral_d2(INT nn, WRITEONLY INT ret_arr_p[]):
    # Find where NN is
    # r/c   ... -3 -2 -1  0  1  2  3 ...
-   #   --------------------------------
+   #  -- -- -- -- -- -- -- -- -- -- --
    #   .   ...  .  .  .  .  .  .  . ...
    #   3   ... 36 35 34 33 32 31 30 ...
    #   2   ... 37 16 15 14 13 12 29 ...
@@ -768,7 +772,7 @@ FUNC INT d2hypot_d1(INT xx, INT yy):
    #         (a*a+b*b == XX*XX+YY*YY AND XX < aa)
    # d2hypot_d1(4,3) < d2hypot_d1(5,0)
    # r/c   -1  0  1  2  3  4  5 ...
-   #   --------------------------
+   #    -- -- -- -- -- -- -- -- --
    #   .    .  .  .  .  .  .  . ...
    #   5   -1 -1 -1 -1 -1 -1 25 ...
    #   4   -1 -1 -1 -1 -1 17 22 ...
@@ -790,7 +794,7 @@ FUNC INT d2hypot_d1(INT xx, INT yy):
    IF 0 <= yy AND yy <= xx:
       distsq = xx * xx + yy * yy;
       dist = SQRT(distsq);
-      xlim = FLOORL(dist / Kw.SQRTTWO);
+      xlim = FLOORL(dist / Kw.TWOSQRT);
       xmax = FLOORL(dist);
       count = 0;
       FOR ixx FROM xlim TO xmax:
@@ -816,7 +820,7 @@ FUNC DBL binomialx(DBL xnn, DBL xkk):
    # TGAMMA(XNN + 1) / (TGAMMA(XKK + 1) * TGAMMA(XNN + 1 - XKK))
    # a real valued extension of BINOMIAL(XNN, XKK)
    RETURN Kw.tgamma(xnn + 1)
-         / (Kw.tgamma(xkk + 1) * Kw.tgamma(xnn + 1 - xkk));
+            / (Kw.tgamma(xkk + 1) * Kw.tgamma(xnn + 1 - xkk));
 FUNC_END
 
 BLOCK: # binomial numbers
@@ -862,7 +866,7 @@ BLOCK: # binomial numbers
                   rz_ind -= 1;
                   lz_ind += 1;
                   lv_binom_arr[lz_ind] = (lv_binom_arr[ul_ind]
-                     + lv_binom_arr[ul_ind + 1]);
+                           + lv_binom_arr[ul_ind + 1]);
                   ul_ind += 1;
                WHILE_END
                rr += 1;
@@ -875,18 +879,18 @@ BLOCK: # binomial numbers
       RETURN retvalu;
    FUNC_END
 BLOCK_END # binomial numbers
-#TEST:binomial(9,4)-126;
-#TEST:binomial(10,4)-210;
+#TEST:binomial(9,4) - 126;
+#TEST:binomial(10,4) - 210;
 
 BLOCK: # eulerian numbers
    BLOCK_DEF DBL lv_euler_arr[0];
    BLOCK_DEF INT lv_euler_end = 0;
    BLOCK_DEF INT lv_euler_max = 0;
-   FUNC DBL eulerian(INT nn, INT mm):
-      # EULERIAN(NN, MM) == # of permutations of 0,1,2,...NN-1
-      #       with exactly MM elements < next element
-      # EULERIAN(NN, MM) == (NN - MM) * EULERIAN(NN - 1, MM - 1)
-      #                   + (MM + 1)  * EULERIAN(NN - 1, MM)
+   FUNC DBL eulerian(INT nn, INT kk):
+      # EULERIAN(NN, KK) == # of permutations of 0,1,2,...NN-1
+      #       with exactly KK elements < next element
+      # EULERIAN(NN, KK) == (NN - KK) * EULERIAN(NN - 1, KK - 1)
+      #                   + (KK + 1)  * EULERIAN(NN - 1, KK)
       # eulerian(4,0) == 1
       #    ddd 3210
       # eulerian(4,1) == 11
@@ -902,14 +906,14 @@ BLOCK: # eulerian numbers
       BLOCK_USE lv_euler_arr[];
       BLOCK_USE lv_euler_end;
       BLOCK_USE lv_euler_max;
-      INT cr;
-      INT rr;
+      INT jj;
+      INT ii;
       INT lz_ind;
       INT rz_ind;
       INT ul_ind;
       DBL retvalu;
 
-      IF nn < mm OR nn < 0 OR mm < 0:
+      IF nn < kk OR nn < 0 OR kk < 0:
          retvalu = 0;
       ELSE:
          IF lv_euler_end <= 0:
@@ -923,41 +927,40 @@ BLOCK: # eulerian numbers
             lv_euler_arr[4] = 1;
             lv_euler_arr[5] = 0;
          IF_END
-         rr = lv_euler_max;
-         IF rr < nn + 1:
+         ii = lv_euler_max;
+         IF ii < nn + 1:
             lv_euler_end = d2lt_d1(nn + 1, 0);
             REDIM lv_euler_arr[], lv_euler_end;
 
-            WHILE rr <= nn:
-               lz_ind = d2lt_d1(rr, 0);
+            WHILE ii <= nn:
+               lz_ind = d2lt_d1(ii, 0);
                lv_euler_arr[lz_ind] = 1;
-               lv_euler_arr[lz_ind + rr] = 0;
-               rz_ind = lz_ind + rr - 1;
-               ul_ind = d2lt_d1(rr - 1, 0);
-               cr = 1;
+               lv_euler_arr[lz_ind + ii] = 0;
+               rz_ind = lz_ind + ii - 1;
+               ul_ind = d2lt_d1(ii - 1, 0);
+               jj = 1;
                WHILE lz_ind < rz_ind:
                   # take advantage of EULER(x,y) = EULER(x,x-y)
                   lv_euler_arr[rz_ind] = lv_euler_arr[lz_ind];
                   lz_ind += 1;
-                  lv_euler_arr[lz_ind] = (
-                        (rr - cr) * lv_euler_arr[ul_ind]
-                        + (cr + 1) * lv_euler_arr[ul_ind + 1]);
+                  lv_euler_arr[lz_ind] = ((ii - jj) * lv_euler_arr[ul_ind]
+                           + (jj + 1) * lv_euler_arr[ul_ind + 1]);
                   ul_ind += 1;
                   rz_ind -= 1;
-                  cr += 1;
+                  jj += 1;
                WHILE_END
-               rr += 1;
-               lv_euler_max = rr;
+               ii += 1;
+               lv_euler_max = ii;
             WHILE_END
          IF_END
-         retvalu = lv_euler_arr[d2lt_d1(nn, mm)];
+         retvalu = lv_euler_arr[d2lt_d1(nn, kk)];
       IF_END
 
       RETURN retvalu;
    FUNC_END
 BLOCK_END # eulerian numbers
-#TEST:eulerian(8,5)-4293;
-#TEST:eulerian(9,5)-88234;
+#TEST:eulerian(8,5) - 4293;
+#TEST:eulerian(9,5) - 88234;
 
 BLOCK: # Entringer numbers
    BLOCK_DEF DBL lv_entringer_arr[0];
@@ -975,9 +978,9 @@ BLOCK: # Entringer numbers
       BLOCK_USE lv_entringer_arr[];
       BLOCK_USE lv_entringer_max;
       BLOCK_USE lv_entringer_end;
-      INT cz;
+      INT ii;
       INT inda;
-      INT rr;
+      INT jj;
       DBL retvalu;
 
       IF nn <= 0 OR kk < 0 OR nn < kk:
@@ -989,20 +992,19 @@ BLOCK: # Entringer numbers
             REDIM lv_entringer_arr[], lv_entringer_end;
             lv_entringer_arr[0] = 1;
          IF_END
-         rr = lv_entringer_max;
-         IF rr < nn + 1:
+         jj = lv_entringer_max;
+         IF jj < nn + 1:
             lv_entringer_end = d2lt_d1(nn + 1, 0);
             REDIM lv_entringer_arr[], lv_entringer_end;
-            WHILE rr <= nn:
-               inda = d2lt_d1(rr, 0);
+            WHILE jj <= nn:
+               inda = d2lt_d1(jj, 0);
                lv_entringer_arr[inda] = 0;
-               FOR cz FROM 1 TO rr:
-                  lv_entringer_arr[inda + cz] =
-                     lv_entringer_arr[inda + cz - 1]
-                        + lv_entringer_arr[inda - cz];
+               FOR ii FROM 1 TO jj:
+                  lv_entringer_arr[inda + ii] = lv_entringer_arr[inda - ii]
+                           + lv_entringer_arr[inda + ii - 1];
                FOR_END
-               rr += 1;
-               lv_entringer_max = rr;
+               jj += 1;
+               lv_entringer_max = jj;
             WHILE_END
          IF_END
          retvalu = lv_entringer_arr[d2lt_d1(nn, kk)];
@@ -1010,7 +1012,7 @@ BLOCK: # Entringer numbers
       RETURN retvalu;
    FUNC_END
 BLOCK_END # Entringers numbers
-#TEST:entringer(5,3)-14
+#TEST:entringer(5,3) - 14
 
 FUNC DBL zigzag(INT nn):
    # Number of alternating permutations on [0..NN-1]
@@ -1023,16 +1025,16 @@ FUNC DBL zigzag(INT nn):
    # zigzag(NN) is about 2 * (2 / PI)**(NN + 1) * factorial(NN)
    # bell(2 * NN) * (4**(2 * NN) - 2**(2 * NN)) =
    #      (-1)**(NN + 1)* 2 * NN * zigzag(2 * NN - 1)
-   # sec(X) = SUM[II;0;Inf;2;zigzag(II)*XX**II/factorial(II)]
-   # tan(X) = SUM[II;1;Inf;2;zigzag(II)*XX**II/factorial(II)]
+   # sec(X) = SUM[II;0;Inf;2; zigzag(II)*XX**II / factorial(II)]
+   # tan(X) = SUM[II;1;Inf;2; zigzag(II)*XX**II / factorial(II)]
    RETURN Kw.entringer(nn, nn);
 FUNC_END
-#TEST:zigzag(6)-61;
-#TEST:zigzag(7)-272;
-#TEST:zigzag(8)-1385;
-#TEST:zigzag(9)-7936;
-#TEST:zigzag(10)-50521;
-#TEST:zigzag(12)-2702765;
+#TEST:zigzag(6) - 61;
+#TEST:zigzag(7) - 272;
+#TEST:zigzag(8) - 1385;
+#TEST:zigzag(9) - 7936;
+#TEST:zigzag(10) - 50521;
+#TEST:zigzag(12) - 2702765;
 
 FUNC DBL zig(INT nn):
    # Zig (or Secant) numbers
@@ -1058,7 +1060,7 @@ FUNC DBL eulerx(INT nn):
    IF_END
    RETURN retvalu;
 FUNC_END
-#TEST:eulerx(12)-2702765;
+#TEST:eulerx(12) - 2702765;
 
 FUNC DBL ballot(DBL xmm, DBL xnn):
    # probability of counting
@@ -1101,7 +1103,7 @@ BLOCK: # Stirling numbers of the 1th kind
       INT col_k;
       INT ul_ind;
       INT cz_ind;
-      INT rr;
+      INT ii;
       DBL retvalu;
 
       IF nn < 0 OR kk < 0 OR nn < kk:
@@ -1121,26 +1123,25 @@ BLOCK: # Stirling numbers of the 1th kind
             lv_stir_a_arr[2] = 1;
          IF_END
 
-         rr = lv_stir_a_max;
-         IF rr < nn + 1:
+         ii = lv_stir_a_max;
+         IF ii < nn + 1:
             lv_stir_a_end = d2lt_d1(nn + 1, 0);
             REDIM lv_stir_a_arr[], lv_stir_a_end;
 
-            WHILE rr <= nn:
-               cz_ind = d2lt_d1(rr, 0);
+            WHILE ii <= nn:
+               cz_ind = d2lt_d1(ii, 0);
                lv_stir_a_arr[cz_ind] = 0;
                cz_ind += 1;
-               ul_ind = d2lt_d1(rr - 1, 0);
-               FOR col_k FROM 1 TO rr - 1:
-                  lv_stir_a_arr[cz_ind] = (
-                     lv_stir_a_arr[ul_ind]
-                     - (rr - 1) * lv_stir_a_arr[ul_ind + 1]);
+               ul_ind = d2lt_d1(ii - 1, 0);
+               FOR col_k FROM 1 TO ii - 1:
+                  lv_stir_a_arr[cz_ind] = (lv_stir_a_arr[ul_ind]
+                           - (ii - 1) * lv_stir_a_arr[ul_ind + 1]);
                   ul_ind += 1;
                   cz_ind += 1;
                FOR_END
                lv_stir_a_arr[cz_ind] = 1;
-               rr += 1;
-               lv_stir_a_max = rr;
+               ii += 1;
+               lv_stir_a_max = ii;
             WHILE_END
          IF_END
          retvalu = lv_stir_a_arr[d2lt_d1(nn, kk)];
@@ -1148,7 +1149,7 @@ BLOCK: # Stirling numbers of the 1th kind
       RETURN retvalu;
    FUNC_END
 BLOCK_END
-#TEST:stirling1(9,6)+4536;
+#TEST:stirling1(9,6) + 4536;
 
 BLOCK: # Stirling numbers of the 2th kind
    BLOCK_DEF DBL lv_stir_b_arr[0];
@@ -1168,7 +1169,7 @@ BLOCK: # Stirling numbers of the 2th kind
       INT col_k;
       INT ul_ind;
       INT cz_ind;
-      INT rr;
+      INT ii;
       DBL retvalu;
 
       IF nn < kk OR nn < 0 OR kk < 0:
@@ -1187,26 +1188,25 @@ BLOCK: # Stirling numbers of the 2th kind
             lv_stir_b_arr[1] = 0;
             lv_stir_b_arr[2] = 1;
          IF_END
-         rr = lv_stir_b_max;
-         IF rr < nn + 1:
+         ii = lv_stir_b_max;
+         IF ii < nn + 1:
             lv_stir_b_end = d2lt_d1(nn + 1, 0);
             REDIM lv_stir_b_arr[], lv_stir_b_end;
 
-            WHILE rr <= nn:
-               cz_ind = d2lt_d1(rr, 0);
+            WHILE ii <= nn:
+               cz_ind = d2lt_d1(ii, 0);
                lv_stir_b_arr[cz_ind] = 0;
                cz_ind += 1;
-               ul_ind = d2lt_d1(rr - 1, 0);
-               FOR col_k FROM 1 TO rr - 1:
-                  lv_stir_b_arr[cz_ind] = (
-                        lv_stir_b_arr[ul_ind]
+               ul_ind = d2lt_d1(ii - 1, 0);
+               FOR col_k FROM 1 TO ii - 1:
+                  lv_stir_b_arr[cz_ind] = (lv_stir_b_arr[ul_ind]
                            + col_k * lv_stir_b_arr[ul_ind + 1]);
                   ul_ind += 1;
                   cz_ind += 1;
                FOR_END
                lv_stir_b_arr[cz_ind] = 1;
-               rr += 1;
-               lv_stir_b_max = rr;
+               ii += 1;
+               lv_stir_b_max = ii;
             WHILE_END
          IF_END
          retvalu = lv_stir_b_arr[d2lt_d1(nn, kk)];
@@ -1214,7 +1214,7 @@ BLOCK: # Stirling numbers of the 2th kind
       RETURN retvalu;
    FUNC_END
 BLOCK_END
-#TEST:stirling2(9,6)-2646;
+#TEST:stirling2(9,6) - 2646;
 
 BLOCK: # Bernoullis numbers
    BLOCK_DEF DBL lv_bern_n_arr[0];
@@ -1233,7 +1233,7 @@ BLOCK: # Bernoullis numbers
       DBL sumn;
       DBL sumd;
       INT jj;
-      INT mm;
+      INT ii;
       DBL gdn;
       DBL nsumn;
       DBL nsumd;
@@ -1258,21 +1258,21 @@ BLOCK: # Bernoullis numbers
          IF_END
          nnhalf = FLOORL(nn / 2);
          IF lv_bern_end <= nnhalf:
-            mm = lv_bern_end;
+            ii = lv_bern_end;
             lv_bern_end = nnhalf + 1;
             REDIM lv_bern_n_arr[], lv_bern_end;
             REDIM lv_bern_d_arr[], lv_bern_end;
 
-            WHILE mm < lv_bern_end:
-               sz_ind = 2 * mm;
+            WHILE ii < lv_bern_end:
+               sz_ind = 2 * ii;
                # coeff is always an integer
                coeff = ((sz_ind + 1) * sz_ind) / 2;
                sumn = 1.0 - sz_ind;
                sumd = 2.0;
-               FOR jj FROM 1 TO mm - 1:
+               FOR jj FROM 1 TO ii - 1:
                   # compute the numerator and denominator
                   nsumn = Kw.round(sumn * lv_bern_d_arr[jj]
-                        + sumd * coeff * lv_bern_n_arr[jj]);
+                           + sumd * coeff * lv_bern_n_arr[jj]);
                   nsumd = Kw.round(sumd * lv_bern_d_arr[jj]);
                   gdn = gcd(nsumn, nsumd);
                   sumn = nsumn / gdn;
@@ -1284,9 +1284,9 @@ BLOCK: # Bernoullis numbers
                FOR_END
                sumd *= (sz_ind + 1);
                gdn = Kw.gcd(sumn, sumd);
-               lv_bern_n_arr[mm] = -sumn / gdn;
-               lv_bern_d_arr[mm] = sumd / gdn;
-               mm += 1;
+               lv_bern_n_arr[ii] = -sumn / gdn;
+               lv_bern_d_arr[ii] = sumd / gdn;
+               ii += 1;
             WHILE_END
          IF_END
          retvalu = lv_bern_n_arr[nnhalf] / lv_bern_d_arr[nnhalf];
@@ -1328,7 +1328,7 @@ BLOCK: # Bernoullis numbers
       RETURN retvalu;
    FUNC_END
 BLOCK_END
-#TEST:bernoulli(12)*2730+691;
+#TEST:bernoulli(12) * 2730 + 691;
 
 FUNC DBL birthday(DBL xnn, DBL xrr):
    # the probability that every pigeon has a hole to itself
@@ -1360,61 +1360,46 @@ FUNC DBL birthdayinv(DBL xnn, DBL xprob):
    RETURN xrr;
 FUNC_END
 
-FUNC INT n2perm(INT mm, INT nn
-      , WRITEONLY INT ret_perm_arr_p[]):
+FUNC INT n2perm(INT nth, INT nn
+         , WRITEONLY INT ret_perm_arr_p[]):
    # n2perm(M, N) == Mth permutation of N things
    # e.g. n2perm(0, N)=(0, 1, 2, 3, ..., (N-1))
    # e.g. n2perm(factorial(N)-1, N)=((N-1), ..., 3, 2, 1, 0)
    INT ii;
-   INT pat_arr[];
-   INT source_arr[];
    INT jj;
    INT kk;
-   INT mmm;
+   INT nthmod;
+   INT pat_arr[];
+   INT source_arr[];
    INT sz_ind;
 
    MODE_INTEGER:
-   REDIM pat_arr[], nn;
-   REDIM source_arr[], nn;
-   mmm = Kw.modulo(mm, factorial(nn));
-   kk = mmm;
-   FOR ii FROM 1 TO nn:
-      pat_arr[nn - ii] = kk % ii;
-      kk = FLOOR(kk / ii);
-      source_arr[ii - 1] = ii - 1;
-   FOR_END
-
-   FOR ii FROM 0 TO nn - 1:
-      sz_ind = pat_arr[ii];
-      ret_perm_arr_p[ii] = source_arr[sz_ind];
-      # splice out source_arr[sz_ind]
-      FOR jj FROM sz_ind TO nn - ii - 2:
-         source_arr[jj] = source_arr[jj + 1];
+      REDIM pat_arr[], nn;
+      REDIM source_arr[], nn;
+      nthmod = Kw.modulo(nth, factorial(nn));
+      kk = nthmod;
+      FOR ii FROM 1 TO nn:
+         pat_arr[nn - ii] = kk % ii;
+         kk = FLOOR(kk / ii);
+         source_arr[ii - 1] = ii - 1;
       FOR_END
-   FOR_END
+
+      FOR ii FROM 0 TO nn - 1:
+         sz_ind = pat_arr[ii];
+         ret_perm_arr_p[ii] = source_arr[sz_ind];
+         # splice out source_arr[sz_ind]
+         FOR jj FROM sz_ind TO nn - ii - 2:
+            source_arr[jj] = source_arr[jj + 1];
+         FOR_END
+      FOR_END
    MODE_INTEGER_END
    REDIM pat_arr[];
    REDIM source_arr[];
-   RETURN mmm;
+   RETURN nthmod;
 FUNC_END
 
-FUNC INT n2perm_print(INT mm, INT nn):
-   INT perm_arr[];
-   INT ii;
-   INT jj;
-
-   REDIM perm_arr[], nn;
-   jj = n2perm(mm, nn, perm_arr[]);
-   FOR ii FROM 0 TO nn - 1:
-      PRINTVAL(perm_arr[ii]);
-      PRINTSTR(" ");
-   FOR_END
-   REDIM perm_arr[];
-   RETURN jj;
-FUNC_END
-
-FUNC INT n2comb(INT mm, INT nn, INT rr
-      , WRITEONLY INT ret_comb_arr_p[]):
+FUNC INT n2comb(INT nth, INT nn, INT rr
+         , WRITEONLY INT ret_comb_arr_p[]):
    # n2comb(M, N, R) = Mth combination of N things taken
    # R at a time
    # e.g. n2comb(0, N, R) = ((N-R), (N-R+1), .., N-1).
@@ -1424,11 +1409,11 @@ FUNC INT n2comb(INT mm, INT nn, INT rr
    INT qq;
    INT ss;
    INT pp;
-   INT mmm;
+   INT nthmod;
 
    MODE_INTEGER:
-      mmm = Kw.modulo(mm, Kw.comb(nn, rr));
-      kk = Kw.comb(nn, rr) - mmm;
+      nthmod = Kw.modulo(nth, Kw.comb(nn, rr));
+      kk = Kw.comb(nn, rr) - nthmod;
       FOR ss FROM 0 TO rr - 1:
          pp = rr - ss;
          cc = 1;
@@ -1443,20 +1428,27 @@ FUNC INT n2comb(INT mm, INT nn, INT rr
          ret_comb_arr_p[ss] = nn - pp;
       FOR_END
    MODE_INTEGER_END
-   RETURN mmm;
+   RETURN nthmod;
 FUNC_END
 
-FUNC INT n2comb_print(INT mm, INT nn, INT rr):
+FUNC INT n2perm_print(INT nth, INT nn):
+   INT perm_arr[];
+   INT jj;
+
+   REDIM perm_arr[], nn;
+   jj = n2perm(nth, nn, perm_arr[]);
+   CALL print_array(nn, perm_arr[]);
+   REDIM perm_arr[];
+   RETURN jj;
+FUNC_END
+
+FUNC INT n2comb_print(INT nth, INT nn, INT rr):
    INT comb_arr[];
-   INT ii;
    INT jj;
 
    REDIM comb_arr[], rr;
-   jj = n2comb(mm, nn, rr, comb_arr[]);
-   FOR ii FROM 0 TO rr - 1:
-      PRINTVAL(comb_arr[ii]);
-      PRINTSTR(" ");
-   FOR_END
+   jj = n2comb(nth, nn, rr, comb_arr[]);
+   CALL print_array(rr, comb_arr[]);
    REDIM comb_arr[];
    RETURN jj;
 FUNC_END
